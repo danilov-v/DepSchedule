@@ -1,0 +1,90 @@
+plugins {
+    id "base"
+    id "com.moowork.node" version "1.3.1"
+}
+
+node {
+    version = '10.16.0'
+    npmVersion = '6.9.0'
+    download = true
+}
+
+task buildFrontend(type: YarnTask) {
+    inputs.files fileTree("public")
+    inputs.files fileTree("src")
+    inputs.file 'package.json'
+    inputs.file 'yarn.lock'
+    outputs.dir 'build'
+
+    args = ['build']
+}
+
+task testFrontend(type: YarnTask) {
+    args = ['test']
+}
+
+task start(type: YarnTask) {
+    args = ['start']
+}
+
+task packageNpmApp(type: Zip) {
+    dependsOn buildFrontend
+    baseName 'schedule_ui'
+    extension 'jar'
+    destinationDir file("${projectDir}/build_jar_schedule_ui")
+    from('build')
+            {
+        //Spring Boot will automatically add static web resources located within /static or /public
+        into 'static'
+    }
+}
+
+// declare a dedicated scope for publishing the packaged JAR
+configurations {
+    npmResources
+}
+
+configurations.default.extendsFrom(configurations.npmResources)
+
+// expose the artifact created by the packaging task
+artifacts {
+    npmResources(packageNpmApp.archivePath) {
+        builtBy packageNpmApp
+        type 'jar'
+    }
+}
+
+//Тесты
+//String testsExecutedMarkerName = "${projectDir}/.tests.executed"
+//
+//task test(type: NpmTask) {
+//    dependsOn assemble
+//
+//    // force Jest test runner to execute tests once and finish the process instead of starting watch mode
+//    environment CI: 'true'
+//
+//    args = ['run', 'test']
+//
+//    inputs.files fileTree('src')
+//    inputs.file 'package.json'
+//    inputs.file 'package-lock.json'
+//
+//    // allows easy triggering re-tests
+//    doLast {
+//        new File(testsExecutedMarkerName).text = 'delete this file to force re-execution JavaScript tests'
+//    }
+//    outputs.file testsExecutedMarkerName
+//}
+//
+//check.dependsOn test
+
+clean {
+    project.logger.lifecycle(packageNpmApp.archivePath.getParent())
+    delete packageNpmApp.archivePath.getParent()
+//    delete testsExecutedMarkerName
+}
+
+assemble.dependsOn(packageNpmApp)
+
+buildFrontend.dependsOn(yarn_install)
+start.dependsOn(yarn_install)
