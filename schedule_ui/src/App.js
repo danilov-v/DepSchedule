@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Auth } from 'pages/auth/auth';
+import { Auth } from "pages/auth/auth";
 
 function App() {
   return <Auth />;
