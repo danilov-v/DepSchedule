@@ -14,7 +14,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "precise-commits": "precise-commits"
+    "precise-commits": "precise-commits",
+    "precommit": "npm run precise-commits"
   },
   "eslintConfig": {
     "extends": "react-app"
