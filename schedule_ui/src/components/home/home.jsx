@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import './home.scss'
+import "./home.scss";
 
 export function Home() {
-  return (
-    <div className="home">
-      Hello Dep Scheduler project
-    </div>
-  );
+  return <div className="home">Hello Dep Scheduler project</div>;
 }
