@@ -4,3 +4,5 @@ pluginManagement {
     }
 }
 rootProject.name = 'schedule'
+
+include 'backend', 'ui'
