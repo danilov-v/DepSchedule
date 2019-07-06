@@ -10,6 +10,7 @@
 
 # production
 /build
+/build_jar_schedule_ui
 
 # misc
 .DS_Store

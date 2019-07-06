@@ -1,12 +1,12 @@
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
     id 'java'
+    //id 'nebula.lint' version '9.3.2' //контроль неиспользуемых зпависимостей
 }
 
+//gradleLint.rules = ['all-dependency']
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.varb'
-version = '0.1'
 sourceCompatibility = '12'
 
 configurations {
@@ -25,6 +25,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly project(':schedule_ui')
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
