@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`home.jsx <Home /> should render and match snapshot 1`] = `
+<Fragment>
+  <div
+    className="home"
+  >
+    Hello Dep Scheduler project - 
+    0
+  </div>
+  <button
+    onClick={[Function]}
+  >
+    Click me
+  </button>
+</Fragment>
+`;
