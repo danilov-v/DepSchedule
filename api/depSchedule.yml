@@ -1,0 +1,496 @@
+openapi: "3.0.0"
+info:
+  version: 0.1.0
+  title: DepSchedule
+security:
+  - JWT: []
+# servers:
+#   - url: http://localhost
+
+tags:
+  - name: event
+    description: 'Информация о событии (подразделение, дата начала, дата конца)'
+  - name: eventType
+    description: 'Информация о типе событий (цвет, описание)'
+  - name: unit
+    description: 'Информация о подразделении (название, уровень подразделения)'
+  - name: time
+    description: 'Информация о времени выполнения событий в каждом подразделении'
+paths:
+  /event:
+    get:
+      summary: Список событий
+      tags:
+        - event
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: Array of event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Создать событие
+      tags:
+        - event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventPost'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /event/{eventId}:
+    put:
+      summary: Редактировать существующее событие
+      tags:
+        - event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventPut'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Удалить существующее событие
+      tags:
+        - event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /eventType:
+    get:
+      summary: Список типов событий
+      tags:
+        - eventType
+      responses:
+        200:
+          description: Array of event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventTypeResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /eventType/{type}:
+    put:
+      summary: Редактировать существующий тип события
+      tags:
+        - eventType
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/EventTypeEnum'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventTypePut'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventTypeResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Удалить существующий тип события
+      tags:
+        - eventType
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/EventTypeEnum'
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /unit:
+    get:
+      summary: Список подразделений
+      tags:
+        - unit
+      responses:
+        200:
+          description: Array of unit
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnitResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Создать подразделение
+      tags:
+        - unit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitPost'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnitResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /unit/{unitId}:
+    put:
+      summary: Редактировать существующее подразделение
+      tags:
+        - unit
+      parameters:
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitPut'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Удалить существующее подразделение
+      tags:
+        - unit
+      parameters:
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /time:
+    post:
+      summary: Добавить время выполнения события для подразделения
+      tags:
+        - time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Time'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnitResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: Редактировать существующее время выполнения события для подразделения
+      tags:
+        - time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Time'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /time/{unitId}/{eventType}:
+    delete:
+      summary: Удалить существующее время выполнения события для подразделения
+      tags:
+        - time
+      parameters:
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: eventType
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/EventTypeEnum'
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+  schemas:
+    UnitPut:
+      properties:
+        title:
+          type: string
+          minLength: 3
+          description: "Название подразделения"
+        parentId:
+          type: integer
+          format: int64
+          description: |
+            Ссылка на подразделение верхнего уровня
+            (для подразделения первого уровня не указывается!)
+        unitLevel:
+          $ref: '#/components/schemas/UnitLevelEnum'
+    UnitPost:
+      required:
+        - title
+        - unitLevel
+      allOf:
+        - $ref: '#/components/schemas/UnitPut'
+    UnitResponse:
+      required:
+        - id
+        - title
+        - unitLevel
+      allOf:
+        - $ref: '#/components/schemas/UnitPut'
+        - properties:
+            id:
+              type: integer
+              format: int64
+    UnitLevelEnum:
+      type: string
+      description: |
+        Уровень подразделения
+        * `level1` - Система управления
+        * `level2` - Орган управления
+        * `level3` - Пункт управления
+        * `level4` - Подразделение
+      enum:
+        - level1
+        - level2
+        - level3
+        - level4
+    EventPut:
+      properties:
+        unitId:
+          type: integer
+          format: int64
+          description: "Id подразделения
+                        (может ссылаться только на подразделение 4-го уровня"
+        dateFrom:
+          type: string
+          format: date
+          description: "Дата начала события"
+        note:
+          type: string
+          description: "Примечание"
+        eventType:
+          $ref: '#/components/schemas/EventTypeEnum'
+    EventPost:
+      required:
+        - dateFrom
+        - eventType
+        - unitId
+      allOf:
+        - $ref: '#/components/schemas/EventPut'
+    EventResponse:
+      required:
+        - id
+        - dateFrom
+        - dateTo
+        - eventType
+        - unitId
+      allOf:
+        - properties:
+            id:
+              type: integer
+              format: int64
+            dateTo:
+              type: string
+              format: date
+              description: "Дата конца события"
+        - $ref: '#/components/schemas/EventPut'
+    EventTypePut:
+      properties:
+        description:
+          type: string
+          description: "Описание события"
+          minLength: 3
+        color:
+          type: string
+          description: "Отображаемый цвет"
+    EventTypeResponse:
+      required:
+        - description
+        - color
+        - type
+      allOf:
+        - $ref: '#/components/schemas/EventTypePut'
+        - properties:
+            type:
+              $ref: '#/components/schemas/EventTypeEnum'
+    EventTypeEnum:
+      description: |
+        Тип события
+        * `time1` - мобилизация
+        * `time2` - марш
+        * `time3` - развёртывание
+        * `time4` - ...
+      type: string
+      enum:
+        - time1
+        - time2
+        - time3
+        - time4
+    Time:
+      required:
+        - unitId
+        - eventType
+        - duration
+      properties:
+        unitId:
+          type: integer
+          format: int64
+        eventType:
+          $ref: '#/components/schemas/EventTypeEnum'
+        duration:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          description: "время выполнения (в днях)"
+    ErrorMessage:
+      type: object
+      description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."
+      required:
+        - code
+        - devMessage
+      properties:
+        code:
+          type: string
+          description: "Внутренний код ошибки"
+        devMessage:
+          type: string
+          description: "Сообщение для разработчика"
+        userMessage:
+          type: string
+          description: "Сообщение для пользователя"
+  
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

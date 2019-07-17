@@ -1,0 +1,44 @@
+plugins {
+    id "org.openapi.generator" version "4.0.2"
+}
+/**
+ * https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
+ */
+task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    print("$projectDir/../../api/depSchedule.yml".toString())
+    generatorName = "spring"
+    inputSpec = "$projectDir/../../api/depSchedule.yml".toString()
+    outputDir = "$projectDir/generated-sources".toString()
+    skipOverwrite = false
+    invokerPackage = "org.openapi.example"
+    apiPackage = "org.openapi.example.api"
+    modelPackage = "org.openapi.example.model"
+    modelNameSuffix = "Dto"
+    generateModelTests = false
+    generateApiTests = false
+    /**
+     * https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/spring.md
+     */
+    configOptions = [
+            dateLibrary             : "java8",
+            interfaceOnly           : true,
+            sortParamsByRequiredFlag: true,
+            returnSuccessCode       : true
+    ]
+
+    doLast { // delete unnecessary files
+        delete "$projectDir/generated-sources/pom.xml"
+        delete "$projectDir/generated-sources/.openapi-generator-ignore"
+        delete "$projectDir/generated-sources/.openapi-generator"
+    }
+}
+
+sourceSets.main.java.srcDirs += "$projectDir/generated-sources/src/main/java"
+
+tasks.register("clean") {
+    description = 'clean generated files'
+    delete "$projectDir/generated-sources"
+}
+
+generateCode.group = "openapi tools"
+clean.group = "openapi tools"

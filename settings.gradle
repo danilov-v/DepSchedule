@@ -3,6 +3,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'schedule'
+rootProject.name = 'DepSchedule'
 
-include 'backend', 'schedule_ui'
+include 'backend', 'schedule_ui',
+        'backend:openapi_codegen'
+

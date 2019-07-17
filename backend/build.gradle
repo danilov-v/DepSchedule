@@ -4,10 +4,11 @@ plugins {
     //id 'nebula.lint' version '9.3.2' //контроль неиспользуемых зпависимостей
 }
 
-//gradleLint.rules = ['all-dependency']
 apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = '12'
+
+//gradleLint.rules = ['all-dependency']
 
 configurations {
     developmentOnly
@@ -31,4 +32,9 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    
+    //support openApi codegen annotation
+    compileOnly 'io.swagger:swagger-annotations:1.5.22'
+    compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
+    
 }

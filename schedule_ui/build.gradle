@@ -10,6 +10,8 @@ node {
 }
 
 task buildFrontend(type: YarnTask) {
+    dependsOn(yarn_install)
+
     inputs.files fileTree("public")
     inputs.files fileTree("src")
     inputs.file 'package.json'
@@ -24,11 +26,14 @@ task testFrontend(type: YarnTask) {
 }
 
 task start(type: YarnTask) {
+    dependsOn(yarn_install)
+    
     args = ['start']
 }
 
 task packageNpmApp(type: Zip) {
-    dependsOn buildFrontend
+    dependsOn(buildFrontend)
+    
     baseName 'schedule_ui'
     extension 'jar'
     destinationDir file("${projectDir}/build_jar_schedule_ui")
@@ -86,5 +91,5 @@ clean {
 
 assemble.dependsOn(packageNpmApp)
 
-buildFrontend.dependsOn(yarn_install)
-start.dependsOn(yarn_install)
+//buildFrontend.dependsOn(yarn_install)
+//start.dependsOn(yarn_install)
