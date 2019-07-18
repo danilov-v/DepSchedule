@@ -142,7 +142,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeEnum'
+            $ref: '#/components/schemas/EventTypeCode'
       requestBody:
         content:
           application/json:
@@ -168,7 +168,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeEnum'
+            $ref: '#/components/schemas/EventTypeCode'
       responses:
         200:
           description: successful operation
@@ -317,7 +317,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeEnum'
+            $ref: '#/components/schemas/EventTypeCode'
       responses:
         200:
           description: successful operation
@@ -399,7 +399,7 @@ components:
           type: string
           description: "Примечание"
         eventType:
-          $ref: '#/components/schemas/EventTypeEnum'
+          $ref: '#/components/schemas/EventTypeCode'
     EventPost:
       required:
         - dateFrom
@@ -442,20 +442,15 @@ components:
         - $ref: '#/components/schemas/EventTypePut'
         - properties:
             type:
-              $ref: '#/components/schemas/EventTypeEnum'
-    EventTypeEnum:
+              $ref: '#/components/schemas/EventTypeCode'
+    EventTypeCode:
+      type: string
       description: |
-        Тип события
+        Код события
         * `time1` - мобилизация
         * `time2` - марш
         * `time3` - развёртывание
-        * `time4` - ...
-      type: string
-      enum:
-        - time1
-        - time2
-        - time3
-        - time4
+        * {...}
     Time:
       required:
         - unitId
@@ -466,7 +461,7 @@ components:
           type: integer
           format: int64
         eventType:
-          $ref: '#/components/schemas/EventTypeEnum'
+          $ref: '#/components/schemas/EventTypeCode'
         duration:
           type: integer
           minimum: 1
