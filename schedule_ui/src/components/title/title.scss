@@ -1,0 +1,15 @@
+@import "variables.scss";
+
+.title {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 1.4rem;
+  color: $color-grey-dark;
+}
+
+.date_picker {
+  font-size: 0.9rem;
+  color: #545454;
+  border: 1px solid $color-grey-dark;
+  border-radius: 5px;
+}

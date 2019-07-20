@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`title.jsx <Title /> should render and match snapshot 1`] = `
+<div
+  className="title"
+>
+  График развёртывания СУ в периуд с  
+  <DatePicker
+    allowSameDay={false}
+    className="date_picker"
+    dateFormat="dd/MM/yyyy"
+    dateFormatCalendar="LLLL yyyy"
+    disabled={false}
+    disabledKeyboardNavigation={false}
+    dropdownMode="scroll"
+    inlineFocusSelectedMonth={false}
+    locale={
+      Object {
+        "formatDistance": [Function],
+        "formatLong": Object {
+          "date": [Function],
+          "dateTime": [Function],
+          "time": [Function],
+        },
+        "formatRelative": [Function],
+        "localize": Object {
+          "day": [Function],
+          "dayPeriod": [Function],
+          "era": [Function],
+          "month": [Function],
+          "ordinalNumber": [Function],
+          "quarter": [Function],
+        },
+        "match": Object {
+          "day": [Function],
+          "dayPeriod": [Function],
+          "era": [Function],
+          "month": [Function],
+          "ordinalNumber": [Function],
+          "quarter": [Function],
+        },
+        "options": Object {
+          "firstWeekContainsDate": 1,
+          "weekStartsOn": 1,
+        },
+      }
+    }
+    monthsShown={1}
+    nextMonthButtonLabel="Next month"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onClickOutside={[Function]}
+    onFocus={[Function]}
+    onInputClick={[Function]}
+    onInputError={[Function]}
+    onKeyDown={[Function]}
+    onMonthChange={[Function]}
+    onSelect={[Function]}
+    onYearChange={[Function]}
+    preventOpenOnFocus={false}
+    previousMonthButtonLabel="Previous Month"
+    readOnly={false}
+    renderDayContents={[Function]}
+    shouldCloseOnSelect={true}
+    showMonthYearPicker={false}
+    showTimeInput={false}
+    showTimeSelect={false}
+    strictParsing={false}
+    timeCaption="Time"
+    timeInputLabel="Time"
+    timeIntervals={30}
+    withPortal={false}
+  />
+    по  
+  <DatePicker
+    allowSameDay={false}
+    className="date_picker"
+    dateFormat="dd/MM/yyyy"
+    dateFormatCalendar="LLLL yyyy"
+    disabled={false}
+    disabledKeyboardNavigation={false}
+    dropdownMode="scroll"
+    inlineFocusSelectedMonth={false}
+    locale={
+      Object {
+        "formatDistance": [Function],
+        "formatLong": Object {
+          "date": [Function],
+          "dateTime": [Function],
+          "time": [Function],
+        },
+        "formatRelative": [Function],
+        "localize": Object {
+          "day": [Function],
+          "dayPeriod": [Function],
+          "era": [Function],
+          "month": [Function],
+          "ordinalNumber": [Function],
+          "quarter": [Function],
+        },
+        "match": Object {
+          "day": [Function],
+          "dayPeriod": [Function],
+          "era": [Function],
+          "month": [Function],
+          "ordinalNumber": [Function],
+          "quarter": [Function],
+        },
+        "options": Object {
+          "firstWeekContainsDate": 1,
+          "weekStartsOn": 1,
+        },
+      }
+    }
+    monthsShown={1}
+    nextMonthButtonLabel="Next month"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onClickOutside={[Function]}
+    onFocus={[Function]}
+    onInputClick={[Function]}
+    onInputError={[Function]}
+    onKeyDown={[Function]}
+    onMonthChange={[Function]}
+    onSelect={[Function]}
+    onYearChange={[Function]}
+    preventOpenOnFocus={false}
+    previousMonthButtonLabel="Previous Month"
+    readOnly={false}
+    renderDayContents={[Function]}
+    shouldCloseOnSelect={true}
+    showMonthYearPicker={false}
+    showTimeInput={false}
+    showTimeSelect={false}
+    strictParsing={false}
+    timeCaption="Time"
+    timeInputLabel="Time"
+    timeIntervals={30}
+    withPortal={false}
+  />
+</div>
+`;
