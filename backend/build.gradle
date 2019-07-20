@@ -24,17 +24,42 @@ repositories {
     mavenCentral()
 }
 
+//Устанавливаем профиль SpringBoot
+if (hasProperty('profile')) {
+    def profile = project.getProperties().get('profile')
+    bootRun {
+        systemProperties = [
+                'spring.profiles.active': profile
+        ]
+    }
+
+    classes {
+        doLast {
+            FileTree tree =
+                    fileTree(dir: "build/resources/main").
+                            include("application.yml")
+            tree.each {
+                File file ->
+                    file.append('spring.profiles.active: ' + profile);
+            }
+        }
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2'
+    implementation 'org.modelmapper:modelmapper:2.3.5'
     runtimeOnly project(':schedule_ui')
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    
+
     //support openApi codegen annotation
     compileOnly 'io.swagger:swagger-annotations:1.5.22'
     compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
-    
+
 }

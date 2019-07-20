@@ -1,18 +1,17 @@
 plugins {
-    id "org.openapi.generator" version "4.0.2"
+    id "org.openapi.generator" version "4.0.3"
 }
 /**
  * https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
  */
 task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
-    print("$projectDir/../../api/depSchedule.yml".toString())
     generatorName = "spring"
     inputSpec = "$projectDir/../../api/depSchedule.yml".toString()
     outputDir = "$projectDir/generated-sources".toString()
     skipOverwrite = false
-    invokerPackage = "org.openapi.example"
-    apiPackage = "org.openapi.example.api"
-    modelPackage = "org.openapi.example.model"
+    invokerPackage = "com.varb.schedule.buisness"
+    apiPackage = "com.varb.schedule.buisness.logic.controllers.api"
+    modelPackage = "com.varb.schedule.buisness.models.dto"
     modelNameSuffix = "Dto"
     generateModelTests = false
     generateApiTests = false
@@ -33,7 +32,7 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
     }
 }
 
-sourceSets.main.java.srcDirs += "$projectDir/generated-sources/src/main/java"
+//sourceSets.main.java.srcDirs += "$projectDir/generated-sources/src/main/java"
 
 tasks.register("clean") {
     description = 'clean generated files'

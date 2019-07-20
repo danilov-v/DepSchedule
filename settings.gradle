@@ -7,4 +7,5 @@ rootProject.name = 'DepSchedule'
 
 include 'backend', 'schedule_ui',
         'backend:openapi_codegen'
+include 'backend:swagger-codegen'
 

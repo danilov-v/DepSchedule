@@ -4,8 +4,9 @@ info:
   title: DepSchedule
 security:
   - JWT: []
-# servers:
-#   - url: http://localhost
+servers:
+  - url: http://172.17.110.5:9006
+
 
 tags:
   - name: event
@@ -178,6 +179,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /unit:
     get:
+      operationId: unitGet
       summary: Список подразделений
       tags:
         - unit
@@ -195,6 +197,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
     post:
+      operationId: unitPost
       summary: Создать подразделение
       tags:
         - unit
@@ -216,6 +219,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /unit/{unitId}:
     put:
+      operationId: unitPut
       summary: Редактировать существующее подразделение
       tags:
         - unit
@@ -237,12 +241,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventResponse'
+                $ref: '#/components/schemas/UnitResponse'
         400:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
     delete:
+      operationId: unitDelete
       summary: Удалить существующее подразделение
       tags:
         - unit
@@ -353,7 +358,7 @@ components:
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
         unitLevel:
-          $ref: '#/components/schemas/UnitLevelEnum'
+          $ref: '#/components/schemas/UnitLevel'
     UnitPost:
       required:
         - title
@@ -362,28 +367,24 @@ components:
         - $ref: '#/components/schemas/UnitPut'
     UnitResponse:
       required:
-        - id
+        - unitId
         - title
         - unitLevel
       allOf:
         - $ref: '#/components/schemas/UnitPut'
         - properties:
-            id:
+            unitId:
               type: integer
               format: int64
-    UnitLevelEnum:
-      type: string
+    UnitLevel:
+      type: integer
+      format: int32
       description: |
         Уровень подразделения
-        * `level1` - Система управления
-        * `level2` - Орган управления
-        * `level3` - Пункт управления
-        * `level4` - Подразделение
-      enum:
-        - level1
-        - level2
-        - level3
-        - level4
+        * `1` - Система управления
+        * `2` - Орган управления
+        * `3` - Пункт управления
+        * `4` - Подразделение
     EventPut:
       properties:
         unitId:
