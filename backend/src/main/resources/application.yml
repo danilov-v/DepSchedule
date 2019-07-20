@@ -1,1 +1,27 @@
-
+spring:
+#  profiles.include: h2Server
+  jackson.default-property-inclusion: non_null
+  datasource:
+    url: jdbc:h2:file:~/ScheduleDB
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+    
+  application.name: erip
+  
+server.port: 9006
+  
+logging.level:
+  org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+  org.hibernate.SQL: DEBUG
+  org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  
+---
+spring.profiles: develop
+server.port: 8080
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/ScheduleDB
