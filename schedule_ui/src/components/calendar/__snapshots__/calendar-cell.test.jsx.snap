@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calendar-cell.jsx <CalendarCell /> should render and match snapshot 1`] = `
+<div
+  className="calendar-cell d-flex align-items-center justify-content-center"
+>
+  25
+</div>
+`;
+
+exports[`calendar-cell.jsx <CalendarCell /> should render and match snapshot with fluid 1`] = `
+<div
+  className="calendar-cell d-flex align-items-center justify-content-center fluid"
+>
+  25
+</div>
+`;
