@@ -1,6 +1,5 @@
 package com.varb.schedule.buisness.models.entity;
 
-import com.varb.schedule.buisness.models.business.UnitLevelEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -13,7 +12,7 @@ public class Unit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unit_sq_generator")
-    @SequenceGenerator(name = "unit_sq_generator", sequenceName = "UNIT_SQ")
+    @SequenceGenerator(name = "unit_sq_generator", sequenceName = "UNIT_SQ", allocationSize = 1)
     private Long unitId;
 
     /**
@@ -24,6 +23,5 @@ public class Unit {
     @Column(nullable = false)
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private UnitLevelEnum unitLevelEnum;
+    private Integer unitLevel;
 }

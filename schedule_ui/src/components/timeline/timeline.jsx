@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { Container, Row, Col } from "reactstrap";
-import { addMonths, addDays } from "date-fns";
+import { addMonths } from "date-fns";
+import { LOCALHOST_URL, DEFAULT_BE_PORT, UNITS_URL } from "config/url";
+import { SECTIONS } from "stub-data/sections";
+import { UNITS } from "stub-data/units";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
+import { UnitsGrid } from "components/units-grid/units-grid";
 
 import { getDates } from "utils/date";
 
@@ -14,66 +18,56 @@ export function Timeline() {
 
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 3));
+  // const [units, setUnits] = useState([]);
+  const container = createRef();
 
-  const sections = [
-    {
-      name: "A",
-      startDate: new Date(2019, 7, 16),
-      endDate: new Date(2019, 8, 16),
-    },
-    {
-      name: "B",
-      startDate: new Date(2019, 8, 17),
-      endDate: new Date(2019, 8, 26),
-    },
-    {
-      name: "C",
-      startDate: new Date(2019, 8, 27),
-      endDate: new Date(2019, 9, 10),
-    },
-    {
-      name: "D",
-      startDate: new Date(2019, 9, 12),
-      endDate: new Date(2019, 9, 16),
-    },
-  ];
+  useEffect(() => {
+    container.current.scrollLeft = container.current.scrollWidth;
+    // if we add container to dependencies list each time when component
+    // will recive new props or staete effect will be called,
+    // hovewer we want to scroll to the header only first mount
+    // and when calendar date is changed
+  }, [startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // const sections = [
-  //   {
-  //     name: "A",
-  //     startDate: new Date(2019, 6, 16),
-  //     endDate: new Date(2019, 8, 16),
-  //   },
-  // ];
+  // useEffect(() => {
+  //   const fetchUnits = async () => {
+  //     const result = await fetch(
+  //       `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}`
+  //     );
+  //     const data = result.json();
+  //     debugger;
+  //     setUnits(data);
+  //   };
 
-  console.log(sections);
+  //   fetchUnits();
+  // }, []);
 
   const range = getDates(startDate, endDate);
 
   return (
-    <Container className="timeline">
+    <Container className="timeline" fluid>
       <Title
         onChangeStartDate={setStartDate}
         onChangeEndDate={setEndDate}
         startDate={startDate}
         endDate={endDate}
       />
-      <div className="timeline-wrapper">
+      <div ref={container} className="timeline-wrapper">
         <Row>
           <Col>
             <HighLevelSections
               startDate={startDate}
               range={range}
-              sections={sections}
+              sections={SECTIONS}
             />
           </Col>
         </Row>
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
-            <Calendar range={range} />
+            <Calendar range={range} showMonth />
           </Col>
-          <Col xs="auto" className="timeline-info">
-            <div>test</div>
+          <Col className="timeline-info">
+            <UnitsGrid units={UNITS} />
           </Col>
         </Row>
       </div>

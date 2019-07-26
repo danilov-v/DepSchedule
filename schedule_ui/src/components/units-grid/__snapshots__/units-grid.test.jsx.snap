@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`units-grid.jsx <UnitsGrid /> should render and match snapshot 1`] = `
+<div
+  className="units-grid"
+>
+  <div
+    className="text-center units-grid-title"
+  >
+    Unit Grid Title
+  </div>
+  <div
+    className="d-flex flex-row-reverse"
+    key="2"
+  >
+    <Unit
+      key="2"
+      title="Система управления 2"
+    />
+    <div>
+      <div
+        className="d-flex flex-row-reverse"
+        key="3"
+      >
+        <Unit
+          key="3"
+          title="Орган управления 2.1"
+        />
+        <div>
+          <div
+            className="d-flex flex-row-reverse"
+            key="4"
+          >
+            <Unit
+              key="4"
+              title="Пункт управления 2.1.1"
+            />
+            <div>
+              <Unit
+                key="5"
+                lastGen={true}
+                title="Подразделение 2.1.1.1"
+              />
+              <Unit
+                key="51"
+                lastGen={true}
+                title="Подразделение 2.1.1.2"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Unit
+        key="33"
+        lastGen={true}
+        title="Орган управления 2.2"
+      />
+    </div>
+  </div>
+</div>
+`;

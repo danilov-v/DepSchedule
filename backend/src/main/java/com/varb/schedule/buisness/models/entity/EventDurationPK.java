@@ -11,8 +11,16 @@ import java.io.Serializable;
 @Embeddable
 public class EventDurationPK implements Serializable {
 
+    public EventDurationPK(Long unitId, String eventType) {
+        this.unitId = unitId;
+        this.eventType = eventType;
+    }
+
+    public EventDurationPK() {
+    }
+
     @Column(nullable = false)
-    private Long eventId;
+    private Long unitId;
 
     @Column(nullable = false)
     private String eventType;

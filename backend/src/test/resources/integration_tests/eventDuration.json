@@ -1,0 +1,135 @@
+{
+  "scenarioName": "CRUD eventDuration",
+  "steps": [
+    {
+      "name": "javaMethodExecution",
+      "url": "com.varb.schedule.integration.ZeroCodeTest",
+      "operation": "initDataBeforeEventDurationTest",
+      "request": {},
+      "assertions": {
+      }
+    },
+    {
+      "name": "add_eventDuration",
+      "url": "/eventDuration",
+      "operation": "PUT",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "unitId": "200",
+          "eventType": "mobilization",
+          "duration": 5
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "unitId": "$EQ.${$.add_eventDuration.request.body.unitId}",
+          "eventType": "${$.add_eventDuration.request.body.eventType}",
+          "duration": "$EQ.${$.add_eventDuration.request.body.duration}"
+        }
+      }
+    },
+    {
+      "name": "edit_eventDuration",
+      "url": "/eventDuration",
+      "operation": "PUT",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "unitId": "1",
+          "eventType": "mobilization",
+          "duration": 2
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "unitId": "$EQ.${$.edit_eventDuration.request.body.unitId}",
+          "eventType": "${$.edit_eventDuration.request.body.eventType}",
+          "duration": "$EQ.${$.edit_eventDuration.request.body.duration}"
+        }
+      }
+    },
+    {
+      "name": "edit_eventDuration",
+      "url": "/eventDuration",
+      "operation": "PUT",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "unitId": "1",
+          "eventType": "mobilization",
+          "duration": 2
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "unitId": "$EQ.${$.edit_eventDuration.request.body.unitId}",
+          "eventType": "${$.edit_eventDuration.request.body.eventType}",
+          "duration": "$EQ.${$.edit_eventDuration.request.body.duration}"
+        }
+      }
+    },
+    {
+      "name": "get_eventDuration",
+      "url": "/eventDuration",
+      "operation": "GET",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {}
+      },
+      "assertions": {
+        "status": 200,
+        "body": [
+          {
+            "unitId": "$EQ.${$.edit_eventDuration.response.body.unitId}",
+            "eventType": "${$.edit_eventDuration.response.body.eventType}",
+            "duration": "$EQ.${$.edit_eventDuration.response.body.duration}"
+          }
+        ]
+      }
+    },
+
+    {
+      "name": "delete_eventDuration",
+      "url": "/eventDuration/${$.edit_eventDuration.response.body.unitId}/${$.edit_eventDuration.response.body.eventType}",
+      "operation": "DELETE",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {}
+      },
+      "assertions": {
+        "status": 200
+      }
+    },
+
+    {
+      "name": "get_eventDuration",
+      "url": "/eventDuration",
+      "operation": "GET",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {}
+      },
+      "assertions": {
+        "status": 200,
+        "body": "$[]"
+      }
+    }
+
+  ]
+}

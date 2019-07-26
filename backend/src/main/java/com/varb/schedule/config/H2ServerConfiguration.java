@@ -16,13 +16,17 @@ import java.sql.SQLException;
 @Profile("h2Server")
 public class H2ServerConfiguration {
 
+    public H2ServerConfiguration(@Value("${h2.tcp.port:9092}") String h2TcpPort,
+                                 @Value("${h2.web.port:8082}") String h2WebPort) {
+        this.h2TcpPort = h2TcpPort;
+        this.h2WebPort = h2WebPort;
+    }
+
     // TCP port for remote connections, default 9092
-    @Value("${h2.tcp.port:9092}")
-    private String h2TcpPort;
+    private final String h2TcpPort;
 
     // Web port, default 8082
-    @Value("${h2.web.port:8082}")
-    private String h2WebPort;
+    private final String h2WebPort;
 
     /**
      * TCP connection to connect with SQL clients to the embedded h2 database.

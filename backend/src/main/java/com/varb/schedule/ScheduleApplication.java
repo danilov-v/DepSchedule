@@ -10,4 +10,10 @@ public class ScheduleApplication {
         SpringApplication.run(ScheduleApplication.class, args);
     }
 
+//    public static void start() {
+//        SpringApplication.run(ScheduleApplication.class);
+//    }
+
 }
+
+//TODO 4.разобраться как с помощью gradle запускать отдельный модуль а не весь проект
