@@ -1,4 +1,4 @@
-package com.varb.schedule.config;
+package com.varb.schedule.config.modelmapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

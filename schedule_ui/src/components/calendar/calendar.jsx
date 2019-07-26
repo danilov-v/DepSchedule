@@ -5,20 +5,25 @@ import { CalendarCell } from "./calendar-cell";
 
 import "./calendar.scss";
 
-export function Calendar({ range }) {
+export function Calendar({ range, showMonth }) {
   return (
     <Row className="calendar" noGutters>
       {range.map(month => (
         <Col key={month.name}>
-          <Row className="calendar-title" noGutters>
-            <Col>
-              <CalendarCell text={month.name} fluid />
-            </Col>
-          </Row>
+          {showMonth && (
+            <Row className="calendar-title" noGutters>
+              <Col>
+                <CalendarCell text={month.name} fluid />
+              </Col>
+            </Row>
+          )}
           <Row noGutters>
             <Col className="d-flex">
               {month.days.map(day => (
-                <CalendarCell key={day.getTime()} text={day.getDate()} />
+                <CalendarCell
+                  key={day.getTime()}
+                  text={showMonth ? day.getDate() : null}
+                />
               ))}
             </Col>
           </Row>
@@ -35,8 +40,10 @@ Calendar.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
+  showMonth: PropTypes.bool,
 };
 
 Calendar.defaultProps = {
   range: [],
+  showMonth: false,
 };

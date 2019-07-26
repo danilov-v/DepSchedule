@@ -5,9 +5,9 @@ import com.varb.schedule.buisness.logic.service.UnitService;
 import com.varb.schedule.buisness.models.dto.UnitPostDto;
 import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import com.varb.schedule.buisness.models.dto.UnitResponseDto;
+import com.varb.schedule.buisness.models.dto.UnitResponseThreeDto;
 import com.varb.schedule.buisness.models.entity.Unit;
-import com.varb.schedule.config.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,9 +28,16 @@ public class UnitApiImpl implements UnitApi {
     }
 
     @Override
+    public ResponseEntity<UnitResponseThreeDto> unitGetThree() {
+        return ResponseEntity.ok(
+                modelMapper.map(unitService.getAllUnit(), UnitResponseThreeDto.class));
+    }
+
+    @Override
     public ResponseEntity<UnitResponseDto> unitPost(@Valid UnitPostDto unitPostDto) {
         return ResponseEntity.ok(
-                modelMapper.map(unitService.addUnit(unitPostDto), UnitResponseDto.class));
+                modelMapper.map(unitService.addUnit(unitPostDto),
+                        UnitResponseDto.class));
     }
 
     @Override

@@ -1,0 +1,125 @@
+{
+  "scenarioName": "CRUD event",
+  "steps": [
+    {
+      "name": "javaMethodExecution",
+      "url": "com.varb.schedule.integration.ZeroCodeTest",
+      "operation": "initDataBeforeEventTest",
+      "request": {},
+      "assertions": {
+      }
+    },
+    {
+      "name": "add_event",
+      "url": "/event",
+      "operation": "POST",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "unitId": 200,
+          "dateFrom": "2019-11-20",
+          "note": "описание",
+          "eventType": "mobilization"
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "eventId": "$NOT.NULL",
+          "dateTo": "2019-11-25",
+          "unitId": "$EQ.${$.add_event.request.body.unitId}",
+          "dateFrom": "${$.add_event.request.body.dateFrom}",
+          "note": "${$.add_event.request.body.note}",
+          "eventType": "${$.add_event.request.body.eventType}"
+        }
+      }
+    },
+
+    {
+      "name": "put_event",
+      "url": "/event/${$.add_event.response.body.eventId}",
+      "operation": "PUT",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "unitId": 300,
+          "dateFrom": "2019-11-21",
+          "note": "noteChanged",
+          "eventType": "deployment"
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "eventId": "$EQ.${$.add_event.response.body.eventId}",
+          "dateTo": "2019-11-26",
+          "unitId": "$EQ.${$.put_event.request.body.unitId}",
+          "dateFrom": "${$.put_event.request.body.dateFrom}",
+          "note": "${$.put_event.request.body.note}",
+          "eventType": "${$.put_event.request.body.eventType}"
+        }
+      }
+    },
+    
+    {
+      "name": "get_event",
+      "url": "/event?dateFrom=2019-07-20",
+      "operation": "GET",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {}
+      },
+      "assertions": {
+        "status": 200,
+        "body": [
+          {
+            "eventId": "$EQ.${$.add_event.response.body.eventId}",
+            "dateTo": "2019-11-26",
+            "unitId": "$EQ.${$.put_event.request.body.unitId}",
+            "dateFrom": "${$.put_event.request.body.dateFrom}",
+            "note": "${$.put_event.request.body.note}",
+            "eventType": "${$.put_event.request.body.eventType}"
+          }
+        ]
+      }
+    },
+
+    {
+      "name": "delete_event",
+      "url": "/event/${$.add_event.response.body.eventId}",
+      "operation": "DELETE",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {}
+      },
+      "assertions": {
+        "status": 200
+      }
+    },
+
+    {
+      "name": "get_event_deleted",
+      "url": "/event?dateFrom=2019-07-20",
+      "operation": "GET",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {}
+      },
+      "assertions": {
+        "status": 200,
+        "body": "$[]"
+      }
+    }
+
+  ]
+}

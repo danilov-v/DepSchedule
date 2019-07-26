@@ -21,8 +21,13 @@ export function HighLevelSections({ startDate, range, sections }) {
       {range.map(month => (
         <Fragment key={month.name}>
           {month.days.map(day => {
+            const dayWithoutMinutes = new Date(
+              day.getFullYear(),
+              day.getMonth(),
+              day.getDate()
+            );
             const currentSection = sections.find(section =>
-              isWithinInterval(day, {
+              isWithinInterval(dayWithoutMinutes, {
                 start: section.startDate,
                 end: section.endDate,
               })
@@ -31,7 +36,7 @@ export function HighLevelSections({ startDate, range, sections }) {
             const renderSection = cond([
               [
                 constant(isEmpty(currentSection)),
-                constant(<HighLevelSection length={1} />),
+                constant(<HighLevelSection isEmpty />),
               ],
               [
                 constant(
@@ -39,12 +44,13 @@ export function HighLevelSections({ startDate, range, sections }) {
                 ),
                 () => {
                   renderingSection[currentSection.name] = true;
+
                   return (
                     <HighLevelSection
                       name={currentSection.name}
                       length={
                         getDifferenceInDays({
-                          day,
+                          day: dayWithoutMinutes,
                           currentSection,
                           startDate,
                         }) + 1

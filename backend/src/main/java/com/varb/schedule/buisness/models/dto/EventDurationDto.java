@@ -10,11 +10,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * TimeDto
+ * EventDurationDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-19T17:00:06.885213+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
 
-public class TimeDto   {
+public class EventDurationDto   {
   @JsonProperty("unitId")
   private Long unitId;
 
@@ -24,7 +24,7 @@ public class TimeDto   {
   @JsonProperty("duration")
   private Integer duration;
 
-  public TimeDto unitId(Long unitId) {
+  public EventDurationDto unitId(Long unitId) {
     this.unitId = unitId;
     return this;
   }
@@ -45,7 +45,7 @@ public class TimeDto   {
     this.unitId = unitId;
   }
 
-  public TimeDto eventType(String eventType) {
+  public EventDurationDto eventType(String eventType) {
     this.eventType = eventType;
     return this;
   }
@@ -66,7 +66,7 @@ public class TimeDto   {
     this.eventType = eventType;
   }
 
-  public TimeDto duration(Integer duration) {
+  public EventDurationDto duration(Integer duration) {
     this.duration = duration;
     return this;
   }
@@ -98,10 +98,10 @@ public class TimeDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TimeDto time = (TimeDto) o;
-    return Objects.equals(this.unitId, time.unitId) &&
-        Objects.equals(this.eventType, time.eventType) &&
-        Objects.equals(this.duration, time.duration);
+    EventDurationDto eventDuration = (EventDurationDto) o;
+    return Objects.equals(this.unitId, eventDuration.unitId) &&
+        Objects.equals(this.eventType, eventDuration.eventType) &&
+        Objects.equals(this.duration, eventDuration.duration);
   }
 
   @Override
@@ -112,7 +112,7 @@ public class TimeDto   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TimeDto {\n");
+    sb.append("class EventDurationDto {\n");
     
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");

@@ -20,10 +20,11 @@ export function CalendarCell({ text, fluid }) {
 }
 
 CalendarCell.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   fluid: PropTypes.bool,
 };
 
 CalendarCell.defaultProps = {
+  text: null,
   fluid: false,
 };

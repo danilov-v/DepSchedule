@@ -1,0 +1,99 @@
+{
+  "scenarioName": "CRUD EventType",
+  "steps": [
+    {
+      "name": "PUT_eventType",
+      "url": "/eventType/mobilization",
+      "operation": "PUT",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "description": "мобилизация",
+          "color": "red"
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "type": "mobilization",
+          "description": "${$.PUT_eventType.response.body.description}",
+          "color": "${$.PUT_eventType.response.body.color}"
+        }
+      }
+    },
+
+
+
+
+
+    {
+      "name": "GET_eventType",
+      "url": "/eventType",
+      "operation": "GET",
+      "request": {
+      },
+      "assertions": {
+        "status": 200,
+        "body": [
+          {
+            "description": "мобилизация",
+            "color": "red",
+            "type": "mobilization"
+          }
+        ]
+      }
+    },
+
+
+    {
+      "name": "PUT_eventType2",
+      "url": "/eventType/mobilization",
+      "operation": "PUT",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "description": "мобилизацияChanged",
+          "color": "redChanged"
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "type": "mobilization",
+          "description": "${$.PUT_eventType2.response.body.description}",
+          "color": "${$.PUT_eventType2.response.body.color}"
+        }
+      }
+    },
+
+
+
+    {
+      "name": "DELETE_eventType",
+      "url": "/eventType/${$.PUT_eventType.response.body.type}",
+      "operation": "DELETE",
+      "request": {
+      },
+      "assertions": {
+        "status": 200
+      }
+    },
+
+
+    {
+      "name": "GET_eventType",
+      "url": "/eventType",
+      "operation": "GET",
+      "request": {
+      },
+      "assertions": {
+        "status": 200,
+        "body": []
+      }
+    }
+  ]
+}
