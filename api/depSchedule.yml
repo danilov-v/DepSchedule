@@ -15,7 +15,7 @@ tags:
     description: 'Информация о типе событий (цвет, описание)'
   - name: unit
     description: 'Информация о подразделении (название, уровень подразделения)'
-  - name: time
+  - name: eventDuration
     description: 'Информация о времени выполнения событий в каждом подразделении'
 paths:
   /event:
@@ -135,7 +135,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /eventType/{type}:
     put:
-      summary: Редактировать существующий тип события
+      summary: Добавить/Редактировать существующий тип события
       tags:
         - eventType
       parameters:
@@ -179,6 +179,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /unit:
     get:
+      deprecated: true
       operationId: unitGet
       summary: Список подразделений
       tags:
@@ -265,52 +266,68 @@ paths:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /time:
-    post:
-      summary: Добавить время выполнения события для подразделения
+  /unit/three:
+    get:
+      operationId: unitGetThree
+      summary: Древовидный список подразделений
       tags:
-        - time
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Time'
+        - unit
+      responses:
+        200:
+          description: Array of unit
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnitResponseThree'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /eventDuration:
+    get:
+      summary: Получить время выполнения событий для подразделения
+      tags:
+        - eventDuration
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UnitResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventDuration'
         400:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
     put:
-      summary: Редактировать существующее время выполнения события для подразделения
+      summary: Добавить/Редактировать существующее время выполнения события для подразделения
       tags:
-        - time
+        - eventDuration
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Time'
+              $ref: '#/components/schemas/EventDuration'
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventResponse'
+                $ref: '#/components/schemas/EventDuration'
         400:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /time/{unitId}/{eventType}:
+  /eventDuration/{unitId}/{eventType}:
     delete:
       summary: Удалить существующее время выполнения события для подразделения
       tags:
-        - time
+        - eventDuration
       parameters:
         - name: unitId
           in: path
@@ -376,6 +393,20 @@ components:
             unitId:
               type: integer
               format: int64
+    UnitResponseThree:
+      description: 'Узел дерева. Содержит информацию о подразделении'
+      required:
+        - unitId
+        - title
+        - unitLevel
+      allOf:
+        - $ref: '#/components/schemas/UnitPut'
+        - properties:
+            unitId:
+              type: integer
+              format: int64
+            childUnit:
+              $ref: '#/components/schemas/UnitResponseThree'
     UnitLevel:
       type: integer
       format: int32
@@ -410,7 +441,7 @@ components:
         - $ref: '#/components/schemas/EventPut'
     EventResponse:
       required:
-        - id
+        - eventId
         - dateFrom
         - dateTo
         - eventType
@@ -448,11 +479,10 @@ components:
       type: string
       description: |
         Код события
-        * `time1` - мобилизация
-        * `time2` - марш
-        * `time3` - развёртывание
+        * `mobilization - мобилизация
+        * `deployment` - развёртывание
         * {...}
-    Time:
+    EventDuration:
       required:
         - unitId
         - eventType

@@ -11,6 +11,7 @@ import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import java.time.LocalDate;
 import io.swagger.annotations.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-19T16:08:33.293822+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "event", description = "the event API")
@@ -91,7 +92,7 @@ public interface EventApi {
     @RequestMapping(value = "/event",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @ApiParam(value = "", required = true) @Valid LocalDate dateFrom, @ApiParam(value = "") @Valid LocalDate dateTo) {
+    default ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam LocalDate dateFrom, @ApiParam(value = "") @Valid @RequestParam(required = false) LocalDate dateTo) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

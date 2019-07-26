@@ -21,37 +21,37 @@ public class UnitLevelEnumMapper {
     @PostConstruct
     void init() {
 
-        AbstractConverter<UnitLevelEnum, Integer> enumToIntConverter = new AbstractConverter<>() {
-            @Override
-            protected Integer convert(UnitLevelEnum source) {
-                return source.getValue();
-            }
-        };
-
-        AbstractConverter<Integer, UnitLevelEnum> intToEnumConverter = new AbstractConverter<>() {
-            @Override
-            protected UnitLevelEnum convert(Integer source) {
-                return UnitLevelEnum.fromValue(source);
-            }
-        };
-
-        modelMapper
-                .typeMap(UnitPutDto.class, Unit.class)
-                .addMappings(mapper -> mapper
-                        .using(intToEnumConverter)
-                        .map(UnitPutDto::getUnitLevel, Unit::setUnitLevelEnum));
-
-        modelMapper
-                .typeMap(UnitPostDto.class, Unit.class)
-                .addMappings(mapper -> mapper
-                        .using(intToEnumConverter)
-                        .map(UnitPostDto::getUnitLevel, Unit::setUnitLevelEnum));
-
-        modelMapper
-                .typeMap(Unit.class, UnitResponseDto.class)
-                .addMappings(mapper -> mapper
-                        .using(enumToIntConverter)
-                        .map(Unit::getUnitLevelEnum, UnitResponseDto::setUnitLevel));
+//        AbstractConverter<UnitLevelEnum, Integer> enumToIntConverter = new AbstractConverter<>() {
+//            @Override
+//            protected Integer convert(UnitLevelEnum source) {
+//                return source.getValue();
+//            }
+//        };
+//
+//        AbstractConverter<Integer, UnitLevelEnum> intToEnumConverter = new AbstractConverter<>() {
+//            @Override
+//            protected UnitLevelEnum convert(Integer source) {
+//                return UnitLevelEnum.fromValue(source);
+//            }
+//        };
+//
+//        modelMapper
+//                .typeMap(UnitPutDto.class, Unit.class)
+//                .addMappings(mapper -> mapper
+//                        .using(intToEnumConverter)
+//                        .map(UnitPutDto::getUnitLevel, Unit::setUnitLevelEnum));
+//
+//        modelMapper
+//                .typeMap(UnitPostDto.class, Unit.class)
+//                .addMappings(mapper -> mapper
+//                        .using(intToEnumConverter)
+//                        .map(UnitPostDto::getUnitLevel, Unit::setUnitLevelEnum));
+//
+//        modelMapper
+//                .typeMap(Unit.class, UnitResponseDto.class)
+//                .addMappings(mapper -> mapper
+//                        .using(enumToIntConverter)
+//                        .map(Unit::getUnitLevelEnum, UnitResponseDto::setUnitLevel));
 
     }
 

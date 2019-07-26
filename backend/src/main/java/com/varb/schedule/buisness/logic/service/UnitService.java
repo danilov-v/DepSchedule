@@ -4,11 +4,11 @@ import com.varb.schedule.buisness.logic.repository.UnitRepository;
 import com.varb.schedule.buisness.models.dto.UnitPostDto;
 import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import com.varb.schedule.buisness.models.entity.Unit;
-import com.varb.schedule.config.ModelMapperCustomize;
+import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class UnitService {
     private final UnitRepository unitRepository;
     private final ModelMapperCustomize modelMapper;
@@ -38,7 +39,8 @@ public class UnitService {
         try {
             unitRepository.deleteById(unitId);
         } catch (EmptyResultDataAccessException ex) {
-            throw new ServiceException(ex, "Не существует подразделения c id=" + unitId, HttpStatus.BAD_REQUEST);
+            log.error("", ex);
+            throw notFindException(unitId);
         }
 
     }
@@ -49,17 +51,29 @@ public class UnitService {
 
     private Unit findUnitByUnitId(Long unitId) {
         return unitRepository.findById(unitId)
-                .orElseThrow(() -> new ServiceException("Не найден unit(unitId=" + unitId + ")"));
+                .orElseThrow(() -> notFindException(unitId));
     }
 
     private void checkUnitLevel(Unit unit) {
-        checkUnitLevel(unit, unit.getUnitLevelEnum().getValue());
+        checkUnitLevel(unit, unit.getUnitLevel());
     }
 
     private void checkUnitLevel(Unit unit, int unitLevel) {
+        if (unit.getParentId() == null)
+            return;
         Unit parent = findUnitByUnitId(unit.getParentId());
-        if (parent.getUnitLevelEnum().getValue() >= unitLevel)
+        if (parent.getUnitLevel() >= unitLevel)
             throw new ServiceException("unitLevel должен быть меньше чем у родительской сущности!");
     }
+
+    void exists(Long unitId) {
+        if (!unitRepository.existsById(unitId))
+            throw notFindException(unitId);
+    }
+
+    private ServiceException notFindException(Long unitId) {
+        return new ServiceException("Не найдено подразделение (unitId=" + unitId + ")");
+    }
+
 
 }

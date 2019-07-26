@@ -21,6 +21,7 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
     configOptions = [
             dateLibrary             : "java8",
             interfaceOnly           : true,
+            ensureUniqueParams : true,
             sortParamsByRequiredFlag: true,
             returnSuccessCode       : true
     ]

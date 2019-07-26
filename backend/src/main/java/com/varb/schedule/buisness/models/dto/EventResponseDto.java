@@ -2,19 +2,14 @@ package com.varb.schedule.buisness.models.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.EventPutDto;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
-import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * EventResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-19T17:00:06.885213+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
 
 public class EventResponseDto   {
   @JsonProperty("unitId")
@@ -29,8 +24,8 @@ public class EventResponseDto   {
   @JsonProperty("eventType")
   private String eventType;
 
-  @JsonProperty("id")
-  private Long id;
+  @JsonProperty("eventId")
+  private Long eventId;
 
   @JsonProperty("dateTo")
   private LocalDate dateTo;
@@ -117,23 +112,23 @@ public class EventResponseDto   {
   }
 
   public EventResponseDto id(Long id) {
-    this.id = id;
+    this.eventId = id;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get eventId
+   * @return eventId
   */
   @ApiModelProperty(value = "")
 
 
-  public Long getId() {
-    return id;
+  public Long getEventId() {
+    return eventId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setEventId(Long eventId) {
+    this.eventId = eventId;
   }
 
   public EventResponseDto dateTo(LocalDate dateTo) {
@@ -171,13 +166,13 @@ public class EventResponseDto   {
         Objects.equals(this.dateFrom, eventResponse.dateFrom) &&
         Objects.equals(this.note, eventResponse.note) &&
         Objects.equals(this.eventType, eventResponse.eventType) &&
-        Objects.equals(this.id, eventResponse.id) &&
+        Objects.equals(this.eventId, eventResponse.eventId) &&
         Objects.equals(this.dateTo, eventResponse.dateTo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventType, id, dateTo);
+    return Objects.hash(unitId, dateFrom, note, eventType, eventId, dateTo);
   }
 
   @Override
@@ -189,7 +184,7 @@ public class EventResponseDto   {
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    eventId: ").append(toIndentedString(eventId)).append("\n");
     sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
     sb.append("}");
     return sb.toString();

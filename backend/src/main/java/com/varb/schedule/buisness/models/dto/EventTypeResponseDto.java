@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 /**
  * EventTypeResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-19T17:00:06.885213+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
 
 public class EventTypeResponseDto   {
   @JsonProperty("description")
