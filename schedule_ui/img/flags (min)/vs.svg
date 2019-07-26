@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="210mm" height="192mm" version="1.1" viewBox="0 0 210 192" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(0,-105)">
+<g transform="translate(9.8392 1.1339)">
+<path d="m187.51 141.46z" fill="none" stroke="#000" stroke-width=".30302px"/>
+<path d="m19.24 137.11 0.16801 96.227 20.792-2.0694-1.1552-96.984z" fill="#d60000" stroke-width="0"/>
+<flowRoot fill="black" font-family="sans-serif" font-size="40px" letter-spacing="0px" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><flowRegion><rect x="1367.7" y="38.766" width="127.28" height="402.04"/></flowRegion><flowPara/></flowRoot>
+<flowRoot fill="black" font-family="sans-serif" font-size="40px" letter-spacing="0px" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><flowRegion><rect x="135.36" y="252.92" width="220.21" height="153.54"/></flowRegion><flowPara/></flowRoot>
+<path d="m-4.9117 282.46-0.11273-146.26 1.985 8.0584c31.509-14.591 57.653-15.472 77.824-1.0864 0.65921 4.2467 0.0934 8.9018 5.0292 11.723 23.475-3.4997 29.835-0.80874 29.739 4.2177 3.4371 11.622 6.0123 21.398 25.314 20.816 7.5441-15.712 34.207 40.638 51.31 60.958-4.173-4.3119-8.5268-8.1265-13.698-9.6934-10.386-2.2781-18.967 6.2782-28.43 9.5395-13.93 0.40527-20.437-4.6766-28.972-8.2588-8.7892-0.62757-17.367 4.2314-25.907 10.08-16.694 0.50253-29.004-6.2147-41.54-12.561-20.095-4.0318-36.062 5.2026-52.806 11.943" fill="none" stroke="#e60000" stroke-width="5"/>
+<flowRoot fill="black" font-family="sans-serif" font-size="40px" letter-spacing="0px" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><flowRegion><rect x="121.43" y="231.38" width="307.14" height="174.29"/></flowRegion><flowPara/></flowRoot>
+<text x="58.173874" y="197.97177" fill="#000000" font-family="sans-serif" font-size="21.167px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="58.173874" y="197.97177" font-size="25.4px" stroke-width=".26458">ВС</tspan></text>
+<text x="8.0834475" y="270.07553" fill="#000000" font-family="sans-serif" font-size="10.583px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="8.0834475" y="270.07553" font-size="25.4px" stroke-width=".26458">КП (ЗКП, ТПУ)</tspan></text>
+<path d="m-2.529 239.07-0.51039-94.815 16.77-8.2175v96.351z" fill="#e60000" stroke-width="0"/>
+</g>
+</g>
+</svg>

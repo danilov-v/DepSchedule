@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`units-grid.jsx <Unit /> should render and match snapshot 1`] = `
+<div
+  className="unit d-flex justify-content-center align-items-center text-center"
+>
+  title
+</div>
+`;
+
+exports[`units-grid.jsx <Unit /> should render and match snapshot with lastGen 1`] = `
+<div
+  className="unit d-flex justify-content-center align-items-center text-center unit-last-generation"
+>
+  title
+</div>
+`;

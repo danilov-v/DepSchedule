@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calendar.jsx <Calendar /> should render and match snapshot 1`] = `
+<Row
+  className="calendar"
+  noGutters={true}
+  tag="div"
+>
+  <Col
+    key="November"
+    tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
+  >
+    <Row
+      className="calendar-title"
+      noGutters={true}
+      tag="div"
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <CalendarCell
+          fluid={true}
+          text="November"
+        />
+      </Col>
+    </Row>
+    <Row
+      noGutters={true}
+      tag="div"
+    >
+      <Col
+        className="d-flex"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <CalendarCell
+          fluid={false}
+          key="1565125200000"
+          text={7}
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;

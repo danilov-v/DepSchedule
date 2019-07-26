@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`high-level-section.jsx <HighLevelSection /> should render and match snapshot 1`] = `
+<Col
+  className="section d-flex align-items-center justify-content-center"
+  style={
+    Object {
+      "width": 160,
+    }
+  }
+  tag="div"
+  widths={
+    Array [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "xl",
+    ]
+  }
+  xs="auto"
+>
+  B
+</Col>
+`;
+
+exports[`high-level-section.jsx <HighLevelSection /> should render and match snapshot with isEmpty 1`] = `
+<Col
+  className="section d-flex align-items-center justify-content-center empty"
+  style={
+    Object {
+      "width": 40,
+    }
+  }
+  tag="div"
+  widths={
+    Array [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "xl",
+    ]
+  }
+  xs="auto"
+/>
+`;

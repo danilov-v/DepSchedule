@@ -1,0 +1,11 @@
+.high-level-sections {
+  .section {
+    border: 1px solid black;
+    max-width: unset;
+    height: 60px;
+
+    &.empty {
+      border: 0;
+    }
+  }
+}
