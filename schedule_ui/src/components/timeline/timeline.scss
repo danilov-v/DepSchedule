@@ -1,0 +1,10 @@
+.timeline {
+  &-wrapper {
+    overflow: auto;
+    border: 1px solid black;
+  }
+
+  &-left {
+    max-width: max-content;
+  }
+}
