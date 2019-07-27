@@ -2,21 +2,26 @@ package com.varb.schedule.buisness.models.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
 /**
- * UnitResponseThreeDto
+ * Узел дерева. Содержит информацию о подразделении
  */
+@ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-07-26T15:47:59.539438+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-07-26T17:36:21.790726+03:00[Europe/Minsk]")
 public class UnitResponseThreeDto extends UnitPutDto  {
   @JsonProperty("unitId")
   private Long unitId = null;
 
   @JsonProperty("childUnit")
-  private UnitResponseThreeDto childUnit = null;
+  @Valid
+  private List<UnitResponseThreeDto> childUnit = null;
 
   public UnitResponseThreeDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -37,8 +42,16 @@ public class UnitResponseThreeDto extends UnitPutDto  {
     this.unitId = unitId;
   }
 
-  public UnitResponseThreeDto childUnit(UnitResponseThreeDto childUnit) {
+  public UnitResponseThreeDto childUnit(List<UnitResponseThreeDto> childUnit) {
     this.childUnit = childUnit;
+    return this;
+  }
+
+  public UnitResponseThreeDto addChildUnitItem(UnitResponseThreeDto childUnitItem) {
+    if (this.childUnit == null) {
+      this.childUnit = new ArrayList<UnitResponseThreeDto>();
+    }
+    this.childUnit.add(childUnitItem);
     return this;
   }
 
@@ -47,13 +60,12 @@ public class UnitResponseThreeDto extends UnitPutDto  {
    * @return childUnit
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-  public UnitResponseThreeDto getChildUnit() {
+  public List<UnitResponseThreeDto> getChildUnit() {
     return childUnit;
   }
 
-  public void setChildUnit(UnitResponseThreeDto childUnit) {
+  public void setChildUnit(List<UnitResponseThreeDto> childUnit) {
     this.childUnit = childUnit;
   }
 
@@ -66,9 +78,9 @@ public class UnitResponseThreeDto extends UnitPutDto  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UnitResponseThreeDto unitResponseThree = (UnitResponseThreeDto) o;
-    return Objects.equals(this.unitId, unitResponseThree.unitId) &&
-        Objects.equals(this.childUnit, unitResponseThree.childUnit) &&
+    UnitResponseThreeDto unitResponseThreeDto = (UnitResponseThreeDto) o;
+    return Objects.equals(this.unitId, unitResponseThreeDto.unitId) &&
+        Objects.equals(this.childUnit, unitResponseThreeDto.childUnit) &&
         super.equals(o);
   }
 

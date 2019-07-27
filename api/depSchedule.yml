@@ -406,7 +406,9 @@ components:
               type: integer
               format: int64
             childUnit:
-              $ref: '#/components/schemas/UnitResponseThree'
+              type: array
+              items:
+                $ref: '#/components/schemas/UnitResponseThree'
     UnitLevel:
       type: integer
       format: int32

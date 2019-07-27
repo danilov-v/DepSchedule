@@ -7,8 +7,10 @@ import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import com.varb.schedule.buisness.models.dto.UnitResponseDto;
 import com.varb.schedule.buisness.models.dto.UnitResponseThreeDto;
 import com.varb.schedule.buisness.models.entity.Unit;
+import com.varb.schedule.buisness.models.mappers.UnitMapper;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class UnitApiImpl implements UnitApi {
     private final UnitService unitService;
     private final ModelMapperCustomize modelMapper;
+    private final UnitMapper unitMapper;
 
     @Override
     public ResponseEntity<List<UnitResponseDto>> unitGet() {
@@ -28,9 +31,9 @@ public class UnitApiImpl implements UnitApi {
     }
 
     @Override
-    public ResponseEntity<UnitResponseThreeDto> unitGetThree() {
+    public ResponseEntity<List<UnitResponseThreeDto>> unitGetThree() {
         return ResponseEntity.ok(
-                modelMapper.map(unitService.getAllUnit(), UnitResponseThreeDto.class));
+                unitMapper.convertToThree(unitService.getAllUnit()));
     }
 
     @Override
