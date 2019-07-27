@@ -1,5 +1,5 @@
 package com.varb.schedule.buisness.models.mappers;
-import com.varb.schedule.buisness.models.dto.UnitResponseThreeDto;
+import com.varb.schedule.buisness.models.dto.UnitResponseTreeDto;
 import com.varb.schedule.buisness.models.entity.Unit;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,9 +13,9 @@ public class UnitMapper {
     private final ModelMapper modelMapper;
 
 
-    public List<UnitResponseThreeDto> convertToThree(List<Unit> source) {
-        List<UnitResponseThreeDto> units = source.stream()
-                .map(unit -> modelMapper.map(unit, UnitResponseThreeDto.class))
+    public List<UnitResponseTreeDto> convertToThree(List<Unit> source) {
+        List<UnitResponseTreeDto> units = source.stream()
+                .map(unit -> modelMapper.map(unit, UnitResponseTreeDto.class))
                 .collect(Collectors.toList());
 
         units.forEach(unit ->

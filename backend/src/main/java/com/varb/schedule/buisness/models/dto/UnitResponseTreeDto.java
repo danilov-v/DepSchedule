@@ -15,15 +15,15 @@ import javax.validation.Valid;
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-07-26T17:36:21.790726+03:00[Europe/Minsk]")
-public class UnitResponseThreeDto extends UnitPutDto  {
+public class UnitResponseTreeDto extends UnitPutDto  {
   @JsonProperty("unitId")
   private Long unitId = null;
 
   @JsonProperty("childUnit")
   @Valid
-  private List<UnitResponseThreeDto> childUnit = null;
+  private List<UnitResponseTreeDto> childUnit = null;
 
-  public UnitResponseThreeDto unitId(Long unitId) {
+  public UnitResponseTreeDto unitId(Long unitId) {
     this.unitId = unitId;
     return this;
   }
@@ -42,14 +42,14 @@ public class UnitResponseThreeDto extends UnitPutDto  {
     this.unitId = unitId;
   }
 
-  public UnitResponseThreeDto childUnit(List<UnitResponseThreeDto> childUnit) {
+  public UnitResponseTreeDto childUnit(List<UnitResponseTreeDto> childUnit) {
     this.childUnit = childUnit;
     return this;
   }
 
-  public UnitResponseThreeDto addChildUnitItem(UnitResponseThreeDto childUnitItem) {
+  public UnitResponseTreeDto addChildUnitItem(UnitResponseTreeDto childUnitItem) {
     if (this.childUnit == null) {
-      this.childUnit = new ArrayList<UnitResponseThreeDto>();
+      this.childUnit = new ArrayList<UnitResponseTreeDto>();
     }
     this.childUnit.add(childUnitItem);
     return this;
@@ -61,11 +61,11 @@ public class UnitResponseThreeDto extends UnitPutDto  {
   **/
   @ApiModelProperty(value = "")
   @Valid
-  public List<UnitResponseThreeDto> getChildUnit() {
+  public List<UnitResponseTreeDto> getChildUnit() {
     return childUnit;
   }
 
-  public void setChildUnit(List<UnitResponseThreeDto> childUnit) {
+  public void setChildUnit(List<UnitResponseTreeDto> childUnit) {
     this.childUnit = childUnit;
   }
 
@@ -78,9 +78,9 @@ public class UnitResponseThreeDto extends UnitPutDto  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UnitResponseThreeDto unitResponseThreeDto = (UnitResponseThreeDto) o;
-    return Objects.equals(this.unitId, unitResponseThreeDto.unitId) &&
-        Objects.equals(this.childUnit, unitResponseThreeDto.childUnit) &&
+    UnitResponseTreeDto unitResponseTreeDto = (UnitResponseTreeDto) o;
+    return Objects.equals(this.unitId, unitResponseTreeDto.unitId) &&
+        Objects.equals(this.childUnit, unitResponseTreeDto.childUnit) &&
         super.equals(o);
   }
 
@@ -92,7 +92,7 @@ public class UnitResponseThreeDto extends UnitPutDto  {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UnitResponseThreeDto {\n");
+    sb.append("class UnitResponseTreeDto {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    childUnit: ").append(toIndentedString(childUnit)).append("\n");

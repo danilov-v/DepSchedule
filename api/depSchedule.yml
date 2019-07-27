@@ -266,9 +266,9 @@ paths:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /unit/three:
+  /unit/tree:
     get:
-      operationId: unitGetThree
+      operationId: unitGetTree
       summary: Древовидный список подразделений
       tags:
         - unit
@@ -280,7 +280,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UnitResponseThree'
+                  $ref: '#/components/schemas/UnitResponseTree'
         400:
           $ref: '#/components/responses/BadRequest'
         500:
@@ -393,7 +393,7 @@ components:
             unitId:
               type: integer
               format: int64
-    UnitResponseThree:
+    UnitResponseTree:
       description: 'Узел дерева. Содержит информацию о подразделении'
       required:
         - unitId
@@ -408,7 +408,7 @@ components:
             childUnit:
               type: array
               items:
-                $ref: '#/components/schemas/UnitResponseThree'
+                $ref: '#/components/schemas/UnitResponseTree'
     UnitLevel:
       type: integer
       format: int32

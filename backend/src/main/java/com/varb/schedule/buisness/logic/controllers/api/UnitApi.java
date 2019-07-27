@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-26T17:41:21.261+03:00[Europe/Minsk]")
 
@@ -72,17 +70,17 @@ public interface UnitApi {
     }
 
 
-    @ApiOperation(value = "Древовидный список подразделений", nickname = "unitGetThree", notes = "", response = UnitResponseThreeDto.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Древовидный список подразделений", nickname = "unitGetTree", notes = "", response = UnitResponseTreeDto.class, responseContainer = "List", authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "unit", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Array of unit", response = UnitResponseThreeDto.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "Array of unit", response = UnitResponseTreeDto.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
-    @RequestMapping(value = "/unit/three",
+    @RequestMapping(value = "/unit/tree",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<UnitResponseThreeDto>> unitGetThree() {
+    default ResponseEntity<List<UnitResponseTreeDto>> unitGetTree() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
