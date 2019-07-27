@@ -1,9 +1,9 @@
 import React, { useState, useEffect, createRef } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { addMonths } from "date-fns";
-import { LOCALHOST_URL, DEFAULT_BE_PORT, UNITS_URL } from "config/url";
+import { getUnits } from "helpers/api";
 import { SECTIONS } from "stub-data/sections";
-import { UNITS } from "stub-data/units";
+// import { UNITS } from "stub-data/units";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
@@ -18,7 +18,7 @@ export function Timeline() {
 
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 3));
-  // const [units, setUnits] = useState([]);
+  const [units, setUnits] = useState([]);
   const container = createRef();
 
   useEffect(() => {
@@ -29,18 +29,15 @@ export function Timeline() {
     // and when calendar date is changed
   }, [startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // useEffect(() => {
-  //   const fetchUnits = async () => {
-  //     const result = await fetch(
-  //       `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}`
-  //     );
-  //     const data = result.json();
-  //     debugger;
-  //     setUnits(data);
-  //   };
+  useEffect(() => {
+    const fetchUnits = async () => {
+      const data = await getUnits();
 
-  //   fetchUnits();
-  // }, []);
+      setUnits(data);
+    };
+
+    fetchUnits();
+  }, []);
 
   const range = getDates(startDate, endDate);
 
@@ -67,7 +64,7 @@ export function Timeline() {
             <Calendar range={range} showMonth />
           </Col>
           <Col className="timeline-info">
-            <UnitsGrid units={UNITS} />
+            <UnitsGrid units={units} />
           </Col>
         </Row>
       </div>
