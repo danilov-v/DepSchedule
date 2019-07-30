@@ -5,7 +5,7 @@ exports[`high-level-section.jsx <HighLevelSection /> should render and match sna
   className="section d-flex align-items-center justify-content-center"
   style={
     Object {
-      "width": 160,
+      "width": 240,
     }
   }
   tag="div"
@@ -29,7 +29,7 @@ exports[`high-level-section.jsx <HighLevelSection /> should render and match sna
   className="section d-flex align-items-center justify-content-center empty"
   style={
     Object {
-      "width": 40,
+      "width": 60,
     }
   }
   tag="div"

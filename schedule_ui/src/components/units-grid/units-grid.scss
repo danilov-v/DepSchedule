@@ -10,13 +10,13 @@
     border: 1px solid #000;
     flex-grow: 1;
     padding: 0 15px;
-    margin: -1px 0 0 -1px; //collapse borders of divs
+    min-width: 165px;
 
     &-last-generation {
-      height: 85px;
+      height: 65px;
     }
 
-    &-group {
+    &-last-of-group:not(:last-child) {
       box-shadow: 0 2px 0#007bff;
     }
   }

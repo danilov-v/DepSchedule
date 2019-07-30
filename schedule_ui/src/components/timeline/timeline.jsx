@@ -10,6 +10,7 @@ import { HighLevelSections } from "components/high-level-sections/high-level-sec
 import { UnitsGrid } from "components/units-grid/units-grid";
 
 import { getDates } from "utils/date";
+import { getLastGenUnits } from "./helpers";
 
 import "./timeline.scss";
 
@@ -28,7 +29,7 @@ export function Timeline() {
     // will recive new props or staete effect will be called,
     // hovewer we want to scroll to the header only first mount
     // and when calendar date is changed
-  }, [startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [startDate, endDate, units]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const range = getDates(startDate, endDate);
 
@@ -58,7 +59,11 @@ export function Timeline() {
         </Row>
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
-            <Calendar range={range} showMonth />
+            <Calendar
+              range={range}
+              unitGroups={getLastGenUnits(unitsTree)}
+              showMonth
+            />
           </Col>
           <Col className="timeline-info">
             <UnitsGrid units={unitsTree} />

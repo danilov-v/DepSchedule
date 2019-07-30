@@ -10,14 +10,14 @@ const renderUnit = ({ childUnit, title, unitId }, isTopLevel = true) => {
     <div
       key={unitId}
       className={classnames("d-flex", "flex-row-reverse", {
-        "unit-group": isTopLevel,
+        "unit-last-of-group": isTopLevel,
       })}
     >
       <Unit key={unitId} title={title} />
       <div>{childUnit.map(unit => renderUnit(unit, false))}</div>
     </div>
   ) : (
-    <Unit key={unitId} title={title} lastGen />
+    <Unit key={unitId} title={title} lastGen lastOfGroup={isTopLevel} />
   );
 };
 
