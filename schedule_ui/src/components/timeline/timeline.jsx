@@ -1,9 +1,9 @@
 import React, { useState, useEffect, createRef } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { addMonths } from "date-fns";
-import { getUnits } from "helpers/api";
+import { useUnitsTree, useUnits } from "helpers/effects";
 import { SECTIONS } from "stub-data/sections";
-// import { UNITS } from "stub-data/units";
+import { AdminControl } from "components/admin-control/admin-control";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
@@ -18,7 +18,8 @@ export function Timeline() {
 
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 3));
-  const [units, setUnits] = useState([]);
+  const [unitsTree, fetchUnitsTree] = useUnitsTree();
+  const [units, fetchUnits] = useUnits();
   const container = createRef();
 
   useEffect(() => {
@@ -29,17 +30,12 @@ export function Timeline() {
     // and when calendar date is changed
   }, [startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    const fetchUnits = async () => {
-      const data = await getUnits();
-
-      setUnits(data);
-    };
-
-    fetchUnits();
-  }, []);
-
   const range = getDates(startDate, endDate);
+
+  const onUnitsUpdate = () => {
+    fetchUnits();
+    fetchUnitsTree();
+  };
 
   return (
     <Container className="timeline" fluid>
@@ -49,6 +45,7 @@ export function Timeline() {
         startDate={startDate}
         endDate={endDate}
       />
+      <AdminControl units={units} onUnitsUpdate={onUnitsUpdate} />
       <div ref={container} className="timeline-wrapper">
         <Row>
           <Col>
@@ -64,7 +61,7 @@ export function Timeline() {
             <Calendar range={range} showMonth />
           </Col>
           <Col className="timeline-info">
-            <UnitsGrid units={units} />
+            <UnitsGrid units={unitsTree} />
           </Col>
         </Row>
       </div>
