@@ -1,13 +1,24 @@
-import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import Popup from "reactjs-popup";
+import React, { useState, Fragment } from "react";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import { isBoolean } from "lodash";
 import { createUnit } from "helpers/api";
 
 export function UnitPopup({ units, onUnitsUpdate }) {
   const [isValid, setValidState] = useState(null);
-
-  console.log(units);
+  const [isOpen, toggle] = useState(false);
+  const toggleModal = () => {
+    toggle(!isOpen);
+  };
 
   const onSubmit = async event => {
     event.preventDefault();
@@ -30,6 +41,7 @@ export function UnitPopup({ units, onUnitsUpdate }) {
         });
 
         onUnitsUpdate();
+        toggleModal();
       } catch {}
     } else {
       setValidState(false);
@@ -39,57 +51,46 @@ export function UnitPopup({ units, onUnitsUpdate }) {
   };
 
   return (
-    <Popup
-      trigger={
-        <Button color="primary" className="mr-3">
-          Создать Подразделение
-        </Button>
-      }
-      modal
-    >
-      {close => (
-        <Form
-          className="p-3"
-          onSubmit={event => {
-            onSubmit(event);
-            close();
-          }}
-        >
-          <h3 className="text-center">Создание Подразделения</h3>
-          <FormGroup>
-            <Label for="unitTitle">Название Подразделения</Label>
-            <Input
-              name="unitTitle"
-              id="unitTitle"
-              placeholder="СУ"
-              valid={isValid}
-              invalid={isBoolean(isValid) && !isValid}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="unitParent">Родительское Подразделение</Label>
-            <Input type="select" name="unitParent" id="unitParent">
-              <option value={undefined}>Новое Подразделение</option>
-              {units.map((unit, i) => (
-                <option key={unit.title + i} value={unit.unitId}>
-                  {unit.title}
-                </option>
-              ))}
-            </Input>
-          </FormGroup>
-          <Button type="submit" color="success" className="mr-3">
-            Создать
-          </Button>
-          <Button
-            color="primary"
-            onClick={() => {
-              close();
-            }}
-          >
-            Закрыть
-          </Button>
+    <Fragment>
+      <Button onClick={toggleModal} color="primary" className="mr-3">
+        Создать Подразделение
+      </Button>
+      <Modal isOpen={isOpen} toggle={toggleModal}>
+        <Form className="p-3" onSubmit={onSubmit}>
+          <ModalHeader toggle={toggleModal}>Создание Подразделения</ModalHeader>
+          <ModalBody>
+            <FormGroup>
+              <Label for="unitTitle">Название Подразделения</Label>
+              <Input
+                name="unitTitle"
+                id="unitTitle"
+                placeholder="СУ"
+                valid={isValid}
+                invalid={isBoolean(isValid) && !isValid}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="unitParent">Родительское Подразделение</Label>
+              <Input type="select" name="unitParent" id="unitParent">
+                <option value={undefined}>Новое Подразделение</option>
+                {units.map((unit, i) => (
+                  <option key={unit.title + i} value={unit.unitId}>
+                    {unit.title}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button type="submit" color="success" className="mr-3">
+              Создать
+            </Button>
+            <Button color="primary" onClick={toggleModal}>
+              Закрыть
+            </Button>
+          </ModalFooter>
         </Form>
-      )}
-    </Popup>
+      </Modal>
+    </Fragment>
   );
 }
