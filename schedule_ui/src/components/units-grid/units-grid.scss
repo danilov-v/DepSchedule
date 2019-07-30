@@ -9,9 +9,15 @@
   .unit {
     border: 1px solid #000;
     flex-grow: 1;
+    padding: 0 15px;
+    margin: -1px 0 0 -1px; //collapse borders of divs
 
     &-last-generation {
-      height: 60px;
+      height: 85px;
+    }
+
+    &-group {
+      box-shadow: 0 2px 0#007bff;
     }
   }
 }
