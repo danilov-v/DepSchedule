@@ -39,7 +39,7 @@ export function Timeline() {
   };
 
   return (
-    <Container className="timeline" fluid>
+    <Container className="timeline d-flex flex-column" fluid>
       <Title
         onChangeStartDate={setStartDate}
         onChangeEndDate={setEndDate}
