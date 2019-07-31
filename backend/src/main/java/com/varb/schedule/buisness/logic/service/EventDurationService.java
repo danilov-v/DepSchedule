@@ -1,7 +1,7 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventDurationRepository;
-import com.varb.schedule.buisness.models.dto.EventDurationDto;
+import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
 import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.EventDurationPK;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -25,69 +25,66 @@ public class EventDurationService {
     private final UnitService unitService;
     private final EventTypeService eventTypeService;
 
-//    public EventDuration addEventDuration(EventDurationDto eventDurationDto) {
+//    public EventDuration addEventDuration(EventDurationPutDto eventDurationDto) {
 //        EventDuration eventDuration = modelMapper.map(eventDurationDto, EventDuration.class);
 //        return eventDurationRepository.save(eventDuration);
 //    }
 
-    public EventDuration updateEventDuration(EventDurationDto eventDurationDto) {
-        Long unitId = eventDurationDto.getUnitId();
-        String eventType = eventDurationDto.getEventType();
-
-        checkConsistency(unitId, eventType);
+    public EventDuration updateEventDuration(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
+        checkConsistency(unitId, eventTypeId);
 
         EventDuration eventDuration;
-        Optional<EventDuration> optionalEventDuration = findOptionalEventDuration(unitId, eventType);
+        Optional<EventDuration> optionalEventDuration = findOptionalEventDuration(unitId, eventTypeId);
 
         if (optionalEventDuration.isPresent()) {
             eventDuration = optionalEventDuration.get();
-            modelMapper.map(eventDurationDto, eventDuration);
+            modelMapper.map(eventDurationPutDto, eventDuration);
         } else {
-            eventDuration = modelMapper.map(eventDurationDto, EventDuration.class);
+            eventDuration = modelMapper.map(eventDurationPutDto, EventDuration.class);
             eventDurationRepository.save(eventDuration);
         }
 
         return eventDuration;
     }
 
-    public void deleteEventDuration(Long unitId, String eventType) {
+    public void deleteEventDuration(Long unitId, Long eventTypeId) {
 
         try {
-            eventDurationRepository.deleteById(new EventDurationPK(unitId, eventType));
+            eventDurationRepository.deleteById(new EventDurationPK(unitId, eventTypeId));
         } catch (EmptyResultDataAccessException ex) {
             log.error("", ex);
-            throw notFindException(unitId, eventType);
+            throw notFindException(unitId, eventTypeId);
         }
 
     }
 
 
-    private void checkConsistency(Long unitId, String eventType) {
+    private void checkConsistency(Long unitId, Long eventTypeId) {
         unitService.exists(unitId);
-        eventTypeService.exists(eventType);
+        eventTypeService.exists(eventTypeId);
     }
 
     public List<EventDuration> getAllEventDuration() {
         return eventDurationRepository.findAll();
     }
 
-    private Optional<EventDuration> findOptionalEventDuration(Long unitId, String eventType) {
-        return eventDurationRepository.findById(new EventDurationPK(unitId, eventType));
+    private Optional<EventDuration> findOptionalEventDuration(Long unitId, Long eventTypeId) {
+        return eventDurationRepository.findById(new EventDurationPK(unitId, eventTypeId));
     }
 
-    public EventDuration findEventDuration(Long unitId, String eventType) {
-        return eventDurationRepository.findById(new EventDurationPK(unitId, eventType))
-                .orElseThrow(() -> notFindException(unitId, eventType));
+    public EventDuration findEventDuration(Long unitId, Long eventTypeId) {
+        return eventDurationRepository.findById(new EventDurationPK(unitId, eventTypeId))
+                .orElseThrow(() -> notFindException(unitId, eventTypeId));
     }
 
-    void exists(Long unitId, String eventType) {
-        if (!eventDurationRepository.existsById(new EventDurationPK(unitId, eventType)))
-            throw notFindException(unitId, eventType);
+    void exists(Long unitId, Long eventTypeId) {
+        if (!eventDurationRepository.existsById(new EventDurationPK(unitId, eventTypeId)))
+            throw notFindException(unitId, eventTypeId);
     }
 
-    private ServiceException notFindException(Long unitId, String eventType) {
+    private ServiceException notFindException(Long unitId, Long eventTypeId) {
         return new ServiceException("Не найден EventDuration" +
-                "(unitId=" + unitId + ", eventType="+eventType+")");
+                "(unitId=" + unitId + ", eventTypeId="+eventTypeId+")");
     }
 
 }

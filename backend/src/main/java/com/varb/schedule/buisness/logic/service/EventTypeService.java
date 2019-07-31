@@ -24,23 +24,23 @@ import java.util.function.Function;
 public class EventTypeService {
     private final EventTypeRepository eventTypeRepository;
     private final ModelMapperCustomize modelMapper;
-    private final static Function<String, ServiceException> NOT_FIND = (type) -> new ServiceException("Не найден eventType(type=" + type + ")");
+    private final static Function<String, ServiceException> NOT_FIND = (type) -> new ServiceException("Не найден eventTypeId(type=" + type + ")");
 
     public EventType addEventType(EventPostDto eventPostDto) {
         EventType eventType = modelMapper.map(eventPostDto, EventType.class);
         return eventTypeRepository.save(eventType);
     }
 
-    public EventType updateEventType(String type, EventTypePutDto eventTypePut) {
+    public EventType updateEventType(Long typeId, EventTypePutDto eventTypePut) {
         EventType eventType;
-        Optional<EventType> optionalEventType = findOptionalEventTypeByType(type);
+        Optional<EventType> optionalEventType = findOptionalEventTypeByType(typeId);
 
         if (optionalEventType.isPresent()) {
             eventType = optionalEventType.get();
             modelMapper.map(eventTypePut, eventType);
         } else {
             eventType = modelMapper.map(eventTypePut, EventType.class);
-            eventType.setType(type);
+            eventType.setTypeId(typeId);
             eventTypeRepository.save(eventType);
         }
 
@@ -50,12 +50,12 @@ public class EventTypeService {
         return eventType;
     }
 
-    public void deleteEventType(String type) {
+    public void deleteEventType(Long typeId) {
         try {
-            eventTypeRepository.deleteById(type);
+            eventTypeRepository.deleteById(typeId);
         } catch (EmptyResultDataAccessException ex) {
             log.error("", ex);
-            throw notFindException(type);
+            throw notFindException(typeId);
         }
 
     }
@@ -64,22 +64,22 @@ public class EventTypeService {
         return eventTypeRepository.findAll();
     }
 
-    private Optional<EventType> findOptionalEventTypeByType(String type) {
-        return eventTypeRepository.findById(type);
+    private Optional<EventType> findOptionalEventTypeByType(Long typeId) {
+        return eventTypeRepository.findById(typeId);
     }
 
-    private EventType findEventTypeByType(String type) {
-        return findOptionalEventTypeByType(type)
-                .orElseThrow(() -> notFindException(type));
+    private EventType findEventTypeByType(Long typeId) {
+        return findOptionalEventTypeByType(typeId)
+                .orElseThrow(() -> notFindException(typeId));
     }
 
-    void exists(String type) {
-        if (!eventTypeRepository.existsById(type))
-            throw notFindException(type);
+    void exists(Long typeId) {
+        if (!eventTypeRepository.existsById(typeId))
+            throw notFindException(typeId);
     }
 
-    private ServiceException notFindException(String type) {
-        return new ServiceException("Не найден тип события(type=" + type + ")");
+    private ServiceException notFindException(Long typeId) {
+        return new ServiceException("Не найден тип события(typeId=" + typeId + ")");
     }
 
 

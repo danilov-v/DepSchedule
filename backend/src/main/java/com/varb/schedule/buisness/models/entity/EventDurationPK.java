@@ -11,9 +11,9 @@ import java.io.Serializable;
 @Embeddable
 public class EventDurationPK implements Serializable {
 
-    public EventDurationPK(Long unitId, String eventType) {
+    public EventDurationPK(Long unitId, Long eventTypeId) {
         this.unitId = unitId;
-        this.eventType = eventType;
+        this.eventTypeId = eventTypeId;
     }
 
     public EventDurationPK() {
@@ -23,6 +23,6 @@ public class EventDurationPK implements Serializable {
     private Long unitId;
 
     @Column(nullable = false)
-    private String eventType;
+    private Long eventTypeId;
 
 }

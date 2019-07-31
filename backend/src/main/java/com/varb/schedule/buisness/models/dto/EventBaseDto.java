@@ -3,8 +3,6 @@ package com.varb.schedule.buisness.models.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.DurationOptionalDto;
-import com.varb.schedule.buisness.models.dto.EventBaseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
@@ -13,11 +11,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * EventPutDto
+ * EventBaseDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
 
-public class EventPutDto   {
+public class EventBaseDto   {
   @JsonProperty("unitId")
   private Long unitId;
 
@@ -30,10 +28,7 @@ public class EventPutDto   {
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
 
-  @JsonProperty("duration")
-  private Integer duration;
-
-  public EventPutDto unitId(Long unitId) {
+  public EventBaseDto unitId(Long unitId) {
     this.unitId = unitId;
     return this;
   }
@@ -53,7 +48,7 @@ public class EventPutDto   {
     this.unitId = unitId;
   }
 
-  public EventPutDto dateFrom(LocalDate dateFrom) {
+  public EventBaseDto dateFrom(LocalDate dateFrom) {
     this.dateFrom = dateFrom;
     return this;
   }
@@ -74,7 +69,7 @@ public class EventPutDto   {
     this.dateFrom = dateFrom;
   }
 
-  public EventPutDto note(String note) {
+  public EventBaseDto note(String note) {
     this.note = note;
     return this;
   }
@@ -94,7 +89,7 @@ public class EventPutDto   {
     this.note = note;
   }
 
-  public EventPutDto eventTypeId(Long eventTypeId) {
+  public EventBaseDto eventTypeId(Long eventTypeId) {
     this.eventTypeId = eventTypeId;
     return this;
   }
@@ -114,28 +109,6 @@ public class EventPutDto   {
     this.eventTypeId = eventTypeId;
   }
 
-  public EventPutDto duration(Integer duration) {
-    this.duration = duration;
-    return this;
-  }
-
-  /**
-   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
-   * minimum: 1
-   * maximum: 1000
-   * @return duration
-  */
-  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
-
-@Min(1) @Max(1000) 
-  public Integer getDuration() {
-    return duration;
-  }
-
-  public void setDuration(Integer duration) {
-    this.duration = duration;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -145,29 +118,27 @@ public class EventPutDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EventPutDto eventPut = (EventPutDto) o;
-    return Objects.equals(this.unitId, eventPut.unitId) &&
-        Objects.equals(this.dateFrom, eventPut.dateFrom) &&
-        Objects.equals(this.note, eventPut.note) &&
-        Objects.equals(this.eventTypeId, eventPut.eventTypeId) &&
-        Objects.equals(this.duration, eventPut.duration);
+    EventBaseDto eventBase = (EventBaseDto) o;
+    return Objects.equals(this.unitId, eventBase.unitId) &&
+        Objects.equals(this.dateFrom, eventBase.dateFrom) &&
+        Objects.equals(this.note, eventBase.note) &&
+        Objects.equals(this.eventTypeId, eventBase.eventTypeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId, duration);
+    return Objects.hash(unitId, dateFrom, note, eventTypeId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class EventPutDto {\n");
+    sb.append("class EventBaseDto {\n");
     
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
-    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -47,6 +47,10 @@ if (hasProperty('profile')) {
     }
 }
 
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+ 
 test {
     useJUnitPlatform()
 }

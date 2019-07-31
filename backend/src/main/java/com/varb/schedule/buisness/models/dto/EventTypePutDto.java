@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * EventTypePutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
 
 public class EventTypePutDto   {
   @JsonProperty("description")
@@ -63,7 +63,7 @@ public class EventTypePutDto   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -95,7 +95,7 @@ public class EventTypePutDto   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

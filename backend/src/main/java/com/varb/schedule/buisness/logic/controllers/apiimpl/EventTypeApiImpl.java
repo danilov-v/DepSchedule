@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -25,14 +26,14 @@ public class EventTypeApiImpl implements EventTypeApi {
     }
 
     @Override
-    public ResponseEntity<Void> eventTypeTypeDelete(String type) {
-        eventTypeService.deleteEventType(type);
+    public ResponseEntity<Void> eventTypeDelete(Long typeId) {
+        eventTypeService.deleteEventType(typeId);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<EventTypeResponseDto> eventTypeTypePut(String type, @Valid EventTypePutDto eventTypePutDto) {
+    public ResponseEntity<EventTypeResponseDto> eventTypePut(Long typeId, @Valid EventTypePutDto eventTypePutDto) {
         return ResponseEntity.ok(
-                modelMapper.map(eventTypeService.updateEventType(type, eventTypePutDto), EventTypeResponseDto.class));
+                modelMapper.map(eventTypeService.updateEventType(typeId, eventTypePutDto), EventTypeResponseDto.class));
     }
 }
