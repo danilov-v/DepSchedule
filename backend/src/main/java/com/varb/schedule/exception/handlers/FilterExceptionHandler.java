@@ -1,6 +1,6 @@
-package com.varb.schedule.exception;
+package com.varb.schedule.exception.handlers;
 
-import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
+import com.varb.schedule.exception.ServiceException;
 import com.varb.schedule.utils.JsonMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +17,13 @@ import java.io.IOException;
 
 /**
  * Перехватывает ошибки, порождённые в фильтрах
+ * либо не перехваченные в {@link BuisnessExceptionHandler} ошибки бизнес-логики
  */
 @Slf4j
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class ExceptionHandlerFilter extends OncePerRequestFilter {
+public class FilterExceptionHandler extends OncePerRequestFilter {
     private final JsonMapper jsonMapper;
 
     @Override
@@ -30,30 +31,15 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception ex) {
-            //log.error(ex.getMessage(), ex);
             if (ex instanceof ServiceException)
                 buildServiceExceptionResponse((ServiceException) ex, response);
             else
-                buildUnexpectedExceptionResponse(ex, response);
+                buildServiceExceptionResponse(new ServiceException(ex, HttpStatus.INTERNAL_SERVER_ERROR), response);
         }
-    }
-
-    private void buildUnexpectedExceptionResponse(Exception ex, HttpServletResponse response) throws IOException {
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.getWriter().write(jsonMapper.toString(
-                new ErrorMessageDto()
-                        .code(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                        .devMessage(ex.getMessage())
-        ));
     }
 
     private void buildServiceExceptionResponse(ServiceException serviceException, HttpServletResponse response) throws IOException {
         response.setStatus(serviceException.getHttpStatus().value());
-        response.getWriter().write(jsonMapper.toString(
-                new ErrorMessageDto()
-                        .code(serviceException.getCode() != null ? serviceException.getCode() :
-                                String.valueOf(serviceException.getHttpStatus().value()))
-                        .devMessage(serviceException.getMessage())
-                        .userMessage(serviceException.getUserMessage())));
+        response.getWriter().write(jsonMapper.toString(ExceptionFormatter.toErrorMessageDto(serviceException)));
     }
 }
