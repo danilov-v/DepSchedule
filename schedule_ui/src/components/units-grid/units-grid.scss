@@ -1,9 +1,11 @@
 .units-grid {
   &-title {
-    height: 120px;
+    height: 130px;
     background: #dee2e6;
     border: 1px solid #000;
     font-size: 22px;
+    position: sticky;
+    top: 0;
   }
 
   .unit {

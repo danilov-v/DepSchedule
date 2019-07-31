@@ -2,10 +2,16 @@
   .section {
     border: 1px solid black;
     max-width: unset;
-    height: 60px;
+    height: 65px;
+    background: yellow;
 
     &.empty {
+      background: #dee2e6;
       border: 0;
+
+      &:last-child {
+        border-right: 1px solid black;
+      }
     }
   }
 }
