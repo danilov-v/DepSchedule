@@ -12,26 +12,64 @@ import {
 } from "reactstrap";
 import { isBoolean } from "lodash";
 import { createUnit } from "helpers/api";
+import {
+  SUCCESS_UNIT_NOTIFICATION_DATA,
+  FAILED_UNIT_NOTIFICATION_DATA,
+} from "components/notification/notification";
+import { NotificationManager } from "helpers/notification-manager";
+
+const DEFAULT_FORM_DATA = {
+  unitParentId: 0,
+  unitTitle: null,
+};
 
 export function UnitPopup({ units, onUnitsUpdate }) {
   const [isValid, setValidState] = useState(null);
+  const [formData, setData] = useState(DEFAULT_FORM_DATA);
   const [isOpen, toggle] = useState(false);
+
+  const resetPopup = () => {
+    setData(DEFAULT_FORM_DATA);
+    setValidState(null);
+  };
+
   const toggleModal = () => {
     toggle(!isOpen);
+
+    if (isOpen) {
+      resetPopup();
+    }
+  };
+
+  const validate = formData => {
+    if (formData.unitTitle && formData.unitTitle.length >= 2) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const onInputChange = event => {
+    const value = event.target.value;
+    const newFormData = { ...formData, unitTitle: value };
+
+    setValidState(validate(newFormData));
+    setData(newFormData);
+  };
+  const onSelectChange = event => {
+    const value = event.target.value;
+
+    setData({ ...formData, unitParentId: value });
   };
 
   const onSubmit = async event => {
     event.preventDefault();
 
-    const data = new FormData(event.target);
-    const unitTitle = data.get("unitTitle");
-    const unitParentId = data.get("unitParent");
-    const parentUnit = unitParentId
-      ? units.find(unit => unit.unitId === +unitParentId)
-      : null;
-
-    if (unitTitle) {
-      setValidState(true);
+    if (validate(formData)) {
+      const { unitParentId, unitTitle } = formData;
+      const parentUnit = unitParentId
+        ? units.find(unit => unit.unitId === +unitParentId)
+        : null;
 
       try {
         await createUnit({
@@ -42,9 +80,15 @@ export function UnitPopup({ units, onUnitsUpdate }) {
 
         onUnitsUpdate();
         toggleModal();
-      } catch {}
+
+        NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA);
+      } catch {
+        setValidState(false);
+        NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
+      }
     } else {
       setValidState(false);
+      NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
     }
 
     return false;
@@ -67,12 +111,18 @@ export function UnitPopup({ units, onUnitsUpdate }) {
                 placeholder="СУ"
                 valid={isValid}
                 invalid={isBoolean(isValid) && !isValid}
+                onChange={onInputChange}
               />
             </FormGroup>
             <FormGroup>
               <Label for="unitParent">Родительское Подразделение</Label>
-              <Input type="select" name="unitParent" id="unitParent">
-                <option value={undefined}>Новое Подразделение</option>
+              <Input
+                type="select"
+                name="unitParent"
+                id="unitParent"
+                onChange={onSelectChange}
+              >
+                <option value={0}>Новое Подразделение</option>
                 {units.map((unit, i) => (
                   <option key={unit.title + i} value={unit.unitId}>
                     {unit.title}

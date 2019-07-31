@@ -29,6 +29,11 @@ export const createUnit = async unitData => {
       body: JSON.stringify(unitData),
     }
   );
-  const data = result.json();
+  const data = await result.json();
+
+  if (data && +data.code === 400) {
+    throw new Error(data);
+  }
+
   return data;
 };

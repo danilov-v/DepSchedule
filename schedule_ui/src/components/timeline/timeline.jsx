@@ -8,6 +8,7 @@ import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
 import { UnitsGrid } from "components/units-grid/units-grid";
+import { Notification } from "components/notification/notification";
 
 import { getDates } from "utils/date";
 import { getLastGenUnits } from "./helpers";
@@ -32,7 +33,6 @@ export function Timeline() {
   }, [startDate, endDate, units]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const range = getDates(startDate, endDate);
-
   const onUnitsUpdate = () => {
     fetchUnits();
     fetchUnitsTree();
@@ -70,6 +70,7 @@ export function Timeline() {
           </Col>
         </Row>
       </div>
+      <Notification />
     </Container>
   );
 }
