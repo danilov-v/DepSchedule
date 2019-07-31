@@ -12,13 +12,18 @@ public class EventType {
     /**
      * Код события
      *
-     * <li>time1 - мобилизация
-     * <li>time2 - марш
-     * <li>time3 - развёртывание
-     * <li>{...}
+     * <li> - мобилизация
+     * <li> - марш
+     * <li> - развёртывание
+     *
      */
     @Id
-    private String type;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eventType_sq_generator")
+    @SequenceGenerator(name = "eventType_sq_generator", sequenceName = "EVENT_TYPE_SQ", allocationSize = 1)
+    private Long typeId;
+
+    @Column(nullable = true)
+    private String typeCode;
 
     @Column(nullable = false)
     private String description;

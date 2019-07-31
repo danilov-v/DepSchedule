@@ -14,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,13 +29,13 @@ public class UnitApiImpl implements UnitApi {
     @Override
     public ResponseEntity<List<UnitResponseDto>> unitGet() {
         return ResponseEntity.ok(
-                modelMapper.mapList(unitService.getAllUnit(), UnitResponseDto.class));
+                modelMapper.mapList(unitService.getAll(), UnitResponseDto.class));
     }
 
     @Override
-    public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree() {
+    public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
-                unitMapper.convertToThree(unitService.getAllUnit()));
+                unitMapper.convertToThree(unitService.getAllWithEvents(dateFrom, dateTo.orElse(null))));
     }
 
     @Override

@@ -11,7 +11,7 @@ servers:
 tags:
   - name: event
     description: 'Информация о событии (подразделение, дата начала, дата конца)'
-  - name: eventType
+  - name: eventTypeId
     description: 'Информация о типе событий (цвет, описание)'
   - name: unit
     description: 'Информация о подразделении (название, уровень подразделения)'
@@ -20,6 +20,7 @@ tags:
 paths:
   /event:
     get:
+      operationId: eventGet
       summary: Список событий
       tags:
         - event
@@ -50,6 +51,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
     post:
+      operationId: eventPost
       summary: Создать событие
       tags:
         - event
@@ -71,6 +73,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /event/{eventId}:
     put:
+      operationId: eventPut
       summary: Редактировать существующее событие
       tags:
         - event
@@ -98,6 +101,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
     delete:
+      operationId: eventDelete
       summary: Удалить существующее событие
       tags:
         - event
@@ -117,9 +121,10 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /eventType:
     get:
+      operationId: eventTypeGet
       summary: Список типов событий
       tags:
-        - eventType
+        - eventTypeId
       responses:
         200:
           description: Array of event
@@ -133,17 +138,18 @@ paths:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /eventType/{type}:
+  /eventType/{eventTypeId}:
     put:
+      operationId: eventTypePut
       summary: Добавить/Редактировать существующий тип события
       tags:
-        - eventType
+        - eventTypeId
       parameters:
-        - name: type
+        - name: eventTypeId
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeCode'
+            $ref: '#/components/schemas/EventTypeId'
       requestBody:
         content:
           application/json:
@@ -161,15 +167,16 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
     delete:
+      operationId: eventTypeDelete
       summary: Удалить существующий тип события
       tags:
-        - eventType
+        - eventTypeId
       parameters:
-        - name: type
+        - name: eventTypeId
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeCode'
+            $ref: '#/components/schemas/EventTypeId'
       responses:
         200:
           description: successful operation
@@ -269,9 +276,22 @@ paths:
   /unit/tree:
     get:
       operationId: unitGetTree
-      summary: Древовидный список подразделений
+      summary: Древовидный список подразделений со списком событий
       tags:
         - unit
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
       responses:
         200:
           description: Array of unit
@@ -287,6 +307,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /eventDuration:
     get:
+      operationId: eventDurationGet
       summary: Получить время выполнения событий для подразделения
       tags:
         - eventDuration
@@ -298,33 +319,47 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventDuration'
+                  $ref: '#/components/schemas/EventDurationResponse'
         400:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /eventDuration/{unitId}/{eventTypeId}:
     put:
+      operationId: eventDurationPut
       summary: Добавить/Редактировать существующее время выполнения события для подразделения
       tags:
         - eventDuration
+      parameters:
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: eventTypeId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/EventTypeId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventDuration'
+              $ref: '#/components/schemas/EventDurationPut'
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDuration'
+                $ref: '#/components/schemas/EventDurationResponse'
         400:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /eventDuration/{unitId}/{eventType}:
     delete:
+      operationId: eventDurationDelete
       summary: Удалить существующее время выполнения события для подразделения
       tags:
         - eventDuration
@@ -335,11 +370,11 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: eventType
+        - name: eventTypeId
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeCode'
+            $ref: '#/components/schemas/EventTypeId'
       responses:
         200:
           description: successful operation
@@ -366,7 +401,7 @@ components:
       properties:
         title:
           type: string
-          minLength: 3
+          minLength: 2
           description: "Название подразделения"
         parentId:
           type: integer
@@ -405,6 +440,10 @@ components:
             unitId:
               type: integer
               format: int64
+            events:
+              type: array
+              items:
+                $ref: '#/components/schemas/EventResponse'
             childUnit:
               type: array
               items:
@@ -418,13 +457,13 @@ components:
         * `2` - Орган управления
         * `3` - Пункт управления
         * `4` - Подразделение
-    EventPut:
+    EventBase:
       properties:
         unitId:
           type: integer
           format: int64
           description: "Id подразделения
-                        (может ссылаться только на подразделение 4-го уровня"
+                        (может ссылаться только на подразделение 4-го уровня)"
         dateFrom:
           type: string
           format: date
@@ -432,21 +471,26 @@ components:
         note:
           type: string
           description: "Примечание"
-        eventType:
-          $ref: '#/components/schemas/EventTypeCode'
+        eventTypeId:
+          $ref: '#/components/schemas/EventTypeId'
+    EventPut:
+      allOf:
+        - $ref: '#/components/schemas/EventBase'
+        - $ref: '#/components/schemas/DurationOptional'
     EventPost:
       required:
         - dateFrom
-        - eventType
+        - eventTypeId
         - unitId
       allOf:
-        - $ref: '#/components/schemas/EventPut'
+        - $ref: '#/components/schemas/EventBase'
+        - $ref: '#/components/schemas/DurationOptional'
     EventResponse:
       required:
         - eventId
         - dateFrom
         - dateTo
-        - eventType
+        - eventTypeId
         - unitId
       allOf:
         - properties:
@@ -457,7 +501,7 @@ components:
               type: string
               format: date
               description: "Дата конца события"
-        - $ref: '#/components/schemas/EventPut'
+        - $ref: '#/components/schemas/EventBase'
     EventTypePut:
       properties:
         description:
@@ -475,31 +519,47 @@ components:
       allOf:
         - $ref: '#/components/schemas/EventTypePut'
         - properties:
-            type:
-              $ref: '#/components/schemas/EventTypeCode'
-    EventTypeCode:
-      type: string
+            typeId:
+              $ref: '#/components/schemas/EventTypeId'
+    EventTypeId:
+      type: integer
+      format: int64
       description: |
-        Код события
-        * `mobilization - мобилизация
-        * `deployment` - развёртывание
-        * {...}
-    EventDuration:
+        Ссылка на тип события
+    Duration:
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 1000
+      description: "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)"
+    DurationOptional:
+      properties:
+        duration:
+          $ref: '#/components/schemas/Duration'
+    DurationRequired:
       required:
-        - unitId
-        - eventType
         - duration
       properties:
-        unitId:
-          type: integer
-          format: int64
-        eventType:
-          $ref: '#/components/schemas/EventTypeCode'
         duration:
-          type: integer
-          minimum: 1
-          maximum: 1000
-          description: "время выполнения (в днях)"
+          $ref: '#/components/schemas/Duration'
+    EventDurationPut:
+      required:
+        - duration
+      allOf:
+        - $ref: '#/components/schemas/DurationRequired'
+    EventDurationResponse:
+      required:
+        - unitId
+        - eventTypeId
+        - duration
+      allOf:
+        - $ref: '#/components/schemas/EventDurationPut'
+        - properties:
+            unitId:
+              type: integer
+              format: int64
+            eventTypeId:
+              $ref: '#/components/schemas/EventTypeId'
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."

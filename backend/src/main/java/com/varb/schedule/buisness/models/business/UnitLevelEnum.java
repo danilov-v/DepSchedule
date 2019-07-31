@@ -7,20 +7,21 @@ public enum UnitLevelEnum {
     /**
      * Система управления
      */
-    LEVEL1(1),
+    CONTROL_SYSTEM(1),
 
     /**
      * Орган управления
      */
-    LEVEL2(2),
+    GOVERNMENT(2),
     /**
      * Пункт управления
      */
-    LEVEL3(3),
+    COMMAND_CENTER(3),
     /**
      * Подразделение
      */
-    LEVEL4(4);
+
+    SUBUNIT(4);
 
     private Integer value;
 
@@ -36,12 +37,12 @@ public enum UnitLevelEnum {
         return this.name();
     }
 
-    public static UnitLevelEnum fromValue(Integer value) {
-        for (UnitLevelEnum b : UnitLevelEnum.values()) {
-            if (b.value.equals(value)) {
-                return b;
-            }
-        }
-        throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
+//    public static UnitLevelEnum fromValue(Integer value) {
+//        for (UnitLevelEnum b : UnitLevelEnum.values()) {
+//            if (b.value.equals(value)) {
+//                return b;
+//            }
+//        }
+//        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+//    }
 }

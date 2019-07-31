@@ -9,9 +9,11 @@ import com.varb.schedule.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,11 +47,15 @@ public class UnitService {
 
     }
 
-    public List<Unit> getAllUnit() {
+    public List<Unit> getAllWithEvents(LocalDate dateFrom, @Nullable LocalDate dateTo) {
+        return unitRepository.findAllWithEvents(dateFrom, dateTo);
+    }
+
+    public List<Unit> getAll() {
         return unitRepository.findAll();
     }
 
-    private Unit findUnitByUnitId(Long unitId) {
+    Unit findUnitByUnitId(Long unitId) {
         return unitRepository.findById(unitId)
                 .orElseThrow(() -> notFindException(unitId));
     }

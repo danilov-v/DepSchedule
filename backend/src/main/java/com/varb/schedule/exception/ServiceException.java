@@ -1,13 +1,16 @@
 package com.varb.schedule.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 
 /**
  * Исключения сервисного слоя
  */
 public class ServiceException extends RuntimeException {
     private final HttpStatus httpStatus;
+    @Nullable
     private final String userMessage;
+    @Nullable
     private final String code;
 
     /**
@@ -61,10 +64,12 @@ public class ServiceException extends RuntimeException {
         return httpStatus;
     }
 
+    @Nullable
     public String getUserMessage() {
         return userMessage;
     }
 
+    @Nullable
     public String getCode() {
         return code;
     }

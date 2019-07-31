@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * UnitPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
 
 public class UnitPutDto   {
   @JsonProperty("title")
@@ -35,7 +35,7 @@ public class UnitPutDto   {
   */
   @ApiModelProperty(value = "Название подразделения")
 
-@Size(min=3) 
+@Size(min=2) 
   public String getTitle() {
     return title;
   }
@@ -86,7 +86,7 @@ public class UnitPutDto   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -120,7 +120,7 @@ public class UnitPutDto   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
