@@ -17,3 +17,13 @@ body {
   color: $color-grey-dark-3;
   padding: 3rem;
 }
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+}
