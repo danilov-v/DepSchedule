@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface UnitRepository extends JpaRepository<Unit, Long> {
     @Query("select u from Unit u left join fetch u.events e " +
-            "where e.dateFrom >= :dateFrom and (:dateTo is null or e.dateTo <= :dateTo)")
+            "where e is NULL OR " +
+            "      e.dateFrom >= :dateFrom and (:dateTo is null or e.dateTo <= :dateTo)")
     List<Unit> findAllWithEvents(LocalDate dateFrom, LocalDate dateTo);
 }

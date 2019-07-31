@@ -17,6 +17,7 @@ public class BuisnessExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
-        return ExceptionFormatter.toResponseEntity(new ServiceException(ex, StringEscapeUtils.unescapeJava(ex.getCause().getCause().getMessage()), HttpStatus.BAD_REQUEST));
+        return ExceptionFormatter.toResponseEntity(
+                new ServiceException(ex, StringEscapeUtils.unescapeJava(ex.getCause().getCause().getMessage()), HttpStatus.BAD_REQUEST));
     }
 }
