@@ -3,13 +3,13 @@ export const UNITS = [
     title: "Система управления 1",
     unitLevel: 1,
     unitId: 1,
-    childs: [
+    childUnit: [
       {
         title: "Система управления 1.1",
         parentId: 1,
         unitLevel: 2,
         unitId: 201,
-        childs: [
+        childUnit: [
           {
             title: "Система управления 1.1.1",
             parentId: 201,
@@ -24,19 +24,19 @@ export const UNITS = [
     title: "Система управления 2",
     unitLevel: 1,
     unitId: 2,
-    childs: [
+    childUnit: [
       {
         title: "Орган управления 2.1",
         parentId: 2,
         unitLevel: 2,
         unitId: 3,
-        childs: [
+        childUnit: [
           {
             title: "Пункт управления 2.1.1",
             parentId: 3,
             unitLevel: 3,
             unitId: 4,
-            childs: [
+            childUnit: [
               {
                 title: "Подразделение 2.1.1.1",
                 parentId: 4,
@@ -58,7 +58,7 @@ export const UNITS = [
         parentId: 2,
         unitLevel: 2,
         unitId: 33,
-        childs: null,
+        childUnit: null,
       },
     ],
   },

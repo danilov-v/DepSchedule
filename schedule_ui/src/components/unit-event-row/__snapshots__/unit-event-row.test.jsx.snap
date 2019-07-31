@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`unit-event-row.jsx <UnitEventRow /> should render and match snapshot 1`] = `
+Array [
+  <Row
+    key="251"
+    noGutters={true}
+    tag="div"
+  >
+    <EventCell
+      eventDate={2019-08-06T21:00:00.000Z}
+      eventOwnerId={251}
+      key="1565125200000"
+      onClick={[Function]}
+    />
+  </Row>,
+  <Row
+    key="252"
+    noGutters={true}
+    tag="div"
+  >
+    <EventCell
+      eventDate={2019-08-06T21:00:00.000Z}
+      eventOwnerId={252}
+      key="1565125200000"
+      onClick={[Function]}
+    />
+  </Row>,
+]
+`;

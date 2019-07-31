@@ -1,71 +1,108 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`calendar.jsx <Calendar /> should render and match snapshot 1`] = `
-<Row
-  className="calendar"
-  noGutters={true}
-  tag="div"
->
-  <Col
-    key="November"
+<Fragment>
+  <Row
+    className="calendar"
+    noGutters={true}
     tag="div"
-    widths={
+  >
+    <Col
+      key="November"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Row
+        noGutters={true}
+        tag="div"
+      >
+        <Col
+          className="d-flex"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <CalendarCell
+            fluid={false}
+            key="1565125200000"
+            text={null}
+          />
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+  <UnitEventRow
+    key="0"
+    range={
       Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
+        Object {
+          "days": Array [
+            2019-08-06T21:00:00.000Z,
+          ],
+          "name": "November",
+        },
       ]
     }
-  >
-    <Row
-      className="calendar-title"
-      noGutters={true}
-      tag="div"
-    >
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <CalendarCell
-          fluid={true}
-          text="November"
-        />
-      </Col>
-    </Row>
-    <Row
-      noGutters={true}
-      tag="div"
-    >
-      <Col
-        className="d-flex"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <CalendarCell
-          fluid={false}
-          key="1565125200000"
-          text={7}
-        />
-      </Col>
-    </Row>
-  </Col>
-</Row>
+    unitGroup={
+      Array [
+        Object {
+          "parentId": 201,
+          "title": "Система управления 1.1.1",
+          "unitId": 251,
+          "unitLevel": 3,
+        },
+        Object {
+          "parentId": 201,
+          "title": "Система управления 1.1.2",
+          "unitId": 252,
+          "unitLevel": 3,
+        },
+      ]
+    }
+  />
+  <UnitEventRow
+    key="1"
+    range={
+      Array [
+        Object {
+          "days": Array [
+            2019-08-06T21:00:00.000Z,
+          ],
+          "name": "November",
+        },
+      ]
+    }
+    unitGroup={
+      Array [
+        Object {
+          "parentId": 301,
+          "title": "Система управления 2.1.1",
+          "unitId": 2522,
+          "unitLevel": 3,
+        },
+        Object {
+          "parentId": 301,
+          "title": "Система управления 2.1.2",
+          "unitId": 2533,
+          "unitLevel": 3,
+        },
+      ]
+    }
+  />
+</Fragment>
 `;

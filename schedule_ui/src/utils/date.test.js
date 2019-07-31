@@ -1,4 +1,4 @@
-import { getNextDay, getDates } from "./date";
+import { getNextDay, getDates, getAllDatesFromRange } from "./date";
 
 describe("utils/date.js", () => {
   describe("getNextDay", () => {
@@ -18,12 +18,46 @@ describe("utils/date.js", () => {
         {
           name: "August",
           days: [
+            new Date(2019, 7, 9),
+            new Date(2019, 7, 8),
+            new Date(2019, 7, 7),
+          ],
+        },
+      ]);
+    });
+  });
+
+  describe("getAllDatesFromRange", () => {
+    test("should return array of dates from array of months and dates", () => {
+      const range = [
+        {
+          name: "August",
+          days: [
             new Date(2019, 7, 7),
             new Date(2019, 7, 8),
             new Date(2019, 7, 9),
           ],
         },
-      ]);
+        {
+          name: "September",
+          days: [
+            new Date(2019, 8, 7),
+            new Date(2019, 8, 8),
+            new Date(2019, 8, 9),
+          ],
+        },
+      ];
+
+      const dates = [
+        new Date(2019, 7, 7),
+        new Date(2019, 7, 8),
+        new Date(2019, 7, 9),
+        new Date(2019, 8, 7),
+        new Date(2019, 8, 8),
+        new Date(2019, 8, 9),
+      ];
+
+      expect(getAllDatesFromRange(range)).toEqual(dates);
     });
   });
 });

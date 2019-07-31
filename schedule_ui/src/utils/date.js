@@ -27,3 +27,6 @@ export const getDates = (startDate, endDate) => {
 
   return formattedData;
 };
+
+export const getAllDatesFromRange = range =>
+  range.reduce((days, month) => [...days, month.days], []).flat();

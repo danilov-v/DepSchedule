@@ -57,6 +57,31 @@ exports[`high-level-sections.jsx <HighLevelSections /> should render and match s
     name={null}
   />
   <HighLevelSection
+    isEmpty={true}
+    length={1}
+    name={null}
+  />
+  <HighLevelSection
+    isEmpty={true}
+    length={1}
+    name={null}
+  />
+  <HighLevelSection
+    isEmpty={true}
+    length={1}
+    name={null}
+  />
+  <HighLevelSection
+    isEmpty={true}
+    length={1}
+    name={null}
+  />
+  <HighLevelSection
+    isEmpty={true}
+    length={1}
+    name={null}
+  />
+  <HighLevelSection
     isEmpty={false}
     length={5}
     name="D"
@@ -80,31 +105,6 @@ exports[`high-level-sections.jsx <HighLevelSections /> should render and match s
     isEmpty={false}
     length={32}
     name="A"
-  />
-  <HighLevelSection
-    isEmpty={true}
-    length={1}
-    name={null}
-  />
-  <HighLevelSection
-    isEmpty={true}
-    length={1}
-    name={null}
-  />
-  <HighLevelSection
-    isEmpty={true}
-    length={1}
-    name={null}
-  />
-  <HighLevelSection
-    isEmpty={true}
-    length={1}
-    name={null}
-  />
-  <HighLevelSection
-    isEmpty={true}
-    length={1}
-    name={null}
   />
   <HighLevelSection
     isEmpty={true}

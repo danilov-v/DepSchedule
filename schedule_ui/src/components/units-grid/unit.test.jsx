@@ -16,5 +16,11 @@ describe("units-grid.jsx", () => {
 
       expect(component).toMatchSnapshot();
     });
+
+    test("should render and match snapshot with lastOfGroup", () => {
+      const component = shallow(<Unit title="title" lastGen lastOfGroup />);
+
+      expect(component).toMatchSnapshot();
+    });
   });
 });

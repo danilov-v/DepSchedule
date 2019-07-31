@@ -9,9 +9,15 @@
   .unit {
     border: 1px solid #000;
     flex-grow: 1;
+    padding: 0 15px;
+    min-width: 165px;
 
     &-last-generation {
-      height: 60px;
+      height: 65px;
+    }
+
+    &-last-of-group:not(:last-child) {
+      box-shadow: 0 2px 0#007bff;
     }
   }
 }
