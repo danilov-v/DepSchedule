@@ -25,7 +25,9 @@ export function UnitsGrid({ units }) {
   return (
     <div className="units-grid">
       <div className="text-center units-grid-title">Список Подразделений</div>
-      {units.map(unit => renderUnit(unit))}
+      <div className="unit-grid-body">
+        {units.map(unit => renderUnit(unit))}
+      </div>
     </div>
   );
 }

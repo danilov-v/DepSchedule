@@ -6,6 +6,12 @@
 
   &-left {
     max-width: max-content;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 500px;
+    }
   }
 }
 
