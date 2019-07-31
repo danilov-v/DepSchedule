@@ -20,7 +20,7 @@
       "description": "Информация о событии (подразделение, дата начала, дата конца)"
     },
     {
-      "name": "eventType",
+      "name": "eventTypeId",
       "description": "Информация о типе событий (цвет, описание)"
     },
     {
@@ -35,6 +35,7 @@
   "paths": {
     "/event": {
       "get": {
+        "operationId": "eventGet",
         "summary": "Список событий",
         "tags": [
           "event"
@@ -82,6 +83,7 @@
         }
       },
       "post": {
+        "operationId": "eventPost",
         "summary": "Создать событие",
         "tags": [
           "event"
@@ -117,6 +119,7 @@
     },
     "/event/{eventId}": {
       "put": {
+        "operationId": "eventPut",
         "summary": "Редактировать существующее событие",
         "tags": [
           "event"
@@ -161,6 +164,7 @@
         }
       },
       "delete": {
+        "operationId": "eventDelete",
         "summary": "Удалить существующее событие",
         "tags": [
           "event"
@@ -191,9 +195,10 @@
     },
     "/eventType": {
       "get": {
+        "operationId": "eventTypeGet",
         "summary": "Список типов событий",
         "tags": [
-          "eventType"
+          "eventTypeId"
         ],
         "responses": {
           "200": {
@@ -218,19 +223,20 @@
         }
       }
     },
-    "/eventType/{type}": {
+    "/eventType/{eventTypeId}": {
       "put": {
+        "operationId": "eventTypePut",
         "summary": "Добавить/Редактировать существующий тип события",
         "tags": [
-          "eventType"
+          "eventTypeId"
         ],
         "parameters": [
           {
-            "name": "type",
+            "name": "eventTypeId",
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/EventTypeCode"
+              "$ref": "#/components/schemas/EventTypeId"
             }
           }
         ],
@@ -263,17 +269,18 @@
         }
       },
       "delete": {
+        "operationId": "eventTypeDelete",
         "summary": "Удалить существующий тип события",
         "tags": [
-          "eventType"
+          "eventTypeId"
         ],
         "parameters": [
           {
-            "name": "type",
+            "name": "eventTypeId",
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/EventTypeCode"
+              "$ref": "#/components/schemas/EventTypeId"
             }
           }
         ],
@@ -434,9 +441,29 @@
     "/unit/tree": {
       "get": {
         "operationId": "unitGetTree",
-        "summary": "Древовидный список подразделений",
+        "summary": "Древовидный список подразделений со списком событий",
         "tags": [
           "unit"
+        ],
+        "parameters": [
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -463,6 +490,7 @@
     },
     "/eventDuration": {
       "get": {
+        "operationId": "eventDurationGet",
         "summary": "Получить время выполнения событий для подразделения",
         "tags": [
           "eventDuration"
@@ -475,41 +503,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/EventDuration"
+                    "$ref": "#/components/schemas/EventDurationResponse"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
-        }
-      },
-      "put": {
-        "summary": "Добавить/Редактировать существующее время выполнения события для подразделения",
-        "tags": [
-          "eventDuration"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EventDuration"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EventDuration"
                 }
               }
             }
@@ -523,8 +518,62 @@
         }
       }
     },
-    "/eventDuration/{unitId}/{eventType}": {
+    "/eventDuration/{unitId}/{eventTypeId}": {
+      "put": {
+        "operationId": "eventDurationPut",
+        "summary": "Добавить/Редактировать существующее время выполнения события для подразделения",
+        "tags": [
+          "eventDuration"
+        ],
+        "parameters": [
+          {
+            "name": "unitId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "eventTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EventTypeId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventDurationPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDurationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
       "delete": {
+        "operationId": "eventDurationDelete",
         "summary": "Удалить существующее время выполнения события для подразделения",
         "tags": [
           "eventDuration"
@@ -540,11 +589,11 @@
             }
           },
           {
-            "name": "eventType",
+            "name": "eventTypeId",
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/EventTypeCode"
+              "$ref": "#/components/schemas/EventTypeId"
             }
           }
         ],
@@ -590,7 +639,7 @@
         "properties": {
           "title": {
             "type": "string",
-            "minLength": 3,
+            "minLength": 2,
             "description": "Название подразделения"
           },
           "parentId": {
@@ -651,6 +700,12 @@
                 "type": "integer",
                 "format": "int64"
               },
+              "events": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EventResponse"
+                }
+              },
               "childUnit": {
                 "type": "array",
                 "items": {
@@ -666,12 +721,12 @@
         "format": "int32",
         "description": "Уровень подразделения\n* `1` - Система управления\n* `2` - Орган управления\n* `3` - Пункт управления\n* `4` - Подразделение\n"
       },
-      "EventPut": {
+      "EventBase": {
         "properties": {
           "unitId": {
             "type": "integer",
             "format": "int64",
-            "description": "Id подразделения (может ссылаться только на подразделение 4-го уровня"
+            "description": "Id подразделения (может ссылаться только на подразделение 4-го уровня)"
           },
           "dateFrom": {
             "type": "string",
@@ -682,20 +737,33 @@
             "type": "string",
             "description": "Примечание"
           },
-          "eventType": {
-            "$ref": "#/components/schemas/EventTypeCode"
+          "eventTypeId": {
+            "$ref": "#/components/schemas/EventTypeId"
           }
         }
+      },
+      "EventPut": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EventBase"
+          },
+          {
+            "$ref": "#/components/schemas/DurationOptional"
+          }
+        ]
       },
       "EventPost": {
         "required": [
           "dateFrom",
-          "eventType",
+          "eventTypeId",
           "unitId"
         ],
         "allOf": [
           {
-            "$ref": "#/components/schemas/EventPut"
+            "$ref": "#/components/schemas/EventBase"
+          },
+          {
+            "$ref": "#/components/schemas/DurationOptional"
           }
         ]
       },
@@ -704,7 +772,7 @@
           "eventId",
           "dateFrom",
           "dateTo",
-          "eventType",
+          "eventTypeId",
           "unitId"
         ],
         "allOf": [
@@ -722,7 +790,7 @@
             }
           },
           {
-            "$ref": "#/components/schemas/EventPut"
+            "$ref": "#/components/schemas/EventBase"
           }
         ]
       },
@@ -751,38 +819,74 @@
           },
           {
             "properties": {
-              "type": {
-                "$ref": "#/components/schemas/EventTypeCode"
+              "typeId": {
+                "$ref": "#/components/schemas/EventTypeId"
               }
             }
           }
         ]
       },
-      "EventTypeCode": {
-        "type": "string",
-        "description": "Код события\n* `mobilization - мобилизация\n* `deployment` - развёртывание\n* {...}\n"
+      "EventTypeId": {
+        "type": "integer",
+        "format": "int64",
+        "description": "Ссылка на тип события\n"
       },
-      "EventDuration": {
+      "Duration": {
+        "type": "integer",
+        "format": "int32",
+        "minimum": 1,
+        "maximum": 1000,
+        "description": "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)"
+      },
+      "DurationOptional": {
+        "properties": {
+          "duration": {
+            "$ref": "#/components/schemas/Duration"
+          }
+        }
+      },
+      "DurationRequired": {
         "required": [
-          "unitId",
-          "eventType",
           "duration"
         ],
         "properties": {
-          "unitId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "eventType": {
-            "$ref": "#/components/schemas/EventTypeCode"
-          },
           "duration": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 1000,
-            "description": "время выполнения (в днях)"
+            "$ref": "#/components/schemas/Duration"
           }
         }
+      },
+      "EventDurationPut": {
+        "required": [
+          "duration"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DurationRequired"
+          }
+        ]
+      },
+      "EventDurationResponse": {
+        "required": [
+          "unitId",
+          "eventTypeId",
+          "duration"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EventDurationPut"
+          },
+          {
+            "properties": {
+              "unitId": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "eventTypeId": {
+                "$ref": "#/components/schemas/EventTypeId"
+              }
+            }
+          }
+        ]
       },
       "ErrorMessage": {
         "type": "object",

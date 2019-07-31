@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,21 +23,23 @@ public class EventApiImpl implements EventApi {
     private final ModelMapperCustomize modelMapper;
 
     @Override
-    public ResponseEntity<Void> eventEventIdDelete(Long eventId) {
+    public ResponseEntity<Void> eventDelete(Long eventId) {
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<EventResponseDto> eventEventIdPut(Long eventId, @Valid EventPutDto eventPutDto) {
+    public ResponseEntity<EventResponseDto> eventPut(Long eventId, @Valid EventPutDto eventPutDto) {
         return ResponseEntity.ok(
                 modelMapper.map(eventService.updateEvent(eventId, eventPutDto), EventResponseDto.class));
     }
 
     @Override
-    public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid LocalDate dateFrom, @Valid LocalDate dateTo) {
+    public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
-                modelMapper.mapList(eventService.getAllEvents(), EventResponseDto.class));
+                modelMapper.mapList(
+                        eventService.getAllEventsBetweenDates(dateFrom, dateTo.orElse(null)),
+                        EventResponseDto.class));
     }
 
 

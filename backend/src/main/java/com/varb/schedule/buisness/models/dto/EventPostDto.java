@@ -3,7 +3,8 @@ package com.varb.schedule.buisness.models.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.EventPutDto;
+import com.varb.schedule.buisness.models.dto.DurationOptionalDto;
+import com.varb.schedule.buisness.models.dto.EventBaseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
 /**
  * EventPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
 
 public class EventPostDto   {
   @JsonProperty("unitId")
@@ -26,8 +27,11 @@ public class EventPostDto   {
   @JsonProperty("note")
   private String note;
 
-  @JsonProperty("eventType")
-  private String eventType;
+  @JsonProperty("eventTypeId")
+  private Long eventTypeId;
+
+  @JsonProperty("duration")
+  private Integer duration;
 
   public EventPostDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -35,10 +39,10 @@ public class EventPostDto   {
   }
 
   /**
-   * Id подразделения (может ссылаться только на подразделение 4-го уровня
+   * Id подразделения (может ссылаться только на подразделение 4-го уровня)
    * @return unitId
   */
-  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня")
+  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
 
 
   public Long getUnitId() {
@@ -90,29 +94,51 @@ public class EventPostDto   {
     this.note = note;
   }
 
-  public EventPostDto eventType(String eventType) {
-    this.eventType = eventType;
+  public EventPostDto eventTypeId(Long eventTypeId) {
+    this.eventTypeId = eventTypeId;
     return this;
   }
 
   /**
-   * Код события * `time1` - мобилизация * `time2` - марш * `time3` - развёртывание * {...} 
-   * @return eventType
+   * Ссылка на тип события 
+   * @return eventTypeId
   */
-  @ApiModelProperty(value = "Код события * `time1` - мобилизация * `time2` - марш * `time3` - развёртывание * {...} ")
+  @ApiModelProperty(value = "Ссылка на тип события ")
 
 
-  public String getEventType() {
-    return eventType;
+  public Long getEventTypeId() {
+    return eventTypeId;
   }
 
-  public void setEventType(String eventType) {
-    this.eventType = eventType;
+  public void setEventTypeId(Long eventTypeId) {
+    this.eventTypeId = eventTypeId;
+  }
+
+  public EventPostDto duration(Integer duration) {
+    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 1
+   * maximum: 1000
+   * @return duration
+  */
+  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
+
+@Min(1) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Integer duration) {
+    this.duration = duration;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -123,12 +149,13 @@ public class EventPostDto   {
     return Objects.equals(this.unitId, eventPost.unitId) &&
         Objects.equals(this.dateFrom, eventPost.dateFrom) &&
         Objects.equals(this.note, eventPost.note) &&
-        Objects.equals(this.eventType, eventPost.eventType);
+        Objects.equals(this.eventTypeId, eventPost.eventTypeId) &&
+        Objects.equals(this.duration, eventPost.duration);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventType);
+    return Objects.hash(unitId, dateFrom, note, eventTypeId, duration);
   }
 
   @Override
@@ -139,7 +166,8 @@ public class EventPostDto   {
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
-    sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
+    sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -148,7 +176,7 @@ public class EventPostDto   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

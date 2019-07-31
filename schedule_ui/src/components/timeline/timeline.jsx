@@ -48,7 +48,7 @@ export function Timeline() {
       />
       <AdminControl units={units} onUnitsUpdate={onUnitsUpdate} />
       <div ref={container} className="timeline-wrapper">
-        <Row>
+        <Row className="stick-to-top">
           <Col>
             <HighLevelSections
               startDate={startDate}

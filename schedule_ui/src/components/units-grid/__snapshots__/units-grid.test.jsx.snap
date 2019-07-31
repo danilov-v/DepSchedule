@@ -10,7 +10,7 @@ exports[`units-grid.jsx <UnitsGrid /> should render and match snapshot 1`] = `
     Unit Grid Title
   </div>
   <div
-    className="d-flex flex-row-reverse unit-group"
+    className="d-flex flex-row-reverse unit-last-of-group"
     key="2"
   >
     <Unit
@@ -39,11 +39,13 @@ exports[`units-grid.jsx <UnitsGrid /> should render and match snapshot 1`] = `
               <Unit
                 key="5"
                 lastGen={true}
+                lastOfGroup={false}
                 title="Подразделение 2.1.1.1"
               />
               <Unit
                 key="51"
                 lastGen={true}
+                lastOfGroup={false}
                 title="Подразделение 2.1.1.2"
               />
             </div>
@@ -53,6 +55,7 @@ exports[`units-grid.jsx <UnitsGrid /> should render and match snapshot 1`] = `
       <Unit
         key="33"
         lastGen={true}
+        lastOfGroup={false}
         title="Орган управления 2.2"
       />
     </div>

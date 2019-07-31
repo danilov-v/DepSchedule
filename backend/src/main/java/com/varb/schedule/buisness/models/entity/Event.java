@@ -16,13 +16,16 @@ public class Event {
     private Long eventId;
 
     @Column(nullable = false)
-    private String eventType;
+    private Long eventTypeId;
 
     @Column(nullable = false)
     private Long unitId;
 
     @Column(nullable = false)
     private LocalDate dateFrom;
+
+    @Column(nullable = false)
+    private LocalDate dateTo;
 
     private String note;
 

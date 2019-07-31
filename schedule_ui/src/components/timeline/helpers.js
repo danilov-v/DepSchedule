@@ -1,6 +1,4 @@
 export const getLastGenUnits = units => {
-  console.log(units);
-
   const getUnitLastChilds = unit =>
     unit.childUnit && unit.childUnit.length
       ? unit.childUnit.map(getUnitLastChilds)

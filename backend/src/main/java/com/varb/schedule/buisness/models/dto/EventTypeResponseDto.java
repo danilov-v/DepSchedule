@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 /**
  * EventTypeResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-20T13:04:10.026955+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
 
 public class EventTypeResponseDto   {
   @JsonProperty("description")
@@ -22,8 +22,8 @@ public class EventTypeResponseDto   {
   @JsonProperty("color")
   private String color;
 
-  @JsonProperty("type")
-  private String type;
+  @JsonProperty("typeId")
+  private Long typeId;
 
   public EventTypeResponseDto description(String description) {
     this.description = description;
@@ -65,29 +65,29 @@ public class EventTypeResponseDto   {
     this.color = color;
   }
 
-  public EventTypeResponseDto type(String type) {
-    this.type = type;
+  public EventTypeResponseDto typeId(Long typeId) {
+    this.typeId = typeId;
     return this;
   }
 
   /**
-   * Код события * `time1` - мобилизация * `time2` - марш * `time3` - развёртывание * {...} 
-   * @return type
+   * Ссылка на тип события 
+   * @return typeId
   */
-  @ApiModelProperty(value = "Код события * `time1` - мобилизация * `time2` - марш * `time3` - развёртывание * {...} ")
+  @ApiModelProperty(value = "Ссылка на тип события ")
 
 
-  public String getType() {
-    return type;
+  public Long getTypeId() {
+    return typeId;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setTypeId(Long typeId) {
+    this.typeId = typeId;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -97,12 +97,12 @@ public class EventTypeResponseDto   {
     EventTypeResponseDto eventTypeResponse = (EventTypeResponseDto) o;
     return Objects.equals(this.description, eventTypeResponse.description) &&
         Objects.equals(this.color, eventTypeResponse.color) &&
-        Objects.equals(this.type, eventTypeResponse.type);
+        Objects.equals(this.typeId, eventTypeResponse.typeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, color, type);
+    return Objects.hash(description, color, typeId);
   }
 
   @Override
@@ -112,7 +112,7 @@ public class EventTypeResponseDto   {
     
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    color: ").append(toIndentedString(color)).append("\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    typeId: ").append(toIndentedString(typeId)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -121,7 +121,7 @@ public class EventTypeResponseDto   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
