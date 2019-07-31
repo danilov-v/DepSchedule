@@ -1,38 +1,72 @@
 import { getLastGenUnits } from "./helpers";
-import { UNITS } from "../../stub-data/units";
+
+const units = [
+  {
+    unitId: 1,
+    childUnit: [],
+  },
+  {
+    unitId: 2,
+    childUnit: [
+      {
+        unitId: 21,
+        childUnit: [],
+      },
+      {
+        unitId: 22,
+        childUnit: [],
+      },
+    ],
+  },
+  {
+    unitId: 3,
+    childUnit: [
+      {
+        unitId: 31,
+        childUnit: [
+          {
+            unitId: 311,
+            childUnit: [],
+          },
+        ],
+      },
+      {
+        unitId: 32,
+        childUnit: [],
+      },
+    ],
+  },
+];
 
 describe("timeline/helpers.js", () => {
   describe("getLastGenUnits", () => {
-    test("should array of groups of units without a childs", () => {
-      const lastGenUnits = getLastGenUnits(UNITS);
+    test("should return array of units without a childs grouped to array by common root", () => {
+      const lastGenUnits = getLastGenUnits(units);
       expect(lastGenUnits).toEqual([
         [
           {
-            title: "Система управления 1.1.1",
-            parentId: 201,
-            unitLevel: 3,
-            unitId: 251,
+            unitId: 1,
+            childUnit: [],
           },
         ],
         [
           {
-            title: "Подразделение 2.1.1.1",
-            parentId: 4,
-            unitLevel: 4,
-            unitId: 5,
+            unitId: 21,
+            childUnit: [],
           },
           {
-            title: "Подразделение 2.1.1.2",
-            parentId: 4,
-            unitLevel: 4,
-            unitId: 51,
+            unitId: 22,
+            childUnit: [],
+          },
+        ],
+        [
+          {
+            unitId: 311,
+            childUnit: [],
           },
           {
-            title: "Орган управления 2.2",
-            parentId: 2,
-            unitLevel: 2,
-            unitId: 33,
-            childUnit: null,
+            unitId: 32,
+            childUnit: [],
           },
         ],
       ]);
