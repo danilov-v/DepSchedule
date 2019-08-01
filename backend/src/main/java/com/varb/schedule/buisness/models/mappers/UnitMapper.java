@@ -24,7 +24,7 @@ public class UnitMapper {
                                 .filter(u -> unit.getUnitId().equals(u.getParentId()))
                                 .collect(Collectors.toList())));
 
-        return units.stream().filter(u -> u.getUnitLevel() == 1).collect(Collectors.toList());
+        return units.stream().filter(u -> u.getParentId() == null).collect(Collectors.toList());
 
     }
 

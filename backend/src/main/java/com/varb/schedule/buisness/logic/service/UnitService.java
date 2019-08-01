@@ -26,14 +26,14 @@ public class UnitService {
 
     public Unit add(UnitPostDto unitPost) {
         Unit unit = modelMapper.map(unitPost, Unit.class);
-        checkUnitLevel(unit);
+        checkParent(unit);
         return unitRepository.save(unit);
     }
 
     public Unit update(Long unitId, UnitPutDto unitPut) {
         Unit unit = findById(unitId);
         modelMapper.map(unitPut, unit);
-        checkUnitLevel(unit);
+        checkParent(unit);
         return unit;
     }
 
@@ -60,12 +60,12 @@ public class UnitService {
                 .orElseThrow(() -> notFindException(unitId));
     }
 
-    private void checkUnitLevel(Unit unit) {
+    private void checkParent(Unit unit) {
         if (unit.getParentId() == null)
             return;
         Unit parent = findById(unit.getParentId());
-        if (parent.getUnitLevel() >= unit.getUnitLevel())
-            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
+//        if (parent.getUnitLevel() >= unit.getUnitLevel())
+//            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
     }
 
     void exists(Long unitId) {
