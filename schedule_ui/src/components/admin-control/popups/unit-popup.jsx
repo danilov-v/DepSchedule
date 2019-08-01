@@ -70,16 +70,11 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
     event.preventDefault();
 
     if (validate(formData)) {
-      const data = {
-        ...formData,
-        parentId: formData.parentId || null,
-      };
-
       try {
         if (isEdit) {
-          await updateUnit(data);
+          await updateUnit(formData);
         } else {
-          await createUnit(data);
+          await createUnit(formData);
         }
 
         onUnitsUpdate();
