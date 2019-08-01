@@ -41,7 +41,7 @@ public class EventDurationService {
             modelMapper.map(eventDurationPutDto, eventDuration);
         } else {
             eventDuration = modelMapper.map(eventDurationPutDto, EventDuration.class);
-            eventDurationRepository.save(eventDuration);
+            eventDurationRepository.save(eventDuration.setCompositePK(new EventDurationPK(unitId, eventTypeId)));
         }
 
         return eventDuration;

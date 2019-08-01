@@ -3,18 +3,19 @@ package com.varb.schedule.buisness.models.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.EventBaseDto;
+import com.varb.schedule.buisness.models.dto.EventBaseReqDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * EventResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
 
 public class EventResponseDto   {
   @JsonProperty("unitId")
@@ -29,8 +30,8 @@ public class EventResponseDto   {
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
 
-  @JsonProperty("id")
-  private Long id;
+  @JsonProperty("eventId")
+  private Long eventId;
 
   @JsonProperty("dateTo")
   private LocalDate dateTo;
@@ -44,7 +45,8 @@ public class EventResponseDto   {
    * Id подразделения (может ссылаться только на подразделение 4-го уровня)
    * @return unitId
   */
-  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @ApiModelProperty(required = true, value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @NotNull
 
 
   public Long getUnitId() {
@@ -64,7 +66,8 @@ public class EventResponseDto   {
    * Дата начала события
    * @return dateFrom
   */
-  @ApiModelProperty(value = "Дата начала события")
+  @ApiModelProperty(required = true, value = "Дата начала события")
+  @NotNull
 
   @Valid
 
@@ -105,7 +108,8 @@ public class EventResponseDto   {
    * Ссылка на тип события 
    * @return eventTypeId
   */
-  @ApiModelProperty(value = "Ссылка на тип события ")
+  @ApiModelProperty(required = true, value = "Ссылка на тип события ")
+  @NotNull
 
 
   public Long getEventTypeId() {
@@ -116,24 +120,24 @@ public class EventResponseDto   {
     this.eventTypeId = eventTypeId;
   }
 
-  public EventResponseDto id(Long id) {
-    this.id = id;
+  public EventResponseDto eventId(Long eventId) {
+    this.eventId = eventId;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get eventId
+   * @return eventId
   */
   @ApiModelProperty(value = "")
 
 
-  public Long getId() {
-    return id;
+  public Long getEventId() {
+    return eventId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setEventId(Long eventId) {
+    this.eventId = eventId;
   }
 
   public EventResponseDto dateTo(LocalDate dateTo) {
@@ -171,13 +175,13 @@ public class EventResponseDto   {
         Objects.equals(this.dateFrom, eventResponse.dateFrom) &&
         Objects.equals(this.note, eventResponse.note) &&
         Objects.equals(this.eventTypeId, eventResponse.eventTypeId) &&
-        Objects.equals(this.id, eventResponse.id) &&
+        Objects.equals(this.eventId, eventResponse.eventId) &&
         Objects.equals(this.dateTo, eventResponse.dateTo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId, id, dateTo);
+    return Objects.hash(unitId, dateFrom, note, eventTypeId, eventId, dateTo);
   }
 
   @Override
@@ -189,7 +193,7 @@ public class EventResponseDto   {
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    eventId: ").append(toIndentedString(eventId)).append("\n");
     sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
     sb.append("}");
     return sb.toString();

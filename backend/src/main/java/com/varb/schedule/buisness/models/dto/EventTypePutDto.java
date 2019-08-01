@@ -8,11 +8,12 @@ import io.swagger.annotations.ApiModelProperty;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * EventTypePutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
 
 public class EventTypePutDto   {
   @JsonProperty("description")
@@ -52,7 +53,7 @@ public class EventTypePutDto   {
   */
   @ApiModelProperty(value = "Отображаемый цвет")
 
-
+@Size(min=3) 
   public String getColor() {
     return color;
   }

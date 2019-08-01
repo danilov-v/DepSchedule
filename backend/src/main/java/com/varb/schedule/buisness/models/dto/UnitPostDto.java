@@ -3,17 +3,17 @@ package com.varb.schedule.buisness.models.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * UnitPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
 
 public class UnitPostDto   {
   @JsonProperty("title")
@@ -34,7 +34,8 @@ public class UnitPostDto   {
    * Название подразделения
    * @return title
   */
-  @ApiModelProperty(value = "Название подразделения")
+  @ApiModelProperty(required = true, value = "Название подразделения")
+  @NotNull
 
 @Size(min=2) 
   public String getTitle() {
@@ -74,7 +75,8 @@ public class UnitPostDto   {
    * Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение 
    * @return unitLevel
   */
-  @ApiModelProperty(value = "Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение ")
+  @ApiModelProperty(required = true, value = "Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение ")
+  @NotNull
 
 
   public Integer getUnitLevel() {

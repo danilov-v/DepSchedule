@@ -138,10 +138,31 @@ paths:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: eventTypePost
+      summary: Добавить тип события
+      tags:
+        - eventTypeId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventTypePost'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventTypeResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   /eventType/{eventTypeId}:
     put:
       operationId: eventTypePut
-      summary: Добавить/Редактировать существующий тип события
+      summary: Редактировать существующий тип события
       tags:
         - eventTypeId
       parameters:
@@ -415,8 +436,19 @@ components:
       required:
         - title
         - unitLevel
-      allOf:
-        - $ref: '#/components/schemas/UnitPut'
+      properties:
+        title:
+          type: string
+          minLength: 2
+          description: "Название подразделения"
+        parentId:
+          type: integer
+          format: int64
+          description: |
+            Ссылка на подразделение верхнего уровня
+            (для подразделения первого уровня не указывается!)
+        unitLevel:
+          $ref: '#/components/schemas/UnitLevel'
     UnitResponse:
       required:
         - unitId
@@ -473,35 +505,48 @@ components:
           description: "Примечание"
         eventTypeId:
           $ref: '#/components/schemas/EventTypeId'
+    EventBaseReq:
+      required:
+        - dateFrom
+        - eventTypeId
+        - unitId
+      properties:
+        unitId:
+          type: integer
+          format: int64
+          description: "Id подразделения
+                        (может ссылаться только на подразделение 4-го уровня)"
+        dateFrom:
+          type: string
+          format: date
+          description: "Дата начала события"
+        note:
+          type: string
+          description: "Примечание"
+        eventTypeId:
+          $ref: '#/components/schemas/EventTypeId'
     EventPut:
       allOf:
         - $ref: '#/components/schemas/EventBase'
         - $ref: '#/components/schemas/DurationOptional'
     EventPost:
-      required:
-        - dateFrom
-        - eventTypeId
-        - unitId
       allOf:
-        - $ref: '#/components/schemas/EventBase'
+        - $ref: '#/components/schemas/EventBaseReq'
         - $ref: '#/components/schemas/DurationOptional'
     EventResponse:
       required:
         - eventId
-        - dateFrom
         - dateTo
-        - eventTypeId
-        - unitId
       allOf:
         - properties:
-            id:
+            eventId:
               type: integer
               format: int64
             dateTo:
               type: string
               format: date
               description: "Дата конца события"
-        - $ref: '#/components/schemas/EventBase'
+        - $ref: '#/components/schemas/EventBaseReq'
     EventTypePut:
       properties:
         description:
@@ -511,6 +556,20 @@ components:
         color:
           type: string
           description: "Отображаемый цвет"
+          minLength: 3
+    EventTypePost:
+      required:
+        - description
+        - color
+      properties:
+        description:
+          type: string
+          description: "Описание события"
+          minLength: 3
+        color:
+          type: string
+          description: "Отображаемый цвет"
+          minLength: 3
     EventTypeResponse:
       required:
         - description
@@ -543,8 +602,6 @@ components:
         duration:
           $ref: '#/components/schemas/Duration'
     EventDurationPut:
-      required:
-        - duration
       allOf:
         - $ref: '#/components/schemas/DurationRequired'
     EventDurationResponse:

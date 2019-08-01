@@ -1,7 +1,7 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventTypeRepository;
-import com.varb.schedule.buisness.models.dto.EventPostDto;
+import com.varb.schedule.buisness.models.dto.EventTypePostDto;
 import com.varb.schedule.buisness.models.dto.EventTypePutDto;
 import com.varb.schedule.buisness.models.entity.EventType;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,23 +25,19 @@ public class EventTypeService {
     private final ModelMapperCustomize modelMapper;
     private final static Function<String, ServiceException> NOT_FIND = (type) -> new ServiceException("Не найден eventTypeId(type=" + type + ")");
 
-    public EventType mergeEventType(Long typeId, EventTypePutDto eventTypePut) {
-        EventType eventType;
-        Optional<EventType> optionalEventType = findOptionalEventTypeByType(typeId);
+    public EventType update(Long typeId, EventTypePutDto eventTypePut) {
+        EventType eventType = findById(typeId);
+        modelMapper.map(eventTypePut, eventType);
 
-        if (optionalEventType.isPresent()) {
-            eventType = optionalEventType.get();
-            modelMapper.map(eventTypePut, eventType);
-        } else {
-            eventType = modelMapper.map(eventTypePut, EventType.class);
-            eventType.setTypeId(typeId);
-            eventTypeRepository.save(eventType);
-        }
-
-        if (StringUtils.isEmpty(eventType.getColor()))
-            throw new ServiceException("'color' can't be empty");
+//        if (StringUtils.isEmpty(eventType.getColor()))
+//            throw new ServiceException("'color' can't be empty");
 
         return eventType;
+    }
+
+    public EventType add(EventTypePostDto eventTypePost) {
+        EventType eventType = modelMapper.map(eventTypePost, EventType.class);
+        return eventTypeRepository.save(eventType);
     }
 
     public void deleteEventType(Long typeId) {
@@ -59,12 +54,8 @@ public class EventTypeService {
         return eventTypeRepository.findAll();
     }
 
-    private Optional<EventType> findOptionalEventTypeByType(Long typeId) {
-        return eventTypeRepository.findById(typeId);
-    }
-
-    private EventType findEventTypeByType(Long typeId) {
-        return findOptionalEventTypeByType(typeId)
+    private EventType findById(Long typeId) {
+        return eventTypeRepository.findById(typeId)
                 .orElseThrow(() -> notFindException(typeId));
     }
 

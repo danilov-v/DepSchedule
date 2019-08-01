@@ -4,18 +4,19 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.varb.schedule.buisness.models.dto.DurationOptionalDto;
-import com.varb.schedule.buisness.models.dto.EventBaseDto;
+import com.varb.schedule.buisness.models.dto.EventBaseReqDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * EventPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
 
 public class EventPostDto   {
   @JsonProperty("unitId")
@@ -42,7 +43,8 @@ public class EventPostDto   {
    * Id подразделения (может ссылаться только на подразделение 4-го уровня)
    * @return unitId
   */
-  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @ApiModelProperty(required = true, value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @NotNull
 
 
   public Long getUnitId() {
@@ -62,7 +64,8 @@ public class EventPostDto   {
    * Дата начала события
    * @return dateFrom
   */
-  @ApiModelProperty(value = "Дата начала события")
+  @ApiModelProperty(required = true, value = "Дата начала события")
+  @NotNull
 
   @Valid
 
@@ -103,7 +106,8 @@ public class EventPostDto   {
    * Ссылка на тип события 
    * @return eventTypeId
   */
-  @ApiModelProperty(value = "Ссылка на тип события ")
+  @ApiModelProperty(required = true, value = "Ссылка на тип события ")
+  @NotNull
 
 
   public Long getEventTypeId() {
