@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { LOCALHOST_URL, DEFAULT_BE_PORT, UNITS_URL } from "config/url";
 
 export const getUnits = async () => {
@@ -9,9 +10,12 @@ export const getUnits = async () => {
   return data;
 };
 
-export const getUnitsTree = async () => {
+export const getUnitsTree = async dateFrom => {
   const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/tree`
+    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/tree?dateFrom=${format(
+      dateFrom,
+      "yyyy-MM-dd"
+    )}`
   );
   const data = await result.json();
 

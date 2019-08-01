@@ -17,10 +17,10 @@ export const useUnits = () => {
   return [units, fetchUnits];
 };
 
-export const useUnitsTree = () => {
+export const useUnitsTree = initialDateFrom => {
   const [units, setUnits] = useState([]);
   const fetchUnitsTree = async () => {
-    const data = await getUnitsTree();
+    const data = await getUnitsTree(initialDateFrom);
 
     setUnits(data);
     console.log("set Units Tree");
@@ -28,7 +28,7 @@ export const useUnitsTree = () => {
 
   useEffect(() => {
     fetchUnitsTree();
-  }, []);
+  }, [initialDateFrom]);
 
   return [units, fetchUnitsTree];
 };

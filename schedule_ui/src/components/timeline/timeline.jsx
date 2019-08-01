@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { addMonths } from "date-fns";
-import { useUnitsTree, useUnits } from "helpers/effects";
+import { useUnits, useUnitsTree } from "helpers/effects";
 import { SECTIONS } from "stub-data/sections";
 import { AdminControl } from "components/admin-control/admin-control";
 import { Title } from "components/title/title";
@@ -20,7 +20,7 @@ export function Timeline() {
 
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 3));
-  const [unitsTree, fetchUnitsTree] = useUnitsTree();
+  const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [units, fetchUnits] = useUnits();
   const container = createRef();
 
