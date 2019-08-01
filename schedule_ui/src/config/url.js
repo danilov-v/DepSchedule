@@ -3,3 +3,4 @@ export const DEFAULT_BE_PORT = 9006;
 
 // PREDEFINED URLS
 export const UNITS_URL = "unit";
+export const EVENT_TYPE_URL = "eventType";

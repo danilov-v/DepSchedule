@@ -15,7 +15,7 @@ import { createUnit } from "helpers/api";
 import {
   SUCCESS_UNIT_NOTIFICATION_DATA,
   FAILED_UNIT_NOTIFICATION_DATA,
-} from "components/notification/notification";
+} from "constants/notifications";
 import { NotificationManager } from "helpers/notification-manager";
 
 const DEFAULT_FORM_DATA = {

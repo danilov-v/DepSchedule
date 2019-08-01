@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "reactstrap";
 import { UnitPopup } from "./popups/unit-popup";
+import { EventTypePopup } from "./popups/event-type-popup";
 
 import "./admin-control.scss";
 
@@ -8,7 +9,7 @@ export function AdminControl(props) {
   return (
     <div className="admin-control mb-5">
       <UnitPopup {...props} />
-      <Button color="primary mr-2">Создать Тип События</Button>
+      <EventTypePopup />
       <Button color="primary">Создать Событие</Button>
     </div>
   );
