@@ -12,20 +12,6 @@ const DEFAULT_NOTIFICATION_DATA = {
   color: "primary",
 };
 
-export const SUCCESS_UNIT_NOTIFICATION_DATA = {
-  isOpen: true,
-  title: "Подразделение",
-  body: "Новое подразделение успешно создано",
-  color: "success",
-};
-
-export const FAILED_UNIT_NOTIFICATION_DATA = {
-  isOpen: true,
-  title: "Подразделение",
-  body: "Ошибка при создании. Проверить данные и попробуйте ещё раз.",
-  color: "danger",
-};
-
 export function Notification({ data }) {
   const [notificationData, setNotificationData] = useState(data);
 

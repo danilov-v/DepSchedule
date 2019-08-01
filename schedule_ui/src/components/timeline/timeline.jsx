@@ -30,7 +30,7 @@ export function Timeline() {
     // will recive new props or staete effect will be called,
     // hovewer we want to scroll to the header only first mount
     // and when calendar date is changed
-  }, [startDate, endDate, units]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [startDate, endDate, unitsTree]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const range = getDates(startDate, endDate);
   const onUnitsUpdate = () => {
@@ -47,6 +47,7 @@ export function Timeline() {
         endDate={endDate}
       />
       <AdminControl units={units} onUnitsUpdate={onUnitsUpdate} />
+
       <div ref={container} className="timeline-wrapper">
         <Row className="stick-to-top">
           <Col>
@@ -70,6 +71,7 @@ export function Timeline() {
           </Col>
         </Row>
       </div>
+
       <Notification />
     </Container>
   );
