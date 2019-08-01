@@ -40,11 +40,47 @@ export const createUnit = async unitData => {
   );
   const data = await result.json();
 
-  if (data && +data.code === 400) {
+  if (result && result.status !== 200) {
     throw new Error(data);
   }
 
   return data;
+};
+
+export const updateUnit = async unitData => {
+  const result = await fetch(
+    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/${unitData.unitId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(unitData),
+    }
+  );
+  const data = await result.json();
+
+  if (result && result.status !== 200) {
+    throw new Error(data);
+  }
+
+  return data;
+};
+
+export const deleteUnit = async unitId => {
+  const result = await fetch(
+    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/${unitId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (result && result.status !== 200) {
+    throw new Error(result);
+  }
 };
 
 export const createEventType = async eventTypeData => {
@@ -60,7 +96,7 @@ export const createEventType = async eventTypeData => {
   );
   const data = await result.json();
 
-  if (data && +data.code === 400) {
+  if (result && result.status !== 200) {
     throw new Error(data);
   }
 
