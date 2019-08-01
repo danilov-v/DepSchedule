@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,11 +19,12 @@ public class EventDurationApiImpl implements EventDurationApi {
     private final EventDurationService eventDurationService;
     private final ModelMapperCustomize modelMapper;
 
+
     @Override
-    public ResponseEntity<List<EventDurationResponseDto>> eventDurationGet() {
+    public ResponseEntity<List<EventDurationResponseDto>> eventDurationGet(@Valid Optional<Long> unitId) {
         return ResponseEntity.ok(
                 modelMapper.mapList(
-                        eventDurationService.getAllEventDuration(),
+                        eventDurationService.getAll(unitId.orElse(null)),
                         EventDurationResponseDto.class));
     }
 

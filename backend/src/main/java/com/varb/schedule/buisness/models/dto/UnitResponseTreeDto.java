@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.*;
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T12:32:14.950960+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")

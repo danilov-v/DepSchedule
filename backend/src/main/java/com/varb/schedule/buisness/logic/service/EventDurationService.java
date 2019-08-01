@@ -9,6 +9,7 @@ import com.varb.schedule.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,8 +65,15 @@ public class EventDurationService {
         eventTypeService.exists(eventTypeId);
     }
 
-    public List<EventDuration> getAllEventDuration() {
-        return eventDurationRepository.findAll();
+    public List<EventDuration> getAll(@Nullable Long unitId) {
+        if (unitId == null)
+            return eventDurationRepository.findAll();
+        else
+            return getByUnitId(unitId);
+    }
+
+    public List<EventDuration> getByUnitId(Long unitId) {
+        return eventDurationRepository.findByUnitId(unitId);
     }
 
     private Optional<EventDuration> findOptionalEventDuration(Long unitId, Long eventTypeId) {
@@ -84,7 +92,7 @@ public class EventDurationService {
 
     private ServiceException notFindException(Long unitId, Long eventTypeId) {
         return new ServiceException("Не найден EventDuration" +
-                "(unitId=" + unitId + ", eventTypeId="+eventTypeId+")");
+                "(unitId=" + unitId + ", eventTypeId=" + eventTypeId + ")");
     }
 
 }

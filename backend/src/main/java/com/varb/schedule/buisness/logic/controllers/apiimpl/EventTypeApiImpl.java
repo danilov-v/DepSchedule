@@ -22,7 +22,7 @@ public class EventTypeApiImpl implements EventTypeApi {
     @Override
     public ResponseEntity<List<EventTypeResponseDto>> eventTypeGet() {
         return ResponseEntity.ok(
-                modelMapper.mapList(eventTypeService.getAllEventTypes(), EventTypeResponseDto.class));
+                modelMapper.mapList(eventTypeService.getAll(), EventTypeResponseDto.class));
     }
 
     @Override

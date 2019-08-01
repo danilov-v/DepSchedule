@@ -332,6 +332,13 @@ paths:
       summary: Получить время выполнения событий для подразделения
       tags:
         - eventDuration
+      parameters:
+        - name: unitId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: successful operation

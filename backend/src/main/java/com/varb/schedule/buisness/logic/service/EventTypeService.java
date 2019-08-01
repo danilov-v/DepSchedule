@@ -50,7 +50,7 @@ public class EventTypeService {
 
     }
 
-    public List<EventType> getAllEventTypes() {
+    public List<EventType> getAll() {
         return eventTypeRepository.findAll();
     }
 
