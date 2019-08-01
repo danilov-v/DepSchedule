@@ -2,6 +2,7 @@ package com.varb.schedule.buisness.logic.controllers.apiimpl;
 
 import com.varb.schedule.buisness.logic.controllers.api.EventTypeApi;
 import com.varb.schedule.buisness.logic.service.EventTypeService;
+import com.varb.schedule.buisness.models.dto.EventTypePostDto;
 import com.varb.schedule.buisness.models.dto.EventTypePutDto;
 import com.varb.schedule.buisness.models.dto.EventTypeResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -33,6 +34,12 @@ public class EventTypeApiImpl implements EventTypeApi {
     @Override
     public ResponseEntity<EventTypeResponseDto> eventTypePut(Long typeId, @Valid EventTypePutDto eventTypePutDto) {
         return ResponseEntity.ok(
-                modelMapper.map(eventTypeService.mergeEventType(typeId, eventTypePutDto), EventTypeResponseDto.class));
+                modelMapper.map(eventTypeService.update(typeId, eventTypePutDto), EventTypeResponseDto.class));
+    }
+
+    @Override
+    public ResponseEntity<EventTypeResponseDto> eventTypePost(@Valid EventTypePostDto eventTypePostDto) {
+        return ResponseEntity.ok(
+                modelMapper.map(eventTypeService.add(eventTypePostDto), EventTypeResponseDto.class));
     }
 }

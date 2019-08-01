@@ -6,6 +6,7 @@
 package com.varb.schedule.buisness.logic.controllers.api;
 
 import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
+import com.varb.schedule.buisness.models.dto.EventTypePostDto;
 import com.varb.schedule.buisness.models.dto.EventTypePutDto;
 import com.varb.schedule.buisness.models.dto.EventTypeResponseDto;
 import io.swagger.annotations.*;
@@ -28,7 +29,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-31T10:54:54.833246+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "eventType", description = "the eventType API")
@@ -78,7 +79,32 @@ public interface EventTypeApi {
     }
 
 
-    @ApiOperation(value = "Добавить/Редактировать существующий тип события", nickname = "eventTypePut", notes = "", response = EventTypeResponseDto.class, authorizations = {
+    @ApiOperation(value = "Добавить тип события", nickname = "eventTypePost", notes = "", response = EventTypeResponseDto.class, authorizations = {
+        @Authorization(value = "JWT")
+    }, tags={ "eventTypeId", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = EventTypeResponseDto.class),
+        @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
+        @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
+    @RequestMapping(value = "/eventType",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    default ResponseEntity<EventTypeResponseDto> eventTypePost(@ApiParam(value = ""  )  @Valid @RequestBody EventTypePostDto eventTypePostDto) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.valueOf(200));
+
+    }
+
+
+    @ApiOperation(value = "Редактировать существующий тип события", nickname = "eventTypePut", notes = "", response = EventTypeResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "eventTypeId", })
     @ApiResponses(value = { 

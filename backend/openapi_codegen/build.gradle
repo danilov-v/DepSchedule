@@ -30,7 +30,8 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
             ensureUniqueParams      : true,
             sortParamsByRequiredFlag: true,
             returnSuccessCode       : true,
-            useOptional             : true
+            useOptional             : true,
+            performBeanValidation   : true
     ]
 
     print(outputDir.toString())

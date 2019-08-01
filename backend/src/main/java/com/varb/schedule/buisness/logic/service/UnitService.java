@@ -32,8 +32,8 @@ public class UnitService {
 
     public Unit updateUnit(Long unitId, UnitPutDto unitPut) {
         Unit unit = findUnitByUnitId(unitId);
-        checkUnitLevel(unit, unitPut.getUnitLevel());
         modelMapper.map(unitPut, unit);
+        checkUnitLevel(unit);
         return unit;
     }
 
@@ -61,15 +61,15 @@ public class UnitService {
     }
 
     private void checkUnitLevel(Unit unit) {
-        checkUnitLevel(unit, unit.getUnitLevel());
-    }
-
-    private void checkUnitLevel(Unit unit, int unitLevel) {
         if (unit.getParentId() == null)
             return;
         Unit parent = findUnitByUnitId(unit.getParentId());
-        if (parent.getUnitLevel() >= unitLevel)
+        if (parent.getUnitLevel() >= unit.getUnitLevel())
             throw new ServiceException("unitLevel должен быть меньше чем у родительской сущности!");
+    }
+
+    private void checkUnitLevel(Unit unit, int unitLevel) {
+
     }
 
     void exists(Long unitId) {
