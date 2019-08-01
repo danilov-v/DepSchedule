@@ -1,4 +1,10 @@
 .calendar {
+  position: sticky;
+  top: 60px;
+  background: #dee2e6;
+  font-size: 1.1rem;
+  font-weight: 550;
+
   &-cell {
     width: 60px;
     height: 60px;

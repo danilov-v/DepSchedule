@@ -24,8 +24,10 @@ const renderUnit = ({ childUnit, title, unitId }, isTopLevel = true) => {
 export function UnitsGrid({ units }) {
   return (
     <div className="units-grid">
-      <div className="text-center units-grid-title">Unit Grid Title</div>
-      {units.map(unit => renderUnit(unit))}
+      <div className="text-center units-grid-title">Список Подразделений</div>
+      <div className="unit-grid-body">
+        {units.map(unit => renderUnit(unit))}
+      </div>
     </div>
   );
 }

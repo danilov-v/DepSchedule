@@ -1,5 +1,9 @@
 export const getNextDay = date => {
-  const resultDate = new Date(date);
+  const resultDate = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
   resultDate.setDate(date.getDate() + 1);
   return resultDate;
 };

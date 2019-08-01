@@ -21,13 +21,8 @@ export function HighLevelSections({ startDate, range, sections }) {
       {range.map(month => (
         <Fragment key={month.name}>
           {month.days.map(day => {
-            const dayWithoutMinutes = new Date(
-              day.getFullYear(),
-              day.getMonth(),
-              day.getDate()
-            );
             const currentSection = sections.find(section =>
-              isWithinInterval(dayWithoutMinutes, {
+              isWithinInterval(day, {
                 start: section.startDate,
                 end: section.endDate,
               })
@@ -50,7 +45,7 @@ export function HighLevelSections({ startDate, range, sections }) {
                       name={currentSection.name}
                       length={
                         getDifferenceInDays({
-                          day: dayWithoutMinutes,
+                          day,
                           currentSection,
                           startDate,
                         }) + 1
