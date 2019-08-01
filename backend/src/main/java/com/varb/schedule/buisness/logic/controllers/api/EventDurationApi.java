@@ -28,7 +28,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T11:31:39.739946+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T12:32:14.950960+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "eventDuration", description = "the eventDuration API")
@@ -64,7 +64,7 @@ public interface EventDurationApi {
     @RequestMapping(value = "/eventDuration",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventDurationResponseDto>> eventDurationGet() {
+    default ResponseEntity<List<EventDurationResponseDto>> eventDurationGet(@ApiParam(value = "") @Valid @RequestParam(value = "unitId", required = false) Optional<Long> unitId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

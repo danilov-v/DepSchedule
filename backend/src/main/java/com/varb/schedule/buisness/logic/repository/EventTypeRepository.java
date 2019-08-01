@@ -9,5 +9,4 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 public interface EventTypeRepository extends JpaRepository<EventType, Long> {
-
 }

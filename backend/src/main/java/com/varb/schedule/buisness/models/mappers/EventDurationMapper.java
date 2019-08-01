@@ -1,6 +1,7 @@
 package com.varb.schedule.buisness.models.mappers;
 
 import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
+import com.varb.schedule.buisness.models.dto.EventDurationResponseDto;
 import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.EventDurationPK;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +16,16 @@ import javax.annotation.PostConstruct;
 public class EventDurationMapper {
     private final ModelMapper modelMapper;
 
-//    @PostConstruct
-//    void init() {
-//
-////        modelMapper.addMappings(new PropertyMap<EventDuration, EventDurationPutDto>() {
-////            protected void configure() {
-////                map().setUnitId(source.getCompositePK().getUnitId());
-////                map().setEventTypeId(source.getCompositePK().getEventTypeId());
-////            }
-////        });
-//
+    @PostConstruct
+    void init() {
+
+//        modelMapper.addMappings(new PropertyMap<EventDuration, EventDurationPutDto>() {
+//            protected void configure() {
+//                map().setUnitId(source.getCompositePK().getUnitId());
+//                map().setEventTypeId(source.getCompositePK().getEventTypeId());
+//            }
+//        });
+
 //        AbstractConverter<EventDurationPutDto, EventDurationPK> toCompositePk = new AbstractConverter<>() {
 //            @Override
 //            protected EventDurationPK convert(EventDurationPutDto source) {
@@ -37,12 +38,12 @@ public class EventDurationMapper {
 //                .addMappings(mapper -> mapper
 //                        .using(toCompositePk)
 //                        .map(source -> source, EventDuration::setCompositePK));
-//
-//        modelMapper
-//                .typeMap(EventDuration.class, EventDurationPutDto.class)
-//                .addMapping(source -> source.getCompositePK().getEventTypeId(), EventDurationPutDto::setEventType)
-//                .addMapping(source -> source.getCompositePK().getUnitId(), EventDurationPutDto::setUnitId);
-//
-//    }
+
+        modelMapper
+                .typeMap(EventDuration.class, EventDurationResponseDto.class)
+                .addMapping(source -> source.getCompositePK().getUnitId(), EventDurationResponseDto::setUnitId)
+                .addMapping(source -> source.getCompositePK().getEventTypeId(), EventDurationResponseDto::setEventTypeId);
+
+    }
 
 }
