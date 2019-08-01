@@ -37,7 +37,7 @@ public class EventMapper {
 //    private LocalDate calculateDateTo(Event event) {
 //        if (event.toString() == null)
 //            return null;
-//        EventDuration eventDuration = eventDurationService.findEventDuration(event.getUnitId(), event.getEventTypeId());
+//        EventDuration eventDuration = eventDurationService.findById(event.getUnitId(), event.getEventTypeId());
 //        return event.getDateFrom().plusDays(eventDuration.getDuration());
 //
 //    }

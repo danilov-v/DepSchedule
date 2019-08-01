@@ -1,7 +1,6 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventRepository;
-import com.varb.schedule.buisness.models.business.UnitLevelEnum;
 import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
@@ -29,20 +28,20 @@ public class EventService {
     private final EventDurationService eventDurationService;
     private final UnitService unitService;
 
-    public Event addEvent(EventPostDto eventPostDto) {
+    public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
         checkBeforeSave(event, eventPostDto.getDuration());
         return eventRepository.save(event);
     }
 
-    public Event updateEvent(Long eventId, EventPutDto eventPut) {
-        Event event = findEventByEventId(eventId);
+    public Event update(Long eventId, EventPutDto eventPut) {
+        Event event = findById(eventId);
         modelMapper.map(eventPut, event);
         checkBeforeSave(event, eventPut.getDuration());
         return event;
     }
 
-    public void deleteEvent(Long unitId) {
+    public void delete(Long unitId) {
         try {
             eventRepository.deleteById(unitId);
         } catch (EmptyResultDataAccessException ex) {
@@ -52,11 +51,11 @@ public class EventService {
 
     }
 
-    public List<Event> getAllEventsBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo) {
-        return eventRepository.findEventByDateFromAfterAndDateToBefore(dateFrom, dateTo);
+    public List<Event> getAllBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo) {
+        return eventRepository.findBetweenDates(dateFrom, dateTo);
     }
 
-    private Event findEventByEventId(Long eventId) {
+    private Event findById(Long eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> notFindException(eventId));
     }
@@ -67,19 +66,19 @@ public class EventService {
 
         eventTypeService.exists(eventTypeId);
 
-        if (unitService.findUnitByUnitId(unitId).getUnitLevel() < UnitLevelEnum.SUBUNIT.getValue())
-            throw new ServiceException("Событие может быть добавлено только к " +
-                    "unit(UnitLevel=" + UnitLevelEnum.SUBUNIT.getValue() + ")");
+//        if (unitService.findById(unitId).getUnitLevel() < UnitLevelEnum.SUBUNIT.getValue())
+//            throw new ServiceException("Событие может быть добавлено только к " +
+//                    "unit(UnitLevel=" + UnitLevelEnum.SUBUNIT.getValue() + ")");
 
         if (duration != null)
-            eventDurationService.mergeEventDuration(
+            eventDurationService.merge(
                     event.getUnitId(),
                     event.getEventTypeId(),
                     new EventDurationPutDto().duration(duration));
 
         event.setDateTo(event.getDateFrom()
                 .plusDays(eventDurationService
-                        .findEventDuration(unitId, eventTypeId)
+                        .findById(unitId, eventTypeId)
                         .getDuration()));
 
     }

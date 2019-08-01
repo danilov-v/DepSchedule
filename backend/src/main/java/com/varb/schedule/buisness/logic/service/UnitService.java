@@ -24,20 +24,20 @@ public class UnitService {
     private final UnitRepository unitRepository;
     private final ModelMapperCustomize modelMapper;
 
-    public Unit addUnit(UnitPostDto unitPost) {
+    public Unit add(UnitPostDto unitPost) {
         Unit unit = modelMapper.map(unitPost, Unit.class);
         checkUnitLevel(unit);
         return unitRepository.save(unit);
     }
 
-    public Unit updateUnit(Long unitId, UnitPutDto unitPut) {
-        Unit unit = findUnitByUnitId(unitId);
+    public Unit update(Long unitId, UnitPutDto unitPut) {
+        Unit unit = findById(unitId);
         modelMapper.map(unitPut, unit);
         checkUnitLevel(unit);
         return unit;
     }
 
-    public void deleteUnit(Long unitId) {
+    public void delete(Long unitId) {
         try {
             unitRepository.deleteById(unitId);
         } catch (EmptyResultDataAccessException ex) {
@@ -55,7 +55,7 @@ public class UnitService {
         return unitRepository.findAll();
     }
 
-    Unit findUnitByUnitId(Long unitId) {
+    Unit findById(Long unitId) {
         return unitRepository.findById(unitId)
                 .orElseThrow(() -> notFindException(unitId));
     }
@@ -63,13 +63,9 @@ public class UnitService {
     private void checkUnitLevel(Unit unit) {
         if (unit.getParentId() == null)
             return;
-        Unit parent = findUnitByUnitId(unit.getParentId());
+        Unit parent = findById(unit.getParentId());
         if (parent.getUnitLevel() >= unit.getUnitLevel())
-            throw new ServiceException("unitLevel должен быть меньше чем у родительской сущности!");
-    }
-
-    private void checkUnitLevel(Unit unit, int unitLevel) {
-
+            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
     }
 
     void exists(Long unitId) {

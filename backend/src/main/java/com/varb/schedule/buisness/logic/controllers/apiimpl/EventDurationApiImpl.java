@@ -32,13 +32,13 @@ public class EventDurationApiImpl implements EventDurationApi {
     public ResponseEntity<EventDurationResponseDto> eventDurationPut(Long unitId, Long eventTypeId, @Valid EventDurationPutDto eventDurationPutDto) {
         return ResponseEntity.ok(
                 modelMapper.map(
-                        eventDurationService.mergeEventDuration(unitId, eventTypeId, eventDurationPutDto),
+                        eventDurationService.merge(unitId, eventTypeId, eventDurationPutDto),
                         EventDurationResponseDto.class));
     }
 
     @Override
     public ResponseEntity<Void> eventDurationDelete(Long unitId, Long eventType) {
-        eventDurationService.deleteEventDuration(unitId, eventType);
+        eventDurationService.delete(unitId, eventType);
         return ResponseEntity.ok().build();
     }
 

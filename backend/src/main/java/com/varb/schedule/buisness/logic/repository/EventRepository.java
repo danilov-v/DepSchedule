@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("select e from Event e where e.dateFrom >= :dateFrom and (:dateTo is null or e.dateTo <= :dateTo)")
-    List<Event> findEventByDateFromAfterAndDateToBefore(LocalDate dateFrom, LocalDate dateTo);
+    List<Event> findBetweenDates(LocalDate dateFrom, LocalDate dateTo);
 }

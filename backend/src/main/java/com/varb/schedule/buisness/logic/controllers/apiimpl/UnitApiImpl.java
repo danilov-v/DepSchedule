@@ -41,19 +41,19 @@ public class UnitApiImpl implements UnitApi {
     @Override
     public ResponseEntity<UnitResponseDto> unitPost(@Valid UnitPostDto unitPostDto) {
         return ResponseEntity.ok(
-                modelMapper.map(unitService.addUnit(unitPostDto),
+                modelMapper.map(unitService.add(unitPostDto),
                         UnitResponseDto.class));
     }
 
     @Override
     public ResponseEntity<Void> unitDelete(Long unitId) {
-        unitService.deleteUnit(unitId);
+        unitService.delete(unitId);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<UnitResponseDto> unitPut(Long unitId, @Valid UnitPutDto unitPutDto) {
-        Unit unit = unitService.updateUnit(unitId, unitPutDto);
+        Unit unit = unitService.update(unitId, unitPutDto);
         return ResponseEntity.ok(
                 modelMapper.map(unit, UnitResponseDto.class));
     }

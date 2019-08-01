@@ -31,11 +31,11 @@ public class EventDurationService {
 //        return eventDurationRepository.save(eventDuration);
 //    }
 
-    public EventDuration mergeEventDuration(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
+    public EventDuration merge(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
 
         EventDuration eventDuration;
-        Optional<EventDuration> optionalEventDuration = findOptionalEventDuration(unitId, eventTypeId);
+        Optional<EventDuration> optionalEventDuration = findByIdOptional(unitId, eventTypeId);
 
         if (optionalEventDuration.isPresent()) {
             eventDuration = optionalEventDuration.get();
@@ -48,7 +48,7 @@ public class EventDurationService {
         return eventDuration;
     }
 
-    public void deleteEventDuration(Long unitId, Long eventTypeId) {
+    public void delete(Long unitId, Long eventTypeId) {
 
         try {
             eventDurationRepository.deleteById(new EventDurationPK(unitId, eventTypeId));
@@ -76,11 +76,11 @@ public class EventDurationService {
         return eventDurationRepository.findByUnitId(unitId);
     }
 
-    private Optional<EventDuration> findOptionalEventDuration(Long unitId, Long eventTypeId) {
+    private Optional<EventDuration> findByIdOptional(Long unitId, Long eventTypeId) {
         return eventDurationRepository.findById(new EventDurationPK(unitId, eventTypeId));
     }
 
-    public EventDuration findEventDuration(Long unitId, Long eventTypeId) {
+    public EventDuration findById(Long unitId, Long eventTypeId) {
         return eventDurationRepository.findById(new EventDurationPK(unitId, eventTypeId))
                 .orElseThrow(() -> notFindException(unitId, eventTypeId));
     }

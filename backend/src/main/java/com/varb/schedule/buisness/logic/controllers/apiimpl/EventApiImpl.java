@@ -24,21 +24,21 @@ public class EventApiImpl implements EventApi {
 
     @Override
     public ResponseEntity<Void> eventDelete(Long eventId) {
-        eventService.deleteEvent(eventId);
+        eventService.delete(eventId);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<EventResponseDto> eventPut(Long eventId, @Valid EventPutDto eventPutDto) {
         return ResponseEntity.ok(
-                modelMapper.map(eventService.updateEvent(eventId, eventPutDto), EventResponseDto.class));
+                modelMapper.map(eventService.update(eventId, eventPutDto), EventResponseDto.class));
     }
 
     @Override
     public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
                 modelMapper.mapList(
-                        eventService.getAllEventsBetweenDates(dateFrom, dateTo.orElse(null)),
+                        eventService.getAllBetweenDates(dateFrom, dateTo.orElse(null)),
                         EventResponseDto.class));
     }
 
@@ -46,6 +46,6 @@ public class EventApiImpl implements EventApi {
     @Override
     public ResponseEntity<EventResponseDto> eventPost(@Valid EventPostDto eventPostDto) {
         return ResponseEntity.ok(
-                modelMapper.map(eventService.addEvent(eventPostDto), EventResponseDto.class));
+                modelMapper.map(eventService.add(eventPostDto), EventResponseDto.class));
     }
 }
