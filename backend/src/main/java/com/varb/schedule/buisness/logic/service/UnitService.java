@@ -61,9 +61,15 @@ public class UnitService {
     }
 
     private void checkParent(Unit unit) {
-        if (unit.getParentId() == null)
+        Long parentId = unit.getParentId();
+        if (parentId == null)
             return;
-        Unit parent = findById(unit.getParentId());
+        if (parentId==0L) {
+            unit.setParentId(null);
+            return;
+        }
+
+        Unit parent = findById(parentId);
 //        if (parent.getUnitLevel() >= unit.getUnitLevel())
 //            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
     }
