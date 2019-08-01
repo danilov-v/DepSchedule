@@ -16,7 +16,10 @@ export function Calendar({ range, unitGroups, showMonth }) {
             {showMonth && (
               <Row className="calendar-title" noGutters>
                 <Col>
-                  <CalendarCell text={MONTH_TRANSLATIONS[month.name]} fluid />
+                  <CalendarCell
+                    text={MONTH_TRANSLATIONS[month.name]}
+                    fluid={month.days && month.days.length > 1}
+                  />
                 </Col>
               </Row>
             )}

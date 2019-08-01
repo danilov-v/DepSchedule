@@ -3,10 +3,13 @@
     border: 1px solid black;
     max-width: unset;
     height: 60px;
-    background: yellow;
+    background: #343a40;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.3rem;
 
     &.empty {
-      background: #dee2e6;
+      background: #f2f3f2;
       border: 0;
 
       &:last-child {

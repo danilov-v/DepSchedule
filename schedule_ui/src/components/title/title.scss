@@ -5,6 +5,10 @@
   margin-bottom: 3rem;
   font-size: 2rem;
   color: $color-grey-dark-3;
+
+  .react-datepicker-popper {
+    z-index: 2;
+  }
 }
 
 .date_picker {
