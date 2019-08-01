@@ -61,6 +61,8 @@ export function HighLevelSections({ startDate, range, sections }) {
           })}
         </Fragment>
       ))}
+      {/*Need to feel the gap beetween units grid and root container*/}
+      <HighLevelSection isEmpty length={11} />
     </Row>
   );
 }
