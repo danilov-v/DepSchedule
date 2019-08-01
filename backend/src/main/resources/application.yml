@@ -2,8 +2,7 @@ spring:
   jackson.default-property-inclusion: non_null
   datasource:
 #    url: jdbc:h2:file:~/ScheduleDB
-#    url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
-    url: jdbc:h2:file:${user.dir}/backend/src/main/resources/db/init/ScheduleDB
+    url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
   
     driverClassName: org.h2.Driver
     username: sa
@@ -45,5 +44,5 @@ spring.profiles: develop
 server.port: 8080
 spring:
   datasource:
-#    url: jdbc:h2:tcp://localhost/${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
-    url: jdbc:h2:tcp://localhost/${user.dir}/backend/src/main/resources/db/init/ScheduleDB
+    url: jdbc:h2:tcp://localhost/${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
+#    url: jdbc:h2:tcp://localhost/${user.dir}/backend/src/main/resources/db/init/ScheduleDB

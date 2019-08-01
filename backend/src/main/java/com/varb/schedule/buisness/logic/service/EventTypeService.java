@@ -26,12 +26,7 @@ public class EventTypeService {
     private final ModelMapperCustomize modelMapper;
     private final static Function<String, ServiceException> NOT_FIND = (type) -> new ServiceException("Не найден eventTypeId(type=" + type + ")");
 
-    public EventType addEventType(EventPostDto eventPostDto) {
-        EventType eventType = modelMapper.map(eventPostDto, EventType.class);
-        return eventTypeRepository.save(eventType);
-    }
-
-    public EventType updateEventType(Long typeId, EventTypePutDto eventTypePut) {
+    public EventType mergeEventType(Long typeId, EventTypePutDto eventTypePut) {
         EventType eventType;
         Optional<EventType> optionalEventType = findOptionalEventTypeByType(typeId);
 

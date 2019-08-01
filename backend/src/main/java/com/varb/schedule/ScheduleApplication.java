@@ -1,7 +1,6 @@
 package com.varb.schedule;
 
-import com.varb.schedule.config.MyApplicationContextInitializer;
-import org.springframework.boot.SpringApplication;
+import com.varb.schedule.config.ApplicationContextInitializerRootDir;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -12,7 +11,7 @@ public class ScheduleApplication {
         //SpringApplication.run(ScheduleApplication.class, args);
 
         new SpringApplicationBuilder(ScheduleApplication.class)
-                .initializers(new MyApplicationContextInitializer())
+                .initializers(new ApplicationContextInitializerRootDir())
                 .run(args);
     }
 

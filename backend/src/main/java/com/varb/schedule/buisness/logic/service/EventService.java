@@ -2,6 +2,7 @@ package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventRepository;
 import com.varb.schedule.buisness.models.business.UnitLevelEnum;
+import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Event;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,14 +31,14 @@ public class EventService {
 
     public Event addEvent(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
-        checkEvent(event);
+        checkBeforeSave(event, eventPostDto.getDuration());
         return eventRepository.save(event);
     }
 
     public Event updateEvent(Long eventId, EventPutDto eventPut) {
         Event event = findEventByEventId(eventId);
         modelMapper.map(eventPut, event);
-        checkEvent(event);
+        checkBeforeSave(event, eventPut.getDuration());
         return event;
     }
 
@@ -61,7 +61,7 @@ public class EventService {
                 .orElseThrow(() -> notFindException(eventId));
     }
 
-    private void checkEvent(Event event) {
+    private void checkBeforeSave(Event event, @Nullable Integer duration) {
         Long unitId = event.getUnitId();
         Long eventTypeId = event.getEventTypeId();
 
@@ -70,6 +70,12 @@ public class EventService {
         if (unitService.findUnitByUnitId(unitId).getUnitLevel() < UnitLevelEnum.SUBUNIT.getValue())
             throw new ServiceException("Событие может быть добавлено только к " +
                     "unit(UnitLevel=" + UnitLevelEnum.SUBUNIT.getValue() + ")");
+
+        if (duration != null)
+            eventDurationService.mergeEventDuration(
+                    event.getUnitId(),
+                    event.getEventTypeId(),
+                    new EventDurationPutDto().duration(duration));
 
         event.setDateTo(event.getDateFrom()
                 .plusDays(eventDurationService
