@@ -5,6 +5,20 @@ export const SUCCESS_UNIT_NOTIFICATION_DATA = {
   color: "success",
 };
 
+export const SUCCESS_UNIT_NOTIFICATION_DATA_EDIT = {
+  isOpen: true,
+  title: "Подразделение",
+  body: "Подразделение успешно обновлено",
+  color: "success",
+};
+
+export const SUCCESS_UNIT_NOTIFICATION_DATA_DELETE = {
+  isOpen: true,
+  title: "Подразделение",
+  body: "Подразделение успешно удалено",
+  color: "success",
+};
+
 export const FAILED_UNIT_NOTIFICATION_DATA = {
   isOpen: true,
   title: "Подразделение",

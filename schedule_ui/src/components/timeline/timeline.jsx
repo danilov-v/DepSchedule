@@ -67,7 +67,11 @@ export function Timeline() {
             />
           </Col>
           <Col className="timeline-info">
-            <UnitsGrid units={unitsTree} />
+            <UnitsGrid
+              units={units}
+              unitsTree={unitsTree}
+              onUnitsUpdate={onUnitsUpdate}
+            />
           </Col>
         </Row>
       </div>
