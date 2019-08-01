@@ -442,7 +442,6 @@ components:
     UnitPost:
       required:
         - title
-        - unitLevel
       properties:
         title:
           type: string

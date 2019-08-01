@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * DurationRequiredDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T12:32:14.950960+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T16:54:40.891793+03:00[Europe/Minsk]")
 
 public class DurationRequiredDto   {
   @JsonProperty("duration")

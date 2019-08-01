@@ -26,6 +26,7 @@ public class Unit {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = true)
     private Integer unitLevel;
 
     @Setter(AccessLevel.PRIVATE)

@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * UnitPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T12:32:14.950960+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T16:54:40.891793+03:00[Europe/Minsk]")
 
 public class UnitPostDto   {
   @JsonProperty("title")
@@ -75,8 +75,7 @@ public class UnitPostDto   {
    * Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение 
    * @return unitLevel
   */
-  @ApiModelProperty(required = true, value = "Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение ")
-  @NotNull
+  @ApiModelProperty(value = "Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение ")
 
 
   public Integer getUnitLevel() {
