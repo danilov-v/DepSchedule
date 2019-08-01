@@ -221,12 +221,46 @@
             "$ref": "#/components/responses/InternalServerError"
           }
         }
+      },
+      "post": {
+        "operationId": "eventTypePost",
+        "summary": "Добавить тип события",
+        "tags": [
+          "eventTypeId"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventTypePost"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventTypeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
       }
     },
     "/eventType/{eventTypeId}": {
       "put": {
         "operationId": "eventTypePut",
-        "summary": "Добавить/Редактировать существующий тип события",
+        "summary": "Редактировать существующий тип события",
         "tags": [
           "eventTypeId"
         ],
@@ -657,11 +691,21 @@
           "title",
           "unitLevel"
         ],
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/UnitPut"
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "description": "Название подразделения"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Ссылка на подразделение верхнего уровня\n(для подразделения первого уровня не указывается!)\n"
+          },
+          "unitLevel": {
+            "$ref": "#/components/schemas/UnitLevel"
           }
-        ]
+        }
       },
       "UnitResponse": {
         "required": [
@@ -742,6 +786,32 @@
           }
         }
       },
+      "EventBaseReq": {
+        "required": [
+          "dateFrom",
+          "eventTypeId",
+          "unitId"
+        ],
+        "properties": {
+          "unitId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Id подразделения (может ссылаться только на подразделение 4-го уровня)"
+          },
+          "dateFrom": {
+            "type": "string",
+            "format": "date",
+            "description": "Дата начала события"
+          },
+          "note": {
+            "type": "string",
+            "description": "Примечание"
+          },
+          "eventTypeId": {
+            "$ref": "#/components/schemas/EventTypeId"
+          }
+        }
+      },
       "EventPut": {
         "allOf": [
           {
@@ -753,14 +823,9 @@
         ]
       },
       "EventPost": {
-        "required": [
-          "dateFrom",
-          "eventTypeId",
-          "unitId"
-        ],
         "allOf": [
           {
-            "$ref": "#/components/schemas/EventBase"
+            "$ref": "#/components/schemas/EventBaseReq"
           },
           {
             "$ref": "#/components/schemas/DurationOptional"
@@ -770,15 +835,12 @@
       "EventResponse": {
         "required": [
           "eventId",
-          "dateFrom",
-          "dateTo",
-          "eventTypeId",
-          "unitId"
+          "dateTo"
         ],
         "allOf": [
           {
             "properties": {
-              "id": {
+              "eventId": {
                 "type": "integer",
                 "format": "int64"
               },
@@ -790,7 +852,7 @@
             }
           },
           {
-            "$ref": "#/components/schemas/EventBase"
+            "$ref": "#/components/schemas/EventBaseReq"
           }
         ]
       },
@@ -803,7 +865,26 @@
           },
           "color": {
             "type": "string",
-            "description": "Отображаемый цвет"
+            "description": "Отображаемый цвет",
+            "minLength": 3
+          }
+        }
+      },
+      "EventTypePost": {
+        "required": [
+          "description",
+          "color"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Описание события",
+            "minLength": 3
+          },
+          "color": {
+            "type": "string",
+            "description": "Отображаемый цвет",
+            "minLength": 3
           }
         }
       },
@@ -856,9 +937,6 @@
         }
       },
       "EventDurationPut": {
-        "required": [
-          "duration"
-        ],
         "allOf": [
           {
             "$ref": "#/components/schemas/DurationRequired"
