@@ -30,7 +30,7 @@ public class EventDurationService {
 //        return eventDurationRepository.save(eventDuration);
 //    }
 
-    public EventDuration updateEventDuration(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
+    public EventDuration mergeEventDuration(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
 
         EventDuration eventDuration;

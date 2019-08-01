@@ -3,17 +3,19 @@ package com.varb.schedule.config;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.MapPropertySource;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class ApplicationContextInitializerRootDir implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     private static final String PROJECT_ROOT_DIRECTORY = "DepSchedule";
 
     @Override
-    public void initialize(ConfigurableApplicationContext appCtx) {
+    public void initialize(@NonNull ConfigurableApplicationContext appCtx) {
         try {
             File pwd = new File(getClass().getResource("/").toURI()); // .../DepSchedule/backend/out/production/classes
 
@@ -26,6 +28,8 @@ public class MyApplicationContextInitializer implements ApplicationContextInitia
             }
 
             String absoluteProjectPathStr = absoluteProjectPath.getAbsolutePath();
+
+            System.out.println("absoluteProjectPath="+absoluteProjectPathStr);
 
             Map<String, Object> propertyMap = Map.of("project.basedir", absoluteProjectPathStr);
             appCtx.getEnvironment().getPropertySources()

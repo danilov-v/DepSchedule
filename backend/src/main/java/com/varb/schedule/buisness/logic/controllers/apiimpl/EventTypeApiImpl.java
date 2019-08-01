@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -34,6 +33,6 @@ public class EventTypeApiImpl implements EventTypeApi {
     @Override
     public ResponseEntity<EventTypeResponseDto> eventTypePut(Long typeId, @Valid EventTypePutDto eventTypePutDto) {
         return ResponseEntity.ok(
-                modelMapper.map(eventTypeService.updateEventType(typeId, eventTypePutDto), EventTypeResponseDto.class));
+                modelMapper.map(eventTypeService.mergeEventType(typeId, eventTypePutDto), EventTypeResponseDto.class));
     }
 }
