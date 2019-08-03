@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface UnitRepository extends JpaRepository<Unit, Long> {
-    @Query(value = "select u from Unit u " +
+    @Query(value = "select distinct u from Unit u " +
             "left join fetch u.events e " +
             "left join fetch u.eventDurations d " +
             "where " +
