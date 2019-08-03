@@ -11,7 +11,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import { isBoolean } from "lodash";
+import { get, isBoolean } from "lodash";
 import { createUnit, updateUnit, deleteUnit } from "helpers/api";
 import {
   SUCCESS_UNIT_NOTIFICATION_DATA,
@@ -26,10 +26,14 @@ const DEFAULT_FORM_DATA = {
   parentId: 0,
 };
 
+const validate = formData =>
+  Boolean(formData.title && formData.title.length >= 2);
+
 export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
   const [isValid, setValidState] = useState(null);
   const [formData, setData] = useState(unit);
   const [isOpen, toggle] = useState(isEdit);
+
   const resetPopup = () => {
     setData(DEFAULT_FORM_DATA);
     setValidState(null);
@@ -40,31 +44,19 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
 
     if (isOpen) {
       resetPopup();
-
       onClose();
     }
   };
 
-  const validate = formData => {
-    if (formData.title && formData.title.length >= 2) {
-      return true;
-    }
-
-    return false;
-  };
-
   const onInputChange = event => {
-    const value = event.target.value;
-    const newFormData = { ...formData, title: value };
+    const newFormData = { ...formData, title: get(event, "target.value") };
 
     setValidState(validate(newFormData));
     setData(newFormData);
   };
-  const onSelectChange = event => {
-    const value = event.target.value;
 
-    setData({ ...formData, parentId: +value });
-  };
+  const onSelectChange = event =>
+    setData({ ...formData, parentId: +get(event, "target.value") });
 
   const onSubmit = async event => {
     event.preventDefault();

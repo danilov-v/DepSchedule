@@ -24,6 +24,12 @@ const DEFAULT_EVENT_TYPE = {
   eventType: "",
 };
 
+const validateEventType = data =>
+  Boolean(get(data, "eventType", "").length > 1);
+const validateEventColor = data =>
+  Boolean(get(data, "eventColor", "").length > 0);
+const validate = data => validateEventType(data) && validateEventColor(data);
+
 export function EventTypePopup() {
   const [isValid, setValidState] = useState(null);
   const [isOpen, toggle] = useState(false);
@@ -33,6 +39,7 @@ export function EventTypePopup() {
     setEventTypeData(DEFAULT_EVENT_TYPE);
     setValidState(null);
   };
+
   const toggleModal = () => {
     toggle(!isOpen);
 
@@ -40,9 +47,6 @@ export function EventTypePopup() {
       resetPopup();
     }
   };
-  const validateEventType = data => get(data, "eventType", "").length > 1;
-  const validateEventColor = data => get(data, "eventColor", "").length > 0;
-  const validate = data => validateEventType(data) && validateEventColor(data);
 
   const handleInputChange = event => {
     const value = event.target.value;
@@ -52,18 +56,14 @@ export function EventTypePopup() {
     setEventTypeData(newEventTypeData);
   };
 
-  const handleColorChange = color => {
-    console.log(color);
+  const handleColorChange = color =>
     setEventTypeData({ ...eventTypeData, eventColor: color.hex });
-  };
 
   const onSubmit = async event => {
     event.preventDefault();
 
     if (validate(eventTypeData)) {
       try {
-        // debugger;
-
         await createEventType({
           description: eventTypeData.eventType,
           color: eventTypeData.eventColor,
