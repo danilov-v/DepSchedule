@@ -1,6 +1,5 @@
 spring:
-  jackson:
-      default-property-inclusion: NON_EMPTY
+  jackson.default-property-inclusion: NON_EMPTY
   datasource:
     #    url: jdbc:h2:file:~/ScheduleDB
     url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
@@ -10,7 +9,7 @@ spring:
     password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: validate
 
   application.name: DepSchedule
 
