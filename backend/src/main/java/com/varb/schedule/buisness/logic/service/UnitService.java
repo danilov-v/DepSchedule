@@ -6,9 +6,7 @@ import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import com.varb.schedule.buisness.models.entity.Unit;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +16,16 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
-public class UnitService {
+public class UnitService extends AbstractService<Unit, Long> {
     private final UnitRepository unitRepository;
     private final ModelMapperCustomize modelMapper;
+
+    public UnitService(UnitRepository repository, ModelMapperCustomize modelMapper) {
+        super(repository, modelMapper);
+        this.unitRepository = repository;
+        this.modelMapper = modelMapper;
+    }
 
     public Unit add(UnitPostDto unitPost) {
         Unit unit = modelMapper.map(unitPost, Unit.class);
@@ -37,49 +40,32 @@ public class UnitService {
         return unit;
     }
 
-    public void delete(Long unitId) {
-        try {
-            unitRepository.deleteById(unitId);
-        } catch (EmptyResultDataAccessException ex) {
-            log.error("", ex);
-            throw notFindException(unitId);
-        }
-
-    }
-
-    public List<Unit> getAllWithEvents(LocalDate dateFrom, @Nullable LocalDate dateTo) {
-        return unitRepository.findAllWithEvents(dateFrom, dateTo);
-    }
-
-    public List<Unit> getAll() {
-        return unitRepository.findAll();
-    }
-
-    Unit findById(Long unitId) {
-        return unitRepository.findById(unitId)
-                .orElseThrow(() -> notFindException(unitId));
+    public List<Unit> getAllExtended(LocalDate dateFrom, @Nullable LocalDate dateTo) {
+        return unitRepository.findAllWithChilds(dateFrom, dateTo);
     }
 
     private void checkParent(Unit unit) {
         Long parentId = unit.getParentId();
+
         if (parentId == null)
             return;
+
         if (parentId==0L) {
             unit.setParentId(null);
             return;
         }
 
-        Unit parent = findById(parentId);
+        if(parentId.equals(unit.getUnitId()))
+            throw new ServiceException("Невозможно установить parentId равное unitId");
+
+        checkExists(parentId);
+
 //        if (parent.getUnitLevel() >= unit.getUnitLevel())
 //            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
     }
 
-    void exists(Long unitId) {
-        if (!unitRepository.existsById(unitId))
-            throw notFindException(unitId);
-    }
-
-    private ServiceException notFindException(Long unitId) {
+    @Override
+    protected ServiceException notFindException(Long unitId) {
         return new ServiceException("Не найдено подразделение (unitId=" + unitId + ")");
     }
 

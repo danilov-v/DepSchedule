@@ -19,7 +19,7 @@ public class EventDurationPK implements Serializable {
     public EventDurationPK() {
     }
 
-    @Column(nullable = false)
+    @Column(name = "UNIT_ID", nullable = false)
     private Long unitId;
 
     @Column(nullable = false)

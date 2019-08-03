@@ -486,6 +486,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/UnitResponseTree'
+            eventDuration:
+              $ref: '#/components/schemas/EventDurationMap'
     UnitLevel:
       type: integer
       format: int32
@@ -623,6 +625,12 @@ components:
               format: int64
             eventTypeId:
               $ref: '#/components/schemas/EventTypeId'
+    EventDurationMap:
+      description: "key - eventDurationType, value - duration"
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Duration'
+    
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."

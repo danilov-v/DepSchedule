@@ -6,9 +6,7 @@ import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.EventDurationPK;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,24 +16,28 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
-public class EventDurationService {
+public class EventDurationService extends AbstractService<EventDuration, EventDurationPK>{
     private final EventDurationRepository eventDurationRepository;
     private final ModelMapperCustomize modelMapper;
     private final UnitService unitService;
     private final EventTypeService eventTypeService;
 
-//    public EventDuration addEventDuration(EventDurationPutDto eventDurationDto) {
-//        EventDuration eventDuration = modelMapper.map(eventDurationDto, EventDuration.class);
-//        return eventDurationRepository.save(eventDuration);
-//    }
+    public EventDurationService(ModelMapperCustomize modelMapper,
+                                EventDurationRepository eventDurationRepository,
+                                UnitService unitService, EventTypeService eventTypeService) {
+        super(eventDurationRepository, modelMapper);
+        this.eventDurationRepository = eventDurationRepository;
+        this.modelMapper = modelMapper;
+        this.unitService = unitService;
+        this.eventTypeService = eventTypeService;
+    }
 
     public EventDuration merge(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
 
         EventDuration eventDuration;
-        Optional<EventDuration> optionalEventDuration = findByIdOptional(unitId, eventTypeId);
+        Optional<EventDuration> optionalEventDuration = findByIdOptional(new EventDurationPK(unitId, eventTypeId));
 
         if (optionalEventDuration.isPresent()) {
             eventDuration = optionalEventDuration.get();
@@ -49,25 +51,18 @@ public class EventDurationService {
     }
 
     public void delete(Long unitId, Long eventTypeId) {
-
-        try {
-            eventDurationRepository.deleteById(new EventDurationPK(unitId, eventTypeId));
-        } catch (EmptyResultDataAccessException ex) {
-            log.error("", ex);
-            throw notFindException(unitId, eventTypeId);
-        }
-
+        super.delete(new EventDurationPK(unitId, eventTypeId));
     }
 
 
     private void checkConsistency(Long unitId, Long eventTypeId) {
-        unitService.exists(unitId);
-        eventTypeService.exists(eventTypeId);
+        unitService.checkExists(unitId);
+        eventTypeService.checkExists(eventTypeId);
     }
 
     public List<EventDuration> getAll(@Nullable Long unitId) {
         if (unitId == null)
-            return eventDurationRepository.findAll();
+            return super.getAll();
         else
             return getByUnitId(unitId);
     }
@@ -76,23 +71,13 @@ public class EventDurationService {
         return eventDurationRepository.findByUnitId(unitId);
     }
 
-    private Optional<EventDuration> findByIdOptional(Long unitId, Long eventTypeId) {
-        return eventDurationRepository.findById(new EventDurationPK(unitId, eventTypeId));
-    }
-
     public EventDuration findById(Long unitId, Long eventTypeId) {
-        return eventDurationRepository.findById(new EventDurationPK(unitId, eventTypeId))
-                .orElseThrow(() -> notFindException(unitId, eventTypeId));
+        return super.findById(new EventDurationPK(unitId, eventTypeId));
     }
 
-    void exists(Long unitId, Long eventTypeId) {
-        if (!eventDurationRepository.existsById(new EventDurationPK(unitId, eventTypeId)))
-            throw notFindException(unitId, eventTypeId);
-    }
-
-    private ServiceException notFindException(Long unitId, Long eventTypeId) {
+    @Override
+    ServiceException notFindException(EventDurationPK eventDurationPK) {
         return new ServiceException("Не найден EventDuration" +
-                "(unitId=" + unitId + ", eventTypeId=" + eventTypeId + ")");
+                "(unitId=" + eventDurationPK.getUnitId() + ", eventTypeId=" + eventDurationPK.getEventTypeId() + ")");
     }
-
 }

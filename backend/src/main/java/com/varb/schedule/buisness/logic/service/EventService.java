@@ -7,9 +7,7 @@ import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +17,22 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
-public class EventService {
+public class EventService extends AbstractService<Event, Long> {
     private final EventRepository eventRepository;
     private final ModelMapperCustomize modelMapper;
     private final EventTypeService eventTypeService;
     private final EventDurationService eventDurationService;
-    private final UnitService unitService;
+
+    public EventService(ModelMapperCustomize modelMapper,
+                        EventRepository eventRepository, EventTypeService eventTypeService,
+                        EventDurationService eventDurationService) {
+        super(eventRepository, modelMapper);
+        this.eventRepository = eventRepository;
+        this.modelMapper = modelMapper;
+        this.eventTypeService = eventTypeService;
+        this.eventDurationService = eventDurationService;
+    }
 
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
@@ -41,30 +47,15 @@ public class EventService {
         return event;
     }
 
-    public void delete(Long unitId) {
-        try {
-            eventRepository.deleteById(unitId);
-        } catch (EmptyResultDataAccessException ex) {
-            log.error("", ex);
-            throw notFindException(unitId);
-        }
-
-    }
-
     public List<Event> getAllBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo) {
         return eventRepository.findBetweenDates(dateFrom, dateTo);
-    }
-
-    private Event findById(Long eventId) {
-        return eventRepository.findById(eventId)
-                .orElseThrow(() -> notFindException(eventId));
     }
 
     private void checkBeforeSave(Event event, @Nullable Integer duration) {
         Long unitId = event.getUnitId();
         Long eventTypeId = event.getEventTypeId();
 
-        eventTypeService.exists(eventTypeId);
+        eventTypeService.checkExists(eventTypeId);
 
 //        if (unitService.findById(unitId).getUnitLevel() < UnitLevelEnum.SUBUNIT.getValue())
 //            throw new ServiceException("Событие может быть добавлено только к " +
@@ -83,13 +74,8 @@ public class EventService {
 
     }
 
-
-    void exists(Long unitId) {
-        if (!eventRepository.existsById(unitId))
-            throw notFindException(unitId);
-    }
-
-    private ServiceException notFindException(Long eventId) {
+    @Override
+    ServiceException notFindException(Long eventId) {
         return new ServiceException("Не существует события (eventId=" + eventId + ")");
     }
 }

@@ -35,7 +35,7 @@ public class UnitApiImpl implements UnitApi {
     @Override
     public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
-                unitMapper.convertToThree(unitService.getAllWithEvents(dateFrom, dateTo.orElse(null))));
+                unitMapper.convertToThree(unitService.getAllExtended(dateFrom, dateTo.orElse(null))));
     }
 
     @Override

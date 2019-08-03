@@ -27,7 +27,7 @@ public class EventTypeApiImpl implements EventTypeApi {
 
     @Override
     public ResponseEntity<Void> eventTypeDelete(Long typeId) {
-        eventTypeService.deleteEventType(typeId);
+        eventTypeService.delete(typeId);
         return ResponseEntity.ok().build();
     }
 

@@ -5,10 +5,11 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
-@EqualsAndHashCode(exclude = "events")
-@ToString(exclude = "events")
+@EqualsAndHashCode(exclude = {"events", "eventDurations"})
+@ToString(exclude = {"events", "eventDurations"})
 @Accessors(chain = true)
 @Entity
 public class Unit {
@@ -30,7 +31,14 @@ public class Unit {
     private Integer unitLevel;
 
     @Setter(AccessLevel.PRIVATE)
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "unitId")
-    private List<Event> events;
+//    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unitId")
+//    @JoinColumn(name = "unitId")
+    private Set<Event> events;
+
+    @Setter(AccessLevel.PRIVATE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "compositePK.unitId")
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "compositePK.unitId")
+    private Set<EventDuration> eventDurations;
 }

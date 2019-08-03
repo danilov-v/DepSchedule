@@ -8,7 +8,9 @@ import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -18,7 +20,7 @@ import org.hibernate.validator.constraints.*;
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-01T16:54:40.891793+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-03T09:42:37.734780+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")
@@ -40,6 +42,10 @@ public class UnitResponseTreeDto   {
   @JsonProperty("childUnit")
   @Valid
   private List<UnitResponseTreeDto> childUnit = null;
+
+  @JsonProperty("eventDuration")
+  @Valid
+  private Map<String, Integer> eventDuration = null;
 
   public UnitResponseTreeDto title(String title) {
     this.title = title;
@@ -179,6 +185,34 @@ public class UnitResponseTreeDto   {
     this.childUnit = childUnit;
   }
 
+  public UnitResponseTreeDto eventDuration(Map<String, Integer> eventDuration) {
+    this.eventDuration = eventDuration;
+    return this;
+  }
+
+  public UnitResponseTreeDto putEventDurationItem(String key, Integer eventDurationItem) {
+    if (this.eventDuration == null) {
+      this.eventDuration = new HashMap<>();
+    }
+    this.eventDuration.put(key, eventDurationItem);
+    return this;
+  }
+
+  /**
+   * key - eventDurationType, value - duration
+   * @return eventDuration
+  */
+  @ApiModelProperty(value = "key - eventDurationType, value - duration")
+
+
+  public Map<String, Integer> getEventDuration() {
+    return eventDuration;
+  }
+
+  public void setEventDuration(Map<String, Integer> eventDuration) {
+    this.eventDuration = eventDuration;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -194,12 +228,13 @@ public class UnitResponseTreeDto   {
         Objects.equals(this.unitLevel, unitResponseTree.unitLevel) &&
         Objects.equals(this.unitId, unitResponseTree.unitId) &&
         Objects.equals(this.events, unitResponseTree.events) &&
-        Objects.equals(this.childUnit, unitResponseTree.childUnit);
+        Objects.equals(this.childUnit, unitResponseTree.childUnit) &&
+        Objects.equals(this.eventDuration, unitResponseTree.eventDuration);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, parentId, unitLevel, unitId, events, childUnit);
+    return Objects.hash(title, parentId, unitLevel, unitId, events, childUnit, eventDuration);
   }
 
   @Override
@@ -213,6 +248,7 @@ public class UnitResponseTreeDto   {
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    events: ").append(toIndentedString(events)).append("\n");
     sb.append("    childUnit: ").append(toIndentedString(childUnit)).append("\n");
+    sb.append("    eventDuration: ").append(toIndentedString(eventDuration)).append("\n");
     sb.append("}");
     return sb.toString();
   }

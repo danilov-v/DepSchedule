@@ -1,10 +1,16 @@
 package com.varb.schedule.buisness.models.mappers;
+
+
 import com.varb.schedule.buisness.models.dto.UnitResponseTreeDto;
+import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.Unit;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import java.util.List;
+
+import javax.annotation.PostConstruct;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -12,6 +18,27 @@ import java.util.stream.Collectors;
 public class UnitMapper {
     private final ModelMapper modelMapper;
 
+
+    @PostConstruct
+    void init() {
+
+        AbstractConverter<Set<EventDuration>, Map<String, Integer>> eventDurationConverter = new AbstractConverter<>() {
+            @Override
+            protected Map<String, Integer> convert(Set<EventDuration> source) {
+                return source.stream()
+                        .collect(Collectors.toMap(
+                                o -> o.getCompositePK().getEventTypeId().toString(),
+                                EventDuration::getDuration));
+            }
+        };
+
+        modelMapper
+                .typeMap(Unit.class, UnitResponseTreeDto.class)
+                .addMappings(mapper -> mapper
+                        .using(eventDurationConverter)
+                        .map(Unit::getEventDurations, UnitResponseTreeDto::setEventDuration));
+
+    }
 
     public List<UnitResponseTreeDto> convertToThree(List<Unit> source) {
         List<UnitResponseTreeDto> units = source.stream()
