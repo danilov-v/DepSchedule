@@ -1,4 +1,4 @@
 ### db
-src/main/resources/db/init/ScheduleDB.trace.db
+*/*.trace.db
 ### zerocode
 target/
