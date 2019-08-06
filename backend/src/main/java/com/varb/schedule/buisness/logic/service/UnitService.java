@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -40,7 +40,7 @@ public class UnitService extends AbstractService<Unit, Long> {
         return unit;
     }
 
-    public List<Unit> getAllExtended(LocalDate dateFrom, @Nullable LocalDate dateTo) {
+    public Set<Unit> getAllExtended(LocalDate dateFrom, @Nullable LocalDate dateTo) {
         return unitRepository.findAllWithChilds(dateFrom, dateTo);
     }
 

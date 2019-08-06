@@ -1,21 +1,19 @@
 package com.varb.schedule.buisness.models.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.EventBaseReqDto;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
-import org.openapitools.jackson.nullable.JsonNullable;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * EventResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-03T09:42:37.734780+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-06T12:35:06.180427+03:00[Europe/Minsk]")
 
 public class EventResponseDto   {
   @JsonProperty("unitId")
@@ -30,11 +28,11 @@ public class EventResponseDto   {
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
 
+  @JsonProperty("duration")
+  private Integer duration;
+
   @JsonProperty("eventId")
   private Long eventId;
-
-  @JsonProperty("dateTo")
-  private LocalDate dateTo;
 
   public EventResponseDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -120,6 +118,29 @@ public class EventResponseDto   {
     this.eventTypeId = eventTypeId;
   }
 
+  public EventResponseDto duration(Integer duration) {
+    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 1
+   * maximum: 1000
+   * @return duration
+  */
+  @ApiModelProperty(required = true, value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
+  @NotNull
+
+@Min(1) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Integer duration) {
+    this.duration = duration;
+  }
+
   public EventResponseDto eventId(Long eventId) {
     this.eventId = eventId;
     return this;
@@ -140,27 +161,6 @@ public class EventResponseDto   {
     this.eventId = eventId;
   }
 
-  public EventResponseDto dateTo(LocalDate dateTo) {
-    this.dateTo = dateTo;
-    return this;
-  }
-
-  /**
-   * Дата конца события
-   * @return dateTo
-  */
-  @ApiModelProperty(value = "Дата конца события")
-
-  @Valid
-
-  public LocalDate getDateTo() {
-    return dateTo;
-  }
-
-  public void setDateTo(LocalDate dateTo) {
-    this.dateTo = dateTo;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -175,13 +175,13 @@ public class EventResponseDto   {
         Objects.equals(this.dateFrom, eventResponse.dateFrom) &&
         Objects.equals(this.note, eventResponse.note) &&
         Objects.equals(this.eventTypeId, eventResponse.eventTypeId) &&
-        Objects.equals(this.eventId, eventResponse.eventId) &&
-        Objects.equals(this.dateTo, eventResponse.dateTo);
+        Objects.equals(this.duration, eventResponse.duration) &&
+        Objects.equals(this.eventId, eventResponse.eventId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId, eventId, dateTo);
+    return Objects.hash(unitId, dateFrom, note, eventTypeId, duration, eventId);
   }
 
   @Override
@@ -193,8 +193,8 @@ public class EventResponseDto   {
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    eventId: ").append(toIndentedString(eventId)).append("\n");
-    sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
     sb.append("}");
     return sb.toString();
   }

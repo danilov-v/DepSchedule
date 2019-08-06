@@ -544,17 +544,13 @@ components:
     EventResponse:
       required:
         - eventId
-        - dateTo
       allOf:
         - properties:
             eventId:
               type: integer
               format: int64
-            dateTo:
-              type: string
-              format: date
-              description: "Дата конца события"
         - $ref: '#/components/schemas/EventBaseReq'
+        - $ref: '#/components/schemas/DurationRequired'
     EventTypePut:
       properties:
         description:

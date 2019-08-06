@@ -24,6 +24,8 @@ public class EventService extends AbstractService<Event, Long> {
     private final EventTypeService eventTypeService;
     private final EventDurationService eventDurationService;
 
+    private static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
+
     public EventService(ModelMapperCustomize modelMapper,
                         EventRepository eventRepository, EventTypeService eventTypeService,
                         EventDurationService eventDurationService) {
@@ -61,16 +63,24 @@ public class EventService extends AbstractService<Event, Long> {
 //            throw new ServiceException("Событие может быть добавлено только к " +
 //                    "unit(UnitLevel=" + UnitLevelEnum.SUBUNIT.getValue() + ")");
 
-        if (duration != null)
+        if (duration != null) {
+            assert duration > 0;
             eventDurationService.merge(
                     event.getUnitId(),
                     event.getEventTypeId(),
                     new EventDurationPutDto().duration(duration));
+        }
 
-        event.setDateTo(event.getDateFrom()
-                .plusDays(eventDurationService
-                        .findById(unitId, eventTypeId)
-                        .getDuration()));
+        event.setDateTo(
+                event.getDateFrom()
+                        .plusDays(eventDurationService
+                                .findById(unitId, eventTypeId)
+                                .getDuration()));
+
+        if (eventRepository.isIntersection(event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId())) {
+            String message = "Cобытие пересекается с другим событием в данном подразделении";
+            throw new ServiceException(message + "(unitId=" + event.getUnitId() + ")", message, INTERSECTION_OF_EVENTS);
+        }
 
     }
 

@@ -2,12 +2,13 @@ package com.varb.schedule.buisness.logic.controllers.apiimpl;
 
 import com.varb.schedule.buisness.logic.controllers.api.EventApi;
 import com.varb.schedule.buisness.logic.service.EventService;
-import com.varb.schedule.buisness.models.dto.*;
+import com.varb.schedule.buisness.models.dto.EventPostDto;
+import com.varb.schedule.buisness.models.dto.EventPutDto;
+import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,6 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@Transactional
 public class EventApiImpl implements EventApi {
     private final EventService eventService;
     private final ModelMapperCustomize modelMapper;

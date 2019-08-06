@@ -43,9 +43,12 @@ public abstract class AbstractService<E, ID> {
         return repository.findById(id);
     }
 
+
+    /**
+     * @throws ServiceException if entity not exists.
+     */
     void checkExists(ID id) {
-        if (!repository.existsById(id))
-            throw notFindException(id);
+        repository.findById(id).orElseThrow(() -> notFindException(id));
     }
 
     abstract ServiceException notFindException(ID id);

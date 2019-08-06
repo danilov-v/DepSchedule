@@ -10,7 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,7 +42,7 @@ public class UnitMapper {
 
     }
 
-    public List<UnitResponseTreeDto> convertToThree(List<Unit> source) {
+    public List<UnitResponseTreeDto> convertToThree(Set<Unit> source) {
         List<UnitResponseTreeDto> units = source.stream()
                 .map(unit -> modelMapper.map(unit, UnitResponseTreeDto.class))
                 .collect(Collectors.toList());
