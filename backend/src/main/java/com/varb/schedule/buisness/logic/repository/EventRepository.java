@@ -15,10 +15,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "   e.dateTo >= :dateFrom and (:dateTo is null or e.dateFrom<=:dateTo)")
     List<Event> findBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo);
 
-    @Query("select (count(e) > 0) from Event e " +
+    @Query("select e from Event e " +
             "where " +
             "   e.dateTo >= :dateFrom and  e.dateFrom<=:dateTo " +
             "   and  e.unitId = :unitId " +
             "   and (:eventId is null or :eventId <> e.eventId)")
-    boolean isIntersection(LocalDate dateFrom, LocalDate dateTo, Long unitId, @Nullable Long eventId);
+    List<Event> findIntersection(LocalDate dateFrom, LocalDate dateTo, Long unitId, @Nullable Long eventId);
 }

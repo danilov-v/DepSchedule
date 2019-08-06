@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -77,9 +78,13 @@ public class EventService extends AbstractService<Event, Long> {
                                 .findById(unitId, eventTypeId)
                                 .getDuration()));
 
-        if (eventRepository.isIntersection(event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId())) {
+        List<Event> eventList = eventRepository.findIntersection(
+                event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
+
+        if (!eventList.isEmpty()) {
             String message = "Cобытие пересекается с другим событием в данном подразделении";
-            throw new ServiceException(message + "(unitId=" + event.getUnitId() + ")", message, INTERSECTION_OF_EVENTS);
+            String ids = eventList.stream().map(e -> e.getEventId().toString()).collect(Collectors.joining(","));
+            throw new ServiceException(message + "(eventId=[" + ids + "])", message, INTERSECTION_OF_EVENTS);
         }
 
     }
