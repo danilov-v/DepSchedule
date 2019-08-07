@@ -4,11 +4,9 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ApplicationContextInitializerRootDir implements ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -29,7 +27,7 @@ public class ApplicationContextInitializerRootDir implements ApplicationContextI
 
             String absoluteProjectPathStr = absoluteProjectPath.getAbsolutePath();
 
-            System.out.println("absoluteProjectPath="+absoluteProjectPathStr);
+            System.out.println("absoluteProjectPath=" + absoluteProjectPathStr);
 
             Map<String, Object> propertyMap = Map.of("project.basedir", absoluteProjectPathStr);
             appCtx.getEnvironment().getPropertySources()
@@ -39,4 +37,5 @@ public class ApplicationContextInitializerRootDir implements ApplicationContextI
             throw new RuntimeException(e);
         }
     }
+    //TODO как искать файл бд при запуске jar ?
 }
