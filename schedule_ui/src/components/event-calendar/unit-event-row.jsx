@@ -4,7 +4,7 @@ import { Row } from "reactstrap";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
 import { getAllDatesFromRange } from "../../utils/date";
-import { differenceInDays, isWithinInterval, addDays, subDays } from "date-fns";
+import { differenceInDays, isWithinInterval, addDays } from "date-fns";
 
 const hasEventInDate = (date, events) =>
   events
