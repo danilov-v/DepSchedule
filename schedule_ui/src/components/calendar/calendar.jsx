@@ -2,12 +2,18 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import { CalendarCell } from "./calendar-cell";
-import { UnitEventRow } from "../unit-event-row/unit-event-row";
+import { EventCalendar } from "../event-calendar/event-calendar";
 import { MONTH_TRANSLATIONS } from "../../constants/calendar";
 
 import "./calendar.scss";
 
-export function Calendar({ range, unitGroups, showMonth }) {
+export function Calendar({
+  range,
+  showMonth,
+  unitGroups,
+  eventTypes,
+  onUnitsUpdate,
+}) {
   return (
     <Fragment>
       <Row className="calendar" noGutters>
@@ -36,9 +42,12 @@ export function Calendar({ range, unitGroups, showMonth }) {
           </Col>
         ))}
       </Row>
-      {unitGroups.map((group, i) => (
-        <UnitEventRow key={i} range={range} unitGroup={group} />
-      ))}
+      <EventCalendar
+        range={range}
+        unitGroups={unitGroups}
+        onUnitsUpdate={onUnitsUpdate}
+        eventTypes={eventTypes}
+      />
     </Fragment>
   );
 }
@@ -51,9 +60,20 @@ Calendar.propTypes = {
     })
   ),
   showMonth: PropTypes.bool,
+  unitGroups: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)), //will change it to PropTypes.shape after BE fixes
+  eventTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      description: PropTypes.string,
+      typeId: PropTypes.number,
+    })
+  ),
+  onUnitsUpdate: PropTypes.func.isRequired,
 };
 
 Calendar.defaultProps = {
   range: [],
   showMonth: false,
+  unitGroups: [],
+  eventTypes: [],
 };

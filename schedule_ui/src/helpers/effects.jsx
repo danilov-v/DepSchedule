@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUnits, getUnitsTree } from "helpers/api";
+import { getUnits, getUnitsTree, getEventTypes } from "helpers/api";
 
 export const useUnits = () => {
   const [units, setUnits] = useState([]);
@@ -28,7 +28,25 @@ export const useUnitsTree = initialDateFrom => {
 
   useEffect(() => {
     fetchUnitsTree();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialDateFrom]);
 
   return [units, fetchUnitsTree];
+};
+
+export const useEventTypes = () => {
+  const [eventTypes, setEventTypes] = useState([]);
+
+  const fetchEventTypes = async () => {
+    const data = await getEventTypes();
+
+    setEventTypes(data);
+    console.log("set Event Types");
+  };
+
+  useEffect(() => {
+    fetchEventTypes();
+  }, []);
+
+  return [eventTypes, fetchEventTypes];
 };
