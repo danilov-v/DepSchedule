@@ -8,7 +8,7 @@ export function AdminControl(props) {
   return (
     <div className="admin-control mb-5">
       <UnitPopup {...props} />
-      <EventTypePopup />
+      <EventTypePopup onEventTypesUpdate={props.onEventTypesUpdate} />
     </div>
   );
 }

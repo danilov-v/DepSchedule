@@ -111,7 +111,9 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
       )}
       <Modal isOpen={isOpen} toggle={toggleModal}>
         <Form className="p-3" onSubmit={onSubmit}>
-          <ModalHeader toggle={toggleModal}>Создание Подразделения</ModalHeader>
+          <ModalHeader toggle={toggleModal}>
+            {isEdit ? "Редактирование" : "Создание"} Подразделения
+          </ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label for="unitTitle">Название Подразделения</Label>

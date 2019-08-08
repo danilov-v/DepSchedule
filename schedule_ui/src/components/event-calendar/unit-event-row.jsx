@@ -6,11 +6,6 @@ import { Event } from "./event";
 import { getAllDatesFromRange } from "../../utils/date";
 import { differenceInDays, isWithinInterval, addDays, subDays } from "date-fns";
 
-const getEventColor = (event, eventTypes) => {
-  const eventType = eventTypes.find(type => type.typeId === event.eventTypeId);
-  return eventType ? eventType.color : "#000";
-};
-
 const hasEventInDate = (date, events) =>
   events
     ? events.some(({ dateFrom, duration }) =>
@@ -43,12 +38,17 @@ export function UnitEventRow({
     <Row key={unit.unitId} noGutters className="event-row">
       {unit.events
         ? unit.events.map(event => {
+            const { color, description } = eventTypes.find(
+              type => type.typeId === event.eventTypeId
+            ) || { color: "#000", description: "" };
+
             return (
               <Event
                 key={event.eventId}
                 event={event}
                 rightOffset={getOffset(startDateCord, event.dateFrom)}
-                color={getEventColor(event, eventTypes)}
+                color={color}
+                title={description}
                 onClick={openEditForm.bind(null, unit, event)}
               />
             );

@@ -30,7 +30,7 @@ const validateEventColor = data =>
   Boolean(get(data, "eventColor", "").length > 0);
 const validate = data => validateEventType(data) && validateEventColor(data);
 
-export function EventTypePopup() {
+export function EventTypePopup({ onEventTypesUpdate }) {
   const [isValid, setValidState] = useState(null);
   const [isOpen, toggle] = useState(false);
   const [eventTypeData, setEventTypeData] = useState(DEFAULT_EVENT_TYPE);
@@ -70,6 +70,7 @@ export function EventTypePopup() {
         });
 
         toggleModal();
+        onEventTypesUpdate();
         NotificationManager.fire(SUCCESS_EVENT_TYPE_NOTIFICATION_DATA);
       } catch {
         setValidState(false);

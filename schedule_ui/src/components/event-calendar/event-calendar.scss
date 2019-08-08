@@ -1,19 +1,15 @@
 .event {
   position: absolute;
   clip-path: polygon(4% 1%, 100% 1%, 100% 100%, 4% 100%, 1% 50%);
-  height: 30px;
-  top: 15px;
+  height: 25px;
+  top: 16px;
   opacity: 0.75;
-  font-size: 59px;
+  text-align: center;
   cursor: pointer;
 
   &-row {
     position: relative;
     overflow: hidden;
-
-    &:hover {
-      // box-shadow: 0 2px 0 #51ff00;
-    }
   }
 
   &-cell {

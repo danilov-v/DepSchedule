@@ -4,7 +4,7 @@ import { UnitEventRow } from "./unit-event-row";
 import { EventPopup } from "./event-popup";
 import { createEvent, updateEvent, removeEvent } from "helpers/api";
 
-import "./unit-calendar.scss";
+import "./event-calendar.scss";
 
 const DEFAULT_FORM_DATA = {
   dateFrom: null,

@@ -223,6 +223,7 @@ export function EventPopup({
               <Label for="note">Описание События</Label>
               <Input
                 type="textarea"
+                rows="6"
                 name="note"
                 id="note"
                 value={note}

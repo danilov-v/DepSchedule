@@ -1,14 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function Event({ event, rightOffset, color, onClick }) {
+export function Event({ event, rightOffset, color, title, onClick }) {
   const style = {
     background: color,
     width: (event.duration + 1) * 60 + "px",
     right: rightOffset + "px",
   };
   return (
-    <div title={event.note} className="event" style={style} onClick={onClick} />
+    <div title={event.note} className="event" style={style} onClick={onClick}>
+      {title}
+    </div>
   );
 }
 

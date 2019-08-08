@@ -27,9 +27,9 @@
       height: 60px;
     }
 
-    &-last-of-group:not(:last-child) {
-      // box-shadow: 0 1px 0 #357ddb;
-    }
+    // &-last-of-group:not(:last-child) {
+    // box-shadow: 0 1px 0 #357ddb;
+    // }
 
     &-last-of-group:hover {
       box-shadow: 0 0 2px 1px var(--primary);

@@ -21,7 +21,7 @@ export function Timeline() {
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 3));
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
-  const [eventTypes] = useEventTypes();
+  const [eventTypes, fetchEventTypes] = useEventTypes();
   const [units, fetchUnits] = useUnits();
   const container = createRef();
 
@@ -30,8 +30,7 @@ export function Timeline() {
     // if we add container to dependencies list each time when component
     // will recive new props or staete effect will be called,
     // hovewer we want to scroll to the header only first mount
-    // and when calendar date is changed
-  }, [startDate, endDate, unitsTree]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [unitsTree]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const range = getDates(startDate, endDate);
   const onUnitsUpdate = () => {
@@ -47,7 +46,11 @@ export function Timeline() {
         startDate={startDate}
         endDate={endDate}
       />
-      <AdminControl units={units} onUnitsUpdate={onUnitsUpdate} />
+      <AdminControl
+        units={units}
+        onUnitsUpdate={onUnitsUpdate}
+        onEventTypesUpdate={fetchEventTypes}
+      />
 
       <div ref={container} className="timeline-wrapper">
         <Row className="stick-to-top">
