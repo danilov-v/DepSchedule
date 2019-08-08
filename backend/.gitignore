@@ -1,4 +1,4 @@
 ### db
-#*.trace.db
+*.trace.db
 ### zerocode
 target/
