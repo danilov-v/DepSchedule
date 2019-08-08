@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { addMonths } from "date-fns";
-import { useUnits, useUnitsTree } from "helpers/effects";
+import { useUnits, useUnitsTree, useEventTypes } from "helpers/effects";
 import { SECTIONS } from "stub-data/sections";
 import { AdminControl } from "components/admin-control/admin-control";
 import { Title } from "components/title/title";
@@ -21,6 +21,7 @@ export function Timeline() {
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 3));
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
+  const [eventTypes] = useEventTypes();
   const [units, fetchUnits] = useUnits();
   const container = createRef();
 
@@ -63,6 +64,8 @@ export function Timeline() {
             <Calendar
               range={range}
               unitGroups={getLastGenUnits(unitsTree)}
+              onUnitsUpdate={onUnitsUpdate}
+              eventTypes={eventTypes}
               showMonth
             />
           </Col>

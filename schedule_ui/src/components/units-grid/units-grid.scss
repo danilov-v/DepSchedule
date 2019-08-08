@@ -4,14 +4,15 @@
   &-title {
     height: 120px;
     background: #f2f3f2;
-    border: 1px solid #000;
+    border: 1px solid #95999c;
     font-size: 22px;
     position: sticky;
     top: 60px;
   }
 
   .unit {
-    border: 1px solid #000;
+    border: 1px solid #95999c;
+    margin: -1px 0 0 -1px;
     flex-grow: 1;
     padding: 0 15px;
     min-width: 160px;
@@ -27,7 +28,12 @@
     }
 
     &-last-of-group:not(:last-child) {
-      box-shadow: 0 2px 0#007bff;
+      // box-shadow: 0 1px 0 #357ddb;
+    }
+
+    &-last-of-group:hover {
+      box-shadow: 0 0 2px 1px var(--primary);
+      border-color: #ececec;
     }
   }
 }
