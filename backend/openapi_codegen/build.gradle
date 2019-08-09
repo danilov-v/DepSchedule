@@ -34,8 +34,6 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
             performBeanValidation   : true
     ]
 
-    print(outputDir.toString())
-
     doLast { // delete unnecessary files
         delete "$rootDirToGenerate/pom.xml"
         delete "$rootDirToGenerate/.openapi-generator-ignore"

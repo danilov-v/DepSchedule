@@ -11,12 +11,6 @@ import java.util.List;
 
 @Component
 public class ModelMapperCustomize extends ModelMapper {
-//    @Override
-//    public <D> D map(Object source, Class<D> destinationType) {
-//        if (source == null)
-//            return null;
-//        return super.map(source, destinationType);
-//    }
 
     public <D> List<D> mapList(Object source, Class<D> destinationType) {
         if (source == null)
