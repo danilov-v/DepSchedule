@@ -19,7 +19,7 @@ export function Timeline() {
   const now = new Date();
 
   const [startDate, setStartDate] = useState(now);
-  const [endDate, setEndDate] = useState(addMonths(now, 3));
+  const [endDate, setEndDate] = useState(addMonths(now, 2));
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [units, fetchUnits] = useUnits();

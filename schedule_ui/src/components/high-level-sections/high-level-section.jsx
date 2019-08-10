@@ -9,7 +9,7 @@ export function HighLevelSection({ name, length, isEmpty }) {
   return (
     <Col
       xs="auto"
-      style={{ width: 60 * length }}
+      style={{ width: 35 * length }}
       className={classnames(
         "section d-flex align-items-center justify-content-center",
         { empty: isEmpty }

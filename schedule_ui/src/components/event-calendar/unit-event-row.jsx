@@ -21,7 +21,7 @@ const getOffset = (startDateCord, dateFrom) => {
     new Date(dateFrom).setHours(0, 0, 0, 0),
     startDateCord.setHours(0, 0, 0, 0)
   );
-  return diff * 60;
+  return diff * 35;
 };
 
 export function UnitEventRow({

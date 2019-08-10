@@ -28,3 +28,25 @@ body,
 #root {
   display: flex;
 }
+
+//TIMELINE PRINT STYLES
+@media print {
+  .admin-control {
+    display: none;
+  }
+
+  .timeline-wrapper {
+    overflow: visible;
+    border: none;
+    transform: scale(0.8, 1) translate(-15%);
+    float: right;
+  }
+
+  .timeline-info {
+    position: initial;
+  }
+}
+
+@page {
+  size: A3 landscape;
+}

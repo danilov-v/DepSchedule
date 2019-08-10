@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 export function Event({ event, rightOffset, color, title, onClick }) {
   const style = {
     background: color,
-    width: (event.duration + 1) * 60 + "px",
+    width: (event.duration + 1) * 35 + "px",
     right: rightOffset + "px",
   };
   return (

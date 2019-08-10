@@ -6,17 +6,18 @@
 
   &-left {
     max-width: max-content;
+  }
 
-    &::after {
-      content: "";
-      display: block;
-      width: 500px;
-    }
+  &-info {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    background: #fff;
   }
 }
 
 .stick-to-top {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 3;
 }

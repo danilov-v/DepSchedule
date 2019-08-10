@@ -12,7 +12,7 @@ export function Title({
 }) {
   return (
     <div className="title">
-      График развёртывания СУ в периуд с &nbsp;
+      График развёртывания СУ в период с &nbsp;
       <DatePicker
         selected={startDate}
         dateFormat="dd/MM/yyyy"

@@ -10,6 +10,7 @@
     &.empty {
       background: #f2f3f2;
       border: 0;
+      border-top: 1px solid #000;
 
       &:last-child {
         border-right: 1px solid black;
