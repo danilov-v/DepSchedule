@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
+import { UncontrolledTooltip } from "reactstrap";
 
 export function Event({ event, rightOffset, color, title, onClick }) {
   const style = {
@@ -8,9 +9,19 @@ export function Event({ event, rightOffset, color, title, onClick }) {
     right: rightOffset + "px",
   };
   return (
-    <div title={event.note} className="event" style={style} onClick={onClick}>
-      {title}
-    </div>
+    <Fragment>
+      <div
+        id={"event-" + event.eventId}
+        className="event"
+        style={style}
+        onClick={onClick}
+      >
+        {title}
+      </div>
+      <UncontrolledTooltip placement="bottom" target={"event-" + event.eventId}>
+        {event.note}
+      </UncontrolledTooltip>
+    </Fragment>
   );
 }
 
