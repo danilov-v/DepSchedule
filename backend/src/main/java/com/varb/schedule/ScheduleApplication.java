@@ -8,7 +8,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class ScheduleApplication {
 
     public static void main(String[] args) {
-        //SpringApplication.run(ScheduleApplication.class, args);
 
         new SpringApplicationBuilder(ScheduleApplication.class)
                 .initializers(new ApplicationContextInitializerRootDir())

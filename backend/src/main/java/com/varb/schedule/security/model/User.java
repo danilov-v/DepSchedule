@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+//@Entity
 @Table(name = "USER")
 public class User {
 
