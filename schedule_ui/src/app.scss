@@ -38,7 +38,8 @@ body,
   .timeline-wrapper {
     overflow: visible;
     border: none;
-    transform: scale(0.8, 1) translate(-15%);
+    border-left: 1px solid #000;
+    transform: scale(0.6, 0.8) translate(-35%);
     float: right;
   }
 
