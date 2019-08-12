@@ -33,7 +33,7 @@ public class ApplicationContextInitializerRootDir implements ApplicationContextI
             for (int i = 0; !absoluteProjectPath.getName().equals(PROJECT_ROOT_DIRECTORY); i++) {
                 absoluteProjectPath = absoluteProjectPath.getParentFile();
                 if (i > 10)
-                    throw new RuntimeException("The root directory of the project was not found! " +
+                    throw new IllegalStateException("The root directory of the project was not found! " +
                             "(Expected root directory = " + PROJECT_ROOT_DIRECTORY + ")");
             }
 
@@ -42,7 +42,7 @@ public class ApplicationContextInitializerRootDir implements ApplicationContextI
             return absoluteProjectPathStr;
 
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
