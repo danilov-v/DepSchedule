@@ -7,7 +7,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
@@ -17,12 +16,11 @@ import java.io.FileNotFoundException;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class DataSourceBean {
+public class DataSourceConfiguration {
     private static final String DB_URL_PROP_NAME = "spring.datasource.jdbc-url";
     private final ConfigurableApplicationContext applicationContext;
 
     @Bean
-    @Primary
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource(){
         dataSourceValidate();
@@ -43,6 +41,8 @@ public class DataSourceBean {
             dbUrl = dbUrl.replace("jdbc:h2:file:", "") + ".mv.db";
             if (!new File(dbUrl).isFile())
                 throw new FileNotFoundException("Не удалось обнаружить файл базы данных по пути " + dbUrl);
+
+            log.info("DbStorageFilePath: " + dbUrl);
 
         } catch (Exception e) {
             log.error("", e);
