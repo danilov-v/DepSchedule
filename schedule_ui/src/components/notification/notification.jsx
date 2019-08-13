@@ -21,7 +21,7 @@ export function Notification({ data }) {
 
       setTimeout(() => {
         setNotificationData(DEFAULT_NOTIFICATION_DATA);
-      }, 5000);
+      }, 3000);
     });
   }, []);
 
