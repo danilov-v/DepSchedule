@@ -1,12 +1,12 @@
 spring:
   #  jackson.default-property-inclusion: non_null
   datasource:
-    name: ds-h2
     #    url: jdbc:h2:file:~/ScheduleDB
-    jdbc-url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
+    url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
+
+    driverClassName: org.h2.Driver
     username: sa
     password: password
-    driverClassName: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: validate
@@ -40,7 +40,7 @@ spring:
 spring:
   profiles: test
   datasource:
-    jdbc-url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
     username: sa
     password:
   jpa:
