@@ -30,6 +30,7 @@ spring:
 spring:
   profiles: h2Server
   h2:
+    #jdbc:h2:file:/${pathToProject}/DepSchedule/backend/src/main/resources/db/init/ScheduleDB - JDBC URL
     console.enabled: true
     tcp:
       enabled: true
