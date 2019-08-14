@@ -24,8 +24,19 @@ logging.level:
 spring:
   profiles: default
   profiles.include: h2Server
+  
+  
 ---
-server.port: 8080
+spring:
+  profiles: h2Server
+  h2:
+    console.enabled: true
+    tcp:
+      enabled: true
+      port: 9092
+      
+      
+---
 spring:
   profiles: test
   datasource:
@@ -34,15 +45,7 @@ spring:
     password:
   jpa:
     hibernate.ddl-auto: create-drop
+    
+server.port: 8080
 
 #  profiles.include: h2Server
-#  datasource:
-#    url: jdbc:h2:file:./src/test/resources/db/init/ScheduleDB_test
-
----
-spring.profiles: develop
-server.port: 8080
-spring:
-  datasource:
-    jdbc-url: jdbc:h2:tcp://localhost/${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
-#    url: jdbc:h2:tcp://localhost/${user.dir}/backend/src/main/resources/db/init/ScheduleDB
