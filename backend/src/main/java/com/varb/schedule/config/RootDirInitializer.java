@@ -11,8 +11,8 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 @Slf4j
-public class ApplicationContextInitializerRootDir implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-    private static final String PROJECT_ROOT_DIRECTORY = "DepSchedule";
+public class RootDirInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+    private static final String BACKEND_PROJECT_DIRECTORY = "backend";
 
     /**
      * Програмно прописываем свойство 'project.basedir' в PropertySource
@@ -28,21 +28,22 @@ public class ApplicationContextInitializerRootDir implements ApplicationContextI
 
     private String getAbsoluteProjectPath() {
         try {
+            File backendProjectDir = new File(getClass().getResource("/").toURI());
 
-            File absoluteProjectPath = new File(getClass().getResource("/").toURI());
-            for (int i = 0; !absoluteProjectPath.getName().equals(PROJECT_ROOT_DIRECTORY); i++) {
-                absoluteProjectPath = absoluteProjectPath.getParentFile();
+            for (int i = 0; !backendProjectDir.getName().equals(BACKEND_PROJECT_DIRECTORY); i++) {
+                backendProjectDir = backendProjectDir.getParentFile();
+
                 if (i > 10)
-                    throw new RuntimeException("The root directory of the project was not found! " +
-                            "(Expected root directory = " + PROJECT_ROOT_DIRECTORY + ")");
+                    throw new IllegalStateException("The backend directory of the project was not found! ");
             }
 
-            String absoluteProjectPathStr = absoluteProjectPath.getAbsolutePath();
-            log.info("absoluteProjectPath=" + absoluteProjectPathStr);
-            return absoluteProjectPathStr;
+            String rootProjectDir = backendProjectDir.getParentFile().getAbsolutePath();
+            log.info("RootProjectDir: " + rootProjectDir);
+
+            return rootProjectDir;
 
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 

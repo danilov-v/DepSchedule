@@ -2,7 +2,7 @@ spring:
   #  jackson.default-property-inclusion: non_null
   datasource:
     #    url: jdbc:h2:file:~/ScheduleDB
-    url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
+    jdbc-url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
 
     driverClassName: org.h2.Driver
     username: sa
@@ -24,25 +24,29 @@ logging.level:
 spring:
   profiles: default
   profiles.include: h2Server
+  
+  
 ---
-server.port: 8080
+spring:
+  profiles: h2Server
+  h2:
+    #jdbc:h2:file:/${pathToProject}/DepSchedule/backend/src/main/resources/db/init/ScheduleDB - JDBC URL
+    console.enabled: true
+    tcp:
+      enabled: true
+      port: 9092
+      
+      
+---
 spring:
   profiles: test
   datasource:
-    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    jdbc-url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
     username: sa
     password:
   jpa:
     hibernate.ddl-auto: create-drop
+    
+server.port: 8080
 
 #  profiles.include: h2Server
-#  datasource:
-#    url: jdbc:h2:file:./src/test/resources/db/init/ScheduleDB_test
-
----
-spring.profiles: develop
-server.port: 8080
-spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
-#    url: jdbc:h2:tcp://localhost/${user.dir}/backend/src/main/resources/db/init/ScheduleDB

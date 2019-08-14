@@ -10,10 +10,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * AbstractService for implement default service operations for a specific type.
+ *
+ * @param <T> the domain type the repository manages
+ * @param <ID> the type of the id of the entity the repository manages
+ */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractService<E, ID> {
-    private final JpaRepository<E, ID> repository;
+public abstract class AbstractService<T, ID> {
+    private final JpaRepository<T, ID> repository;
     private final ModelMapperCustomize modelMapper;
 
     public void delete(ID id) {
@@ -26,20 +32,20 @@ public abstract class AbstractService<E, ID> {
 
     }
 
-    public List<E> getAll() {
+    public List<T> getAll() {
         return repository.findAll();
     }
 
-    public Optional<E> get(ID id) {
+    public Optional<T> get(ID id) {
         return repository.findById(id);
     }
 
-    E findById(ID id) {
+    T findById(ID id) {
         return repository.findById(id)
                 .orElseThrow(() -> notFindException(id));
     }
 
-    Optional<E> findByIdOptional(ID id) {
+    Optional<T> findByIdOptional(ID id) {
         return repository.findById(id);
     }
 

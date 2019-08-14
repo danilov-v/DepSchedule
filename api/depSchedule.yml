@@ -11,12 +11,14 @@ servers:
 tags:
   - name: event
     description: 'Информация о событии (подразделение, дата начала, дата конца)'
-  - name: eventTypeId
+  - name: eventType
     description: 'Информация о типе событий (цвет, описание)'
   - name: unit
     description: 'Информация о подразделении (название, уровень подразделения)'
   - name: eventDuration
     description: 'Информация о времени выполнения событий в каждом подразделении'
+  - name: period
+    description: 'Информация о периудах (High Level Section)'
 paths:
   /event:
     get:
@@ -124,7 +126,7 @@ paths:
       operationId: eventTypeGet
       summary: Список типов событий
       tags:
-        - eventTypeId
+        - eventType
       responses:
         200:
           description: Array of event
@@ -142,7 +144,7 @@ paths:
       operationId: eventTypePost
       summary: Добавить тип события
       tags:
-        - eventTypeId
+        - eventType
       requestBody:
         content:
           application/json:
@@ -164,7 +166,7 @@ paths:
       operationId: eventTypePut
       summary: Редактировать существующий тип события
       tags:
-        - eventTypeId
+        - eventType
       parameters:
         - name: eventTypeId
           in: path
@@ -191,7 +193,7 @@ paths:
       operationId: eventTypeDelete
       summary: Удалить существующий тип события
       tags:
-        - eventTypeId
+        - eventType
       parameters:
         - name: eventTypeId
           in: path
@@ -410,6 +412,94 @@ paths:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /period:
+    get:
+      operationId: periodGet
+      summary: Список периудов
+      tags:
+        - period
+      responses:
+        200:
+          description: Array of event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PeriodResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: periodPost
+      summary: Добавить период
+      tags:
+        - period
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Period'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /period/{periodId}:
+    put:
+      operationId: periodPut
+      summary: Редактировать существующие периуды
+      tags:
+        - period
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Period'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: periodDelete
+      summary: Удалить существующий период
+      tags:
+        - period
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 components:
   responses:
     BadRequest:
@@ -592,7 +682,7 @@ components:
     Duration:
       type: integer
       format: int32
-      minimum: 1
+      minimum: 0
       maximum: 1000
       description: "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)"
     DurationOptional:
@@ -626,6 +716,25 @@ components:
       type: object
       additionalProperties:
         $ref: '#/components/schemas/Duration'
+    
+    
+    Period:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: "Название периода"
+    PeriodResponse:
+      required:
+        - periodId
+      allOf:
+        - $ref: '#/components/schemas/Period'
+        - properties:
+            periodId:
+              type: integer
+              format: int64
     
     ErrorMessage:
       type: object

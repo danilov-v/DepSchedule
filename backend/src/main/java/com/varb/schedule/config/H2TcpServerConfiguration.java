@@ -14,39 +14,23 @@ import java.sql.SQLException;
  */
 @Configuration
 @Profile("h2Server")
-public class H2ServerConfiguration {
+public class H2TcpServerConfiguration {
 
-    public H2ServerConfiguration(@Value("${h2.tcp.port:9092}") String h2TcpPort,
-                                 @Value("${h2.web.port:8082}") String h2WebPort) {
+    public H2TcpServerConfiguration(@Value("${h2.tcp.port:9092}") String h2TcpPort) {
         this.h2TcpPort = h2TcpPort;
-        this.h2WebPort = h2WebPort;
     }
 
     // TCP port for remote connections, default 9092
     private final String h2TcpPort;
 
-    // Web port, default 8082
-    private final String h2WebPort;
-
     /**
      * TCP connection to connect with SQL clients to the embedded h2 database.
      *
-     * Connect to "jdbc:h2:tcp://localhost:9092/mem:testdb", username "sa", password empty.
+     * Connect to "jdbc:h2:tcp://localhost:9092/file:/${pathToProject}/backend/src/main/resources/db/init/ScheduleDB".
      */
     @Bean
-    @ConditionalOnExpression("${h2.tcp.enabled:true}")
+    @ConditionalOnExpression("${spring.h2.tcp.enabled:false}")
     public Server h2TcpServer() throws SQLException {
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", h2TcpPort).start();
-    }
-
-    /**
-     * Web console for the embedded h2 database.
-     *
-     * Go to http://localhost:8082 and connect to the database "jdbc:h2:mem:testdb", username "sa", password empty.
-     */
-    @Bean
-    @ConditionalOnExpression("${h2.web.enabled:false}")
-    public Server h2WebServer() throws SQLException {
-        return Server.createWebServer("-web", "-webAllowOthers", "-webPort", h2WebPort).start();
     }
 }
