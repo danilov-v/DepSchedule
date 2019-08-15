@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * EventBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-06T12:35:06.180427+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-14T11:33:21.219802+03:00[Europe/Minsk]")
 
 public class EventBaseDto   {
   @JsonProperty("unitId")

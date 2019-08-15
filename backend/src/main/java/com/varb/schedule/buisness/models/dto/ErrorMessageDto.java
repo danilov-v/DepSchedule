@@ -11,7 +11,7 @@ import java.util.Objects;
  * Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя.
  */
 @ApiModel(description = "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-06T12:35:06.180427+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-14T11:33:21.219802+03:00[Europe/Minsk]")
 
 public class ErrorMessageDto   {
   @JsonProperty("code")

@@ -23,7 +23,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-06T12:35:06.180427+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-14T11:33:21.219802+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "eventType", description = "the eventType API")
@@ -35,7 +35,7 @@ public interface EventTypeApi {
 
     @ApiOperation(value = "Удалить существующий тип события", nickname = "eventTypeDelete", notes = "", authorizations = {
         @Authorization(value = "JWT")
-    }, tags={ "eventTypeId", })
+    }, tags={ "eventType", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
@@ -51,7 +51,7 @@ public interface EventTypeApi {
 
     @ApiOperation(value = "Список типов событий", nickname = "eventTypeGet", notes = "", response = EventTypeResponseDto.class, responseContainer = "List", authorizations = {
         @Authorization(value = "JWT")
-    }, tags={ "eventTypeId", })
+    }, tags={ "eventType", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Array of event", response = EventTypeResponseDto.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
@@ -75,7 +75,7 @@ public interface EventTypeApi {
 
     @ApiOperation(value = "Добавить тип события", nickname = "eventTypePost", notes = "", response = EventTypeResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
-    }, tags={ "eventTypeId", })
+    }, tags={ "eventType", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = EventTypeResponseDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
@@ -100,7 +100,7 @@ public interface EventTypeApi {
 
     @ApiOperation(value = "Редактировать существующий тип события", nickname = "eventTypePut", notes = "", response = EventTypeResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
-    }, tags={ "eventTypeId", })
+    }, tags={ "eventType", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = EventTypeResponseDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),

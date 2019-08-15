@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * DurationOptionalDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-06T12:35:06.180427+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-14T11:33:21.219802+03:00[Europe/Minsk]")
 
 public class DurationOptionalDto   {
   @JsonProperty("duration")
@@ -23,13 +23,13 @@ public class DurationOptionalDto   {
 
   /**
    * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
-   * minimum: 1
+   * minimum: 0
    * maximum: 1000
    * @return duration
   */
   @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
 
-@Min(1) @Max(1000) 
+@Min(0) @Max(1000) 
   public Integer getDuration() {
     return duration;
   }
