@@ -90,6 +90,19 @@ export function EventPopup({
     }
   };
 
+  const handleError = ({ code, userMessage, devMessage }) => {
+    NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
+    console.log(devMessage);
+
+    switch (code) {
+      case "INTERSECTION_OF_EVENTS":
+        setErrors({ dates: userMessage });
+        break;
+      default:
+        return;
+    }
+  };
+
   async function submitForm() {
     const duration = differenceInDays(dateTo, dateFrom);
 
@@ -104,8 +117,7 @@ export function EventPopup({
 
       NotificationManager.fire(SUCCESS_EVENT_NOTIFICATION_DATA);
     } catch (e) {
-      setErrors({ dates: e.userMessage });
-      NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
+      handleError(e);
     }
   }
 

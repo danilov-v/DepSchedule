@@ -6,11 +6,15 @@ export const useForm = (callback, initialState = {}, validate) => {
   const [errors, setErrors] = useState({});
   const [errorsShown, setErrorsShown] = useState(false);
 
-  useEffect(() => {
-    //RESET FORM WIHT NEW INITIAL STATE
+  const resetForm = () => {
     setValues(initialState);
     setErrors({});
     setErrorsShown(false);
+  };
+
+  useEffect(() => {
+    resetForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialState]);
 
   const onChange = newValues => {
