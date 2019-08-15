@@ -128,9 +128,7 @@ export const createEvent = async eventData => {
   const data = await result.json();
 
   if (result.status === 400) {
-    console.log(data);
-
-    throw new Error(data.code);
+    throw data;
   }
 
   return data;
@@ -151,7 +149,7 @@ export const updateEvent = async eventData => {
   const data = await result.json();
 
   if (result.status === 400) {
-    throw new Error(data.code);
+    throw data;
   }
 
   return data;

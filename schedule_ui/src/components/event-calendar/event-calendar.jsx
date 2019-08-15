@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { UnitEventRow } from "./unit-event-row";
 import { EventPopup } from "./event-popup";
 import { createEvent, updateEvent, removeEvent } from "helpers/api";
+import { isDate, addDays } from "date-fns";
 
 import "./event-calendar.scss";
 
@@ -21,8 +22,8 @@ export function EventCalendar({
   onUnitsUpdate,
   eventTypes,
 }) {
-  const [isCreateFormOpen, toggleCreate] = useState(false);
-  const [isEditFormOpen, toggleEdit] = useState(false);
+  const [isFormOpen, toggle] = useState(false);
+  const [formType, setFormType] = useState("create");
   const [unit, setUnit] = useState({});
 
   const [defaultFormData, setDefaultFormData] = useState(DEFAULT_FORM_DATA);
@@ -34,28 +35,44 @@ export function EventCalendar({
   const toggleCreateForm = (unit, dateFrom) => {
     unit && setUnit(unit);
 
-    isCreateFormOpen
+    const eventTypeId = eventTypes[0].typeId;
+    const duration = unit.eventTypeDurations
+      ? unit.eventTypeDurations[defaultFormData.eventTypeId] || 1
+      : 1;
+    const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
+
+    isFormOpen
       ? setDefaultFormData(DEFAULT_FORM_DATA)
       : setDefaultFormData({
           ...DEFAULT_FORM_DATA,
           unitId: unit.unitId,
+          dateTo,
           dateFrom,
-          eventTypeId: eventTypes[0].typeId,
+          duration,
+          eventTypeId,
         });
-    toggleCreate(!isCreateFormOpen);
+
+    setFormType("create");
+    toggle(!isFormOpen);
   };
 
   const toggleEditForm = (unit, event) => {
-    unit && setUnit(unit);
+    if (!isFormOpen) {
+      setFormType("edit");
+      setUnit(unit);
 
-    isEditFormOpen
-      ? setDefaultFormData(DEFAULT_FORM_DATA)
-      : setDefaultFormData({
-          ...event,
-          dateFrom: new Date(event.dateFrom),
-        });
+      const dateFrom = new Date(event.dateFrom);
+      const dateTo = addDays(dateFrom, event.duration);
 
-    toggleEdit(!isEditFormOpen);
+      setDefaultFormData({
+        ...event,
+        dateFrom,
+        dateTo,
+      });
+    } else {
+      setDefaultFormData(DEFAULT_FORM_DATA);
+    }
+    toggle(!isFormOpen);
   };
 
   return (
@@ -71,22 +88,12 @@ export function EventCalendar({
         />
       ))}
       <EventPopup
-        type="create"
+        type={formType}
         title={unit.title}
-        isOpen={isCreateFormOpen}
-        toggle={toggleCreateForm}
-        eventTypeDurations={unit.eventDuration}
-        onSubmit={onEventCreate}
-        defaultFormData={defaultFormData}
-        eventTypes={eventTypes}
-      />
-      <EventPopup
-        type="edit"
-        title={unit.title}
-        isOpen={isEditFormOpen}
+        isOpen={isFormOpen}
         toggle={toggleEditForm}
         eventTypeDurations={unit.eventDuration}
-        onSubmit={onEventUpdate}
+        onEventSubmit={formType === "create" ? onEventCreate : onEventUpdate}
         defaultFormData={defaultFormData}
         eventTypes={eventTypes}
         onEventRemove={onEventRemove}

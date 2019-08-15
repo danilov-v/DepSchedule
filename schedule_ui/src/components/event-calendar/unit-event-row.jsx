@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Row } from "reactstrap";
+import { differenceInDays, isWithinInterval, addDays } from "date-fns";
+import { getAllDatesFromRange } from "utils/date";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
-import { getAllDatesFromRange } from "../../utils/date";
-import { differenceInDays, isWithinInterval, addDays } from "date-fns";
 
-const hasEventInDate = (date, events) =>
+const isEventInDate = (date, events) =>
   events
     ? events.some(({ dateFrom, duration }) =>
         isWithinInterval(date, {
@@ -58,7 +58,7 @@ export function UnitEventRow({
         <EventCell
           key={date.getTime()}
           onClick={openCreateForm.bind(null, unit, date)}
-          hasEvent={hasEventInDate(date, unit.events)}
+          hasEvent={isEventInDate(date, unit.events)}
         />
       ))}
     </Row>
