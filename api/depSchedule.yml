@@ -722,10 +722,18 @@ components:
       type: object
       required:
         - title
+        - startDate
+        - endDate
       properties:
-        title:
+        name:
           type: string
           description: "Название периода"
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
     PeriodResponse:
       required:
         - periodId
