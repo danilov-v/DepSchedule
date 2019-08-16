@@ -113,6 +113,42 @@ export const createEventType = async eventTypeData => {
   return data;
 };
 
+export const updateEventType = async eventTypeData => {
+  const result = await fetch(
+    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_TYPE_URL}/${eventTypeData.typeId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventTypeData),
+    }
+  );
+  const data = await result.json();
+
+  if (result && result.status !== 200) {
+    throw new Error(data);
+  }
+
+  return data;
+};
+
+export const removeEventType = async typeId => {
+  const result = await fetch(
+    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_TYPE_URL}/${typeId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (result.status === 400) {
+    throw new Error();
+  }
+};
+
 export const createEvent = async eventData => {
   const result = await fetch(
     `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_URL}`,

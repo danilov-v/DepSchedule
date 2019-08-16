@@ -37,6 +37,10 @@ export function Timeline() {
     fetchUnits();
     fetchUnitsTree();
   };
+  const onEventTypesUpdate = () => {
+    fetchUnitsTree(); //if event deleted then all relative events will also destroed
+    fetchEventTypes();
+  };
 
   return (
     <Container className="timeline d-flex flex-column" fluid>
@@ -48,8 +52,9 @@ export function Timeline() {
       />
       <AdminControl
         units={units}
+        eventTypes={eventTypes}
         onUnitsUpdate={onUnitsUpdate}
-        onEventTypesUpdate={fetchEventTypes}
+        onEventTypesUpdate={onEventTypesUpdate}
       />
 
       <div ref={container} className="timeline-wrapper">

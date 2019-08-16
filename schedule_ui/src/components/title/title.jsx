@@ -23,6 +23,7 @@ export function Title({
       &nbsp; по &nbsp;
       <DatePicker
         selected={endDate}
+        minDate={startDate}
         dateFormat="dd/MM/yyyy"
         onChange={date => onChangeEndDate(date)}
         locale="ru"
