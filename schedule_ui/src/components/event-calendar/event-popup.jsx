@@ -203,9 +203,7 @@ export function EventPopup({
                 onChange={onInputChange}
                 invalid={errorsShown && !!errors["note"]}
               />
-              <FormFeedback>
-                Описание должно содержать минимум 5 символов
-              </FormFeedback>
+              <FormFeedback>{errors["note"]}</FormFeedback>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
