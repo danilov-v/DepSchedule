@@ -1,42 +1,97 @@
 package com.varb.schedule.buisness.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.varb.schedule.buisness.models.dto.PeriodDto;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.time.LocalDate;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * PeriodResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-14T11:33:21.219802+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-20T16:50:16.697593+03:00[Europe/Minsk]")
 
 public class PeriodResponseDto   {
-  @JsonProperty("title")
-  private String title;
+  @JsonProperty("name")
+  private String name;
+
+  @JsonProperty("startDate")
+  private LocalDate startDate;
+
+  @JsonProperty("endDate")
+  private LocalDate endDate;
 
   @JsonProperty("periodId")
   private Long periodId;
 
-  public PeriodResponseDto title(String title) {
-    this.title = title;
+  public PeriodResponseDto name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
    * Название периода
-   * @return title
+   * @return name
   */
-  @ApiModelProperty(required = true, value = "Название периода")
-  @NotNull
+  @ApiModelProperty(value = "Название периода")
 
 
-  public String getTitle() {
-    return title;
+  public String getName() {
+    return name;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public PeriodResponseDto startDate(LocalDate startDate) {
+    this.startDate = startDate;
+    return this;
+  }
+
+  /**
+   * Get startDate
+   * @return startDate
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public PeriodResponseDto endDate(LocalDate endDate) {
+    this.endDate = endDate;
+    return this;
+  }
+
+  /**
+   * Get endDate
+   * @return endDate
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
   }
 
   public PeriodResponseDto periodId(Long periodId) {
@@ -69,13 +124,15 @@ public class PeriodResponseDto   {
       return false;
     }
     PeriodResponseDto periodResponse = (PeriodResponseDto) o;
-    return Objects.equals(this.title, periodResponse.title) &&
+    return Objects.equals(this.name, periodResponse.name) &&
+        Objects.equals(this.startDate, periodResponse.startDate) &&
+        Objects.equals(this.endDate, periodResponse.endDate) &&
         Objects.equals(this.periodId, periodResponse.periodId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, periodId);
+    return Objects.hash(name, startDate, endDate, periodId);
   }
 
   @Override
@@ -83,7 +140,9 @@ public class PeriodResponseDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class PeriodResponseDto {\n");
     
-    sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
+    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
     sb.append("    periodId: ").append(toIndentedString(periodId)).append("\n");
     sb.append("}");
     return sb.toString();
