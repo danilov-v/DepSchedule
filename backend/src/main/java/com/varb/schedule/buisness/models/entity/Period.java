@@ -6,11 +6,11 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Data
-@Accessors(chain = true)
-@Entity
+//@Data
+//@Accessors(chain = true)
+//@Entity
 public class Period {
-
+/*
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long periodId;
@@ -23,5 +23,5 @@ public class Period {
 
     @Column(nullable = false)
     private LocalDate endDate;
-
+*/
 }
