@@ -90,7 +90,7 @@ public class EventService extends AbstractService<Event, Long> {
     }
 
     @Override
-    ServiceException notFindException(Long eventId) {
-        return new ServiceException("Не существует события (eventId=" + eventId + ")");
+    String notFindMessage(Long eventId) {
+        return "Не существует события (eventId=" + eventId + ")";
     }
 }

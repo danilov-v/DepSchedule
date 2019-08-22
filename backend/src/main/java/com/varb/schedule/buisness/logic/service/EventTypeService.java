@@ -39,9 +39,7 @@ public class EventTypeService extends AbstractService<EventType, Long> {
     }
 
     @Override
-    protected ServiceException notFindException(Long typeId) {
-        return new ServiceException("Не найден тип события(typeId=" + typeId + ")");
+    String notFindMessage(Long typeId) {
+        return "Не найден тип события(typeId=" + typeId + ")";
     }
-
-
 }

@@ -76,8 +76,8 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
     }
 
     @Override
-    ServiceException notFindException(EventDurationPK eventDurationPK) {
-        return new ServiceException("Не найден EventDuration" +
-                "(unitId=" + eventDurationPK.getUnitId() + ", eventTypeId=" + eventDurationPK.getEventTypeId() + ")");
+    String notFindMessage(EventDurationPK eventDurationPK) {
+        return "Не найден EventDuration" +
+                "(unitId=" + eventDurationPK.getUnitId() + ", eventTypeId=" + eventDurationPK.getEventTypeId() + ")";
     }
 }
