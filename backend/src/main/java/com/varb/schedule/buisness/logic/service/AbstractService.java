@@ -57,6 +57,10 @@ public abstract class AbstractService<T, ID> {
         repository.findById(id).orElseThrow(() -> notFindException(id));
     }
 
-    abstract ServiceException notFindException(ID id);
+    protected ServiceException notFindException(ID id){
+        return new ServiceException(notFindMessage(id));
+    }
+
+    abstract String notFindMessage(ID id);
 
 }
