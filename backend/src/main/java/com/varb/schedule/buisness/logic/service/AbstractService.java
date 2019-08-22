@@ -1,9 +1,8 @@
 package com.varb.schedule.buisness.logic.service;
 
-import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,10 +16,13 @@ import java.util.Optional;
  * @param <ID> the type of the id of the entity the repository manages
  */
 @Slf4j
-@RequiredArgsConstructor
 public abstract class AbstractService<T, ID> {
-    private final JpaRepository<T, ID> repository;
-    private final ModelMapperCustomize modelMapper;
+    private JpaRepository<T, ID> repository;
+
+    @Autowired
+    public void setRepository(JpaRepository<T, ID> repository) {
+        this.repository = repository;
+    }
 
     public void delete(ID id) {
         try {
