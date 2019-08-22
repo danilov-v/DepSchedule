@@ -7,6 +7,7 @@ import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor
 public class EventService extends AbstractService<Event, Long> {
     private final EventRepository eventRepository;
     private final ModelMapperCustomize modelMapper;
@@ -26,16 +28,6 @@ public class EventService extends AbstractService<Event, Long> {
     private final EventDurationService eventDurationService;
 
     private static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
-
-    public EventService(ModelMapperCustomize modelMapper,
-                        EventRepository eventRepository, EventTypeService eventTypeService,
-                        EventDurationService eventDurationService) {
-        super(eventRepository, modelMapper);
-        this.eventRepository = eventRepository;
-        this.modelMapper = modelMapper;
-        this.eventTypeService = eventTypeService;
-        this.eventDurationService = eventDurationService;
-    }
 
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
@@ -90,7 +82,7 @@ public class EventService extends AbstractService<Event, Long> {
     }
 
     @Override
-    ServiceException notFindException(Long eventId) {
-        return new ServiceException("Не существует события (eventId=" + eventId + ")");
+    String notFindMessage(Long eventId) {
+        return "Не существует события (eventId=" + eventId + ")";
     }
 }

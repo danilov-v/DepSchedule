@@ -5,7 +5,7 @@ import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
 import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.EventDurationPK;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -17,21 +17,12 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor
 public class EventDurationService extends AbstractService<EventDuration, EventDurationPK>{
     private final EventDurationRepository eventDurationRepository;
     private final ModelMapperCustomize modelMapper;
     private final UnitService unitService;
     private final EventTypeService eventTypeService;
-
-    public EventDurationService(ModelMapperCustomize modelMapper,
-                                EventDurationRepository eventDurationRepository,
-                                UnitService unitService, EventTypeService eventTypeService) {
-        super(eventDurationRepository, modelMapper);
-        this.eventDurationRepository = eventDurationRepository;
-        this.modelMapper = modelMapper;
-        this.unitService = unitService;
-        this.eventTypeService = eventTypeService;
-    }
 
     public EventDuration merge(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
@@ -76,8 +67,8 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
     }
 
     @Override
-    ServiceException notFindException(EventDurationPK eventDurationPK) {
-        return new ServiceException("Не найден EventDuration" +
-                "(unitId=" + eventDurationPK.getUnitId() + ", eventTypeId=" + eventDurationPK.getEventTypeId() + ")");
+    String notFindMessage(EventDurationPK eventDurationPK) {
+        return "Не найден EventDuration" +
+                "(unitId=" + eventDurationPK.getUnitId() + ", eventTypeId=" + eventDurationPK.getEventTypeId() + ")";
     }
 }
