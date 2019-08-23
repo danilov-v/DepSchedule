@@ -1,13 +1,27 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { get } from "lodash";
-import { Unit } from "./unit";
+import { isNull, get } from "lodash";
 import classnames from "classnames";
 import { UnitPopup } from "components/admin-control/popups/unit-popup";
+import { useConfirmation } from "components/confirmation-service/confirmation-service";
+import { getUnitRemoveConfirmationOptions } from "constants/confirmations";
+import {
+  SUCCESS_UNIT_NOTIFICATION_DATA_DELETE,
+  FAILED_UNIT_NOTIFICATION_DATA,
+} from "constants/notifications";
+import { deleteUnit } from "helpers/api";
+import { NotificationManager } from "helpers/notification-manager";
+
+import { Unit } from "./unit";
+import { NewUnit } from "./new-unit";
 
 import "./units-grid.scss";
 
-const renderUnit = ({ childUnit, title, unitId }, isTopLevel = true) => {
+const renderUnit = (
+  { childUnit, title, unitId },
+  isTopLevel = true,
+  handlers
+) => {
   return childUnit && childUnit.length ? (
     <div
       key={unitId}
@@ -15,8 +29,8 @@ const renderUnit = ({ childUnit, title, unitId }, isTopLevel = true) => {
         "unit-last-of-group": isTopLevel,
       })}
     >
-      <Unit key={unitId} title={title} unitId={unitId} />
-      <div>{childUnit.map(unit => renderUnit(unit, false))}</div>
+      <Unit key={unitId} title={title} unitId={unitId} {...handlers} />
+      <div>{childUnit.map(unit => renderUnit(unit, false, handlers))}</div>
     </div>
   ) : (
     <Unit
@@ -25,38 +39,61 @@ const renderUnit = ({ childUnit, title, unitId }, isTopLevel = true) => {
       unitId={unitId}
       lastGen
       lastOfGroup={isTopLevel}
+      {...handlers}
     />
   );
 };
 
 export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
-  const [editUnitData, setEditUnit] = useState(null);
-  const clickHandler = event => {
-    const unitId = get(event, "target.dataset.unitId");
-
-    if (!unitId) return false;
-
-    const editUnit = units.find(unit => unit.unitId === +unitId);
-
-    setEditUnit(editUnit);
-  };
+  const confirm = useConfirmation();
+  const [unitData, setUnitData] = useState(null);
   const onCloseEditPopup = () => {
-    setEditUnit(null);
+    setUnitData(null);
+  };
+
+  const onAddUnit = unitParentId => {
+    if (unitParentId) {
+      setUnitData({ parentId: unitParentId });
+    } else {
+      setUnitData(undefined);
+    }
+  };
+  const onEditUnit = editingUnit => {
+    const unit = units.find(unit => unit.unitId === editingUnit.unitId);
+
+    setUnitData(unit);
+  };
+  const onRemoveUnit = unitId => {
+    const unit = units.find(unit => unit.unitId === unitId);
+    confirm(getUnitRemoveConfirmationOptions(unit)).then(async () => {
+      try {
+        await deleteUnit(unitId);
+
+        onUnitsUpdate();
+
+        NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA_DELETE);
+      } catch {
+        NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
+      }
+    });
   };
 
   return (
     <div className="units-grid">
       <div className="text-center units-grid-title">Список Подразделений</div>
-      <div className="unit-grid-body" onClick={clickHandler}>
-        {unitsTree.map(unit => renderUnit(unit))}
+      <div className="unit-grid-body">
+        {unitsTree.map(unit =>
+          renderUnit(unit, true, { onAddUnit, onEditUnit, onRemoveUnit })
+        )}
+        <NewUnit onAddUnit={onAddUnit} />
       </div>
-      {editUnitData && (
+      {!isNull(unitData) && (
         <UnitPopup
           units={units}
-          unit={editUnitData}
+          unit={unitData}
           onClose={onCloseEditPopup}
           onUnitsUpdate={onUnitsUpdate}
-          isEdit
+          isEdit={Boolean(get(unitData, "title"))}
         />
       )}
     </div>
