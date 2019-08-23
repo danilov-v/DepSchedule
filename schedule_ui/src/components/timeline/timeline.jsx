@@ -15,13 +15,13 @@ import { UnitsGrid } from "components/units-grid/units-grid";
 import { Notification } from "components/notification/notification";
 import { ConfirmationServiceProvider } from "components/confirmation-service/confirmation-service";
 
-import { getDates } from "utils/date";
+import { getDates, getDayWithoutMinues } from "utils/date";
 import { getLastGenUnits } from "./helpers";
 
 import "./timeline.scss";
 
 export function Timeline() {
-  const now = new Date();
+  const now = getDayWithoutMinues(new Date());
 
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(addMonths(now, 2));

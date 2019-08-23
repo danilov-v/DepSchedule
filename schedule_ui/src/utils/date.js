@@ -1,9 +1,9 @@
+export const getDayWithoutMinues = date => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
 export const getNextDay = date => {
-  const resultDate = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
-  );
+  const resultDate = getDayWithoutMinues(date);
   resultDate.setDate(date.getDate() + 1);
   return resultDate;
 };
