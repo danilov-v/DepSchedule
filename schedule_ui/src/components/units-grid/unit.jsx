@@ -16,6 +16,8 @@ export function Unit({
   const addUnit = () => onAddUnit(unitId);
   const editUnit = () => onEditUnit({ unitId, title });
   const removeUnit = () => onRemoveUnit(unitId);
+  const iconClass =
+    "unit-action d-flex align-items-center justify-content-center h-100";
   return (
     <div
       className={classnames(
@@ -30,14 +32,14 @@ export function Unit({
       data-unit-id={unitId}
     >
       {title}
-      <Row className="unit-actions align-items-center" noGutters>
-        <Col xs={4} className="unit-add" onClick={addUnit}>
+      <Row className="unit-actions" noGutters>
+        <Col xs={4} className={iconClass} onClick={addUnit}>
           <FontAwesomeIcon icon="plus" />
         </Col>
-        <Col xs={4} className="unit-edit" onClick={editUnit}>
+        <Col xs={4} className={iconClass} onClick={editUnit}>
           <FontAwesomeIcon icon="edit" />
         </Col>
-        <Col xs={4} className="unit-remove" onClick={removeUnit}>
+        <Col xs={4} className={iconClass} onClick={removeUnit}>
           <FontAwesomeIcon icon="trash-alt" />
         </Col>
       </Row>
