@@ -7,6 +7,7 @@ export function NewUnit({ onAddUnit }) {
     <div
       className={classnames(
         "unit",
+        "unit-new",
         "d-flex",
         "justify-content-center",
         "align-items-center",
