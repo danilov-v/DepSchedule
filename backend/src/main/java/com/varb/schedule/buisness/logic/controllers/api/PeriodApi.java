@@ -6,7 +6,8 @@
 package com.varb.schedule.buisness.logic.controllers.api;
 
 import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
-import com.varb.schedule.buisness.models.dto.PeriodDto;
+import com.varb.schedule.buisness.models.dto.PeriodPostDto;
+import com.varb.schedule.buisness.models.dto.PeriodPutDto;
 import com.varb.schedule.buisness.models.dto.PeriodResponseDto;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-20T16:50:16.697593+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T12:19:52.889273+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "period", description = "the period API")
@@ -54,7 +55,7 @@ public interface PeriodApi {
     }
 
 
-    @ApiOperation(value = "Список периудов", nickname = "periodGet", notes = "", response = PeriodResponseDto.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Список периодов", nickname = "periodGet", notes = "", response = PeriodResponseDto.class, responseContainer = "List", authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "period", })
     @ApiResponses(value = { 
@@ -89,7 +90,7 @@ public interface PeriodApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<PeriodResponseDto> periodPost(@ApiParam(value = ""  )  @Valid @RequestBody PeriodDto periodDto) {
+    default ResponseEntity<PeriodResponseDto> periodPost(@ApiParam(value = ""  )  @Valid @RequestBody PeriodPostDto periodPostDto) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -103,7 +104,7 @@ public interface PeriodApi {
     }
 
 
-    @ApiOperation(value = "Редактировать существующие периуды", nickname = "periodPut", notes = "", response = PeriodResponseDto.class, authorizations = {
+    @ApiOperation(value = "Редактировать существующие периоды", nickname = "periodPut", notes = "", response = PeriodResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "period", })
     @ApiResponses(value = { 
@@ -114,7 +115,7 @@ public interface PeriodApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    default ResponseEntity<PeriodResponseDto> periodPut(@ApiParam(value = "",required=true) @PathVariable("periodId") Long periodId,@ApiParam(value = ""  )  @Valid @RequestBody PeriodDto periodDto) {
+    default ResponseEntity<PeriodResponseDto> periodPut(@ApiParam(value = "",required=true) @PathVariable("periodId") Long periodId,@ApiParam(value = ""  )  @Valid @RequestBody PeriodPutDto periodPutDto) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

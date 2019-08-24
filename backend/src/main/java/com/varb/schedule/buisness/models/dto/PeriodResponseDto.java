@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * PeriodResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-20T16:50:16.697593+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T12:19:52.889273+03:00[Europe/Minsk]")
 
 public class PeriodResponseDto   {
   @JsonProperty("name")
@@ -39,7 +39,8 @@ public class PeriodResponseDto   {
    * Название периода
    * @return name
   */
-  @ApiModelProperty(value = "Название периода")
+  @ApiModelProperty(required = true, value = "Название периода")
+  @NotNull
 
 
   public String getName() {
