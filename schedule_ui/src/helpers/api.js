@@ -2,15 +2,17 @@ import { format } from "date-fns";
 import {
   LOCALHOST_URL,
   DEFAULT_BE_PORT,
+  API,
   UNITS_URL,
   EVENT_URL,
   EVENT_TYPE_URL,
 } from "config/url";
 
+const getUrl = apiPath =>
+  `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${API}/${apiPath}`;
+
 export const getUnits = async () => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}`
-  );
+  const result = await fetch(getUrl(UNITS_URL));
   const data = await result.json();
 
   return data;
@@ -18,10 +20,7 @@ export const getUnits = async () => {
 
 export const getUnitsTree = async dateFrom => {
   const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/tree?dateFrom=${format(
-      dateFrom,
-      "yyyy-MM-dd"
-    )}`
+    getUrl(`${UNITS_URL}/tree?dateFrom=${format(dateFrom, "yyyy-MM-dd")}`)
   );
   const data = await result.json();
 
@@ -29,16 +28,13 @@ export const getUnitsTree = async dateFrom => {
 };
 
 export const createUnit = async unitData => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(unitData),
-    }
-  );
+  const result = await fetch(getUrl(UNITS_URL), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(unitData),
+  });
   const data = await result.json();
 
   if (result && result.status !== 200) {
@@ -49,25 +45,20 @@ export const createUnit = async unitData => {
 };
 
 export const getEventTypes = async () => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_TYPE_URL}`
-  );
+  const result = await fetch(getUrl(EVENT_TYPE_URL));
   const data = await result.json();
 
   return data;
 };
 
 export const updateUnit = async unitData => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/${unitData.unitId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(unitData),
-    }
-  );
+  const result = await fetch(getUrl(`${UNITS_URL}/${unitData.unitId}`), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(unitData),
+  });
   const data = await result.json();
 
   if (result && result.status !== 200) {
@@ -78,15 +69,12 @@ export const updateUnit = async unitData => {
 };
 
 export const deleteUnit = async unitId => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${UNITS_URL}/${unitId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const result = await fetch(getUrl(`${UNITS_URL}/${unitId}`), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (result && result.status !== 200) {
     throw new Error(result);
@@ -94,16 +82,13 @@ export const deleteUnit = async unitId => {
 };
 
 export const createEventType = async eventTypeData => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_TYPE_URL}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventTypeData),
-    }
-  );
+  const result = await fetch(getUrl(EVENT_TYPE_URL), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(eventTypeData),
+  });
   const data = await result.json();
 
   if (result && result.status !== 200) {
@@ -115,7 +100,7 @@ export const createEventType = async eventTypeData => {
 
 export const updateEventType = async eventTypeData => {
   const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_TYPE_URL}/${eventTypeData.typeId}`,
+    getUrl(`${EVENT_TYPE_URL}/${eventTypeData.typeId}`),
     {
       method: "PUT",
       headers: {
@@ -134,15 +119,12 @@ export const updateEventType = async eventTypeData => {
 };
 
 export const removeEventType = async typeId => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_TYPE_URL}/${typeId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const result = await fetch(getUrl(`${EVENT_TYPE_URL}/${typeId}`), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (result.status === 400) {
     throw new Error();
@@ -150,16 +132,13 @@ export const removeEventType = async typeId => {
 };
 
 export const createEvent = async eventData => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_URL}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventData),
-    }
-  );
+  const result = await fetch(getUrl(EVENT_URL), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(eventData),
+  });
 
   const data = await result.json();
 
@@ -171,16 +150,13 @@ export const createEvent = async eventData => {
 };
 
 export const updateEvent = async eventData => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_URL}/${eventData.eventId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventData),
-    }
-  );
+  const result = await fetch(getUrl(`${EVENT_URL}/${eventData.eventId}`), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(eventData),
+  });
 
   const data = await result.json();
 
@@ -192,15 +168,12 @@ export const updateEvent = async eventData => {
 };
 
 export const removeEvent = async eventId => {
-  const result = await fetch(
-    `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${EVENT_URL}/${eventId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const result = await fetch(getUrl(`${EVENT_URL}/${eventId}`), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (result.status === 400) {
     throw new Error();
