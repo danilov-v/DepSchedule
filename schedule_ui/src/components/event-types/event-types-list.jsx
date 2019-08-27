@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ListGroup, ListGroupItem, Button } from "reactstrap";
+import { Table, Button } from "reactstrap";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { EVENT_TYPE_CONFIRMATION_OPTIONS } from "constants/confirmations";
 
@@ -15,32 +15,44 @@ export function EventTypesList({
 }) {
   const confirm = useConfirmation();
 
-  const onClick = eventType => ({ target }) => {
-    target.tagName !== "SPAN" && onEventTypeClick(eventType);
-  };
-
   const tryToRemove = typeId => {
     confirm(EVENT_TYPE_CONFIRMATION_OPTIONS).then(() =>
       onEventTypeRemove(typeId)
     );
   };
 
-  return (
-    <ListGroup className="event-type-list">
-      {eventTypes.map(eventType => (
-        <ListGroupItem
-          key={eventType.typeId}
-          tag="a"
-          className="event-type"
-          action
-          onClick={onClick(eventType)}
+  const renderRow = (eventType, index) => (
+    <tr key={eventType.typeId}>
+      <th scope="row">{index}</th>
+      <td>
+        <ColorCircle color={eventType.color} />
+      </td>
+      <td>{eventType.description}</td>
+      <td>
+        <Button
+          onClick={onEventTypeClick.bind(null, eventType)}
+          color="warning"
         >
-          <ColorCircle color={eventType.color} />
-          {eventType.description}
-          <Button close onClick={() => tryToRemove(eventType.typeId)} />
-        </ListGroupItem>
-      ))}
-    </ListGroup>
+          Изменить
+        </Button>
+        <Button close onClick={() => tryToRemove(eventType.typeId)} />
+      </td>
+    </tr>
+  );
+  return (
+    <div className="event-type-list">
+      <Table hover>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Цвет</th>
+            <th>Название</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>{eventTypes.map(renderRow)}</tbody>
+      </Table>
+    </div>
   );
 }
 

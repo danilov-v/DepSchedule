@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { isNull, get } from "lodash";
 import classnames from "classnames";
-import { UnitPopup } from "components/admin-control/popups/unit-popup";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { getUnitRemoveConfirmationOptions } from "constants/confirmations";
 import {
@@ -12,6 +11,7 @@ import {
 import { deleteUnit } from "helpers/api";
 import { NotificationManager } from "helpers/notification-manager";
 
+import { UnitPopup } from "./unit-popup";
 import { Unit } from "./unit";
 import { NewUnit } from "./new-unit";
 

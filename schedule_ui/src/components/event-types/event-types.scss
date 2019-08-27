@@ -1,15 +1,23 @@
 .event-type-list {
-  max-height: 260px;
+  max-height: 80vh;
   overflow-y: scroll;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
 
   &::-webkit-scrollbar {
-    width: 5px !important;
+    width: 5px;
   }
   &::-webkit-scrollbar-track {
-    background: #ddd;
+    background: #fff;
   }
   &::-webkit-scrollbar-thumb {
-    background: #666;
+    background: #fff;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: #c3c3c3;
+    }
   }
 }
 
@@ -28,7 +36,7 @@
 
 .color-circle {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
 }

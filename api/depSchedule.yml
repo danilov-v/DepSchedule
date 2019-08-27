@@ -7,18 +7,17 @@ security:
 servers:
   - url: http://172.17.110.5:9006
 
-
 tags:
   - name: event
-    description: 'Информация о событии (подразделение, дата начала, дата конца)'
+    description: "Информация о событии (подразделение, дата начала, дата конца)"
   - name: eventType
-    description: 'Информация о типе событий (цвет, описание)'
+    description: "Информация о типе событий (цвет, описание)"
   - name: unit
-    description: 'Информация о подразделении (название, уровень подразделения)'
+    description: "Информация о подразделении (название, уровень подразделения)"
   - name: eventDuration
-    description: 'Информация о времени выполнения событий в каждом подразделении'
+    description: "Информация о времени выполнения событий в каждом подразделении"
   - name: period
-    description: 'Информация о периодах (High Level Section)'
+    description: "Информация о периодах (High Level Section)"
 paths:
   /event:
     get:
@@ -47,11 +46,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventResponse'
+                  $ref: "#/components/schemas/EventResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     post:
       operationId: eventPost
       summary: Создать событие
@@ -61,18 +60,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventPost'
+              $ref: "#/components/schemas/EventPost"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventResponse'
+                $ref: "#/components/schemas/EventResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /event/{eventId}:
     put:
       operationId: eventPut
@@ -90,18 +89,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventPut'
+              $ref: "#/components/schemas/EventPut"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventResponse'
+                $ref: "#/components/schemas/EventResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     delete:
       operationId: eventDelete
       summary: Удалить существующее событие
@@ -118,9 +117,9 @@ paths:
         200:
           description: successful operation
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /eventType:
     get:
       operationId: eventTypeGet
@@ -135,11 +134,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventTypeResponse'
+                  $ref: "#/components/schemas/EventTypeResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     post:
       operationId: eventTypePost
       summary: Добавить тип события
@@ -149,18 +148,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventTypePost'
+              $ref: "#/components/schemas/EventTypePost"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventTypeResponse'
+                $ref: "#/components/schemas/EventTypeResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /eventType/{eventTypeId}:
     put:
       operationId: eventTypePut
@@ -172,23 +171,23 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeId'
+            $ref: "#/components/schemas/EventTypeId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventTypePut'
+              $ref: "#/components/schemas/EventTypePut"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventTypeResponse'
+                $ref: "#/components/schemas/EventTypeResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     delete:
       operationId: eventTypeDelete
       summary: Удалить существующий тип события
@@ -199,14 +198,14 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeId'
+            $ref: "#/components/schemas/EventTypeId"
       responses:
         200:
           description: successful operation
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /unit:
     get:
       deprecated: true
@@ -222,11 +221,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UnitResponse'
+                  $ref: "#/components/schemas/UnitResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     post:
       operationId: unitPost
       summary: Создать подразделение
@@ -236,18 +235,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UnitPost'
+              $ref: "#/components/schemas/UnitPost"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UnitResponse'
+                $ref: "#/components/schemas/UnitResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /unit/{unitId}:
     put:
       operationId: unitPut
@@ -265,18 +264,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UnitPut'
+              $ref: "#/components/schemas/UnitPut"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UnitResponse'
+                $ref: "#/components/schemas/UnitResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     delete:
       operationId: unitDelete
       summary: Удалить существующее подразделение
@@ -293,9 +292,9 @@ paths:
         200:
           description: successful operation
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /unit/tree:
     get:
       operationId: unitGetTree
@@ -323,11 +322,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UnitResponseTree'
+                  $ref: "#/components/schemas/UnitResponseTree"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /eventDuration:
     get:
       operationId: eventDurationGet
@@ -349,11 +348,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventDurationResponse'
+                  $ref: "#/components/schemas/EventDurationResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /eventDuration/{unitId}/{eventTypeId}:
     put:
       operationId: eventDurationPut
@@ -371,23 +370,23 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeId'
+            $ref: "#/components/schemas/EventTypeId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventDurationPut'
+              $ref: "#/components/schemas/EventDurationPut"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDurationResponse'
+                $ref: "#/components/schemas/EventDurationResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     delete:
       operationId: eventDurationDelete
       summary: Удалить существующее время выполнения события для подразделения
@@ -404,14 +403,14 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/EventTypeId'
+            $ref: "#/components/schemas/EventTypeId"
       responses:
         200:
           description: successful operation
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /period:
     get:
       operationId: periodGet
@@ -426,11 +425,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PeriodResponse'
+                  $ref: "#/components/schemas/PeriodResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     post:
       operationId: periodPost
       summary: Добавить период
@@ -440,18 +439,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PeriodPost'
+              $ref: "#/components/schemas/PeriodPost"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PeriodResponse'
+                $ref: "#/components/schemas/PeriodResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
   /period/{periodId}:
     put:
       operationId: periodPut
@@ -469,18 +468,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PeriodPut'
+              $ref: "#/components/schemas/PeriodPut"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PeriodResponse'
+                $ref: "#/components/schemas/PeriodResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
     delete:
       operationId: periodDelete
       summary: Удалить существующий период
@@ -497,9 +496,9 @@ paths:
         200:
           description: successful operation
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: "#/components/responses/InternalServerError"
 components:
   responses:
     BadRequest:
@@ -507,13 +506,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorMessage'
+            $ref: "#/components/schemas/ErrorMessage"
     InternalServerError:
       description: Internal server error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorMessage'
+            $ref: "#/components/schemas/ErrorMessage"
   schemas:
     UnitPut:
       properties:
@@ -528,7 +527,7 @@ components:
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
         unitLevel:
-          $ref: '#/components/schemas/UnitLevel'
+          $ref: "#/components/schemas/UnitLevel"
     UnitPost:
       required:
         - title
@@ -544,26 +543,26 @@ components:
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
         unitLevel:
-          $ref: '#/components/schemas/UnitLevel'
+          $ref: "#/components/schemas/UnitLevel"
     UnitResponse:
       required:
         - unitId
         - title
         - unitLevel
       allOf:
-        - $ref: '#/components/schemas/UnitPut'
+        - $ref: "#/components/schemas/UnitPut"
         - properties:
             unitId:
               type: integer
               format: int64
     UnitResponseTree:
-      description: 'Узел дерева. Содержит информацию о подразделении'
+      description: "Узел дерева. Содержит информацию о подразделении"
       required:
         - unitId
         - title
         - unitLevel
       allOf:
-        - $ref: '#/components/schemas/UnitPut'
+        - $ref: "#/components/schemas/UnitPut"
         - properties:
             unitId:
               type: integer
@@ -571,13 +570,13 @@ components:
             events:
               type: array
               items:
-                $ref: '#/components/schemas/EventResponse'
+                $ref: "#/components/schemas/EventResponse"
             childUnit:
               type: array
               items:
-                $ref: '#/components/schemas/UnitResponseTree'
+                $ref: "#/components/schemas/UnitResponseTree"
             eventDuration:
-              $ref: '#/components/schemas/EventDurationMap'
+              $ref: "#/components/schemas/EventDurationMap"
     UnitLevel:
       type: integer
       format: int32
@@ -593,7 +592,7 @@ components:
           type: integer
           format: int64
           description: "Id подразделения
-                        (может ссылаться только на подразделение 4-го уровня)"
+            (может ссылаться только на подразделение 4-го уровня)"
         dateFrom:
           type: string
           format: date
@@ -602,7 +601,7 @@ components:
           type: string
           description: "Примечание"
         eventTypeId:
-          $ref: '#/components/schemas/EventTypeId'
+          $ref: "#/components/schemas/EventTypeId"
     EventBaseReq:
       required:
         - dateFrom
@@ -613,7 +612,7 @@ components:
           type: integer
           format: int64
           description: "Id подразделения
-                        (может ссылаться только на подразделение 4-го уровня)"
+            (может ссылаться только на подразделение 4-го уровня)"
         dateFrom:
           type: string
           format: date
@@ -622,15 +621,15 @@ components:
           type: string
           description: "Примечание"
         eventTypeId:
-          $ref: '#/components/schemas/EventTypeId'
+          $ref: "#/components/schemas/EventTypeId"
     EventPut:
       allOf:
-        - $ref: '#/components/schemas/EventBase'
-        - $ref: '#/components/schemas/DurationOptional'
+        - $ref: "#/components/schemas/EventBase"
+        - $ref: "#/components/schemas/DurationOptional"
     EventPost:
       allOf:
-        - $ref: '#/components/schemas/EventBaseReq'
-        - $ref: '#/components/schemas/DurationOptional'
+        - $ref: "#/components/schemas/EventBaseReq"
+        - $ref: "#/components/schemas/DurationOptional"
     EventResponse:
       required:
         - eventId
@@ -639,8 +638,8 @@ components:
             eventId:
               type: integer
               format: int64
-        - $ref: '#/components/schemas/EventBaseReq'
-        - $ref: '#/components/schemas/DurationRequired'
+        - $ref: "#/components/schemas/EventBaseReq"
+        - $ref: "#/components/schemas/DurationRequired"
     EventTypePut:
       properties:
         description:
@@ -670,10 +669,10 @@ components:
         - color
         - type
       allOf:
-        - $ref: '#/components/schemas/EventTypePut'
+        - $ref: "#/components/schemas/EventTypePut"
         - properties:
             typeId:
-              $ref: '#/components/schemas/EventTypeId'
+              $ref: "#/components/schemas/EventTypeId"
     EventTypeId:
       type: integer
       format: int64
@@ -688,36 +687,35 @@ components:
     DurationOptional:
       properties:
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
     DurationRequired:
       required:
         - duration
       properties:
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
     EventDurationPut:
       allOf:
-        - $ref: '#/components/schemas/DurationRequired'
+        - $ref: "#/components/schemas/DurationRequired"
     EventDurationResponse:
       required:
         - unitId
         - eventTypeId
         - duration
       allOf:
-        - $ref: '#/components/schemas/EventDurationPut'
+        - $ref: "#/components/schemas/EventDurationPut"
         - properties:
             unitId:
               type: integer
               format: int64
             eventTypeId:
-              $ref: '#/components/schemas/EventTypeId'
+              $ref: "#/components/schemas/EventTypeId"
     EventDurationMap:
       description: "key - eventDurationType, value - duration"
       type: object
       additionalProperties:
-        $ref: '#/components/schemas/Duration'
-    
-    
+        $ref: "#/components/schemas/Duration"
+
     Period:
       type: object
       required:
@@ -738,7 +736,7 @@ components:
       required:
         - periodId
       allOf:
-        - $ref: '#/components/schemas/Period'
+        - $ref: "#/components/schemas/Period"
         - properties:
             periodId:
               type: integer
@@ -746,7 +744,7 @@ components:
 
     PeriodPost:
       allOf:
-        - $ref: '#/components/schemas/Period'
+        - $ref: "#/components/schemas/Period"
 
     PeriodPut:
       properties:
@@ -759,7 +757,7 @@ components:
         endDate:
           type: string
           format: date
-    
+
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."
@@ -776,7 +774,7 @@ components:
         userMessage:
           type: string
           description: "Сообщение для пользователя"
-  
+
   securitySchemes:
     JWT:
       type: http

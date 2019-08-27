@@ -1,0 +1,20 @@
+@import "variables.scss";
+
+.header {
+  position: sticky;
+  top: 0;
+  color: #00000080;
+  z-index: 100;
+
+  .brand {
+    color: #333;
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  .date_picker {
+    font-size: 1.1rem;
+    color: $color-grey-dark-3;
+    border: 1px solid $color-grey-dark;
+    border-radius: 5px;
+  }
+}

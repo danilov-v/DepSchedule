@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 
 import { registerLocale } from "react-datepicker";
 import ru from "date-fns/locale/ru";
@@ -14,7 +15,11 @@ registerLocale("ru", ru); //set russion locale for date time picker
 library.add(fab, fas); // Add default font-aweosome icons
 
 function App() {
-  return <Auth />;
+  return (
+    <BrowserRouter>
+      <Auth />
+    </BrowserRouter>
+  );
 }
 
 export default App;
