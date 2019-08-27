@@ -1,8 +1,6 @@
 .event-type-list {
-  max-height: 80vh;
+  max-height: 79vh;
   overflow-y: scroll;
-  border-top: 1px solid #dee2e6;
-  border-bottom: 1px solid #dee2e6;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -11,12 +9,13 @@
     background: #fff;
   }
   &::-webkit-scrollbar-thumb {
-    background: #fff;
+    background: #c3c3c3;
+    visibility: hidden;
   }
 
   &:hover {
     &::-webkit-scrollbar-thumb {
-      background: #c3c3c3;
+      visibility: visible;
     }
   }
 }

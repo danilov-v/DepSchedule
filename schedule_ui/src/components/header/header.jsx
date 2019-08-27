@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
+import classnames from "classnames";
 import {
   Collapse,
   Navbar,
@@ -13,20 +15,23 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import DatePicker from "react-datepicker";
+import PropTypes from "prop-types";
 
 import "./header.scss";
 
-export function Header({
+function Header({
   startDate,
   endDate,
   onChangeStartDate,
   onChangeEndDate,
+  history,
 }) {
   const [isOpen, toggleNav] = useState(false);
   const toggle = () => toggleNav(!isOpen);
   const print = () => window.print();
+
+  const isHomePage = history.location.pathname === "/";
 
   return (
     <Navbar color="light" light expand="lg" className="header mb-3">
@@ -36,7 +41,11 @@ export function Header({
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
-          <div className="d-flex align-items-center mr-5">
+          <div
+            className={classnames("d-flex align-items-center mr-5", {
+              invisible: !isHomePage,
+            })}
+          >
             События с &nbsp;
             <DatePicker
               selected={startDate}
@@ -64,13 +73,17 @@ export function Header({
             <NavLink href="#">Секции</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink href="#" onClick={print}>
-              <FontAwesomeIcon className="ml-1" icon="file-pdf" />
+            <NavLink
+              className={classnames({ "d-none": !isHomePage })}
+              href="#"
+              onClick={print}
+            >
+              <FontAwesomeIcon icon="file-pdf" />
             </NavLink>
           </NavItem>
           <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret>
-              <FontAwesomeIcon className="ml-1" icon="user-alt" />
+            <DropdownToggle nav>
+              <FontAwesomeIcon icon="user-alt" />
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>Профиль</DropdownItem>
@@ -83,3 +96,13 @@ export function Header({
     </Navbar>
   );
 }
+
+Header.propTypes = {
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date),
+  onChangeStartDate: PropTypes.func,
+  onChangeEndDate: PropTypes.func,
+  history: PropTypes.object,
+};
+
+export const NavBar = withRouter(Header);

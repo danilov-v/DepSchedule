@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
 import { SECTIONS } from "stub-data/sections";
 import { Title } from "components/title/title";
@@ -68,3 +69,18 @@ export function Timeline({
     </Container>
   );
 }
+
+Timeline.propTypes = {
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date),
+  eventTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      description: PropTypes.string,
+      typeId: PropTypes.number,
+    })
+  ),
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  unitsTree: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onEventTypeRemove: PropTypes.func,
+};

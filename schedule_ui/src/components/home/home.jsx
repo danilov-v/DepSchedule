@@ -8,7 +8,7 @@ import {
 } from "helpers/hooks/apiEffects";
 import { Container } from "reactstrap";
 import { Timeline } from "components/timeline/timeline";
-import { Header } from "components/header/header";
+import { NavBar } from "components/header/header";
 import { ConfirmationServiceProvider } from "components/confirmation-service/confirmation-service";
 import { EventTypes } from "components/event-types/event-types";
 import { getDayWithoutMinutes } from "utils/date";
@@ -37,7 +37,7 @@ export function Home() {
   return (
     <ConfirmationServiceProvider>
       <Container fluid>
-        <Header
+        <NavBar
           startDate={startDate}
           endDate={endDate}
           onChangeStartDate={setStartDate}

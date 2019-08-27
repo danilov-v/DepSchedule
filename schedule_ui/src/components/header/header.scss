@@ -7,12 +7,12 @@
   z-index: 100;
 
   .brand {
-    color: #333;
+    color: $color-grey-dark-3;
     font-size: 1.25em;
     font-weight: 600;
   }
   .date_picker {
-    font-size: 1.1rem;
+    // font-size: .95rem;
     color: $color-grey-dark-3;
     border: 1px solid $color-grey-dark;
     border-radius: 5px;

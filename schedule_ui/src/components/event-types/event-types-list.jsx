@@ -35,7 +35,7 @@ export function EventTypesList({
         >
           Изменить
         </Button>
-        <Button close onClick={() => tryToRemove(eventType.typeId)} />
+        <Button close onClick={tryToRemove.bind(null, eventType.typeId)} />
       </td>
     </tr>
   );
