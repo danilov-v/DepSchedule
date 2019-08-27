@@ -82,7 +82,7 @@ public class EventService extends AbstractService<Event, Long> {
     }
 
     @Override
-    String notFindMessage(Long eventId) {
+    protected String notFindMessage(Long eventId) {
         return "Не существует события (eventId=" + eventId + ")";
     }
 }

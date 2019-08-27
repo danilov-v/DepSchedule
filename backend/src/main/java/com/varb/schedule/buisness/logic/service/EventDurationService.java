@@ -53,7 +53,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
 
     public List<EventDuration> getAll(@Nullable Long unitId) {
         if (unitId == null)
-            return super.getAll();
+            return super.findAll();
         else
             return getByUnitId(unitId);
     }
@@ -67,7 +67,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
     }
 
     @Override
-    String notFindMessage(EventDurationPK eventDurationPK) {
+    protected String notFindMessage(EventDurationPK eventDurationPK) {
         return "Не найден EventDuration" +
                 "(unitId=" + eventDurationPK.getUnitId() + ", eventTypeId=" + eventDurationPK.getEventTypeId() + ")";
     }

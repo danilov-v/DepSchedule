@@ -61,7 +61,7 @@ public class UnitService extends AbstractService<Unit, Long> {
     }
 
     @Override
-    String notFindMessage(Long unitId) {
+    protected String notFindMessage(Long unitId) {
         return "Не найдено подразделение (unitId=" + unitId + ")";
     }
 }

@@ -30,7 +30,7 @@ public class EventTypeService extends AbstractService<EventType, Long> {
     }
 
     @Override
-    String notFindMessage(Long typeId) {
+    protected String notFindMessage(Long typeId) {
         return "Не найден тип события(typeId=" + typeId + ")";
     }
 }

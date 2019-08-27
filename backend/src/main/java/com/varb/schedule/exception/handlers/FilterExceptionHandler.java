@@ -17,7 +17,7 @@ import java.io.IOException;
 
 /**
  * Перехватывает ошибки, порождённые в фильтрах
- * либо не перехваченные в {@link BuisnessExceptionHandler} ошибки бизнес-логики
+ * либо не перехваченные в {@link BusinessExceptionHandler} ошибки бизнес-логики
  */
 @Slf4j
 @Component
@@ -25,21 +25,22 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FilterExceptionHandler extends OncePerRequestFilter {
     private final JsonMapper jsonMapper;
+    private final ExceptionFormatter exceptionFormatter;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try {
             filterChain.doFilter(request, response);
+        } catch (ServiceException serviceException) {
+            log.error("", serviceException);
+            buildServiceExceptionResponse(serviceException, response);
         } catch (Exception ex) {
-            if (ex instanceof ServiceException)
-                buildServiceExceptionResponse((ServiceException) ex, response);
-            else
-                buildServiceExceptionResponse(new ServiceException(ex, HttpStatus.INTERNAL_SERVER_ERROR), response);
+            log.error("", ex);
+            buildServiceExceptionResponse(new ServiceException(ex, HttpStatus.INTERNAL_SERVER_ERROR), response);
         }
     }
 
     private void buildServiceExceptionResponse(ServiceException serviceException, HttpServletResponse response) throws IOException {
-        response.setStatus(serviceException.getHttpStatus().value());
-        response.getWriter().write(jsonMapper.toString(ExceptionFormatter.toErrorMessageDto(serviceException)));
+        exceptionFormatter.toHttpServletResponse(response, serviceException);
     }
 }

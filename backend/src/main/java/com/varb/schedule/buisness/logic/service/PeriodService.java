@@ -31,7 +31,7 @@ public class PeriodService extends AbstractService<Period, Long> {
     }
 
     @Override
-    String notFindMessage(Long aLong) {
+    protected String notFindMessage(Long aLong) {
         return "Не найден период с periodID = " +aLong;
     }
 }

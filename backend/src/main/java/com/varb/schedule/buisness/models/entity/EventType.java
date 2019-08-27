@@ -1,6 +1,6 @@
 package com.varb.schedule.buisness.models.entity;
 
-import lombok.*;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -22,7 +22,7 @@ public class EventType {
     @SequenceGenerator(name = "eventType_sq_generator", sequenceName = "EVENT_TYPE_SQ", allocationSize = 1)
     private Long typeId;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String typeCode;
 
     @Column(nullable = false)

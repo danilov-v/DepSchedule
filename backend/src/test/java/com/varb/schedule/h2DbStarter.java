@@ -1,4 +1,4 @@
-package com.varb.schedule.integration;
+package com.varb.schedule;
 
 import com.varb.schedule.config.H2TcpServerConfiguration;
 

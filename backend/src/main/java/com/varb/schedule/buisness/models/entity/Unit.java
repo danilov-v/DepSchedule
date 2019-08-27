@@ -2,9 +2,9 @@ package com.varb.schedule.buisness.models.entity;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,12 +22,13 @@ public class Unit {
     /**
      * Ссылка на подразделение верхнего уровня (для подразделения первого уровня не указывается!)
      */
+    @Nullable
     private Long parentId;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = true)
+    @Nullable
     private Integer unitLevel;
 
     @Setter(AccessLevel.PRIVATE)

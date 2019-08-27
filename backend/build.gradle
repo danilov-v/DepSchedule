@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation 'org.modelmapper:modelmapper:2.3.5'
     implementation 'org.apache.commons:commons-text:1.7' //?
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     
     runtimeOnly project(':schedule_ui')
     compileOnly 'org.projectlombok:lombok'
@@ -69,7 +69,7 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
-//    testImplementation('org.springframework.security:spring-security-test')
+    testImplementation('org.springframework.security:spring-security-test')
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         //exclude group: 'junit', module: 'junit'
     }

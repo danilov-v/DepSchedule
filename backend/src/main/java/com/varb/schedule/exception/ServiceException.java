@@ -32,28 +32,35 @@ public class ServiceException extends RuntimeException {
         this.httpStatus = HttpStatus.BAD_REQUEST;
     }
 
-    public ServiceException(String message, final HttpStatus httpStatus) {
+    public ServiceException(String devMessage, String userMessage, HttpStatus httpStatus, String code) {
+        super(devMessage);
+        this.userMessage = userMessage;
+        this.code = code;
+        this.httpStatus = httpStatus;
+    }
+
+    public ServiceException(String message, HttpStatus httpStatus) {
         super(message);
         userMessage = null;
         code = null;
         this.httpStatus = httpStatus;
     }
 
-    public ServiceException(final String message, final int httpStatus) {
+    public ServiceException(String message, int httpStatus) {
         super(message);
         userMessage = null;
         code = null;
         this.httpStatus = HttpStatus.valueOf(httpStatus);
     }
 
-    public ServiceException(final Throwable cause, final HttpStatus httpStatus) {
+    public ServiceException(Throwable cause, HttpStatus httpStatus) {
         super(cause.getMessage(), cause);
         userMessage = null;
         code = null;
         this.httpStatus = httpStatus;
     }
 
-    public ServiceException(final Throwable cause, final String message, final HttpStatus httpStatus) {
+    public ServiceException(Throwable cause, String message, HttpStatus httpStatus) {
         super(message, cause);
         userMessage = null;
         code = null;

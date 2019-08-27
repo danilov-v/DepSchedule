@@ -34,20 +34,16 @@ public abstract class AbstractService<T, ID> {
 
     }
 
-    public List<T> getAll() {
+    public List<T> findAll() {
         return repository.findAll();
     }
 
-    public Optional<T> get(ID id) {
-        return repository.findById(id);
-    }
-
-    T findById(ID id) {
+    public T findById(ID id) {
         return repository.findById(id)
                 .orElseThrow(() -> notFindException(id));
     }
 
-    Optional<T> findByIdOptional(ID id) {
+    public Optional<T> findByIdOptional(ID id) {
         return repository.findById(id);
     }
 
@@ -63,6 +59,6 @@ public abstract class AbstractService<T, ID> {
         return new ServiceException(notFindMessage(id));
     }
 
-    abstract String notFindMessage(ID id);
+    protected abstract String notFindMessage(ID id);
 
 }
