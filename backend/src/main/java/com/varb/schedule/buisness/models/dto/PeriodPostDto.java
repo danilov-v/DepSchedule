@@ -3,6 +3,7 @@ package com.varb.schedule.buisness.models.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.varb.schedule.buisness.models.dto.PeriodDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
@@ -12,11 +13,11 @@ import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.*;
 
 /**
- * PeriodDto
+ * PeriodPostDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T12:19:52.889273+03:00[Europe/Minsk]")
 
-public class PeriodDto   {
+public class PeriodPostDto   {
   @JsonProperty("name")
   private String name;
 
@@ -26,7 +27,7 @@ public class PeriodDto   {
   @JsonProperty("endDate")
   private LocalDate endDate;
 
-  public PeriodDto name(String name) {
+  public PeriodPostDto name(String name) {
     this.name = name;
     return this;
   }
@@ -47,7 +48,7 @@ public class PeriodDto   {
     this.name = name;
   }
 
-  public PeriodDto startDate(LocalDate startDate) {
+  public PeriodPostDto startDate(LocalDate startDate) {
     this.startDate = startDate;
     return this;
   }
@@ -69,7 +70,7 @@ public class PeriodDto   {
     this.startDate = startDate;
   }
 
-  public PeriodDto endDate(LocalDate endDate) {
+  public PeriodPostDto endDate(LocalDate endDate) {
     this.endDate = endDate;
     return this;
   }
@@ -100,10 +101,10 @@ public class PeriodDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PeriodDto period = (PeriodDto) o;
-    return Objects.equals(this.name, period.name) &&
-        Objects.equals(this.startDate, period.startDate) &&
-        Objects.equals(this.endDate, period.endDate);
+    PeriodPostDto periodPost = (PeriodPostDto) o;
+    return Objects.equals(this.name, periodPost.name) &&
+        Objects.equals(this.startDate, periodPost.startDate) &&
+        Objects.equals(this.endDate, periodPost.endDate);
   }
 
   @Override
@@ -114,7 +115,7 @@ public class PeriodDto   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PeriodDto {\n");
+    sb.append("class PeriodPostDto {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");

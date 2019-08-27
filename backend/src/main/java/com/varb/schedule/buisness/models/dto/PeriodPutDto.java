@@ -12,11 +12,11 @@ import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.*;
 
 /**
- * PeriodDto
+ * PeriodPutDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T12:19:52.889273+03:00[Europe/Minsk]")
 
-public class PeriodDto   {
+public class PeriodPutDto   {
   @JsonProperty("name")
   private String name;
 
@@ -26,7 +26,7 @@ public class PeriodDto   {
   @JsonProperty("endDate")
   private LocalDate endDate;
 
-  public PeriodDto name(String name) {
+  public PeriodPutDto name(String name) {
     this.name = name;
     return this;
   }
@@ -35,8 +35,7 @@ public class PeriodDto   {
    * Название периода
    * @return name
   */
-  @ApiModelProperty(required = true, value = "Название периода")
-  @NotNull
+  @ApiModelProperty(value = "Название периода")
 
 
   public String getName() {
@@ -47,7 +46,7 @@ public class PeriodDto   {
     this.name = name;
   }
 
-  public PeriodDto startDate(LocalDate startDate) {
+  public PeriodPutDto startDate(LocalDate startDate) {
     this.startDate = startDate;
     return this;
   }
@@ -56,8 +55,7 @@ public class PeriodDto   {
    * Get startDate
    * @return startDate
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -69,7 +67,7 @@ public class PeriodDto   {
     this.startDate = startDate;
   }
 
-  public PeriodDto endDate(LocalDate endDate) {
+  public PeriodPutDto endDate(LocalDate endDate) {
     this.endDate = endDate;
     return this;
   }
@@ -78,8 +76,7 @@ public class PeriodDto   {
    * Get endDate
    * @return endDate
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -100,10 +97,10 @@ public class PeriodDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PeriodDto period = (PeriodDto) o;
-    return Objects.equals(this.name, period.name) &&
-        Objects.equals(this.startDate, period.startDate) &&
-        Objects.equals(this.endDate, period.endDate);
+    PeriodPutDto periodPut = (PeriodPutDto) o;
+    return Objects.equals(this.name, periodPut.name) &&
+        Objects.equals(this.startDate, periodPut.startDate) &&
+        Objects.equals(this.endDate, periodPut.endDate);
   }
 
   @Override
@@ -114,7 +111,7 @@ public class PeriodDto   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PeriodDto {\n");
+    sb.append("class PeriodPutDto {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");

@@ -18,7 +18,7 @@ tags:
   - name: eventDuration
     description: 'Информация о времени выполнения событий в каждом подразделении'
   - name: period
-    description: 'Информация о периудах (High Level Section)'
+    description: 'Информация о периодах (High Level Section)'
 paths:
   /event:
     get:
@@ -415,7 +415,7 @@ paths:
   /period:
     get:
       operationId: periodGet
-      summary: Список периудов
+      summary: Список периодов
       tags:
         - period
       responses:
@@ -440,7 +440,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Period'
+              $ref: '#/components/schemas/PeriodPost'
       responses:
         200:
           description: successful operation
@@ -455,7 +455,7 @@ paths:
   /period/{periodId}:
     put:
       operationId: periodPut
-      summary: Редактировать существующие периуды
+      summary: Редактировать существующие периоды
       tags:
         - period
       parameters:
@@ -469,7 +469,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Period'
+              $ref: '#/components/schemas/PeriodPut'
       responses:
         200:
           description: successful operation
@@ -721,7 +721,7 @@ components:
     Period:
       type: object
       required:
-        - title
+        - name
         - startDate
         - endDate
       properties:
@@ -743,6 +743,22 @@ components:
             periodId:
               type: integer
               format: int64
+
+    PeriodPost:
+      allOf:
+        - $ref: '#/components/schemas/Period'
+
+    PeriodPut:
+      properties:
+        name:
+          type: string
+          description: "Название периода"
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
     
     ErrorMessage:
       type: object
