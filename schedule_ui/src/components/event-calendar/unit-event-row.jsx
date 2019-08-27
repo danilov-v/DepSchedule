@@ -1,7 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Row } from "reactstrap";
-import { differenceInDays, isWithinInterval, addDays } from "date-fns";
+import {
+  differenceInDays,
+  isWithinInterval,
+  addDays,
+  isSameDay,
+} from "date-fns";
 import { getAllDatesFromRange } from "utils/date";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
@@ -59,6 +64,7 @@ export function UnitEventRow({
           key={date.getTime()}
           onClick={openCreateForm.bind(null, unit, date)}
           hasEvent={isEventInDate(date, unit.events)}
+          marked={isSameDay(date, new Date())}
         />
       ))}
     </Row>
