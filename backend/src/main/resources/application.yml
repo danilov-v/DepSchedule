@@ -23,9 +23,13 @@ logging.level:
 ---
 spring:
   profiles: default
+#  profiles.include: security
+
+---
+spring:
+  profiles: dev
   profiles.include: h2Server
-  
-  
+
 ---
 spring:
   profiles: h2Server
