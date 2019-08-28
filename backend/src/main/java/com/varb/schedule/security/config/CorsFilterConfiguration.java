@@ -1,4 +1,4 @@
-package com.varb.schedule.config;
+package com.varb.schedule.security.config;
 
 
 import lombok.RequiredArgsConstructor;
