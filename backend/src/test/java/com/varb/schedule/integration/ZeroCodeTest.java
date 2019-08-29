@@ -60,4 +60,9 @@ public class ZeroCodeTest {
     @JsonTestCase("integration_tests/event.json")
     public void event() {
     }
+
+    @Test
+    @JsonTestCase("integration_tests/period.json")
+    public void period() {
+    }
 }

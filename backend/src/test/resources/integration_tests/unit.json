@@ -3,14 +3,14 @@
   "steps": [
     {
       "name": "POST_unit_parent1",
-      "url": "/unit",
+      "url": "/api/unit",
       "operation": "POST",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "title": "title1",
+          "title": "title_parent1",
           "unitLevel": 1
         }
       },
@@ -26,14 +26,14 @@
 
     {
       "name": "POST_unit_parent2",
-      "url": "/unit",
+      "url": "/api/unit",
       "operation": "POST",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "title": "title1",
+          "title": "title_parent2",
           "unitLevel": 1
         }
       },
@@ -51,14 +51,14 @@
 
     {
       "name": "POST_unit_child",
-      "url": "/unit",
+      "url": "/api/unit",
       "operation": "POST",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "title": "title2",
+          "title": "title_child",
           "parentId": "${$.POST_unit_parent1.response.body.unitId}",
           "unitLevel": 2
         }
@@ -78,7 +78,7 @@
 
     {
       "name": "GET_unit",
-      "url": "/unit",
+      "url": "/api/unit",
       "operation": "GET",
       "request": {
       },
@@ -109,14 +109,14 @@
 
     {
       "name": "PUT_unit",
-      "url": "/unit/${$.POST_unit_child.response.body.unitId}",
+      "url": "/api/unit/${$.POST_unit_child.response.body.unitId}",
       "operation": "PUT",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "title": "titleChanged",
+          "title": "title_child_changed",
           "parentId": "${$.POST_unit_parent2.response.body.unitId}",
           "unitLevel": 3
         }
@@ -136,7 +136,7 @@
 
     {
       "name": "DELETE_unit",
-      "url": "/unit/${$.POST_unit_child.response.body.unitId}",
+      "url": "/api/unit/${$.POST_unit_child.response.body.unitId}",
       "operation": "DELETE",
       "request": {
       },
@@ -148,7 +148,7 @@
 
     {
       "name": "GET_afterDelete",
-      "url": "/unit",
+      "url": "/api/unit",
       "operation": "GET",
       "request": {
       },

@@ -1,0 +1,31 @@
+{
+  "scenarioName": "Test Period API functionality",
+  "steps": [
+    {
+      "name": "POST_period_period1",
+      "url": "/api/period",
+      "operation": "POST",
+
+      "request": {
+        "headers": {
+          "Content-type": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "name": "Period1",
+          "startDate": "${LOCAL.DATE.TODAY:yyyy-MM-dd}",
+          "endDate": "2019-09-06"
+        }
+      },
+
+      "assertions": {
+        "status": 200,
+        "body": {
+          "periodId": "$NOT.NULL",
+          "name": "${$.POST_period_period1.request.body.name}",
+          "startDate": "${$.POST_period_period1.request.body.startDate}",
+          "endDate": "${$.POST_period_period1.request.body.endDate}"
+        }
+      }
+    }
+  ]
+}
