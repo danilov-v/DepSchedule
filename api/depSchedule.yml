@@ -526,8 +526,8 @@ components:
           description: |
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
-        unitLevel:
-          $ref: "#/components/schemas/UnitLevel"
+#        unitLevel:
+#          $ref: "#/components/schemas/UnitLevel"
     UnitPost:
       required:
         - title
@@ -542,13 +542,13 @@ components:
           description: |
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
-        unitLevel:
-          $ref: "#/components/schemas/UnitLevel"
+#        unitLevel:
+#          $ref: "#/components/schemas/UnitLevel"
     UnitResponse:
       required:
         - unitId
         - title
-        - unitLevel
+#        - unitLevel
       allOf:
         - $ref: "#/components/schemas/UnitPut"
         - properties:
@@ -560,7 +560,6 @@ components:
       required:
         - unitId
         - title
-        - unitLevel
       allOf:
         - $ref: "#/components/schemas/UnitPut"
         - properties:
@@ -577,15 +576,15 @@ components:
                 $ref: "#/components/schemas/UnitResponseTree"
             eventDuration:
               $ref: "#/components/schemas/EventDurationMap"
-    UnitLevel:
-      type: integer
-      format: int32
-      description: |
-        Уровень подразделения
-        * `1` - Система управления
-        * `2` - Орган управления
-        * `3` - Пункт управления
-        * `4` - Подразделение
+#    UnitLevel:
+#      type: integer
+#      format: int32
+#      description: |
+#        Уровень подразделения
+#        * `1` - Система управления
+#        * `2` - Орган управления
+#        * `3` - Пункт управления
+#        * `4` - Подразделение
     EventBase:
       properties:
         unitId:

@@ -2,10 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-export function EventCell({ onClick, hasEvent }) {
+export function EventCell({ onClick, hasEvent, marked }) {
   return (
     <div
-      className={classnames("event-cell", { "event-cell-disabled": hasEvent })}
+      className={classnames(
+        "event-cell",
+        { "event-cell-disabled": hasEvent },
+        { "event-cell-marked": marked }
+      )}
       onClick={onClick}
     />
   );

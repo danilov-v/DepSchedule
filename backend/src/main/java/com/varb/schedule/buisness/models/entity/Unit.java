@@ -28,8 +28,8 @@ public class Unit {
     @Column(nullable = false)
     private String title;
 
-    @Nullable
-    private Integer unitLevel;
+//    @Nullable
+//    private Integer unitLevel;
 
     @Setter(AccessLevel.PRIVATE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "unitId")

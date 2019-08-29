@@ -26,5 +26,8 @@
     &-disabled {
       pointer-events: none;
     }
+    &-marked {
+      background: #f5c6cb52;
+    }
   }
 }
