@@ -80,7 +80,11 @@ Timeline.propTypes = {
       typeId: PropTypes.number,
     })
   ),
-  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  units: PropTypes.arrayOf(PropTypes.object),
   unitsTree: PropTypes.arrayOf(PropTypes.object).isRequired,
   onEventTypeRemove: PropTypes.func,
+};
+
+Timeline.defaultProps = {
+  units: [],
 };
