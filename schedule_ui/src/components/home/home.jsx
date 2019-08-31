@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { addMonths } from "date-fns";
-import {
-  useUnits,
-  useUnitsTree,
-  useEventTypes,
-} from "helpers/hooks/apiEffects";
+import { isEmpty, cloneDeep } from "lodash";
+import { useUnitsTree, useEventTypes } from "helpers/hooks/apiEffects";
 import { Container } from "reactstrap";
 import { Timeline } from "components/timeline/timeline";
 import { NavBar } from "components/header/header";
@@ -15,6 +12,29 @@ import { getDayWithoutMinutes } from "utils/date";
 
 import "./home.scss";
 
+function getUnitsFromUnitsTree(root) {
+  if (!root.length) return;
+
+  const stack = cloneDeep(root).reverse();
+  const array = [];
+
+  while (stack.length !== 0) {
+    const node = stack.pop();
+    if (!isEmpty(node.childUnit)) {
+      node.childUnit.forEach(unit => {
+        stack.push(unit);
+      });
+    }
+    array.push({
+      parentId: node.parentId,
+      title: node.title,
+      unitId: node.unitId,
+    });
+  }
+
+  return array;
+}
+
 export function Home() {
   const now = getDayWithoutMinutes(new Date());
 
@@ -22,10 +42,8 @@ export function Home() {
   const [endDate, setEndDate] = useState(addMonths(now, 2));
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
-  const [units, fetchUnits] = useUnits();
 
   const onUnitsUpdate = () => {
-    fetchUnits();
     fetchUnitsTree();
   };
 
@@ -53,7 +71,7 @@ export function Home() {
                 endDate={endDate}
                 eventTypes={eventTypes}
                 unitsTree={unitsTree}
-                units={units}
+                units={getUnitsFromUnitsTree(unitsTree)}
                 onUnitsUpdate={onUnitsUpdate}
               />
             )}
