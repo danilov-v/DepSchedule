@@ -18,8 +18,7 @@ public class EventType {
      *
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eventType_sq_generator")
-    @SequenceGenerator(name = "eventType_sq_generator", sequenceName = "EVENT_TYPE_SQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long typeId;
 
     @Column(nullable = false)
