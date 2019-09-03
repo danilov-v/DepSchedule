@@ -1,3 +1,16 @@
 .home {
   color: blue;
 }
+
+.army-background {
+  min-height: 75vh;
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(#fff, 0.85),
+      rgba(#fff, 0.85)
+    ),
+    url(../../force_emblem.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
