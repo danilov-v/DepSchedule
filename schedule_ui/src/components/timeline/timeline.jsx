@@ -34,7 +34,7 @@ export function Timeline({
   return (
     <Container className="timeline d-flex flex-column" fluid>
       <Title text="График развертывания СУ" />
-      <div ref={container} className="timeline-wrapper army-background">
+      <div ref={container} className="timeline-wrapper">
         <Row className="stick-to-top">
           <Col>
             <HighLevelSections
