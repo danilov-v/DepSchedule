@@ -28,18 +28,18 @@
         "status": 200,
         "body": {
           "eventId": "$NOT.NULL",
-          "dateTo": "2019-11-25",
+          "duration": "$EQ.5",
           "unitId": "$EQ.${$.add_event.request.body.unitId}",
           "dateFrom": "${$.add_event.request.body.dateFrom}",
           "note": "${$.add_event.request.body.note}",
-          "eventTypeId": "${$.add_event.request.body.eventTypeId}"
+          "eventTypeId": "$EQ.${$.add_event.request.body.eventTypeId}"
         }
       }
     },
 
     {
       "name": "put_event",
-      "url": "/event/${$.add_event.response.body.eventId}",
+      "url": "/api/event/${$.add_event.response.body.eventId}",
       "operation": "PUT",
       "request": {
         "headers": {
@@ -56,11 +56,11 @@
         "status": 200,
         "body": {
           "eventId": "$EQ.${$.add_event.response.body.eventId}",
-          "dateTo": "2019-11-26",
+          "duration": "$EQ.6",
           "unitId": "$EQ.${$.put_event.request.body.unitId}",
           "dateFrom": "${$.put_event.request.body.dateFrom}",
           "note": "${$.put_event.request.body.note}",
-          "eventTypeId": "${$.put_event.request.body.eventTypeId}"
+          "eventTypeId": "$EQ.${$.put_event.request.body.eventTypeId}"
         }
       }
     },
@@ -79,11 +79,11 @@
         "body": [
           {
             "eventId": "$EQ.${$.add_event.response.body.eventId}",
-            "dateTo": "2019-11-26",
+            "duration": "$EQ.${$.put_event.response.body.duration}",
             "unitId": "$EQ.${$.put_event.request.body.unitId}",
             "dateFrom": "${$.put_event.request.body.dateFrom}",
             "note": "${$.put_event.request.body.note}",
-            "eventTypeId": "${$.put_event.request.body.eventTypeId}"
+            "eventTypeId": "$EQ.${$.put_event.request.body.eventTypeId}"
           }
         ]
       }
