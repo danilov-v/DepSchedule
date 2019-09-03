@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { addMonths } from "date-fns";
 import { isEmpty, cloneDeep } from "lodash";
-import { useUnitsTree, useEventTypes } from "helpers/hooks/apiEffects";
+import {
+  useUnitsTree,
+  useEventTypes,
+  usePeriods,
+} from "helpers/hooks/apiEffects";
 import { Container } from "reactstrap";
 import { Timeline } from "components/timeline/timeline";
 import { NavBar } from "components/header/header";
 import { ConfirmationServiceProvider } from "components/confirmation-service/confirmation-service";
 import { EventTypes } from "components/event-types/event-types";
+import { Periods } from "components/periods/periods";
 import { getDayWithoutMinutes } from "utils/date";
+import { Notification } from "components/notification/notification";
 
 import "./home.scss";
 
@@ -42,6 +48,7 @@ export function Home() {
   const [endDate, setEndDate] = useState(addMonths(now, 2));
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
+  const [periods, fetchPeriods] = usePeriods();
 
   const onUnitsUpdate = () => {
     fetchUnitsTree();
@@ -50,6 +57,10 @@ export function Home() {
   const onEventTypesUpdate = () => {
     fetchUnitsTree(); //if event deleted then all relative events will also destroed
     fetchEventTypes();
+  };
+
+  const onPeriodsUpdate = () => {
+    fetchPeriods();
   };
 
   return (
@@ -61,31 +72,41 @@ export function Home() {
           onChangeStartDate={setStartDate}
           onChangeEndDate={setEndDate}
         />
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <Timeline
-                startDate={startDate}
-                endDate={endDate}
-                eventTypes={eventTypes}
-                unitsTree={unitsTree}
-                units={getUnitsFromUnitsTree(unitsTree)}
-                onUnitsUpdate={onUnitsUpdate}
-              />
-            )}
-          />
-          <Route
-            path="/event_types"
-            render={() => (
-              <EventTypes
-                eventTypes={eventTypes}
-                onEventTypesUpdate={onEventTypesUpdate}
-              />
-            )}
-          />
-        </Switch>
+        <Notification />
+        <main className="main">
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <Timeline
+                  startDate={startDate}
+                  endDate={endDate}
+                  eventTypes={eventTypes}
+                  unitsTree={unitsTree}
+                  periods={periods}
+                  units={getUnitsFromUnitsTree(unitsTree)}
+                  onUnitsUpdate={onUnitsUpdate}
+                />
+              )}
+            />
+            <Route
+              path="/event_types"
+              render={() => (
+                <EventTypes
+                  eventTypes={eventTypes}
+                  onEventTypesUpdate={onEventTypesUpdate}
+                />
+              )}
+            />
+            <Route
+              path="/periods"
+              render={() => (
+                <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
+              )}
+            />
+          </Switch>
+        </main>
       </Container>
     </ConfirmationServiceProvider>
   );

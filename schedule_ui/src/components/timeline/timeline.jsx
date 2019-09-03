@@ -1,15 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
-import { SECTIONS } from "stub-data/sections";
+// import { SECTIONS } from "stub-data/sections";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
 import { UnitsGrid } from "components/units-grid/units-grid";
-import { Notification } from "components/notification/notification";
-
 import { getDates } from "utils/date";
-import { getLastGenUnits } from "./helpers";
+import { getLastGenUnits, formatPeriods } from "./helpers";
 
 import "./timeline.scss";
 
@@ -19,6 +17,7 @@ export function Timeline({
   eventTypes,
   units,
   unitsTree,
+  periods,
   onUnitsUpdate,
 }) {
   const container = useRef();
@@ -41,7 +40,7 @@ export function Timeline({
             <HighLevelSections
               startDate={startDate}
               range={range}
-              sections={SECTIONS}
+              periods={formatPeriods(periods)}
             />
           </Col>
         </Row>
@@ -64,8 +63,6 @@ export function Timeline({
           </Col>
         </Row>
       </div>
-
-      <Notification />
     </Container>
   );
 }
@@ -78,6 +75,14 @@ Timeline.propTypes = {
       color: PropTypes.string,
       description: PropTypes.string,
       typeId: PropTypes.number,
+    })
+  ),
+  periods: PropTypes.arrayOf(
+    PropTypes.shape({
+      periodId: PropTypes.number,
+      name: PropTypes.string,
+      startDate: PropTypes.string,
+      endDate: PropTypes.string,
     })
   ),
   units: PropTypes.arrayOf(PropTypes.object),

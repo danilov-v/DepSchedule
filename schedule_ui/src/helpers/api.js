@@ -6,6 +6,7 @@ import {
   UNITS_URL,
   EVENT_URL,
   EVENT_TYPE_URL,
+  PERIODS,
 } from "config/url";
 
 const getUrl = apiPath =>
@@ -179,3 +180,67 @@ export const removeEvent = async eventId => {
     throw new Error();
   }
 };
+
+/**
+ * PERIODS API
+ */
+
+export const getPeriods = async () => {
+  const result = await fetch(getUrl(PERIODS));
+  const data = await result.json();
+
+  return data;
+};
+
+export const createPeriod = async periodData => {
+  const result = await fetch(getUrl(PERIODS), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(periodData),
+  });
+
+  const data = await result.json();
+
+  if (result.status === 400) {
+    throw data;
+  }
+
+  return data;
+};
+
+export const updatePeriod = async periodData => {
+  const result = await fetch(getUrl(`${PERIODS}/${periodData.periodId}`), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(periodData),
+  });
+
+  const data = await result.json();
+
+  if (result.status === 400) {
+    throw data;
+  }
+
+  return data;
+};
+
+export const removePeriod = async periodId => {
+  const result = await fetch(getUrl(`${PERIODS}/${periodId}`), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (result.status === 400) {
+    throw new Error();
+  }
+};
+
+/**
+ * END PERIODS API
+ */

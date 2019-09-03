@@ -11,7 +11,7 @@
     },
     {
       "name": "add_event",
-      "url": "/event",
+      "url": "/api/event",
       "operation": "POST",
       "request": {
         "headers": {
@@ -21,7 +21,7 @@
           "unitId": 200,
           "dateFrom": "2019-11-20",
           "note": "описание",
-          "eventType": "mobilization"
+          "eventTypeId": 1
         }
       },
       "assertions": {
@@ -32,7 +32,7 @@
           "unitId": "$EQ.${$.add_event.request.body.unitId}",
           "dateFrom": "${$.add_event.request.body.dateFrom}",
           "note": "${$.add_event.request.body.note}",
-          "eventType": "${$.add_event.request.body.eventType}"
+          "eventTypeId": "${$.add_event.request.body.eventTypeId}"
         }
       }
     },
@@ -49,7 +49,7 @@
           "unitId": 300,
           "dateFrom": "2019-11-21",
           "note": "noteChanged",
-          "eventType": "deployment"
+          "eventTypeId": 2
         }
       },
       "assertions": {
@@ -60,20 +60,19 @@
           "unitId": "$EQ.${$.put_event.request.body.unitId}",
           "dateFrom": "${$.put_event.request.body.dateFrom}",
           "note": "${$.put_event.request.body.note}",
-          "eventType": "${$.put_event.request.body.eventType}"
+          "eventTypeId": "${$.put_event.request.body.eventTypeId}"
         }
       }
     },
     
     {
       "name": "get_event",
-      "url": "/event?dateFrom=2019-07-20",
+      "url": "/api/event?dateFrom=2019-07-20",
       "operation": "GET",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
-        },
-        "body": {}
+        }
       },
       "assertions": {
         "status": 200,
@@ -84,7 +83,7 @@
             "unitId": "$EQ.${$.put_event.request.body.unitId}",
             "dateFrom": "${$.put_event.request.body.dateFrom}",
             "note": "${$.put_event.request.body.note}",
-            "eventType": "${$.put_event.request.body.eventType}"
+            "eventTypeId": "${$.put_event.request.body.eventTypeId}"
           }
         ]
       }
@@ -92,13 +91,12 @@
 
     {
       "name": "delete_event",
-      "url": "/event/${$.add_event.response.body.eventId}",
+      "url": "/api/event/${$.add_event.response.body.eventId}",
       "operation": "DELETE",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
-        },
-        "body": {}
+        }
       },
       "assertions": {
         "status": 200
@@ -107,13 +105,12 @@
 
     {
       "name": "get_event_deleted",
-      "url": "/event?dateFrom=2019-07-20",
+      "url": "/api/event?dateFrom=2019-07-20",
       "operation": "GET",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
-        },
-        "body": {}
+        }
       },
       "assertions": {
         "status": 200,

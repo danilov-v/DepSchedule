@@ -11,7 +11,7 @@
     },
     {
       "name": "add_eventDuration",
-      "url": "/eventDuration",
+      "url": "/api/eventDuration",
       "operation": "PUT",
       "request": {
         "headers": {
@@ -19,7 +19,7 @@
         },
         "body": {
           "unitId": "200",
-          "eventType": "mobilization",
+          "eventTypeId": 1,
           "duration": 5
         }
       },
@@ -27,14 +27,14 @@
         "status": 200,
         "body": {
           "unitId": "$EQ.${$.add_eventDuration.request.body.unitId}",
-          "eventType": "${$.add_eventDuration.request.body.eventType}",
+          "eventTypeId": "${$.add_eventDuration.request.body.eventTypeId}",
           "duration": "$EQ.${$.add_eventDuration.request.body.duration}"
         }
       }
     },
     {
       "name": "edit_eventDuration",
-      "url": "/eventDuration",
+      "url": "/api/eventDuration",
       "operation": "PUT",
       "request": {
         "headers": {
@@ -42,7 +42,7 @@
         },
         "body": {
           "unitId": "1",
-          "eventType": "mobilization",
+          "eventTypeId": 1,
           "duration": 2
         }
       },
@@ -50,14 +50,14 @@
         "status": 200,
         "body": {
           "unitId": "$EQ.${$.edit_eventDuration.request.body.unitId}",
-          "eventType": "${$.edit_eventDuration.request.body.eventType}",
+          "eventTypeId": "${$.edit_eventDuration.request.body.eventTypeId}",
           "duration": "$EQ.${$.edit_eventDuration.request.body.duration}"
         }
       }
     },
     {
       "name": "edit_eventDuration",
-      "url": "/eventDuration",
+      "url": "/api/eventDuration",
       "operation": "PUT",
       "request": {
         "headers": {
@@ -65,7 +65,7 @@
         },
         "body": {
           "unitId": "1",
-          "eventType": "mobilization",
+          "eventTypeId": 1,
           "duration": 2
         }
       },
@@ -73,14 +73,14 @@
         "status": 200,
         "body": {
           "unitId": "$EQ.${$.edit_eventDuration.request.body.unitId}",
-          "eventType": "${$.edit_eventDuration.request.body.eventType}",
+          "eventTypeId": "${$.edit_eventDuration.request.body.eventTypeId}",
           "duration": "$EQ.${$.edit_eventDuration.request.body.duration}"
         }
       }
     },
     {
       "name": "get_eventDuration",
-      "url": "/eventDuration",
+      "url": "/api/eventDuration",
       "operation": "GET",
       "request": {
         "headers": {
@@ -93,7 +93,7 @@
         "body": [
           {
             "unitId": "$EQ.${$.edit_eventDuration.response.body.unitId}",
-            "eventType": "${$.edit_eventDuration.response.body.eventType}",
+            "eventTypeId": "${$.edit_eventDuration.response.body.eventTypeId}",
             "duration": "$EQ.${$.edit_eventDuration.response.body.duration}"
           }
         ]
@@ -102,7 +102,7 @@
 
     {
       "name": "delete_eventDuration",
-      "url": "/eventDuration/${$.edit_eventDuration.response.body.unitId}/${$.edit_eventDuration.response.body.eventType}",
+      "url": "/api/eventDuration/${$.edit_eventDuration.response.body.unitId}/${$.edit_eventDuration.response.body.eventTypeId}",
       "operation": "DELETE",
       "request": {
         "headers": {
@@ -117,7 +117,7 @@
 
     {
       "name": "get_eventDuration",
-      "url": "/eventDuration",
+      "url": "/api/eventDuration",
       "operation": "GET",
       "request": {
         "headers": {

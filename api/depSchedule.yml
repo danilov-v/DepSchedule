@@ -5,7 +5,7 @@ info:
 security:
   - JWT: []
 servers:
-  - url: http://172.17.110.5:9006
+  - url: http://localhost:9006/api
 
 tags:
   - name: event

@@ -10,15 +10,14 @@
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "title": "title_parent1",
-          "unitLevel": 1
+          "title": "title_parent1"
         }
       },
       "assertions": {
         "status": 200,
         "body": {
           "title": "${$.POST_unit_parent1.request.body.title}",
-          "unitLevel": "$EQ.${$.POST_unit_parent1.request.body.unitLevel}",
+          "parentId": "$NULL",
           "unitId": "$NOT.NULL"
         }
       }
@@ -33,15 +32,14 @@
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "title": "title_parent2",
-          "unitLevel": 1
+          "title": "title_parent2"
         }
       },
       "assertions": {
         "status": 200,
         "body": {
           "title": "${$.POST_unit_parent2.request.body.title}",
-          "unitLevel": "$EQ.${$.POST_unit_parent2.request.body.unitLevel}",
+          "parentId": "$NULL",
           "unitId": "$NOT.NULL"
         }
       }
@@ -59,8 +57,7 @@
         },
         "body": {
           "title": "title_child",
-          "parentId": "${$.POST_unit_parent1.response.body.unitId}",
-          "unitLevel": 2
+          "parentId": "${$.POST_unit_parent1.response.body.unitId}"
         }
       },
       "assertions": {
@@ -68,7 +65,6 @@
         "body": {
           "title": "${$.POST_unit_child.request.body.title}",
           "parentId": "$EQ.${$.POST_unit_parent1.response.body.unitId}",
-          "unitLevel": "$EQ.${$.POST_unit_child.request.body.unitLevel}",
           "unitId": "$NOT.NULL"
         }
       }
@@ -87,18 +83,15 @@
         "body": [
           {
             "title": "${$.POST_unit_parent1.response.body.title}",
-            "unitLevel": "$EQ.${$.POST_unit_parent1.response.body.unitLevel}",
             "unitId": "$EQ.${$.POST_unit_parent1.response.body.unitId}"
           },
           {
             "title": "${$.POST_unit_parent2.response.body.title}",
-            "unitLevel": "$EQ.${$.POST_unit_parent2.response.body.unitLevel}",
             "unitId": "$EQ.${$.POST_unit_parent2.response.body.unitId}"
           },
           {
             "title": "${$.POST_unit_child.response.body.title}",
             "parentId": "$EQ.${$.POST_unit_parent1.response.body.unitId}",
-            "unitLevel": "$EQ.${$.POST_unit_child.response.body.unitLevel}",
             "unitId": "$EQ.${$.POST_unit_child.response.body.unitId}"
           }
         ]
@@ -117,8 +110,7 @@
         },
         "body": {
           "title": "title_child_changed",
-          "parentId": "${$.POST_unit_parent2.response.body.unitId}",
-          "unitLevel": 3
+          "parentId": "${$.POST_unit_parent2.response.body.unitId}"
         }
       },
       "assertions": {
@@ -126,7 +118,6 @@
         "body":
           {
             "title": "${$.PUT_unit.request.body.title}",
-            "unitLevel": "$EQ.${$.PUT_unit.request.body.unitLevel}",
             "unitId": "$EQ.${$.POST_unit_child.response.body.unitId}",
             "parentId": "$EQ.${$.POST_unit_parent2.response.body.unitId}"
           }
@@ -157,12 +148,10 @@
         "body": [
           {
             "title": "${$.POST_unit_parent1.response.body.title}",
-            "unitLevel": "$EQ.${$.POST_unit_parent1.response.body.unitLevel}",
             "unitId": "$EQ.${$.POST_unit_parent1.response.body.unitId}"
           },
           {
             "title": "${$.POST_unit_parent2.response.body.title}",
-            "unitLevel": "$EQ.${$.POST_unit_parent2.response.body.unitLevel}",
             "unitId": "$EQ.${$.POST_unit_parent2.response.body.unitId}"
           }
         ]

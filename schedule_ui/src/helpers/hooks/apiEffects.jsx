@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUnits, getUnitsTree, getEventTypes } from "helpers/api";
+import { getUnits, getUnitsTree, getEventTypes, getPeriods } from "helpers/api";
 
 export const useUnits = () => {
   const [units, setUnits] = useState([]);
@@ -49,4 +49,20 @@ export const useEventTypes = () => {
   }, []);
 
   return [eventTypes, fetchEventTypes];
+};
+
+export const usePeriods = () => {
+  const [periods, setPeriods] = useState([]);
+
+  const fetchPeriods = async () => {
+    const data = await getPeriods();
+
+    setPeriods(data);
+  };
+
+  useEffect(() => {
+    fetchPeriods();
+  }, []);
+
+  return [periods, fetchPeriods];
 };
