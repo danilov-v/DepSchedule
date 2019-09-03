@@ -99,6 +99,7 @@ export function PeriodsPopup({
               type="text"
               rows="6"
               name="name"
+              placeholder="Период..."
               value={name}
               onChange={onInputChange}
               invalid={!!errors["name"] && errorsShown}
@@ -117,9 +118,10 @@ export function PeriodsPopup({
                 onChange={handleChangeDate("startDate")}
                 locale="ru"
                 dateFormat="dd/MM/yyyy"
+                placeholderText="15/09/2019"
                 className={classnames("form-control", {
                   "is-invalid":
-                    errors["dates"] || (errors["startDate"] && errorsShown),
+                    errorsShown && (errors["dates"] || errors["startDate"]),
                 })}
               />
               <DatePicker
@@ -131,9 +133,10 @@ export function PeriodsPopup({
                 minDate={startDate}
                 locale="ru"
                 dateFormat="dd/MM/yyyy"
+                placeholderText="04/12/1995"
                 className={classnames("form-control", {
                   "is-invalid":
-                    errors["dates"] || (errors["endDate"] && errorsShown),
+                    errorsShown && (errors["dates"] || errors["endDate"]),
                 })}
               />
             </div>
