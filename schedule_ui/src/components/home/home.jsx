@@ -73,7 +73,6 @@ export function Home() {
           onChangeEndDate={setEndDate}
         />
         <Notification />
-
         <Switch>
           <Route
             exact
@@ -93,16 +92,20 @@ export function Home() {
           <Route
             path="/event_types"
             render={() => (
-              <EventTypes
-                eventTypes={eventTypes}
-                onEventTypesUpdate={onEventTypesUpdate}
-              />
+              <div className="army-background">
+                <EventTypes
+                  eventTypes={eventTypes}
+                  onEventTypesUpdate={onEventTypesUpdate}
+                />
+              </div>
             )}
           />
           <Route
             path="/periods"
             render={() => (
-              <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
+              <div className="army-background">
+                <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
+              </div>
             )}
           />
         </Switch>
