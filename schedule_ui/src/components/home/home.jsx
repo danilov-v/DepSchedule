@@ -73,42 +73,40 @@ export function Home() {
           onChangeEndDate={setEndDate}
         />
         <Notification />
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <Timeline
-                startDate={startDate}
-                endDate={endDate}
-                eventTypes={eventTypes}
-                unitsTree={unitsTree}
-                periods={periods}
-                units={getUnitsFromUnitsTree(unitsTree)}
-                onUnitsUpdate={onUnitsUpdate}
-              />
-            )}
-          />
-          <Route
-            path="/event_types"
-            render={() => (
-              <div className="army-background">
+        <main className="main">
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <Timeline
+                  startDate={startDate}
+                  endDate={endDate}
+                  eventTypes={eventTypes}
+                  unitsTree={unitsTree}
+                  periods={periods}
+                  units={getUnitsFromUnitsTree(unitsTree)}
+                  onUnitsUpdate={onUnitsUpdate}
+                />
+              )}
+            />
+            <Route
+              path="/event_types"
+              render={() => (
                 <EventTypes
                   eventTypes={eventTypes}
                   onEventTypesUpdate={onEventTypesUpdate}
                 />
-              </div>
-            )}
-          />
-          <Route
-            path="/periods"
-            render={() => (
-              <div className="army-background">
+              )}
+            />
+            <Route
+              path="/periods"
+              render={() => (
                 <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
-              </div>
-            )}
-          />
-        </Switch>
+              )}
+            />
+          </Switch>
+        </main>
       </Container>
     </ConfirmationServiceProvider>
   );
