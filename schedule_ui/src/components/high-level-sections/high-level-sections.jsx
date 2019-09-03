@@ -13,15 +13,17 @@ const getDifferenceInDays = ({ day, currentSection, startDate }) =>
       : currentSection.startDate
   );
 
-export function HighLevelSections({ startDate, range, sections }) {
+export function HighLevelSections({ startDate, range, periods }) {
   const renderingSection = {};
+
+  if (!periods.length) return null;
 
   return (
     <Row className="high-level-sections flex-nowrap" noGutters>
       {range.map(month => (
         <Fragment key={month.name}>
           {month.days.map(day => {
-            const currentSection = sections.find(section =>
+            const currentSection = periods.find(section =>
               isWithinInterval(day, {
                 start: section.startDate,
                 end: section.endDate,
@@ -72,8 +74,9 @@ HighLevelSections.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
-  sections: PropTypes.arrayOf(
+  periods: PropTypes.arrayOf(
     PropTypes.shape({
+      periodId: PropTypes.number,
       name: PropTypes.string,
       startDate: PropTypes.object,
       endDate: PropTypes.object,

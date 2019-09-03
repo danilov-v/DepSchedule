@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -63,51 +63,49 @@ export function EventTypePopup({
 
   const { color, description } = values;
   return (
-    <Fragment>
-      <Modal isOpen={isOpen} toggle={toggle}>
-        <Form className="p-3">
-          <ModalHeader toggle={toggle}>
-            {type === "create" ? "Создание" : "Редакитрование"} Типа события
-          </ModalHeader>
-          <ModalBody>
-            <FormGroup>
-              <Label for="description">Тип события</Label>
-              <Input
-                type="text"
-                rows="6"
-                name="description"
-                id="note"
-                value={description}
-                onChange={handleInputChange}
-                invalid={!!errors["description"] && errorsShown}
-              />
-              <FormFeedback>{errors["description"]}</FormFeedback>
-            </FormGroup>
-            <FormGroup>
-              <Label for="color">Цвет события</Label>
-              <CirclePicker
-                color={color}
-                onChangeComplete={handleColorChange}
-                colors={EVENT_TYPE_COLORS}
-              />
-            </FormGroup>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="submit"
-              color="success"
-              className="mr-3"
-              onClick={onSubmit}
-            >
-              {type === "create" ? "Создать" : "Обновить"}
-            </Button>
-            <Button color="primary" onClick={toggle}>
-              Закрыть
-            </Button>
-          </ModalFooter>
-        </Form>
-      </Modal>
-    </Fragment>
+    <Modal isOpen={isOpen} toggle={toggle}>
+      <Form className="p-3">
+        <ModalHeader toggle={toggle}>
+          {type === "create" ? "Создание" : "Редакитрование"} Типа события
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label for="description">Тип события</Label>
+            <Input
+              type="text"
+              rows="6"
+              name="description"
+              id="note"
+              value={description}
+              onChange={handleInputChange}
+              invalid={!!errors["description"] && errorsShown}
+            />
+            <FormFeedback>{errors["description"]}</FormFeedback>
+          </FormGroup>
+          <FormGroup>
+            <Label for="color">Цвет события</Label>
+            <CirclePicker
+              color={color}
+              onChangeComplete={handleColorChange}
+              colors={EVENT_TYPE_COLORS}
+            />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            type="submit"
+            color="success"
+            className="mr-3"
+            onClick={onSubmit}
+          >
+            {type === "create" ? "Создать" : "Обновить"}
+          </Button>
+          <Button color="primary" onClick={toggle}>
+            Закрыть
+          </Button>
+        </ModalFooter>
+      </Form>
+    </Modal>
   );
 }
 

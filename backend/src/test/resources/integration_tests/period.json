@@ -66,12 +66,14 @@
 
       "assertions": {
         "status": 200,
-        "body": [{
-          "periodId": "$EQ.${$.POST_period1.response.body.periodId}",
-          "name": "${$.PUT_period1.response.body.name}",
-          "startDate": "${$.POST_period1.request.body.startDate}",
-          "endDate": "${$.POST_period1.request.body.endDate}"
-        }]
+        "body": [
+          {
+            "periodId": "$EQ.${$.POST_period1.response.body.periodId}",
+            "name": "${$.PUT_period1.response.body.name}",
+            "startDate": "${$.POST_period1.request.body.startDate}",
+            "endDate": "${$.POST_period1.request.body.endDate}"
+          }
+        ]
       }
     },
 

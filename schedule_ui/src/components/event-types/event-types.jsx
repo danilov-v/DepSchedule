@@ -19,9 +19,12 @@ export function EventTypes({ eventTypes, onEventTypesUpdate }) {
   const [formType, setFormType] = useState("create");
   const [defaultFormData, setDefaultFormData] = useState(DEFAULT_EVENT_TYPE);
 
-  const toggleEventTypeForm = (type, defaultFormData = DEFAULT_EVENT_TYPE) => {
+  const toggleEventTypeForm = (
+    type,
+    defaultFormData = { ...DEFAULT_EVENT_TYPE }
+  ) => {
     setFormType(type);
-    setDefaultFormData({ ...defaultFormData });
+    setDefaultFormData(defaultFormData);
     toggleForm(!isFormOpen);
   };
 

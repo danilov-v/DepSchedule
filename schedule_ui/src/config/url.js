@@ -6,3 +6,4 @@ export const API = "api";
 export const UNITS_URL = "unit";
 export const EVENT_URL = "event";
 export const EVENT_TYPE_URL = "eventType";
+export const PERIODS = "period";

@@ -60,3 +60,17 @@ export const INTERSECTION_OF_EVENTS = {
   body: "Cобытие пересекается с другим событием в данном подразделении.",
   color: "danger",
 };
+
+export const SUCCESS_PERIOD_NOTIFICATION_DATA = {
+  isOpen: true,
+  title: "Период",
+  body: "Период успешно создан",
+  color: "success",
+};
+
+export const FAILED_PERIOD_NOTIFICATION_DATA = {
+  isOpen: true,
+  title: "Период",
+  body: "Ошибка при создании. Проверить данные и попробуйте ещё раз.",
+  color: "danger",
+};

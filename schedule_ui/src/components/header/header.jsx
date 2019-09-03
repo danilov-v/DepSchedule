@@ -70,7 +70,9 @@ function Header({
             </Link>
           </NavItem>
           <NavItem>
-            <NavLink href="#">Секции</NavLink>
+            <Link className="nav-link" to="periods">
+              Периоды
+            </Link>
           </NavItem>
           <NavItem>
             <NavLink

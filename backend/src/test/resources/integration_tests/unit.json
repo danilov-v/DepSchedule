@@ -47,8 +47,6 @@
       }
     },
 
-
-
     {
       "name": "POST_unit_child",
       "url": "/api/unit",
@@ -74,14 +72,11 @@
       }
     },
 
-
-
     {
       "name": "GET_unit",
       "url": "/api/unit",
       "operation": "GET",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200,
         "body": [
@@ -105,8 +100,6 @@
       }
     },
 
-
-
     {
       "name": "PUT_unit",
       "url": "/api/unit/${$.POST_unit_child.response.body.unitId}",
@@ -123,35 +116,30 @@
       },
       "assertions": {
         "status": 200,
-        "body":
-          {
-            "title": "${$.PUT_unit.request.body.title}",
-            "unitLevel": "$EQ.${$.PUT_unit.request.body.unitLevel}",
-            "unitId": "$EQ.${$.POST_unit_child.response.body.unitId}",
-            "parentId": "$EQ.${$.POST_unit_parent2.response.body.unitId}"
-          }
+        "body": {
+          "title": "${$.PUT_unit.request.body.title}",
+          "unitLevel": "$EQ.${$.PUT_unit.request.body.unitLevel}",
+          "unitId": "$EQ.${$.POST_unit_child.response.body.unitId}",
+          "parentId": "$EQ.${$.POST_unit_parent2.response.body.unitId}"
+        }
       }
     },
-
 
     {
       "name": "DELETE_unit",
       "url": "/api/unit/${$.POST_unit_child.response.body.unitId}",
       "operation": "DELETE",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200
       }
     },
 
-
     {
       "name": "GET_afterDelete",
       "url": "/api/unit",
       "operation": "GET",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200,
         "body": [
