@@ -6,6 +6,6 @@ pluginManagement {
 rootProject.name = 'DepSchedule'
 
 include 'backend', 'schedule_ui',
-        'backend:openapi_codegen'
-include 'backend:swagger-codegen'
+        'backend:openapi_codegen',
+        'backend:liquibase'
 

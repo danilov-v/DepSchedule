@@ -1,0 +1,101 @@
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    liquibase
+}
+
+dependencies {
+    liquibase 'org.liquibase:liquibase-core:3.8.0'
+    liquibase 'com.h2database:h2:1.4.199'
+}
+
+
+def rootProjectDir = rootProject.projectDir.toString()
+def liquibaseModuleDir = this.projectDir.toString()
+def snapshotFileName = 'snapshot.json'
+def dbDir = rootProjectDir + '/backend/src/main/resources/db/'
+def dbMigrationDir = dbDir + 'migrations/'
+def dbStorageDir = dbDir + 'storage/'
+def liquibaseProp = [
+        localDbUrl       : 'jdbc:h2:file:' + dbStorageDir + 'ScheduleDB',
+        localDbUsername  : 'sa',
+        localDbPassword  : 'password',
+        snapshotDbUrl    : 'offline:h2?snapshot=' + liquibaseModuleDir + '/' + snapshotFileName,
+        initChangeLogFile: '01.schema.h2.sql',
+        baseChangeLogFile: dbDir + 'changelog.xml',
+        diffChangeLogFile: '02.changes.h2.sql',
+        snapshotFormat   : 'json',
+        snapshotFile     : snapshotFileName,
+        logLevel         : 'debug'
+]
+
+
+task generateInitChangelog(type: JavaExec) {
+    group = "Liquibase"
+    classpath configurations.liquibase
+    main = "liquibase.integration.commandline.Main"
+
+    args "--changeLogFile=" + liquibaseProp.initChangeLogFile
+    args "--url=" + liquibaseProp.localDbUrl
+    args "--username=" + liquibaseProp.localDbUsername
+    args "--password=" + liquibaseProp.localDbPassword
+    args "--logLevel=" + liquibaseProp.logLevel
+    args "generateChangelog"
+}
+
+
+task generateDiffChangeLogAndThenSnapshot(type: JavaExec, dependsOn: 'diffChangeLog') {
+    group = "Liquibase"
+    classpath configurations.liquibase
+    main = "liquibase.integration.commandline.Main"
+
+    args "--url=" + liquibaseProp.localDbUrl
+    args "--username=" + liquibaseProp.localDbUsername
+    args "--password=" + liquibaseProp.localDbPassword
+    args "--outputFile=" + liquibaseProp.snapshotFile
+    args "--logLevel=" + liquibaseProp.logLevel
+    args "snapshot"
+    args "--snapshotFormat=" + liquibaseProp.snapshotFormat
+}
+
+task snapshot(type: JavaExec) {
+    classpath configurations.liquibase
+    main = "liquibase.integration.commandline.Main"
+
+    args "--url=" + liquibaseProp.localDbUrl
+    args "--username=" + liquibaseProp.localDbUsername
+    args "--password=" + liquibaseProp.localDbPassword
+    args "--outputFile=" + liquibaseProp.snapshotFile
+    args "--logLevel=" + liquibaseProp.logLevel
+    args "snapshot"
+    args "--snapshotFormat=" + liquibaseProp.snapshotFormat
+}
+
+task diffChangeLog(type: JavaExec) {
+    //group = "Liquibase"
+    classpath configurations.liquibase
+    main = "liquibase.integration.commandline.Main"
+
+    args "--url=" + liquibaseProp.snapshotDbUrl
+    args "--referenceUrl=" + liquibaseProp.localDbUrl
+    args "--referenceUsername=" + liquibaseProp.localDbUsername
+    args "--referencePassword=" + liquibaseProp.localDbPassword
+    args "--changeLogFile=" + liquibaseProp.diffChangeLogFile
+    args "--logLevel=" + liquibaseProp.logLevel
+    args "diffChangeLog"
+}
+
+task changelogSync(type: JavaExec) {
+    //group = "Liquibase"
+    classpath configurations.liquibase
+    main = "liquibase.integration.commandline.Main"
+
+    args "--changeLogFile=" + liquibaseProp.initChangeLogFile
+    args "--url=" + liquibaseProp.localDbUrl
+    args "--username=" + liquibaseProp.localDbUsername
+    args "--password=" + liquibaseProp.localDbPassword
+    args "--logLevel=" + liquibaseProp.logLevel
+    args "changelogSyncSQL"
+}

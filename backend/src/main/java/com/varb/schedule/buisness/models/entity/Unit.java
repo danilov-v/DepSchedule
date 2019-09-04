@@ -15,8 +15,7 @@ import java.util.Set;
 public class Unit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unit_sq_generator")
-    @SequenceGenerator(name = "unit_sq_generator", sequenceName = "UNIT_SQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long unitId;
 
     /**

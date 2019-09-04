@@ -12,8 +12,7 @@ import java.time.LocalDate;
 @Entity
 public class Event {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_sq_generator")
-    @SequenceGenerator(name = "event_sq_generator", sequenceName = "EVENT_SQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventId;
 
     @Column(nullable = false)

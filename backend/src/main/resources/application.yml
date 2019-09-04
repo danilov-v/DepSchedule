@@ -1,8 +1,9 @@
 spring:
+  application.name: DepSchedule
   #  jackson.default-property-inclusion: non_null
   datasource:
     #    url: jdbc:h2:file:~/ScheduleDB
-    jdbc-url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/init/ScheduleDB
+    jdbc-url: jdbc:h2:file:${project.basedir}/backend/src/main/resources/db/storage/ScheduleDB
 
     driverClassName: org.h2.Driver
     username: sa
@@ -10,8 +11,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: validate
-
-  application.name: DepSchedule
+  liquibase:
+    enabled: true
+    change-log: classpath:db/migrations/changelog.xml
 
 server.port: 9006
 
@@ -34,7 +36,7 @@ spring:
 spring:
   profiles: h2Server
   h2:
-    #jdbc:h2:file:/${pathToProject}/DepSchedule/backend/src/main/resources/db/init/ScheduleDB - JDBC URL
+    #jdbc:h2:file:/${pathToProject}/DepSchedule/backend/src/main/resources/db/storage/ScheduleDB - JDBC URL
     console.enabled: true
     tcp:
       enabled: true
@@ -50,6 +52,8 @@ spring:
     password:
   jpa:
     hibernate.ddl-auto: create-drop
+  liquibase:
+    enabled: false
     
 server.port: 8080
 
