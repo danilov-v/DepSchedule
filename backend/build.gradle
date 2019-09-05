@@ -63,8 +63,7 @@ dependencies {
     implementation 'org.apache.commons:commons-text:1.7' //?
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.liquibase:liquibase-core:3.8.0'
-    
-    runtimeOnly project(':schedule_ui')
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -79,4 +78,12 @@ dependencies {
     compileOnly 'io.swagger:swagger-annotations:1.5.22'
     compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
 
+    /*
+    For boot Project with FrontEnd use command
+    ==============================
+    ./gradlew bootRun -PwithFront
+    ==============================
+    */
+    if (project.hasProperty("withFront"))
+        runtimeOnly project(':schedule_ui')
 }

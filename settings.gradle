@@ -5,7 +5,17 @@ pluginManagement {
 }
 rootProject.name = 'DepSchedule'
 
-include 'backend', 'schedule_ui',
+include 'backend',
         'backend:openapi_codegen',
         'backend:liquibase'
+
+/*
+For boot Project with FrontEnd use command
+==============================
+./gradlew bootRun -PwithFront
+==============================
+*/
+if (hasProperty('withFront')) {
+    include 'schedule_ui'
+}
 
