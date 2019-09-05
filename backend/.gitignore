@@ -1,5 +1,2 @@
-### db
-*.trace.db
-*.mv.db
 ### zerocode
 target/
