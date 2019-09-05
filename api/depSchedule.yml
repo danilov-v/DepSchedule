@@ -15,7 +15,9 @@ tags:
   - name: unit
     description: "Информация о подразделении (название, уровень подразделения)"
   - name: eventDuration
-    description: "Информация о времени выполнения событий в каждом подразделении"
+    description: 'Информация о времени выполнения событий в каждом подразделении'
+  - name: user
+    description: 'Действия с пользователями системы'
   - name: period
     description: "Информация о периодах (High Level Section)"
 paths:
@@ -411,6 +413,115 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /user/register:
+    post:
+      operationId: register
+      summary: Регистрация нового пользователя
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /user/login:
+    put:
+      operationId: login
+      summary: Вход пользователя в систему
+      tags:
+        - user
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /user/logout:
+    put:
+      operationId: logout
+      summary: Выход пользователя из системы
+      tags:
+        - user
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /user/{login}:
+    put:
+      operationId: userPut
+      summary: Редактировать существующего пользователя
+      tags:
+        - user
+      parameters:
+        - name: login
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPut'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: userDelete
+      summary: Удалить существующего пользователя
+      tags:
+        - user
+      parameters:
+        - name: login
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   /period:
     get:
       operationId: periodGet
@@ -756,6 +867,52 @@ components:
         endDate:
           type: string
           format: date
+    UserPost:
+      required:
+        - login
+        - role
+        - password
+      properties:
+        password:
+          type: string
+          minLength: 5
+        login:
+          type: string
+          minLength: 3
+        role:
+          $ref: '#/components/schemas/Role'
+    UserPut:
+      properties:
+        password:
+          type: string
+          minLength: 5
+        login:
+          type: string
+          minLength: 3
+        role:
+          $ref: '#/components/schemas/Role'
+    UserResponse:
+      required:
+        - token
+        - login
+        - role
+      allOf:
+        - properties:
+            token:
+              type: string
+              format: uuid
+            login:
+              type: string
+              minLength: 3
+            role:
+              $ref: '#/components/schemas/Role'
+    Role:
+      type: string
+      enum:
+        - superuser
+        - admin
+        - user
+        - anonym
 
     ErrorMessage:
       type: object
