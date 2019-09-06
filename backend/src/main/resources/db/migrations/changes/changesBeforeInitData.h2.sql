@@ -1,0 +1,1 @@
+--liquibase formatted sql  logicalFilePath:changesBeforeInitData.h2.sql
