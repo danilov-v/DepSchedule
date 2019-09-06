@@ -2,6 +2,7 @@ package com.varb.schedule.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,6 +20,9 @@ import java.io.FileNotFoundException;
 public class DataSourceConfiguration {
     private static final String DB_URL_PROP_NAME = "spring.datasource.jdbc-url";
     private final ConfigurableApplicationContext applicationContext;
+
+    @Value("${spring.liquibase.enabled:false}")
+    private boolean isLiquibaseEnabled;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
@@ -38,7 +42,8 @@ public class DataSourceConfiguration {
             if (dbUrl == null)
                 throw new IllegalStateException("Не удалось обнаружить свойство '" + DB_URL_PROP_NAME + "' в файле конфигурации");
 
-            if (dbUrl.startsWith("jdbc:h2:file"))//Если база данных сохраняется в файл
+            if (dbUrl.startsWith("jdbc:h2:file") //Если база данных сохраняется в файл
+                    && !isLiquibaseEnabled) //и если liquibase не включён
                 dbFileValidate(dbUrl);
 
         } catch (Exception e) {
@@ -50,6 +55,7 @@ public class DataSourceConfiguration {
 
     /**
      * проверяем существование файла базы данных
+     *
      * @param dbUrl JDBC connection url
      * @throws FileNotFoundException если не найден файл базы данных
      */

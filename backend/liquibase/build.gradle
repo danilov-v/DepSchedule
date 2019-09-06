@@ -23,7 +23,8 @@ def liquibaseProp = [
         localDbUsername  : 'sa',
         localDbPassword  : 'password',
         snapshotDbUrl    : 'offline:h2?snapshot=' + liquibaseModuleDir + '/' + snapshotFileName,
-        initSqlFile      : 'schema.h2.sql',
+        initSchemaSqlFile: 'initSchema.h2.sql',
+        initDataSqlFile  : 'initData.h2.sql',
         diffSqlFile      : 'changes.h2.sql',
         syncSqlFile      : 'sync.h2.sql',
         baseChangeLogFile: dbMigrationDir + 'changelog.xml',
@@ -33,16 +34,35 @@ def liquibaseProp = [
 ]
 
 
-task generateInitChangelog(type: JavaExec) {
+task generateSchema(type: JavaExec) {
+    delete liquibaseProp.initSchemaSqlFile
+
     group = "Liquibase"
     classpath configurations.liquibase
     main = "liquibase.integration.commandline.Main"
 
-    args "--changeLogFile=" + liquibaseProp.initSqlFile
+    args "--changeLogFile=" + liquibaseProp.initSchemaSqlFile
     args "--url=" + liquibaseProp.localDbUrl
     args "--username=" + liquibaseProp.localDbUsername
     args "--password=" + liquibaseProp.localDbPassword
     args "--logLevel=" + liquibaseProp.logLevel
+    args "--diffTypes=" + "data"
+    args "generateChangelog"
+}
+
+task generateData(type: JavaExec) {
+    delete liquibaseProp.initDataSqlFile
+
+    group = "Liquibase"
+    classpath configurations.liquibase
+    main = "liquibase.integration.commandline.Main"
+
+    args "--changeLogFile=" + liquibaseProp.initDataSqlFile
+    args "--url=" + liquibaseProp.localDbUrl
+    args "--username=" + liquibaseProp.localDbUsername
+    args "--password=" + liquibaseProp.localDbPassword
+    args "--logLevel=" + liquibaseProp.logLevel
+    args "--diffTypes=" + "data"
     args "generateChangelog"
 }
 
