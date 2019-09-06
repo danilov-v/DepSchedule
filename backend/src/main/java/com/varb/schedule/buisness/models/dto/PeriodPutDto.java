@@ -1,20 +1,16 @@
 package com.varb.schedule.buisness.models.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
-import org.openapitools.jackson.nullable.JsonNullable;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * PeriodPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T12:19:52.889273+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
 public class PeriodPutDto   {
   @JsonProperty("name")

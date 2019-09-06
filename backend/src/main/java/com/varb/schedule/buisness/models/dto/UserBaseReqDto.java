@@ -3,26 +3,23 @@ package com.varb.schedule.buisness.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * UserPutDto
+ * UserBaseReqDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
-public class UserPutDto   {
+public class UserBaseReqDto   {
   @JsonProperty("login")
   private String login;
 
   @JsonProperty("password")
   private String password;
 
-  @JsonProperty("role")
-  private RoleDto role;
-
-  public UserPutDto login(String login) {
+  public UserBaseReqDto login(String login) {
     this.login = login;
     return this;
   }
@@ -31,7 +28,8 @@ public class UserPutDto   {
    * Get login
    * @return login
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 @Size(min=3) 
   public String getLogin() {
@@ -42,7 +40,7 @@ public class UserPutDto   {
     this.login = login;
   }
 
-  public UserPutDto password(String password) {
+  public UserBaseReqDto password(String password) {
     this.password = password;
     return this;
   }
@@ -51,7 +49,8 @@ public class UserPutDto   {
    * Get password
    * @return password
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 @Size(min=5) 
   public String getPassword() {
@@ -60,27 +59,6 @@ public class UserPutDto   {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public UserPutDto role(RoleDto role) {
-    this.role = role;
-    return this;
-  }
-
-  /**
-   * Get role
-   * @return role
-  */
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public RoleDto getRole() {
-    return role;
-  }
-
-  public void setRole(RoleDto role) {
-    this.role = role;
   }
 
 
@@ -92,25 +70,23 @@ public class UserPutDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserPutDto userPut = (UserPutDto) o;
-    return Objects.equals(this.login, userPut.login) &&
-        Objects.equals(this.password, userPut.password) &&
-        Objects.equals(this.role, userPut.role);
+    UserBaseReqDto userBaseReq = (UserBaseReqDto) o;
+    return Objects.equals(this.login, userBaseReq.login) &&
+        Objects.equals(this.password, userBaseReq.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(login, password, role);
+    return Objects.hash(login, password);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserPutDto {\n");
+    sb.append("class UserBaseReqDto {\n");
     
     sb.append("    login: ").append(toIndentedString(login)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
-    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("}");
     return sb.toString();
   }

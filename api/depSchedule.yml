@@ -413,10 +413,46 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /login:
+    put:
+      operationId: login
+      summary: Вход пользователя в систему
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserBaseReq'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /logout:
+    put:
+      operationId: logout
+      summary: Выход пользователя из системы
+      tags:
+        - user
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   /user/register:
     post:
+      deprecated: true
       operationId: register
-      summary: Регистрация нового пользователя
+      summary: Регистрация нового пользователя (Пока что не реализовано!)
       tags:
         - user
       requestBody:
@@ -435,51 +471,11 @@ paths:
           $ref: '#/components/responses/BadRequest'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /user/login:
-    put:
-      operationId: login
-      summary: Вход пользователя в систему
-      tags:
-        - user
-      parameters:
-        - name: username
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-  /user/logout:
-    put:
-      operationId: logout
-      summary: Выход пользователя из системы
-      tags:
-        - user
-      responses:
-        200:
-          description: successful operation
-        400:
-          $ref: '#/components/responses/BadRequest'
-        500:
-          $ref: '#/components/responses/InternalServerError'
   /user/{login}:
     put:
+      deprecated: true
       operationId: userPut
-      summary: Редактировать существующего пользователя
+      summary: Редактировать существующего пользователя (Пока что не реализовано!)
       tags:
         - user
       parameters:
@@ -505,8 +501,9 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
     delete:
+      deprecated: true
       operationId: userDelete
-      summary: Удалить существующего пользователя
+      summary: Удалить существующего пользователя (Пока что не реализовано!)
       tags:
         - user
       parameters:
@@ -637,8 +634,8 @@ components:
           description: |
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
-#        unitLevel:
-#          $ref: "#/components/schemas/UnitLevel"
+    #        unitLevel:
+    #          $ref: "#/components/schemas/UnitLevel"
     UnitPost:
       required:
         - title
@@ -653,13 +650,13 @@ components:
           description: |
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
-#        unitLevel:
-#          $ref: "#/components/schemas/UnitLevel"
+    #        unitLevel:
+    #          $ref: "#/components/schemas/UnitLevel"
     UnitResponse:
       required:
         - unitId
         - title
-#        - unitLevel
+      #        - unitLevel
       allOf:
         - $ref: "#/components/schemas/UnitPut"
         - properties:
@@ -687,15 +684,15 @@ components:
                 $ref: "#/components/schemas/UnitResponseTree"
             eventDuration:
               $ref: "#/components/schemas/EventDurationMap"
-#    UnitLevel:
-#      type: integer
-#      format: int32
-#      description: |
-#        Уровень подразделения
-#        * `1` - Система управления
-#        * `2` - Орган управления
-#        * `3` - Пункт управления
-#        * `4` - Подразделение
+    #    UnitLevel:
+    #      type: integer
+    #      format: int32
+    #      description: |
+    #        Уровень подразделения
+    #        * `1` - Система управления
+    #        * `2` - Орган управления
+    #        * `3` - Пункт управления
+    #        * `4` - Подразделение
     EventBase:
       properties:
         unitId:
@@ -825,7 +822,7 @@ components:
       type: object
       additionalProperties:
         $ref: "#/components/schemas/Duration"
-
+    
     Period:
       type: object
       required:
@@ -851,11 +848,11 @@ components:
             periodId:
               type: integer
               format: int64
-
+    
     PeriodPost:
       allOf:
         - $ref: "#/components/schemas/Period"
-
+    
     PeriodPut:
       properties:
         name:
@@ -867,30 +864,40 @@ components:
         endDate:
           type: string
           format: date
-    UserPost:
+    
+    UserBase:
+      properties:
+        login:
+          type: string
+          minLength: 3
+        password:
+          type: string
+          minLength: 5
+    UserBaseReq:
       required:
         - login
-        - role
         - password
       properties:
-        password:
-          type: string
-          minLength: 5
         login:
           type: string
           minLength: 3
-        role:
-          $ref: '#/components/schemas/Role'
+        password:
+          type: string
+          minLength: 5
+    UserPost:
+      required:
+        - role
+      allOf:
+        - $ref: "#/components/schemas/UserBaseReq"
+        - properties:
+            role:
+              $ref: '#/components/schemas/Role'
     UserPut:
-      properties:
-        password:
-          type: string
-          minLength: 5
-        login:
-          type: string
-          minLength: 3
-        role:
-          $ref: '#/components/schemas/Role'
+      allOf:
+        - $ref: "#/components/schemas/UserBase"
+        - properties:
+            role:
+              $ref: '#/components/schemas/Role'
     UserResponse:
       required:
         - token
@@ -913,7 +920,7 @@ components:
         - admin
         - user
         - anonym
-
+    
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."
@@ -930,7 +937,7 @@ components:
         userMessage:
           type: string
           description: "Сообщение для пользователя"
-
+  
   securitySchemes:
     JWT:
       type: http

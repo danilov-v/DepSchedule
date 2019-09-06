@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * EventResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T11:46:23.060448+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
 public class EventResponseDto   {
   @JsonProperty("unitId")

@@ -12,7 +12,7 @@ import java.util.*;
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T11:46:23.060448+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")
@@ -20,9 +20,6 @@ public class UnitResponseTreeDto   {
 
   @JsonProperty("parentId")
   private Long parentId;
-
-  @JsonProperty("unitLevel")
-  private Integer unitLevel;
 
   @JsonProperty("unitId")
   private Long unitId;
@@ -77,26 +74,6 @@ public class UnitResponseTreeDto   {
 
   public void setParentId(Long parentId) {
     this.parentId = parentId;
-  }
-
-  public UnitResponseTreeDto unitLevel(Integer unitLevel) {
-    this.unitLevel = unitLevel;
-    return this;
-  }
-
-  /**
-   * Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение 
-   * @return unitLevel
-  */
-  @ApiModelProperty(value = "Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение ")
-
-
-  public Integer getUnitLevel() {
-    return unitLevel;
-  }
-
-  public void setUnitLevel(Integer unitLevel) {
-    this.unitLevel = unitLevel;
   }
 
   public UnitResponseTreeDto unitId(Long unitId) {
@@ -217,7 +194,6 @@ public class UnitResponseTreeDto   {
     UnitResponseTreeDto unitResponseTree = (UnitResponseTreeDto) o;
     return Objects.equals(this.title, unitResponseTree.title) &&
         Objects.equals(this.parentId, unitResponseTree.parentId) &&
-        Objects.equals(this.unitLevel, unitResponseTree.unitLevel) &&
         Objects.equals(this.unitId, unitResponseTree.unitId) &&
         Objects.equals(this.events, unitResponseTree.events) &&
         Objects.equals(this.childUnit, unitResponseTree.childUnit) &&
@@ -226,7 +202,7 @@ public class UnitResponseTreeDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, parentId, unitLevel, unitId, events, childUnit, eventDuration);
+    return Objects.hash(title, parentId, unitId, events, childUnit, eventDuration);
   }
 
   @Override
@@ -236,7 +212,6 @@ public class UnitResponseTreeDto   {
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
-    sb.append("    unitLevel: ").append(toIndentedString(unitLevel)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    events: ").append(toIndentedString(events)).append("\n");
     sb.append("    childUnit: ").append(toIndentedString(childUnit)).append("\n");

@@ -11,38 +11,17 @@ import java.util.Objects;
 /**
  * UserPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T11:46:23.060448+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
 public class UserPostDto   {
-  @JsonProperty("password")
-  private String password;
-
   @JsonProperty("login")
   private String login;
 
+  @JsonProperty("password")
+  private String password;
+
   @JsonProperty("role")
   private RoleDto role;
-
-  public UserPostDto password(String password) {
-    this.password = password;
-    return this;
-  }
-
-  /**
-   * Get password
-   * @return password
-  */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
-
-@Size(min=5) 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
 
   public UserPostDto login(String login) {
     this.login = login;
@@ -65,6 +44,27 @@ public class UserPostDto   {
     this.login = login;
   }
 
+  public UserPostDto password(String password) {
+    this.password = password;
+    return this;
+  }
+
+  /**
+   * Get password
+   * @return password
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+@Size(min=5) 
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
   public UserPostDto role(RoleDto role) {
     this.role = role;
     return this;
@@ -74,8 +74,7 @@ public class UserPostDto   {
    * Get role
    * @return role
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -97,14 +96,14 @@ public class UserPostDto   {
       return false;
     }
     UserPostDto userPost = (UserPostDto) o;
-    return Objects.equals(this.password, userPost.password) &&
-        Objects.equals(this.login, userPost.login) &&
+    return Objects.equals(this.login, userPost.login) &&
+        Objects.equals(this.password, userPost.password) &&
         Objects.equals(this.role, userPost.role);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(password, login, role);
+    return Objects.hash(login, password, role);
   }
 
   @Override
@@ -112,8 +111,8 @@ public class UserPostDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserPostDto {\n");
     
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    login: ").append(toIndentedString(login)).append("\n");
+    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("}");
     return sb.toString();

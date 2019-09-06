@@ -1,9 +1,12 @@
 package com.varb.schedule.buisness.logic.controllers.apiimpl;
 
 import com.varb.schedule.buisness.logic.controllers.ApiController;
+import com.varb.schedule.buisness.logic.controllers.api.LoginApi;
+import com.varb.schedule.buisness.logic.controllers.api.LogoutApi;
 import com.varb.schedule.buisness.logic.controllers.api.UserApi;
 import com.varb.schedule.buisness.logic.service.UserService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
+import com.varb.schedule.buisness.models.dto.UserBaseReqDto;
 import com.varb.schedule.buisness.models.dto.UserPostDto;
 import com.varb.schedule.buisness.models.dto.UserPutDto;
 import com.varb.schedule.buisness.models.dto.UserResponseDto;
@@ -15,17 +18,30 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Profile("security")
 @ApiController
 @RequiredArgsConstructor
-public class UserApiImpl implements UserApi {
+public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
     private final UserService userService;
     private final ModelMapperCustomize modelMapper;
     private final Principal principal;
+
+    @Override
+    public ResponseEntity<UserResponseDto> login(@Valid UserBaseReqDto userBaseReqDto) {
+        return ResponseEntity.ok(userService.login(userBaseReqDto.getLogin(), userBaseReqDto.getPassword()));
+    }
+
+    @Secured(PrivilegeEnum.Code.BASE)
+    @Override
+    public ResponseEntity<Void> logout() {
+        userService.logout(principal.getUserName());
+        return ResponseEntity.ok().build();
+    }
 
     @Override
     @Secured(PrivilegeEnum.Code.SUPER)
@@ -34,18 +50,6 @@ public class UserApiImpl implements UserApi {
             throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 
         return ResponseEntity.ok(userService.register(userPostDto));
-    }
-
-    @Override
-    public ResponseEntity<UserResponseDto> login(@NotNull @Valid String username, @NotNull @Valid String password) {
-        return ResponseEntity.ok(userService.login(username, password));
-    }
-
-    @Secured(PrivilegeEnum.Code.BASE)
-    @Override
-    public ResponseEntity<Void> logout() {
-        userService.logout(principal.getUserName());
-        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -66,5 +70,10 @@ public class UserApiImpl implements UserApi {
 
         userService.delete(login);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return Optional.empty();
     }
 }

@@ -14,13 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T11:46:23.060448+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "user", description = "the user API")
@@ -30,47 +32,7 @@ public interface UserApi {
         return Optional.empty();
     }
 
-    @ApiOperation(value = "Вход пользователя в систему", nickname = "login", notes = "", response = UserResponseDto.class, authorizations = {
-        @Authorization(value = "JWT")
-    }, tags={ "user", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = UserResponseDto.class),
-        @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
-        @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
-    @RequestMapping(value = "/user/login",
-        produces = { "application/json" }, 
-        method = RequestMethod.PUT)
-    default ResponseEntity<UserResponseDto> login(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "username", required = true) String username,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "password", required = true) String password) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "null");
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.valueOf(200));
-
-    }
-
-
-    @ApiOperation(value = "Выход пользователя из системы", nickname = "logout", notes = "", authorizations = {
-        @Authorization(value = "JWT")
-    }, tags={ "user", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation"),
-        @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
-        @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
-    @RequestMapping(value = "/user/logout",
-        produces = { "application/json" }, 
-        method = RequestMethod.PUT)
-    default ResponseEntity<Void> logout() {
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
-
-    @ApiOperation(value = "Регистрация нового пользователя", nickname = "register", notes = "", response = UserResponseDto.class, authorizations = {
+    @ApiOperation(value = "Регистрация нового пользователя (Пока что не реализовано!)", nickname = "register", notes = "", response = UserResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "user", })
     @ApiResponses(value = { 
@@ -95,7 +57,7 @@ public interface UserApi {
     }
 
 
-    @ApiOperation(value = "Удалить существующего пользователя", nickname = "userDelete", notes = "", authorizations = {
+    @ApiOperation(value = "Удалить существующего пользователя (Пока что не реализовано!)", nickname = "userDelete", notes = "", authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "user", })
     @ApiResponses(value = { 
@@ -111,7 +73,7 @@ public interface UserApi {
     }
 
 
-    @ApiOperation(value = "Редактировать существующего пользователя", nickname = "userPut", notes = "", response = UserResponseDto.class, authorizations = {
+    @ApiOperation(value = "Редактировать существующего пользователя (Пока что не реализовано!)", nickname = "userPut", notes = "", response = UserResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "user", })
     @ApiResponses(value = { 

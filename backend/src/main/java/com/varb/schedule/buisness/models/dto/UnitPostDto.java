@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * UnitPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-08-24T11:46:23.060448+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
 
 public class UnitPostDto   {
   @JsonProperty("title")
@@ -18,9 +18,6 @@ public class UnitPostDto   {
 
   @JsonProperty("parentId")
   private Long parentId;
-
-  @JsonProperty("unitLevel")
-  private Integer unitLevel;
 
   public UnitPostDto title(String title) {
     this.title = title;
@@ -63,26 +60,6 @@ public class UnitPostDto   {
     this.parentId = parentId;
   }
 
-  public UnitPostDto unitLevel(Integer unitLevel) {
-    this.unitLevel = unitLevel;
-    return this;
-  }
-
-  /**
-   * Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение 
-   * @return unitLevel
-  */
-  @ApiModelProperty(value = "Уровень подразделения * `1` - Система управления * `2` - Орган управления * `3` - Пункт управления * `4` - Подразделение ")
-
-
-  public Integer getUnitLevel() {
-    return unitLevel;
-  }
-
-  public void setUnitLevel(Integer unitLevel) {
-    this.unitLevel = unitLevel;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -94,13 +71,12 @@ public class UnitPostDto   {
     }
     UnitPostDto unitPost = (UnitPostDto) o;
     return Objects.equals(this.title, unitPost.title) &&
-        Objects.equals(this.parentId, unitPost.parentId) &&
-        Objects.equals(this.unitLevel, unitPost.unitLevel);
+        Objects.equals(this.parentId, unitPost.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, parentId, unitLevel);
+    return Objects.hash(title, parentId);
   }
 
   @Override
@@ -110,7 +86,6 @@ public class UnitPostDto   {
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
-    sb.append("    unitLevel: ").append(toIndentedString(unitLevel)).append("\n");
     sb.append("}");
     return sb.toString();
   }
