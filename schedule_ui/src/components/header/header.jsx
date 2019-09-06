@@ -24,6 +24,8 @@ import "./header.scss";
 function Header({
   startDate,
   endDate,
+  operationalDate,
+  onChangeOperationalDate,
   onChangeStartDate,
   onChangeEndDate,
   history,
@@ -43,6 +45,20 @@ function Header({
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
+          <div
+            className={classnames("d-flex align-items-center mr-5", {
+              invisible: !isHomePage,
+            })}
+          >
+            <span>Оперативное время: &nbsp;</span>
+            <DatePicker
+              selected={operationalDate}
+              dateFormat="dd/MM/yyyy"
+              onChange={date => onChangeOperationalDate(date)}
+              locale="ru"
+              className="date_picker"
+            />
+          </div>
           <div
             className={classnames("d-flex align-items-center mr-5", {
               invisible: !isHomePage,
@@ -104,6 +120,7 @@ function Header({
 Header.propTypes = {
   startDate: PropTypes.instanceOf(Date),
   endDate: PropTypes.instanceOf(Date),
+  operationalDate: PropTypes.instanceOf(Date),
   onChangeStartDate: PropTypes.func,
   onChangeEndDate: PropTypes.func,
   history: PropTypes.object,

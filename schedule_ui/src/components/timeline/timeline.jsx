@@ -12,6 +12,7 @@ import { getLastGenUnits, formatPeriods } from "./helpers";
 import "./timeline.scss";
 
 export function Timeline({
+  operationalDate,
   startDate,
   endDate,
   eventTypes,
@@ -47,6 +48,7 @@ export function Timeline({
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
             <Calendar
+              operationalDate={operationalDate}
               range={range}
               unitGroups={getLastGenUnits(unitsTree)}
               onUnitsUpdate={onUnitsUpdate}
@@ -68,6 +70,7 @@ export function Timeline({
 }
 
 Timeline.propTypes = {
+  operationalDate: PropTypes.instanceOf(Date),
   startDate: PropTypes.instanceOf(Date),
   endDate: PropTypes.instanceOf(Date),
   eventTypes: PropTypes.arrayOf(

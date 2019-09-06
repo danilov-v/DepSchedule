@@ -35,6 +35,7 @@ export function UnitEventRow({
   eventTypes,
   openCreateForm,
   openEditForm,
+  operationalDate,
 }) {
   const allDates = getAllDatesFromRange(range);
   const startDateCord = allDates[allDates.length - 1];
@@ -64,7 +65,7 @@ export function UnitEventRow({
           key={date.getTime()}
           onClick={openCreateForm.bind(null, unit, date)}
           hasEvent={isEventInDate(date, unit.events)}
-          marked={isSameDay(date, new Date())}
+          marked={isSameDay(date, operationalDate)}
         />
       ))}
     </Row>
@@ -88,6 +89,7 @@ UnitEventRow.propTypes = {
   unitGroup: PropTypes.arrayOf(PropTypes.object), //will change it to PropTypes.shape after BE fixes
   openCreateForm: PropTypes.func,
   openEditForm: PropTypes.func,
+  operationalDate: PropTypes.instanceOf(Date),
 };
 
 UnitEventRow.defaultProps = {

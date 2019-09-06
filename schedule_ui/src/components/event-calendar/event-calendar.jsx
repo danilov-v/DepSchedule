@@ -21,6 +21,7 @@ export function EventCalendar({
   unitGroups,
   onUnitsUpdate,
   eventTypes,
+  operationalDate,
 }) {
   const [isFormOpen, toggle] = useState(false);
   const [formType, setFormType] = useState("create");
@@ -85,6 +86,7 @@ export function EventCalendar({
           openCreateForm={toggleCreateForm}
           openEditForm={toggleEditForm}
           eventTypes={eventTypes}
+          operationalDate={operationalDate}
         />
       ))}
       <EventPopup
@@ -118,6 +120,7 @@ EventCalendar.propTypes = {
     })
   ),
   onUnitsUpdate: PropTypes.func,
+  operationalDate: PropTypes.instanceOf(Date),
 };
 
 EventCalendar.defaultProps = {

@@ -42,10 +42,11 @@ function getUnitsFromUnitsTree(root) {
 }
 
 export function Home() {
-  const now = getDayWithoutMinutes(new Date());
-
-  const [startDate, setStartDate] = useState(now);
-  const [endDate, setEndDate] = useState(addMonths(now, 2));
+  const [operationalDate, setOperationalDate] = useState(
+    getDayWithoutMinutes(new Date())
+  );
+  const [startDate, setStartDate] = useState(operationalDate);
+  const [endDate, setEndDate] = useState(addMonths(operationalDate, 2));
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();
@@ -69,6 +70,8 @@ export function Home() {
         <NavBar
           startDate={startDate}
           endDate={endDate}
+          operationalDate={operationalDate}
+          onChangeOperationalDate={setOperationalDate}
           onChangeStartDate={setStartDate}
           onChangeEndDate={setEndDate}
         />
@@ -80,6 +83,7 @@ export function Home() {
               path="/"
               render={() => (
                 <Timeline
+                  operationalDate={operationalDate}
                   startDate={startDate}
                   endDate={endDate}
                   eventTypes={eventTypes}
