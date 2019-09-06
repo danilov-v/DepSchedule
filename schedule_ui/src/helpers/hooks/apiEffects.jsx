@@ -1,35 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getUnits, getUnitsTree, getEventTypes, getPeriods } from "helpers/api";
 
 export const useUnits = () => {
   const [units, setUnits] = useState([]);
-  const fetchUnits = async () => {
+  const fetchUnits = useCallback(async () => {
     const data = await getUnits();
 
     setUnits(data);
     console.log("set Units");
-  };
+  }, []);
 
   useEffect(() => {
     fetchUnits();
-  }, []);
+  }, [fetchUnits]);
 
   return [units, fetchUnits];
 };
 
 export const useUnitsTree = initialDateFrom => {
   const [units, setUnits] = useState([]);
-  const fetchUnitsTree = async () => {
+  const fetchUnitsTree = useCallback(async () => {
     const data = await getUnitsTree(initialDateFrom);
 
     setUnits(data);
     console.log("set Units Tree");
-  };
+  }, [initialDateFrom]);
 
   useEffect(() => {
     fetchUnitsTree();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialDateFrom]);
+  }, [fetchUnitsTree]);
 
   return [units, fetchUnitsTree];
 };
@@ -37,16 +36,16 @@ export const useUnitsTree = initialDateFrom => {
 export const useEventTypes = () => {
   const [eventTypes, setEventTypes] = useState([]);
 
-  const fetchEventTypes = async () => {
+  const fetchEventTypes = useCallback(async () => {
     const data = await getEventTypes();
 
     setEventTypes(data);
     console.log("set Event Types");
-  };
+  }, []);
 
   useEffect(() => {
     fetchEventTypes();
-  }, []);
+  }, [fetchEventTypes]);
 
   return [eventTypes, fetchEventTypes];
 };
@@ -54,15 +53,15 @@ export const useEventTypes = () => {
 export const usePeriods = () => {
   const [periods, setPeriods] = useState([]);
 
-  const fetchPeriods = async () => {
+  const fetchPeriods = useCallback(async () => {
     const data = await getPeriods();
 
     setPeriods(data);
-  };
+  }, []);
 
   useEffect(() => {
     fetchPeriods();
-  }, []);
+  }, [fetchPeriods]);
 
   return [periods, fetchPeriods];
 };
