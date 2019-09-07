@@ -2,84 +2,36 @@
   "scenarioName": "CRUD eventDuration",
   "steps": [
     {
-      "name": "javaMethodExecution",
-      "url": "com.varb.schedule.integration.ZeroCodeTest",
-      "operation": "initDataBeforeEventDurationTest",
-      "request": {},
-      "assertions": {
-      }
+      "name": "initDataBeforeTest",
+      "url": "com.varb.schedule.integration.TestSqlExecutor",
+      "operation": "executeSqlScript",
+      "request": "db/scripts/initEventDurationTest.sql",
+      "assertions": {}
     },
     {
-      "name": "add_eventDuration",
-      "url": "/api/eventDuration",
+      "name": "PUT_eventDuration",
+      "url": "/api/eventDuration/200/1",
       "operation": "PUT",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "unitId": "200",
-          "eventTypeId": 1,
-          "duration": 5
+          "duration": 10
         }
       },
       "assertions": {
         "status": 200,
         "body": {
-          "unitId": "$EQ.${$.add_eventDuration.request.body.unitId}",
-          "eventTypeId": "${$.add_eventDuration.request.body.eventTypeId}",
-          "duration": "$EQ.${$.add_eventDuration.request.body.duration}"
+          "unitId": "$EQ.200",
+          "eventTypeId": "$EQ.1",
+          "duration": "$EQ.${$.PUT_eventDuration.request.body.duration}"
         }
       }
     },
+
     {
-      "name": "edit_eventDuration",
-      "url": "/api/eventDuration",
-      "operation": "PUT",
-      "request": {
-        "headers": {
-          "Accept": "application/json;charset=UTF-8"
-        },
-        "body": {
-          "unitId": "1",
-          "eventTypeId": 1,
-          "duration": 2
-        }
-      },
-      "assertions": {
-        "status": 200,
-        "body": {
-          "unitId": "$EQ.${$.edit_eventDuration.request.body.unitId}",
-          "eventTypeId": "${$.edit_eventDuration.request.body.eventTypeId}",
-          "duration": "$EQ.${$.edit_eventDuration.request.body.duration}"
-        }
-      }
-    },
-    {
-      "name": "edit_eventDuration",
-      "url": "/api/eventDuration",
-      "operation": "PUT",
-      "request": {
-        "headers": {
-          "Accept": "application/json;charset=UTF-8"
-        },
-        "body": {
-          "unitId": "1",
-          "eventTypeId": 1,
-          "duration": 2
-        }
-      },
-      "assertions": {
-        "status": 200,
-        "body": {
-          "unitId": "$EQ.${$.edit_eventDuration.request.body.unitId}",
-          "eventTypeId": "${$.edit_eventDuration.request.body.eventTypeId}",
-          "duration": "$EQ.${$.edit_eventDuration.request.body.duration}"
-        }
-      }
-    },
-    {
-      "name": "get_eventDuration",
+      "name": "GET_eventDuration",
       "url": "/api/eventDuration",
       "operation": "GET",
       "request": {
@@ -92,17 +44,22 @@
         "status": 200,
         "body": [
           {
-            "unitId": "$EQ.${$.edit_eventDuration.response.body.unitId}",
-            "eventTypeId": "${$.edit_eventDuration.response.body.eventTypeId}",
-            "duration": "$EQ.${$.edit_eventDuration.response.body.duration}"
+            "unitId": "$EQ.${$.PUT_eventDuration.response.body.unitId}",
+            "eventTypeId": "$EQ.${$.PUT_eventDuration.response.body.eventTypeId}",
+            "duration": "$EQ.${$.PUT_eventDuration.response.body.duration}"
+          },
+          {
+            "unitId": "$EQ.300",
+            "eventTypeId": "$EQ.2",
+            "duration": "$EQ.6"
           }
         ]
       }
     },
 
     {
-      "name": "delete_eventDuration",
-      "url": "/api/eventDuration/${$.edit_eventDuration.response.body.unitId}/${$.edit_eventDuration.response.body.eventTypeId}",
+      "name": "DELETE_eventDuration",
+      "url": "/api/eventDuration/${$.PUT_eventDuration.response.body.unitId}/${$.PUT_eventDuration.response.body.eventTypeId}",
       "operation": "DELETE",
       "request": {
         "headers": {
@@ -116,7 +73,7 @@
     },
 
     {
-      "name": "get_eventDuration",
+      "name": "GET_eventDuration_afterDelete",
       "url": "/api/eventDuration",
       "operation": "GET",
       "request": {
@@ -127,7 +84,13 @@
       },
       "assertions": {
         "status": 200,
-        "body": "$[]"
+        "body": [
+          {
+            "unitId": "$EQ.${$.GET_eventDuration.response.body[1].unitId}",
+            "eventTypeId": "$EQ.${$.GET_eventDuration.response.body[1].eventTypeId}",
+            "duration": "$EQ.${$.GET_eventDuration.response.body[1].duration}"
+          }
+        ]
       }
     }
 

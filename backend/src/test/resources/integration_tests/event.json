@@ -2,12 +2,11 @@
   "scenarioName": "CRUD event",
   "steps": [
     {
-      "name": "javaMethodExecution",
-      "url": "com.varb.schedule.integration.ZeroCodeTest",
-      "operation": "initDataBeforeEventTest",
-      "request": {},
-      "assertions": {
-      }
+      "name": "initDataBeforeTest",
+      "url": "com.varb.schedule.integration.TestSqlExecutor",
+      "operation": "executeSqlScript",
+      "request": "db/scripts/initEventTest.sql",
+      "assertions": {}
     },
     {
       "name": "add_event",
