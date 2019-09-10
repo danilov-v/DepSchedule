@@ -22,9 +22,6 @@ public class EventType {
     private Long typeId;
 
     @Column(nullable = false)
-    private String typeCode;
-
-    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)

@@ -9,6 +9,7 @@ export function Unit({
   unitId,
   lastGen,
   lastOfGroup,
+  isManageAble,
   onAddUnit,
   onEditUnit,
   onRemoveUnit,
@@ -18,6 +19,8 @@ export function Unit({
   const removeUnit = () => onRemoveUnit(unitId);
   const iconClass =
     "unit-action d-flex align-items-center justify-content-center h-100";
+  const manageStyle = isManageAble ? {} : { display: "none" };
+
   return (
     <div
       className={classnames(
@@ -32,7 +35,7 @@ export function Unit({
       data-unit-id={unitId}
     >
       {title}
-      <Row className="unit-actions" noGutters>
+      <Row style={manageStyle} className="unit-actions" noGutters>
         <Col xs={4} className={iconClass} onClick={addUnit}>
           <FontAwesomeIcon icon="plus" />
         </Col>

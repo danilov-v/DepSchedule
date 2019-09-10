@@ -114,7 +114,6 @@ export function EventPopup({
     try {
       await onEventSubmit(data);
       toggle();
-
       NotificationManager.fire(SUCCESS_EVENT_NOTIFICATION_DATA);
     } catch (e) {
       handleError(e);

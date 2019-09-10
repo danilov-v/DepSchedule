@@ -2,98 +2,124 @@
   "scenarioName": "CRUD EventType",
   "steps": [
     {
+      "name": "initDataBeforeTest",
+      "url": "com.varb.schedule.integration.TestSqlExecutor",
+      "operation": "executeSqlScript",
+      "request": "db/scripts/initEventTypeTest.sql",
+      "assertions": {}
+    },
+
+    {
       "name": "PUT_eventType",
-      "url": "/eventType/mobilization",
+      "url": "/api/eventType/1",
       "operation": "PUT",
       "request": {
         "headers": {
           "Accept": "application/json;charset=UTF-8"
         },
         "body": {
-          "description": "мобилизация",
+          "description": "mobilization_changed",
+          "color": "blue"
+        }
+      },
+      "assertions": {
+        "status": 200,
+        "body": {
+          "typeId": "$EQ.1",
+          "description": "${$.PUT_eventType.request.body.description}",
+          "color": "${$.PUT_eventType.request.body.color}"
+        }
+      }
+    },
+
+    {
+      "name": "POST_eventType",
+      "url": "/api/eventType",
+      "operation": "POST",
+      "request": {
+        "headers": {
+          "Accept": "application/json;charset=UTF-8"
+        },
+        "body": {
+          "description": "third_type_description",
           "color": "red"
         }
       },
       "assertions": {
         "status": 200,
         "body": {
-          "type": "mobilization",
-          "description": "${$.PUT_eventType.response.body.description}",
-          "color": "${$.PUT_eventType.response.body.color}"
+          "typeId": "$NOT.NULL",
+          "description": "${$.POST_eventType.request.body.description}",
+          "color": "${$.POST_eventType.request.body.color}"
         }
       }
     },
 
-
-
-
-
     {
       "name": "GET_eventType",
-      "url": "/eventType",
+      "url": "/api/eventType",
       "operation": "GET",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200,
         "body": [
           {
-            "description": "мобилизация",
-            "color": "red",
-            "type": "mobilization"
+            "typeId": "$EQ.${$.PUT_eventType.response.body.typeId}",
+            "description": "${$.PUT_eventType.response.body.description}",
+            "color": "${$.PUT_eventType.response.body.color}"
+          },
+          {
+            "typeId": "$EQ.2",
+            "description": "deployment",
+            "color": "green"
+          },
+          {
+            "typeId": "$EQ.${$.POST_eventType.response.body.typeId}",
+            "description": "${$.POST_eventType.response.body.description}",
+            "color": "${$.POST_eventType.response.body.color}"
           }
         ]
       }
     },
 
-
-    {
-      "name": "PUT_eventType2",
-      "url": "/eventType/mobilization",
-      "operation": "PUT",
-      "request": {
-        "headers": {
-          "Accept": "application/json;charset=UTF-8"
-        },
-        "body": {
-          "description": "мобилизацияChanged",
-          "color": "redChanged"
-        }
-      },
-      "assertions": {
-        "status": 200,
-        "body": {
-          "type": "mobilization",
-          "description": "${$.PUT_eventType2.response.body.description}",
-          "color": "${$.PUT_eventType2.response.body.color}"
-        }
-      }
-    },
-
-
-
     {
       "name": "DELETE_eventType",
-      "url": "/eventType/${$.PUT_eventType.response.body.type}",
+      "url": "/api/eventType/${$.POST_eventType.response.body.typeId}",
       "operation": "DELETE",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200
       }
     },
 
-
     {
-      "name": "GET_eventType",
-      "url": "/eventType",
+      "name": "GET_eventType_afterDelete",
+      "url": "/api/eventType",
       "operation": "GET",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200,
-        "body": []
+        "body": [
+          {
+            "typeId": "$EQ.${$.PUT_eventType.response.body.typeId}",
+            "description": "${$.PUT_eventType.response.body.description}",
+            "color": "${$.PUT_eventType.response.body.color}"
+          },
+          {
+            "typeId": "$EQ.${$.GET_eventType.response.body[1].typeId}",
+            "description": "${$.GET_eventType.response.body[1].description}",
+            "color": "${$.GET_eventType.response.body[1].color}"
+          }
+        ]
       }
+    },
+
+    {
+      "name": "clearDataAfterTest",
+      "url": "com.varb.schedule.integration.TestSqlExecutor",
+      "operation": "executeSqlScript",
+      "request": "db/scripts/cleanup.sql",
+      "assertions": {}
     }
   ]
 }
