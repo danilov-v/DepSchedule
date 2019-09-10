@@ -39,7 +39,6 @@ export function UnitEventRow({
   eventTypes,
   openCreateForm,
   openEditForm,
-  operationalDate,
 }) {
   const { authBody } = useAuth();
   const isManageAble = checkPermission(authBody.role, MANAGE_EVENTS);
@@ -79,7 +78,7 @@ export function UnitEventRow({
               : constant(null)
           }
           hasEvent={isEventInDate(date, unit.events)}
-          marked={isSameDay(date, operationalDate)}
+          marked={isSameDay(date, new Date())}
         />
       ))}
     </Row>
@@ -103,7 +102,6 @@ UnitEventRow.propTypes = {
   unitGroup: PropTypes.arrayOf(PropTypes.object), //will change it to PropTypes.shape after BE fixes
   openCreateForm: PropTypes.func,
   openEditForm: PropTypes.func,
-  operationalDate: PropTypes.instanceOf(Date),
 };
 
 UnitEventRow.defaultProps = {

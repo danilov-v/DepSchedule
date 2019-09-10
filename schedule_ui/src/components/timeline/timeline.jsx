@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
-// import { SECTIONS } from "stub-data/sections";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
@@ -12,7 +11,6 @@ import { getLastGenUnits, formatPeriods } from "./helpers";
 import "./timeline.scss";
 
 export function Timeline({
-  operationalDate,
   operationalRange,
   startDate,
   endDate,
@@ -49,7 +47,6 @@ export function Timeline({
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
             <Calendar
-              operationalDate={operationalDate}
               operationalRange={getDates(...operationalRange)}
               range={range}
               unitGroups={getLastGenUnits(unitsTree)}

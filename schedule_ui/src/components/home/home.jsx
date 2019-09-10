@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Switch, Route } from "react-router-dom";
-import { addDays } from "date-fns";
+import { Route } from "react-router-dom";
+import { addDays, differenceInDays } from "date-fns";
 import { isEmpty, cloneDeep } from "lodash";
 import {
   useUnitsTree,
@@ -48,7 +48,10 @@ export function Home() {
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();
-  const operationalRange = [operationalDate, addDays(operationalDate, 60)];
+  const operationalRange = [
+    operationalDate,
+    addDays(operationalDate, differenceInDays(endDate, startDate)),
+  ];
 
   const onUnitsUpdate = () => {
     fetchUnitsTree();
@@ -80,7 +83,6 @@ export function Home() {
             path="/"
             render={() => (
               <Timeline
-                operationalDate={operationalDate}
                 operationalRange={operationalRange}
                 startDate={startDate}
                 endDate={endDate}

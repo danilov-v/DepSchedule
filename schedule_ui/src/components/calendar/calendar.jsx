@@ -12,7 +12,6 @@ export function Calendar({
   unitGroups,
   eventTypes,
   onUnitsUpdate,
-  operationalDate,
   operationalRange,
 }) {
   return (
@@ -64,7 +63,6 @@ export function Calendar({
         unitGroups={unitGroups}
         onUnitsUpdate={onUnitsUpdate}
         eventTypes={eventTypes}
-        operationalDate={operationalDate}
       />
     </Fragment>
   );
@@ -86,7 +84,6 @@ Calendar.propTypes = {
     })
   ),
   onUnitsUpdate: PropTypes.func.isRequired,
-  operationalDate: PropTypes.instanceOf(Date),
 };
 
 Calendar.defaultProps = {
