@@ -74,3 +74,17 @@ export const FAILED_PERIOD_NOTIFICATION_DATA = {
   body: "Ошибка при создании. Проверить данные и попробуйте ещё раз.",
   color: "danger",
 };
+
+export const FAILED_LOGIN = {
+  isOpen: true,
+  title: "Авторизация",
+  body: "Ошибка авторизации",
+  color: "danger",
+};
+
+export const FAILED_LOGOUT = {
+  isOpen: true,
+  title: "Авторизация",
+  body: "Ошибка авторизации",
+  color: "danger",
+};

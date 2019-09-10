@@ -18,10 +18,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePicker from "react-datepicker";
 import PropTypes from "prop-types";
 import logo from "logo.png";
+import { useAuth } from "components/auth-service/auth-service";
 
 import "./header.scss";
 
-function Header({
+export function HeaderUI({
   startDate,
   endDate,
   operationalDate,
@@ -31,6 +32,8 @@ function Header({
   history,
 }) {
   const [isOpen, toggleNav] = useState(false);
+  const { logout } = useAuth();
+
   const toggle = () => toggleNav(!isOpen);
   const print = () => window.print();
 
@@ -92,12 +95,8 @@ function Header({
               Периоды
             </Link>
           </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ "d-none": !isHomePage })}
-              href="#"
-              onClick={print}
-            >
+          <NavItem hidden={!isHomePage}>
+            <NavLink href="#" onClick={print}>
               <FontAwesomeIcon icon="file-pdf" />
             </NavLink>
           </NavItem>
@@ -108,7 +107,7 @@ function Header({
             <DropdownMenu right>
               <DropdownItem>Профиль</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem>Выйти</DropdownItem>
+              <DropdownItem onClick={logout}>Выйти</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
@@ -117,7 +116,9 @@ function Header({
   );
 }
 
-Header.propTypes = {
+export const Header = withRouter(HeaderUI);
+
+HeaderUI.propTypes = {
   startDate: PropTypes.instanceOf(Date),
   endDate: PropTypes.instanceOf(Date),
   operationalDate: PropTypes.instanceOf(Date),
@@ -125,5 +126,3 @@ Header.propTypes = {
   onChangeEndDate: PropTypes.func,
   history: PropTypes.object,
 };
-
-export const NavBar = withRouter(Header);

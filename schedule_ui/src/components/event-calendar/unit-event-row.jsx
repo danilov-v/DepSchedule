@@ -7,6 +7,10 @@ import {
   addDays,
   isSameDay,
 } from "date-fns";
+import { constant } from "lodash";
+import { MANAGE_EVENTS } from "constants/permishions";
+import { checkPermission } from "utils/permishions";
+import { useAuth } from "components/auth-service/auth-service";
 import { getAllDatesFromRange } from "utils/date";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
@@ -37,6 +41,8 @@ export function UnitEventRow({
   openEditForm,
   operationalDate,
 }) {
+  const { authBody } = useAuth();
+  const isManageAble = checkPermission(authBody.role, MANAGE_EVENTS);
   const allDates = getAllDatesFromRange(range);
   const startDateCord = allDates[allDates.length - 1];
 
@@ -55,7 +61,11 @@ export function UnitEventRow({
                 rightOffset={getOffset(startDateCord, event.dateFrom)}
                 color={color}
                 title={description}
-                onClick={openEditForm.bind(null, unit, event)}
+                onClick={
+                  isManageAble
+                    ? openEditForm.bind(null, unit, event)
+                    : constant(null)
+                }
               />
             );
           })
@@ -63,7 +73,11 @@ export function UnitEventRow({
       {allDates.map(date => (
         <EventCell
           key={date.getTime()}
-          onClick={openCreateForm.bind(null, unit, date)}
+          onClick={
+            isManageAble
+              ? openCreateForm.bind(null, unit, date)
+              : constant(null)
+          }
           hasEvent={isEventInDate(date, unit.events)}
           marked={isSameDay(date, operationalDate)}
         />

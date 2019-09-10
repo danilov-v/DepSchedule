@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { addMonths } from "date-fns";
 import { isEmpty, cloneDeep } from "lodash";
 import {
@@ -9,12 +9,11 @@ import {
 } from "helpers/hooks/apiEffects";
 import { Container } from "reactstrap";
 import { Timeline } from "components/timeline/timeline";
-import { NavBar } from "components/header/header";
+import { Header } from "components/header/header";
 import { ConfirmationServiceProvider } from "components/confirmation-service/confirmation-service";
 import { EventTypes } from "components/event-types/event-types";
 import { Periods } from "components/periods/periods";
 import { getDayWithoutMinutes } from "utils/date";
-import { Notification } from "components/notification/notification";
 
 import "./home.scss";
 
@@ -67,7 +66,7 @@ export function Home() {
   return (
     <ConfirmationServiceProvider>
       <Container fluid>
-        <NavBar
+        <Header
           startDate={startDate}
           endDate={endDate}
           operationalDate={operationalDate}
@@ -75,41 +74,38 @@ export function Home() {
           onChangeStartDate={setStartDate}
           onChangeEndDate={setEndDate}
         />
-        <Notification />
-        <main className="main">
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <Timeline
-                  operationalDate={operationalDate}
-                  startDate={startDate}
-                  endDate={endDate}
-                  eventTypes={eventTypes}
-                  unitsTree={unitsTree}
-                  periods={periods}
-                  units={getUnitsFromUnitsTree(unitsTree)}
-                  onUnitsUpdate={onUnitsUpdate}
-                />
-              )}
-            />
-            <Route
-              path="/event_types"
-              render={() => (
-                <EventTypes
-                  eventTypes={eventTypes}
-                  onEventTypesUpdate={onEventTypesUpdate}
-                />
-              )}
-            />
-            <Route
-              path="/periods"
-              render={() => (
-                <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
-              )}
-            />
-          </Switch>
+        <main className="h-75 emblem-background">
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Timeline
+                operationalDate={operationalDate}
+                startDate={startDate}
+                endDate={endDate}
+                eventTypes={eventTypes}
+                unitsTree={unitsTree}
+                periods={periods}
+                units={getUnitsFromUnitsTree(unitsTree)}
+                onUnitsUpdate={onUnitsUpdate}
+              />
+            )}
+          />
+          <Route
+            path="/event_types"
+            render={() => (
+              <EventTypes
+                eventTypes={eventTypes}
+                onEventTypesUpdate={onEventTypesUpdate}
+              />
+            )}
+          />
+          <Route
+            path="/periods"
+            render={() => (
+              <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
+            )}
+          />
         </main>
       </Container>
     </ConfirmationServiceProvider>
