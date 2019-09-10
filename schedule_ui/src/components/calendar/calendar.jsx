@@ -9,34 +9,50 @@ import "./calendar.scss";
 
 export function Calendar({
   range,
-  showMonth,
   unitGroups,
   eventTypes,
   onUnitsUpdate,
   operationalDate,
+  operationalRange,
 }) {
   return (
     <Fragment>
       <Row className="calendar" noGutters>
         {range.map(month => (
           <Col key={month.name}>
-            {showMonth && (
-              <Row className="calendar-title" noGutters>
-                <Col>
-                  <CalendarCell
-                    text={MONTH_TRANSLATIONS[month.name]}
-                    fluid={month.days && month.days.length > 1}
-                  />
-                </Col>
-              </Row>
-            )}
+            <Row className="calendar-title" noGutters>
+              <Col>
+                <CalendarCell
+                  text={MONTH_TRANSLATIONS[month.name]}
+                  fluid={month.days && month.days.length > 1}
+                />
+              </Col>
+            </Row>
             <Row noGutters>
               <Col className="d-flex">
                 {month.days.map(day => (
-                  <CalendarCell
-                    key={day.getTime()}
-                    text={showMonth ? day.getDate() : null}
-                  />
+                  <CalendarCell key={day.getTime()} text={day.getDate()} />
+                ))}
+              </Col>
+            </Row>
+          </Col>
+        ))}
+      </Row>
+      <Row className="calendar calendar-operational" noGutters>
+        {operationalRange.map(month => (
+          <Col key={month.name}>
+            <Row className="calendar-title" noGutters>
+              <Col>
+                <CalendarCell
+                  text={MONTH_TRANSLATIONS[month.name]}
+                  fluid={month.days && month.days.length > 1}
+                />
+              </Col>
+            </Row>
+            <Row noGutters>
+              <Col className="d-flex">
+                {month.days.map(day => (
+                  <CalendarCell key={day.getTime()} text={day.getDate()} />
                 ))}
               </Col>
             </Row>
@@ -61,7 +77,6 @@ Calendar.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
-  showMonth: PropTypes.bool,
   unitGroups: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)), //will change it to PropTypes.shape after BE fixes
   eventTypes: PropTypes.arrayOf(
     PropTypes.shape({
@@ -76,7 +91,6 @@ Calendar.propTypes = {
 
 Calendar.defaultProps = {
   range: [],
-  showMonth: false,
   unitGroups: [],
   eventTypes: [],
 };

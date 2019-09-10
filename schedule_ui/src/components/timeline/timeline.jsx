@@ -13,6 +13,7 @@ import "./timeline.scss";
 
 export function Timeline({
   operationalDate,
+  operationalRange,
   startDate,
   endDate,
   eventTypes,
@@ -49,11 +50,11 @@ export function Timeline({
           <Col className="timeline-left" xs="auto">
             <Calendar
               operationalDate={operationalDate}
+              operationalRange={getDates(...operationalRange)}
               range={range}
               unitGroups={getLastGenUnits(unitsTree)}
               onUnitsUpdate={onUnitsUpdate}
               eventTypes={eventTypes}
-              showMonth
             />
           </Col>
           <Col className="timeline-info">
@@ -71,6 +72,7 @@ export function Timeline({
 
 Timeline.propTypes = {
   operationalDate: PropTypes.instanceOf(Date),
+  operationalRange: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   startDate: PropTypes.instanceOf(Date),
   endDate: PropTypes.instanceOf(Date),
   eventTypes: PropTypes.arrayOf(

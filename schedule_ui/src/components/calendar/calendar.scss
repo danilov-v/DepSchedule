@@ -7,6 +7,10 @@
   word-break: break-all;
   z-index: 1;
 
+  &-operational {
+    top: 130px;
+  }
+
   &-cell {
     width: 35px;
     height: 35px;
