@@ -50,9 +50,8 @@ INSERT INTO EVENT_DURATION (DURATION, UNIT_ID, EVENT_TYPE_ID) VALUES (48, 482, 5
 --changeset gonchar:PERIOD__DATA-5
 INSERT INTO PERIOD (PERIOD_ID, NAME, START_DATE, END_DATE) VALUES (1, 'Period 1', '2019-08-25', '2020-09-23');
 
---changeset gonchar:DELETE_OLD_USER-6
-delete from USER where LOGIN = 'user' or LOGIN = 'superuser';
 --changeset gonchar:USER__DATA-6 runOnChange:true
+delete from USER where LOGIN = 'user' or LOGIN = 'superuser';
 INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES ('user', '$2a$10$N2X1UXEOMBS2Zc3pSH6RcOVMFe4jWy2q0nE8aFRfazAuxua0ztEZe', 'USER');
 INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES ('superuser', '$2a$10$QeYXY5JCyeIkZLsVfcPsTOu6bwM/xr64gg8C.c2uVdNHldPlJZOQ.', 'SUPERUSER');
 
