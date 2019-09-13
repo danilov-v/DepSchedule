@@ -12,13 +12,14 @@ import {
 } from "config/url";
 
 const makeApiCall = async (apiPath, params) => {
-  const token = JSON.parse(window.localStorage.getItem("authBody")).token;
   const url = `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${API}/${apiPath}`;
+  const authBody = JSON.parse(window.localStorage.getItem("authBody"));
+  const token = authBody ? `Bearer ${authBody.token}` : "";
   const request = new Request(url, {
     mode: "cors",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
     ...params,
   });

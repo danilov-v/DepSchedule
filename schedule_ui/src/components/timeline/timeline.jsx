@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
+import { EventCalendar } from "../event-calendar/event-calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
 import { UnitsGrid } from "components/units-grid/units-grid";
 import { getDates } from "utils/date";
@@ -15,7 +16,6 @@ export function Timeline({
   startDate,
   endDate,
   eventTypes,
-  units,
   unitsTree,
   periods,
   onUnitsUpdate,
@@ -23,11 +23,12 @@ export function Timeline({
   const container = useRef();
 
   useEffect(() => {
-    container.current.scrollLeft = container.current.scrollWidth;
-    // if we add container to dependencies list each time when component
-    // will recive new props or staete effect will be called,
-    // hovewer we want to scroll to the header only first mount
-  }, [unitsTree]); // eslint-disable-line react-hooks/exhaustive-deps
+    setTimeout(() => {
+      if (container.current) {
+        container.current.scrollLeft = container.current.scrollWidth;
+      }
+    }, 500);
+  }, [container, startDate]);
 
   const range = getDates(startDate, endDate);
 
@@ -35,28 +36,27 @@ export function Timeline({
     <Container className="timeline d-flex flex-column" fluid>
       <Title text="График развертывания СУ" />
       <div ref={container} className="timeline-wrapper">
-        <Row className="stick-to-top">
-          <Col>
-            <HighLevelSections
-              startDate={startDate}
-              range={range}
-              periods={formatPeriods(periods)}
-            />
-          </Col>
-        </Row>
+        <HighLevelSections
+          startDate={startDate}
+          range={range}
+          periods={formatPeriods(periods)}
+        />
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
             <Calendar
               operationalRange={getDates(...operationalRange)}
               range={range}
-              unitGroups={getLastGenUnits(unitsTree)}
+            />
+            <EventCalendar
+              range={range}
+              units={getLastGenUnits(unitsTree)}
               onUnitsUpdate={onUnitsUpdate}
               eventTypes={eventTypes}
             />
           </Col>
           <Col className="timeline-info">
             <UnitsGrid
-              units={units}
+              units={getLastGenUnits(unitsTree)}
               unitsTree={unitsTree}
               onUnitsUpdate={onUnitsUpdate}
             />
@@ -93,5 +93,5 @@ Timeline.propTypes = {
 };
 
 Timeline.defaultProps = {
-  units: [],
+  unitsTree: [],
 };

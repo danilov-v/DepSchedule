@@ -34,8 +34,8 @@ const validatePeriodForm = values => {
   if (!isDate(values.endDate))
     errors["endDate"] = "Необходимо выбрать дату конца периода";
 
-  if (!values.name || values.name.length < 5)
-    errors["name"] = "Назвние должно содержать минимум 5 символов";
+  if (!values.name || !values.name.trim())
+    errors["name"] = "Назвние должно содержать минимум 1 символ";
 
   return errors;
 };

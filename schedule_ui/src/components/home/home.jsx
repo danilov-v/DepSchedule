@@ -44,7 +44,7 @@ export function Home() {
   const astronomicalDate = getDayWithoutMinutes(new Date());
   const [operationalDate, setOperationalDate] = useState(astronomicalDate);
   const [startDate, setStartDate] = useState(astronomicalDate);
-  const [endDate, setEndDate] = useState(addDays(astronomicalDate, 60));
+  const [endDate, setEndDate] = useState(addDays(astronomicalDate, 122));
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();

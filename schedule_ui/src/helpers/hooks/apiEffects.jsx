@@ -3,15 +3,10 @@ import { useAuth } from "components/auth-service/auth-service";
 import { getUnits, getUnitsTree, getEventTypes, getPeriods } from "helpers/api";
 
 const handleError = (error, logout) => {
-  switch (error.code) {
-    case "403":
-      logout();
-      break;
-
-    default:
-      console.log(error);
-
-      break;
+  if (error.code === "403" || error.code === "401") {
+    logout();
+  } else {
+    console.log(error);
   }
 };
 

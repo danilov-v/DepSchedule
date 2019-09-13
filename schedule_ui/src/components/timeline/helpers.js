@@ -6,7 +6,10 @@ export const getLastGenUnits = units => {
       ? unit.childUnit.map(getUnitLastChilds)
       : [unit];
 
-  return units.map(unit => getUnitLastChilds(unit).flat(4));
+  return units
+    .map(unit => getUnitLastChilds(unit))
+    .reduce((lastChilds, group) => [...lastChilds, ...group], [])
+    .flat(5);
 };
 
 export const formatPeriods = periods =>
