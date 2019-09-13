@@ -7,7 +7,8 @@ rootProject.name = 'DepSchedule'
 
 include 'backend',
         'backend:openapi_codegen',
-        'backend:liquibase'
+        'backend:liquibase',
+        'backend:jpackage'
 
 /*
 For boot Project with FrontEnd use command
