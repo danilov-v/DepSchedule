@@ -26,8 +26,11 @@ public class EventService extends AbstractService<Event, Long> {
     private final ModelMapperCustomize modelMapper;
     private final EventTypeService eventTypeService;
     private final EventDurationService eventDurationService;
+    private final ValidationService validationService;
 
     private static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
+    private static final String DATES_INTERSECTION_MESSAGE = "Данное событие пересекается с уже существующим. Проверьте даты его начала и окончания.";
+
 
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
@@ -70,13 +73,17 @@ public class EventService extends AbstractService<Event, Long> {
                                 .findById(unitId, eventTypeId)
                                 .getDuration()));
 
+        validationService.checkDates(event.getDateFrom(), event.getDateTo());
+
         List<Event> eventList = eventRepository.findIntersection(
                 event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
 
         if (!eventList.isEmpty()) {
-            String message = "Cобытие пересекается с другим событием в данном подразделении";
             String ids = eventList.stream().map(e -> e.getEventId().toString()).collect(Collectors.joining(","));
-            throw new ServiceException(message + "(eventId=[" + ids + "])", message, INTERSECTION_OF_EVENTS);
+            throw new ServiceException(
+                    "Event you want to add has intersections with other periods with ids: [" + ids + "])",
+                    DATES_INTERSECTION_MESSAGE,
+                    INTERSECTION_OF_EVENTS);
         }
 
     }

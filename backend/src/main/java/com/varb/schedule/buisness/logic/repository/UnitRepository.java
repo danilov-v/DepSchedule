@@ -18,7 +18,7 @@ public interface UnitRepository extends JpaRepository<Unit, Long> {
             "left join fetch u.eventDurations d " +
             "where " +
             "      e is NULL OR " +
-            "           e.dateTo >= :dateFrom and (:dateTo is null or e.dateFrom <= :dateTo) "
+            "          :dateFrom <= e.dateTo and (:dateTo is null or :dateTo >= e.dateFrom) "
     )
     Set<Unit> findAllWithChilds(LocalDate dateFrom, @Nullable LocalDate dateTo);
 }
