@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
-// import { SECTIONS } from "stub-data/sections";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
+import { EventCalendar } from "../event-calendar/event-calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
 import { UnitsGrid } from "components/units-grid/units-grid";
 import { getDates } from "utils/date";
@@ -12,23 +12,24 @@ import { getLastGenUnits, formatPeriods } from "./helpers";
 import "./timeline.scss";
 
 export function Timeline({
-  operationalDate,
+  operationalRange,
   startDate,
   endDate,
   eventTypes,
-  units,
   unitsTree,
+  units,
   periods,
   onUnitsUpdate,
 }) {
   const container = useRef();
 
   useEffect(() => {
-    container.current.scrollLeft = container.current.scrollWidth;
-    // if we add container to dependencies list each time when component
-    // will recive new props or staete effect will be called,
-    // hovewer we want to scroll to the header only first mount
-  }, [unitsTree]); // eslint-disable-line react-hooks/exhaustive-deps
+    setTimeout(() => {
+      if (container.current) {
+        container.current.scrollLeft = container.current.scrollWidth;
+      }
+    }, 500);
+  }, [container, startDate]);
 
   const range = getDates(startDate, endDate);
 
@@ -36,24 +37,22 @@ export function Timeline({
     <Container className="timeline d-flex flex-column" fluid>
       <Title text="График развертывания СУ" />
       <div ref={container} className="timeline-wrapper">
-        <Row className="stick-to-top">
-          <Col>
-            <HighLevelSections
-              startDate={startDate}
-              range={range}
-              periods={formatPeriods(periods)}
-            />
-          </Col>
-        </Row>
+        <HighLevelSections
+          startDate={startDate}
+          range={range}
+          periods={formatPeriods(periods)}
+        />
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
             <Calendar
-              operationalDate={operationalDate}
+              operationalRange={getDates(...operationalRange)}
               range={range}
-              unitGroups={getLastGenUnits(unitsTree)}
+            />
+            <EventCalendar
+              range={range}
+              units={getLastGenUnits(unitsTree)}
               onUnitsUpdate={onUnitsUpdate}
               eventTypes={eventTypes}
-              showMonth
             />
           </Col>
           <Col className="timeline-info">
@@ -71,6 +70,7 @@ export function Timeline({
 
 Timeline.propTypes = {
   operationalDate: PropTypes.instanceOf(Date),
+  operationalRange: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   startDate: PropTypes.instanceOf(Date),
   endDate: PropTypes.instanceOf(Date),
   eventTypes: PropTypes.arrayOf(
@@ -94,5 +94,5 @@ Timeline.propTypes = {
 };
 
 Timeline.defaultProps = {
-  units: [],
+  unitsTree: [],
 };

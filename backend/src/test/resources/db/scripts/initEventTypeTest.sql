@@ -1,5 +1,5 @@
-INSERT INTO PUBLIC.EVENT_TYPE (TYPE_ID, COLOR, DESCRIPTION)
-values (EVENT_TYPE_SQ.nextval, 'red', 'mobilization');
+INSERT INTO PUBLIC.EVENT_TYPE (COLOR, DESCRIPTION)
+values ('red', 'mobilization');
 
-INSERT INTO PUBLIC.EVENT_TYPE (TYPE_ID, COLOR, DESCRIPTION)
-values (EVENT_TYPE_SQ.nextval, 'green', 'deployment');
+INSERT INTO PUBLIC.EVENT_TYPE (COLOR, DESCRIPTION)
+values ('green', 'deployment');

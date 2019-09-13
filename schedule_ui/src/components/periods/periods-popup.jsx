@@ -34,8 +34,8 @@ const validatePeriodForm = values => {
   if (!isDate(values.endDate))
     errors["endDate"] = "Необходимо выбрать дату конца периода";
 
-  if (!values.name || values.name.length < 5)
-    errors["name"] = "Назвние должно содержать минимум 5 символов";
+  if (!values.name || !values.name.trim())
+    errors["name"] = "Назвние должно содержать минимум 1 символ";
 
   return errors;
 };
@@ -64,9 +64,10 @@ export function PeriodsPopup({
   const handleError = ({ code, userMessage, devMessage }) => {
     NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
     console.log(devMessage);
+    console.log(code);
 
     switch (code) {
-      case "INTERSECTION_OF_PERIODS":
+      case "DATES_INTERSECTION":
         setErrors({ dates: userMessage });
         break;
       default:

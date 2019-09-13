@@ -1,14 +1,28 @@
 import { useEffect, useState, useCallback } from "react";
+import { useAuth } from "components/auth-service/auth-service";
 import { getUnits, getUnitsTree, getEventTypes, getPeriods } from "helpers/api";
+
+const handleError = (error, logout) => {
+  if (error.code === "403" || error.code === "401") {
+    logout();
+  } else {
+    console.log(error);
+  }
+};
 
 export const useUnits = () => {
   const [units, setUnits] = useState([]);
+  const { logout } = useAuth();
   const fetchUnits = useCallback(async () => {
-    const data = await getUnits();
+    try {
+      const data = await getUnits();
 
-    setUnits(data);
-    console.log("set Units");
-  }, []);
+      setUnits(data);
+      console.log("set Units");
+    } catch (error) {
+      handleError(error, logout);
+    }
+  }, [logout]);
 
   useEffect(() => {
     fetchUnits();
@@ -19,12 +33,17 @@ export const useUnits = () => {
 
 export const useUnitsTree = initialDateFrom => {
   const [units, setUnits] = useState([]);
+  const { logout } = useAuth();
   const fetchUnitsTree = useCallback(async () => {
-    const data = await getUnitsTree(initialDateFrom);
+    try {
+      const data = await getUnitsTree(initialDateFrom);
 
-    setUnits(data);
-    console.log("set Units Tree");
-  }, [initialDateFrom]);
+      setUnits(data);
+      console.log("set Units Tree");
+    } catch (error) {
+      handleError(error, logout);
+    }
+  }, [initialDateFrom, logout]);
 
   useEffect(() => {
     fetchUnitsTree();
@@ -35,13 +54,18 @@ export const useUnitsTree = initialDateFrom => {
 
 export const useEventTypes = () => {
   const [eventTypes, setEventTypes] = useState([]);
+  const { logout } = useAuth();
 
   const fetchEventTypes = useCallback(async () => {
-    const data = await getEventTypes();
+    try {
+      const data = await getEventTypes();
 
-    setEventTypes(data);
-    console.log("set Event Types");
-  }, []);
+      setEventTypes(data);
+      console.log("set Event Types");
+    } catch (error) {
+      handleError(error, logout);
+    }
+  }, [logout]);
 
   useEffect(() => {
     fetchEventTypes();
@@ -52,12 +76,17 @@ export const useEventTypes = () => {
 
 export const usePeriods = () => {
   const [periods, setPeriods] = useState([]);
+  const { logout } = useAuth();
 
   const fetchPeriods = useCallback(async () => {
-    const data = await getPeriods();
+    try {
+      const data = await getPeriods();
 
-    setPeriods(data);
-  }, []);
+      setPeriods(data);
+    } catch (error) {
+      handleError(error, logout);
+    }
+  }, [logout]);
 
   useEffect(() => {
     fetchPeriods();

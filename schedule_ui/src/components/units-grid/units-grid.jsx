@@ -14,12 +14,16 @@ import { NotificationManager } from "helpers/notification-manager";
 import { UnitPopup } from "./unit-popup";
 import { Unit } from "./unit";
 import { NewUnit } from "./new-unit";
+import { MANAGE_UNITS } from "constants/permishions";
+import { checkPermission } from "utils/permishions";
+import { useAuth } from "components/auth-service/auth-service";
 
 import "./units-grid.scss";
 
 const renderUnit = (
   { childUnit, title, unitId },
   isTopLevel = true,
+  isManageAble,
   handlers
 ) => {
   return childUnit && childUnit.length ? (
@@ -29,8 +33,16 @@ const renderUnit = (
         "unit-last-of-group": isTopLevel,
       })}
     >
-      <Unit key={unitId} title={title} unitId={unitId} {...handlers} />
-      <div>{childUnit.map(unit => renderUnit(unit, false, handlers))}</div>
+      <Unit
+        key={unitId}
+        title={title}
+        unitId={unitId}
+        {...handlers}
+        isManageAble={isManageAble}
+      />
+      <div>
+        {childUnit.map(unit => renderUnit(unit, false, isManageAble, handlers))}
+      </div>
     </div>
   ) : (
     <Unit
@@ -39,6 +51,7 @@ const renderUnit = (
       unitId={unitId}
       lastGen
       lastOfGroup={isTopLevel}
+      isManageAble={isManageAble}
       {...handlers}
     />
   );
@@ -47,6 +60,8 @@ const renderUnit = (
 export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
   const confirm = useConfirmation();
   const [unitData, setUnitData] = useState(null);
+  const { authBody } = useAuth();
+
   const onCloseEditPopup = () => {
     setUnitData(null);
   };
@@ -78,14 +93,20 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
     });
   };
 
+  const isManageAble = checkPermission(authBody.role, MANAGE_UNITS);
+
   return (
     <div className="units-grid">
       <div className="text-center units-grid-title">Список Подразделений</div>
       <div className="unit-grid-body">
         {unitsTree.map(unit =>
-          renderUnit(unit, true, { onAddUnit, onEditUnit, onRemoveUnit })
+          renderUnit(unit, true, isManageAble, {
+            onAddUnit,
+            onEditUnit,
+            onRemoveUnit,
+          })
         )}
-        <NewUnit onAddUnit={onAddUnit} />
+        <NewUnit hidden={!isManageAble} onAddUnit={onAddUnit} />
       </div>
       {!isNull(unitData) && (
         <UnitPopup

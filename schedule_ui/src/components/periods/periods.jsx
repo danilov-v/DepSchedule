@@ -7,6 +7,11 @@ import { PERIOD_CONFIRMATION_OPTIONS } from "constants/confirmations";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { PeriodsList } from "./periods-list";
 import { PeriodsPopup } from "./periods-popup";
+import { NotificationManager } from "helpers/notification-manager";
+import { FAILED_PERIOD_NOTIFICATION_DATA } from "constants/notifications";
+import { MANAGE_PERIODS } from "constants/permishions";
+import { checkPermission } from "utils/permishions";
+import { useAuth } from "components/auth-service/auth-service";
 
 const DEFAULT_PERIOD = {
   name: "",
@@ -18,7 +23,7 @@ export function Periods({ periods, onPeriodsUpdate }) {
   const [isFormOpen, toggleForm] = useState(false);
   const [formType, setFormType] = useState("create");
   const [defaultFormData, setDefaultFormData] = useState(DEFAULT_PERIOD);
-
+  const { authBody } = useAuth();
   const confirm = useConfirmation();
 
   const onPeriodSubmit = periodData =>
@@ -28,7 +33,13 @@ export function Periods({ periods, onPeriodsUpdate }) {
 
   const tryToRemove = periodId => {
     confirm(PERIOD_CONFIRMATION_OPTIONS)
-      .then(removePeriod.bind(null, periodId))
+      .then(async () => {
+        try {
+          await removePeriod(periodId);
+        } catch (e) {
+          NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
+        }
+      })
       .then(onPeriodsUpdate);
   };
 
@@ -59,6 +70,7 @@ export function Periods({ periods, onPeriodsUpdate }) {
         size="lg"
         className="font-weight-bold float-right"
         onClick={toggle.bind(null, "create", undefined)}
+        hidden={!checkPermission(authBody.role, MANAGE_PERIODS)}
       >
         +
       </Button>

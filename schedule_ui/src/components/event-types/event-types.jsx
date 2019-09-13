@@ -5,6 +5,9 @@ import { createEventType, updateEventType, removeEventType } from "helpers/api";
 import { Title } from "components/title/title";
 import { EventTypesList } from "./event-types-list";
 import { EventTypePopup } from "./event-type-popup";
+import { MANAGE_EVENT_TYPES } from "constants/permishions";
+import { checkPermission } from "utils/permishions";
+import { useAuth } from "components/auth-service/auth-service";
 
 import "./event-types.scss";
 
@@ -15,6 +18,7 @@ const DEFAULT_EVENT_TYPE = {
 };
 
 export function EventTypes({ eventTypes, onEventTypesUpdate }) {
+  const { authBody } = useAuth();
   const [isFormOpen, toggleForm] = useState(false);
   const [formType, setFormType] = useState("create");
   const [defaultFormData, setDefaultFormData] = useState(DEFAULT_EVENT_TYPE);
@@ -51,6 +55,7 @@ export function EventTypes({ eventTypes, onEventTypesUpdate }) {
         size="lg"
         className="font-weight-bold float-right"
         onClick={() => toggleEventTypeForm("create")}
+        hidden={!checkPermission(authBody.role, MANAGE_EVENT_TYPES)}
       >
         +
       </Button>

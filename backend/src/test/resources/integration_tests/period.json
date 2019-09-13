@@ -108,6 +108,14 @@
         "status": 200,
         "body": []
       }
+    },
+
+    {
+      "name": "clearDataAfterTest",
+      "url": "com.varb.schedule.integration.TestSqlExecutor",
+      "operation": "executeSqlScript",
+      "request": "db/scripts/cleanup.sql",
+      "assertions": {}
     }
   ]
 }

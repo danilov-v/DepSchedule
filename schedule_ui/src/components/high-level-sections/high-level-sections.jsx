@@ -19,7 +19,7 @@ export function HighLevelSections({ startDate, range, periods }) {
   if (!periods.length) return null;
 
   return (
-    <Row className="high-level-sections flex-nowrap" noGutters>
+    <Row className="high-level-sections flex-nowrap stick-to-top" noGutters>
       {range.map(month => (
         <Fragment key={month.name}>
           {month.days.map(day => {

@@ -16,13 +16,7 @@ const DEFAULT_FORM_DATA = {
   unitId: null,
 };
 
-export function EventCalendar({
-  range,
-  unitGroups,
-  onUnitsUpdate,
-  eventTypes,
-  operationalDate,
-}) {
+export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
   const [isFormOpen, toggle] = useState(false);
   const [formType, setFormType] = useState("create");
   const [unit, setUnit] = useState({});
@@ -78,15 +72,14 @@ export function EventCalendar({
 
   return (
     <Fragment>
-      {unitGroups.map((group, i) => (
+      {units.map((unit, i) => (
         <UnitEventRow
           key={i}
           range={range}
-          unitGroup={group}
+          unit={unit}
           openCreateForm={toggleCreateForm}
           openEditForm={toggleEditForm}
           eventTypes={eventTypes}
-          operationalDate={operationalDate}
         />
       ))}
       <EventPopup
@@ -111,7 +104,16 @@ EventCalendar.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
-  unitGroups: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)), //will change it to PropTypes.shape after BE fixes
+  units: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      childUnit: PropTypes.array,
+      eventDuration: PropTypes.object,
+      events: PropTypes.array,
+      parentId: PropTypes.number,
+      unitId: PropTypes.number,
+    })
+  ),
   eventTypes: PropTypes.arrayOf(
     PropTypes.shape({
       color: PropTypes.string,
@@ -120,11 +122,10 @@ EventCalendar.propTypes = {
     })
   ),
   onUnitsUpdate: PropTypes.func,
-  operationalDate: PropTypes.instanceOf(Date),
 };
 
 EventCalendar.defaultProps = {
   range: [],
-  unitGroups: [],
+  units: [],
   eventTypes: [],
 };

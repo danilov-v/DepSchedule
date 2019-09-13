@@ -2,54 +2,55 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import { CalendarCell } from "./calendar-cell";
-import { EventCalendar } from "../event-calendar/event-calendar";
 import { MONTH_TRANSLATIONS } from "../../constants/calendar";
 
 import "./calendar.scss";
 
-export function Calendar({
-  range,
-  showMonth,
-  unitGroups,
-  eventTypes,
-  onUnitsUpdate,
-  operationalDate,
-}) {
+export function Calendar({ range, operationalRange }) {
   return (
     <Fragment>
-      <Row className="calendar" noGutters>
-        {range.map(month => (
+      <Row className="calendar calendar-operational" noGutters>
+        {operationalRange.map(month => (
           <Col key={month.name}>
-            {showMonth && (
-              <Row className="calendar-title" noGutters>
-                <Col>
-                  <CalendarCell
-                    text={MONTH_TRANSLATIONS[month.name]}
-                    fluid={month.days && month.days.length > 1}
-                  />
-                </Col>
-              </Row>
-            )}
+            <Row className="calendar-title" noGutters>
+              <Col>
+                <CalendarCell
+                  text={MONTH_TRANSLATIONS[month.name]}
+                  fluid={month.days && month.days.length > 1}
+                />
+              </Col>
+            </Row>
             <Row noGutters>
               <Col className="d-flex">
                 {month.days.map(day => (
-                  <CalendarCell
-                    key={day.getTime()}
-                    text={showMonth ? day.getDate() : null}
-                  />
+                  <CalendarCell key={day.getTime()} text={day.getDate()} />
                 ))}
               </Col>
             </Row>
           </Col>
         ))}
       </Row>
-      <EventCalendar
-        range={range}
-        unitGroups={unitGroups}
-        onUnitsUpdate={onUnitsUpdate}
-        eventTypes={eventTypes}
-        operationalDate={operationalDate}
-      />
+      <Row className="calendar" noGutters>
+        {range.map(month => (
+          <Col key={month.name}>
+            <Row className="calendar-title" noGutters>
+              <Col>
+                <CalendarCell
+                  text={MONTH_TRANSLATIONS[month.name]}
+                  fluid={month.days && month.days.length > 1}
+                />
+              </Col>
+            </Row>
+            <Row noGutters>
+              <Col className="d-flex">
+                {month.days.map(day => (
+                  <CalendarCell key={day.getTime()} text={day.getDate()} />
+                ))}
+              </Col>
+            </Row>
+          </Col>
+        ))}
+      </Row>
     </Fragment>
   );
 }
@@ -61,22 +62,8 @@ Calendar.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
-  showMonth: PropTypes.bool,
-  unitGroups: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)), //will change it to PropTypes.shape after BE fixes
-  eventTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      description: PropTypes.string,
-      typeId: PropTypes.number,
-    })
-  ),
-  onUnitsUpdate: PropTypes.func.isRequired,
-  operationalDate: PropTypes.instanceOf(Date),
 };
 
 Calendar.defaultProps = {
   range: [],
-  showMonth: false,
-  unitGroups: [],
-  eventTypes: [],
 };

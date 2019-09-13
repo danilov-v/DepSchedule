@@ -32,7 +32,6 @@
       }
     },
 
-
     {
       "name": "POST_eventType",
       "url": "/api/eventType",
@@ -56,13 +55,11 @@
       }
     },
 
-
     {
       "name": "GET_eventType",
       "url": "/api/eventType",
       "operation": "GET",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200,
         "body": [
@@ -85,26 +82,21 @@
       }
     },
 
-
-
     {
       "name": "DELETE_eventType",
       "url": "/api/eventType/${$.POST_eventType.response.body.typeId}",
       "operation": "DELETE",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200
       }
     },
 
-
     {
       "name": "GET_eventType_afterDelete",
       "url": "/api/eventType",
       "operation": "GET",
-      "request": {
-      },
+      "request": {},
       "assertions": {
         "status": 200,
         "body": [

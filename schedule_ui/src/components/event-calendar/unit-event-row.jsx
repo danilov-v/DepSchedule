@@ -7,6 +7,10 @@ import {
   addDays,
   isSameDay,
 } from "date-fns";
+import { constant } from "lodash";
+import { MANAGE_EVENTS } from "constants/permishions";
+import { checkPermission } from "utils/permishions";
+import { useAuth } from "components/auth-service/auth-service";
 import { getAllDatesFromRange } from "utils/date";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
@@ -31,45 +35,52 @@ const getOffset = (startDateCord, dateFrom) => {
 
 export function UnitEventRow({
   range,
-  unitGroup,
+  unit,
   eventTypes,
   openCreateForm,
   openEditForm,
-  operationalDate,
 }) {
+  const { authBody } = useAuth();
+  const isManageAble = checkPermission(authBody.role, MANAGE_EVENTS);
   const allDates = getAllDatesFromRange(range);
   const startDateCord = allDates[allDates.length - 1];
 
-  return unitGroup.map(unit => (
+  return (
     <Row key={unit.unitId} noGutters className="event-row">
-      {unit.events
-        ? unit.events.map(event => {
-            const { color, description } = eventTypes.find(
-              type => type.typeId === event.eventTypeId
-            ) || { color: "#000", description: "" };
-
-            return (
-              <Event
-                key={event.eventId}
-                event={event}
-                rightOffset={getOffset(startDateCord, event.dateFrom)}
-                color={color}
-                title={description}
-                onClick={openEditForm.bind(null, unit, event)}
-              />
-            );
-          })
-        : []}
       {allDates.map(date => (
         <EventCell
           key={date.getTime()}
-          onClick={openCreateForm.bind(null, unit, date)}
+          onClick={
+            isManageAble
+              ? openCreateForm.bind(null, unit, date)
+              : constant(null)
+          }
           hasEvent={isEventInDate(date, unit.events)}
-          marked={isSameDay(date, operationalDate)}
+          marked={isSameDay(date, new Date())}
         />
       ))}
+      {unit.events.map(event => {
+        const { color, description } = eventTypes.find(
+          type => type.typeId === event.eventTypeId
+        ) || { color: "#000", description: "" };
+
+        return (
+          <Event
+            key={event.eventId}
+            event={event}
+            rightOffset={getOffset(startDateCord, event.dateFrom)}
+            color={color}
+            title={description}
+            onClick={
+              isManageAble
+                ? openEditForm.bind(null, unit, event)
+                : constant(null)
+            }
+          />
+        );
+      })}
     </Row>
-  ));
+  );
 }
 
 UnitEventRow.propTypes = {
@@ -86,10 +97,16 @@ UnitEventRow.propTypes = {
       typeId: PropTypes.number,
     })
   ),
-  unitGroup: PropTypes.arrayOf(PropTypes.object), //will change it to PropTypes.shape after BE fixes
+  unit: PropTypes.shape({
+    title: PropTypes.string,
+    childUnit: PropTypes.array,
+    eventDuration: PropTypes.object,
+    events: PropTypes.array,
+    parentId: PropTypes.number,
+    unitId: PropTypes.number,
+  }),
   openCreateForm: PropTypes.func,
   openEditForm: PropTypes.func,
-  operationalDate: PropTypes.instanceOf(Date),
 };
 
 UnitEventRow.defaultProps = {

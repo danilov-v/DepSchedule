@@ -31,15 +31,19 @@ body,
 
 //TIMELINE PRINT STYLES
 @media print {
-  .admin-control {
-    display: none;
+  .emblem-background {
+    // display: none;
+    background-image: none;
+  }
+
+  .unit-new {
+    visibility: hidden;
   }
 
   .timeline-wrapper {
     overflow: visible;
     border: none;
-    border-left: 1px solid #000;
-    transform: scale(0.6, 0.8) translate(-35%);
+    transform: scale(0.6, 0.7) translate(-35%);
     float: right;
   }
 
@@ -50,4 +54,5 @@ body,
 
 @page {
   size: A3 landscape;
+  bleed: 1;
 }

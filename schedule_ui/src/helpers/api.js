@@ -7,239 +7,134 @@ import {
   EVENT_URL,
   EVENT_TYPE_URL,
   PERIODS,
+  LOGIN,
+  LOGOUT,
 } from "config/url";
 
-const getUrl = apiPath =>
-  `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${API}/${apiPath}`;
-
-export const getUnits = async () => {
-  const result = await fetch(getUrl(UNITS_URL));
-  const data = await result.json();
-
-  return data;
-};
-
-export const getUnitsTree = async dateFrom => {
-  const result = await fetch(
-    getUrl(`${UNITS_URL}/tree?dateFrom=${format(dateFrom, "yyyy-MM-dd")}`)
-  );
-  const data = await result.json();
-
-  return data;
-};
-
-export const createUnit = async unitData => {
-  const result = await fetch(getUrl(UNITS_URL), {
-    method: "POST",
+const makeApiCall = async (apiPath, params) => {
+  const url = `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${API}/${apiPath}`;
+  const authBody = JSON.parse(window.localStorage.getItem("authBody"));
+  const token = authBody ? `Bearer ${authBody.token}` : "";
+  const request = new Request(url, {
+    mode: "cors",
     headers: {
       "Content-Type": "application/json",
+      Authorization: token,
     },
-    body: JSON.stringify(unitData),
+    ...params,
   });
-  const data = await result.json();
+
+  const result = await fetch(request);
+  let data;
+
+  try {
+    data = await result.json();
+  } catch (error) {
+    data = {};
+  }
 
   if (result && result.status !== 200) {
-    throw new Error(data);
+    throw data;
   }
 
   return data;
 };
 
-export const getEventTypes = async () => {
-  const result = await fetch(getUrl(EVENT_TYPE_URL));
-  const data = await result.json();
-
-  return data;
-};
-
-export const updateUnit = async unitData => {
-  const result = await fetch(getUrl(`${UNITS_URL}/${unitData.unitId}`), {
+export const signIn = async userCred =>
+  await makeApiCall(LOGIN, {
     method: "PUT",
+    body: JSON.stringify(userCred),
     headers: {
       "Content-Type": "application/json",
     },
+  });
+
+export const signOut = async () =>
+  await makeApiCall(LOGOUT, {
+    method: "PUT",
+  });
+
+export const getUnits = async () => await makeApiCall(UNITS_URL);
+
+export const getUnitsTree = async dateFrom =>
+  await makeApiCall(
+    `${UNITS_URL}/tree?dateFrom=${format(dateFrom, "yyyy-MM-dd")}`
+  );
+
+export const createUnit = async unitData =>
+  await makeApiCall(UNITS_URL, {
+    method: "POST",
     body: JSON.stringify(unitData),
   });
-  const data = await result.json();
 
-  if (result && result.status !== 200) {
-    throw new Error(data);
-  }
-
-  return data;
-};
-
-export const deleteUnit = async unitId => {
-  const result = await fetch(getUrl(`${UNITS_URL}/${unitId}`), {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
+export const updateUnit = async unitData =>
+  await makeApiCall(`${UNITS_URL}/${unitData.unitId}`, {
+    method: "PUT",
+    body: JSON.stringify(unitData),
   });
 
-  if (result && result.status !== 200) {
-    throw new Error(result);
-  }
-};
+export const deleteUnit = async unitId =>
+  await makeApiCall(`${UNITS_URL}/${unitId}`, {
+    method: "DELETE",
+  });
 
-export const createEventType = async eventTypeData => {
-  const result = await fetch(getUrl(EVENT_TYPE_URL), {
+export const getEventTypes = async () => await makeApiCall(EVENT_TYPE_URL);
+
+export const createEventType = async eventTypeData =>
+  await makeApiCall(EVENT_TYPE_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(eventTypeData),
   });
-  const data = await result.json();
 
-  if (result && result.status !== 200) {
-    throw new Error(data);
-  }
-
-  return data;
-};
-
-export const updateEventType = async eventTypeData => {
-  const result = await fetch(
-    getUrl(`${EVENT_TYPE_URL}/${eventTypeData.typeId}`),
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventTypeData),
-    }
-  );
-  const data = await result.json();
-
-  if (result && result.status !== 200) {
-    throw new Error(data);
-  }
-
-  return data;
-};
-
-export const removeEventType = async typeId => {
-  const result = await fetch(getUrl(`${EVENT_TYPE_URL}/${typeId}`), {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (result.status === 400) {
-    throw new Error();
-  }
-};
-
-export const createEvent = async eventData => {
-  const result = await fetch(getUrl(EVENT_URL), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(eventData),
-  });
-
-  const data = await result.json();
-
-  if (result.status === 400) {
-    throw data;
-  }
-
-  return data;
-};
-
-export const updateEvent = async eventData => {
-  const result = await fetch(getUrl(`${EVENT_URL}/${eventData.eventId}`), {
+export const updateEventType = async eventTypeData =>
+  await makeApiCall(`${EVENT_TYPE_URL}/${eventTypeData.typeId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    body: JSON.stringify(eventTypeData),
+  });
+
+export const removeEventType = async typeId =>
+  await makeApiCall(`${EVENT_TYPE_URL}/${typeId}`, {
+    method: "DELETE",
+  });
+
+export const createEvent = async eventData =>
+  await makeApiCall(EVENT_URL, {
+    method: "POST",
     body: JSON.stringify(eventData),
   });
 
-  const data = await result.json();
-
-  if (result.status === 400) {
-    throw data;
-  }
-
-  return data;
-};
-
-export const removeEvent = async eventId => {
-  const result = await fetch(getUrl(`${EVENT_URL}/${eventId}`), {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
+export const updateEvent = async eventData =>
+  await makeApiCall(`${EVENT_URL}/${eventData.eventId}`, {
+    method: "PUT",
+    body: JSON.stringify(eventData),
   });
 
-  if (result.status === 400) {
-    throw new Error();
-  }
-};
+export const removeEvent = async eventId =>
+  await makeApiCall(`${EVENT_URL}/${eventId}`, {
+    method: "DELETE",
+  });
 
 /**
  * PERIODS API
  */
+export const getPeriods = async () => await makeApiCall(PERIODS);
 
-export const getPeriods = async () => {
-  const result = await fetch(getUrl(PERIODS));
-  const data = await result.json();
-
-  return data;
-};
-
-export const createPeriod = async periodData => {
-  const result = await fetch(getUrl(PERIODS), {
+export const createPeriod = async periodData =>
+  await makeApiCall(PERIODS, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(periodData),
   });
 
-  const data = await result.json();
-
-  if (result.status === 400) {
-    throw data;
-  }
-
-  return data;
-};
-
-export const updatePeriod = async periodData => {
-  const result = await fetch(getUrl(`${PERIODS}/${periodData.periodId}`), {
+export const updatePeriod = async periodData =>
+  await makeApiCall(`${PERIODS}/${periodData.periodId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(periodData),
   });
 
-  const data = await result.json();
-
-  if (result.status === 400) {
-    throw data;
-  }
-
-  return data;
-};
-
-export const removePeriod = async periodId => {
-  const result = await fetch(getUrl(`${PERIODS}/${periodId}`), {
+export const removePeriod = async periodId =>
+  await makeApiCall(`${PERIODS}/${periodId}`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
-
-  if (result.status === 400) {
-    throw new Error();
-  }
-};
 
 /**
  * END PERIODS API

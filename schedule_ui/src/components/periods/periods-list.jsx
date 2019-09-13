@@ -1,15 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "reactstrap";
+import { MANAGE_PERIODS } from "constants/permishions";
+import { checkPermission } from "utils/permishions";
+import { useAuth } from "components/auth-service/auth-service";
 
 export function PeriodsList({ periods, onPeriodEdit, onPeriodRemove }) {
+  const { authBody } = useAuth();
+  const isManageAble = checkPermission(authBody.role, MANAGE_PERIODS);
+
   const renderRow = (period, index) => (
     <tr key={period.periodId}>
       <th scope="row">{index}</th>
       <td>{period.name}</td>
       <td>{period.startDate}</td>
       <td>{period.endDate}</td>
-      <td>
+      <td hidden={!isManageAble}>
         <Button onClick={onPeriodEdit.bind(null, period)} color="warning">
           Изменить
         </Button>
@@ -26,7 +32,7 @@ export function PeriodsList({ periods, onPeriodEdit, onPeriodRemove }) {
             <th>Название</th>
             <th>Начало</th>
             <th>Конец</th>
-            <th></th>
+            <th hidden={!isManageAble}></th>
           </tr>
         </thead>
         <tbody>{periods.map(renderRow)}</tbody>
