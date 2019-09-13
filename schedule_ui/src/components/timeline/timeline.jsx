@@ -17,6 +17,7 @@ export function Timeline({
   endDate,
   eventTypes,
   unitsTree,
+  units,
   periods,
   onUnitsUpdate,
 }) {
@@ -56,7 +57,7 @@ export function Timeline({
           </Col>
           <Col className="timeline-info">
             <UnitsGrid
-              units={getLastGenUnits(unitsTree)}
+              units={units}
               unitsTree={unitsTree}
               onUnitsUpdate={onUnitsUpdate}
             />
