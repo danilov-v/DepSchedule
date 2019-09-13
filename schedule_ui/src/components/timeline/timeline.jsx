@@ -95,4 +95,5 @@ Timeline.propTypes = {
 
 Timeline.defaultProps = {
   unitsTree: [],
+  units: [],
 };
