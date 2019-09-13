@@ -10,18 +10,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * Перехватывает ошибки бизнес-логики
+ */
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class BusinessExceptionHandler {
     private final ExceptionFormatter exceptionFormatter;
 
+    /**
+     * Исключения сервисного слоя
+     */
     @ExceptionHandler(ServiceException.class)
     ResponseEntity<Object> handleBadRequest(ServiceException serviceException) {
         log.error("", serviceException);
         return exceptionFormatter.toResponseEntity(serviceException);
     }
 
+    /**
+     * Нарушение ограничения целостности
+     */
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
         log.error("", ex);

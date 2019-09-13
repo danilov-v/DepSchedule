@@ -32,22 +32,23 @@ public class ValidateExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(fieldError -> "'" + fieldError.getField() + "' " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
         ServiceException serviceException = new ServiceException(ex, errorMessage, HttpStatus.BAD_REQUEST);
-        return handleExceptionInternal(serviceException, null, headers, status, request);
+        return handleServiceExceptionInternal(serviceException);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ServiceException serviceException = new ServiceException(ex, ex.getMostSpecificCause().getMessage(), HttpStatus.BAD_REQUEST);
-        return handleExceptionInternal(serviceException, null, headers, status, request);
+        return handleServiceExceptionInternal(serviceException);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return handleServiceExceptionInternal(new ServiceException(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    protected ResponseEntity<Object> handleServiceExceptionInternal(ServiceException ex) {
         log.error("", ex);
-        if (ex instanceof ServiceException)
-            return exceptionFormatter.toResponseEntity((ServiceException) ex);
-        else
-            return exceptionFormatter.toResponseEntity(new ServiceException(ex, HttpStatus.BAD_REQUEST));
+        return exceptionFormatter.toResponseEntity(ex);
     }
 }
 
