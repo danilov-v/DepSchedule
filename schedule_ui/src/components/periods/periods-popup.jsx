@@ -64,9 +64,10 @@ export function PeriodsPopup({
   const handleError = ({ code, userMessage, devMessage }) => {
     NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
     console.log(devMessage);
+    console.log(code);
 
     switch (code) {
-      case "INTERSECTION_OF_PERIODS":
+      case "DATES_INTERSECTION":
         setErrors({ dates: userMessage });
         break;
       default:
