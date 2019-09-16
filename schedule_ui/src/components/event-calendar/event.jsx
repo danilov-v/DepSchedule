@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
+import { truncate } from "lodash";
 import { UncontrolledTooltip } from "reactstrap";
 
 export function Event({ event, rightOffset, color, title, onClick }) {
@@ -18,8 +19,13 @@ export function Event({ event, rightOffset, color, title, onClick }) {
       >
         {title}
       </div>
-      <UncontrolledTooltip placement="bottom" target={"event-" + event.eventId}>
-        {event.note}
+      <UncontrolledTooltip
+        placement="bottom-start"
+        target={"event-" + event.eventId}
+      >
+        {truncate(event.note, {
+          length: 250,
+        })}
       </UncontrolledTooltip>
     </Fragment>
   );
