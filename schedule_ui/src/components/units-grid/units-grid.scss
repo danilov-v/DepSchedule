@@ -6,8 +6,19 @@
     font-size: 22px;
     position: sticky;
     top: 60px;
-    box-shadow: 0 -70px 0 0 #fff;
     z-index: 2;
+
+    &::before {
+      content: "";
+      display: block;
+      background: #fff;
+      height: 60px;
+      position: relative;
+      top: -60px;
+      border: 1px solid #333;
+      box-sizing: border-box;
+      margin: -1px;
+    }
   }
 
   .unit {
