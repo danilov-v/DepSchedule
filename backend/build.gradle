@@ -78,6 +78,12 @@ dependencies {
     compileOnly 'io.swagger:swagger-annotations:1.5.22'
     compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
 
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.1"
+    testCompile "org.junit.jupiter:junit-jupiter-params:5.3.1"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.3.1'
+
     /*
     For boot Project with FrontEnd use command
     ==============================
