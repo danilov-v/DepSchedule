@@ -36,8 +36,26 @@ public class PeriodService extends AbstractService<Period, Long> {
     public Period update(Long periodId, PeriodPutDto periodPut) {
         Period period = findById(periodId);
         modelMapper.map(periodPut, period);
-        checkBeforeSave(period);
+        checkBeforeUpdate(period);
         return period;
+    }
+
+    private void checkBeforeUpdate(Period period) {
+        //validate updated merged period entity
+        validationService.checkDates(period.getStartDate(), period.getEndDate());
+
+        List<Period> intersections = periodRepository.
+                findIntersections(period.getStartDate(), period.getEndDate());
+
+        //When we perform an update operation our period can have intersection with itself.
+        //It is correct behaviour
+        intersections.removeIf(p -> p.getPeriodId().equals(period.getPeriodId()));
+        if (!intersections.isEmpty()) {
+            throw new ServiceException(
+                    intersectionsExceptionDevMessage(intersections),
+                    DATES_INTERSECTION_MESSAGE,
+                    DATES_INTERSECTION);
+        }
     }
 
     private void checkBeforeSave(Period period) {
@@ -46,12 +64,17 @@ public class PeriodService extends AbstractService<Period, Long> {
         List<Period> intersections = periodRepository.
                 findIntersections(period.getStartDate(), period.getEndDate());
         if (!intersections.isEmpty()) {
-            String ids = intersections.stream().map(per -> per.getPeriodId().toString()).collect(Collectors.joining(","));
             throw new ServiceException(
-                    "Period you want to add has intersections with other periods with ids: [" + ids + "])",
+                    intersectionsExceptionDevMessage(intersections),
                     DATES_INTERSECTION_MESSAGE,
                     DATES_INTERSECTION);
         }
+    }
+
+    private String intersectionsExceptionDevMessage(List<Period> intersections) {
+        //gather ids for exception message
+        String ids = intersections.stream().map(per -> per.getPeriodId().toString()).collect(Collectors.joining(","));
+        return "Period you want to add has intersections with other periods with ids: [" + ids + "])";
     }
 
     @Override
