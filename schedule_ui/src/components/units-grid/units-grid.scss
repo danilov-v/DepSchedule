@@ -20,6 +20,14 @@
     }
   }
 
+  &-title-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -60px;
+    height: 100%;
+  }
+
   &-body {
     border: 1px solid #fff;
   }
