@@ -100,7 +100,7 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
       <div className="text-center units-grid-title">
         ОВУ, соединения и воинские части <br /> (элементы СУ)
       </div>
-      <div className="unit-grid-body">
+      <div className="units-grid-body">
         {unitsTree.map(unit =>
           renderUnit(unit, true, isManageAble, {
             onAddUnit,

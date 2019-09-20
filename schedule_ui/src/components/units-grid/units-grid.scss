@@ -16,9 +16,12 @@
       position: relative;
       top: -60px;
       border: 1px solid #333;
-      box-sizing: border-box;
       margin: -1px;
     }
+  }
+
+  &-body {
+    border: 1px solid #fff;
   }
 
   .unit {
