@@ -3,7 +3,7 @@ package com.varb.schedule.config.datasource.listener;
 import com.varb.schedule.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 
 import java.io.FileNotFoundException;
@@ -31,11 +31,10 @@ public abstract class FileDataSourceListener extends DataSourceListener {
 
     private String formatFilePath(String defaultSearchLocations, boolean checkFileExists) {
         try {
-            Resource resource = resourceLoader.getResource(defaultSearchLocations);
-            String path = resource.getDescription()getFilename()getFile().getCanonicalPath();
-            if (checkFileExists && !resource.exists())
+            FileSystemResource fileSystemResource = new FileSystemResource(defaultSearchLocations);
+            String path = fileSystemResource.getPath();
+            if (checkFileExists && !fileSystemResource.exists())
                 throw new FileNotFoundException("Не удалось обнаружить файл базы данных по пути: " + path);
-
             return path;
 
         } catch (IOException e) {

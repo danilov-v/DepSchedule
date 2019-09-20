@@ -37,7 +37,7 @@ abstract class DataSourceListener {
                     + "\n]");
         }
 
-        return dbFilePath;
+        return dataSourceListener.dbFilePath;
     }
 
     public List<String> getCheckedPropNames() {
