@@ -162,7 +162,7 @@
       "name": "clearDataAfterTest",
       "url": "com.varb.schedule.integration.TestSqlExecutor",
       "operation": "executeSqlScript",
-      "request": "db/scripts/cleanup.sql",
+      "request": "db/scripts/zerocode/cleanup.sql",
       "assertions": {}
     }
   ]

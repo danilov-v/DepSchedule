@@ -12,7 +12,7 @@
         },
         "body": {
           "name": "Period1",
-          "startDate": "${LOCAL.DATE.TODAY:yyyy-MM-dd}",
+          "startDate": "2019-09-01",
           "endDate": "2019-09-06"
         }
       },
@@ -114,7 +114,7 @@
       "name": "clearDataAfterTest",
       "url": "com.varb.schedule.integration.TestSqlExecutor",
       "operation": "executeSqlScript",
-      "request": "db/scripts/cleanup.sql",
+      "request": "db/scripts/zerocode/cleanup.sql",
       "assertions": {}
     }
   ]
