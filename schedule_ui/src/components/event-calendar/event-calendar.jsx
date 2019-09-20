@@ -31,9 +31,10 @@ export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
     unit && setUnit(unit);
 
     const eventTypeId = eventTypes[0].typeId;
-    const duration = unit.eventTypeDurations
-      ? unit.eventTypeDurations[defaultFormData.eventTypeId] || 1
+    const duration = unit.eventDuration
+      ? unit.eventDuration[eventTypeId] || 1
       : 1;
+
     const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
 
     isFormOpen
