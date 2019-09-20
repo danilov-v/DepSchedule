@@ -5,7 +5,7 @@
       "name": "initDataBeforeTest",
       "url": "com.varb.schedule.integration.TestSqlExecutor",
       "operation": "executeSqlScript",
-      "request": "db/scripts/initEventDurationTest.sql",
+      "request": "db/scripts/zerocode/initEventDurationTest.sql",
       "assertions": {}
     },
     {
@@ -98,7 +98,7 @@
       "name": "clearDataAfterTest",
       "url": "com.varb.schedule.integration.TestSqlExecutor",
       "operation": "executeSqlScript",
-      "request": "db/scripts/cleanup.sql",
+      "request": "db/scripts/zerocode/cleanup.sql",
       "assertions": {}
     }
   ]
