@@ -2,13 +2,6 @@
   "scenarioName": "CRUD event",
   "steps": [
     {
-      "name": "initDataBeforeTest",
-      "url": "com.varb.schedule.integration.TestSqlExecutor",
-      "operation": "executeSqlScript",
-      "request": "db/scripts/initEventTest.sql",
-      "assertions": {}
-    },
-    {
       "name": "add_event",
       "url": "/api/event",
       "operation": "POST",
