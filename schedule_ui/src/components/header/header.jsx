@@ -57,7 +57,7 @@ export function HeaderUI({
             <DatePicker
               selected={operationalDate}
               dateFormat="dd/MM/yyyy"
-              onChange={date => onChangeOperationalDate(date)}
+              onChange={onChangeOperationalDate}
               locale="ru"
               className="date_picker"
             />
@@ -71,7 +71,7 @@ export function HeaderUI({
             <DatePicker
               selected={startDate}
               dateFormat="dd/MM/yyyy"
-              onChange={date => onChangeStartDate(date)}
+              onChange={onChangeStartDate}
               locale="ru"
               className="date_picker"
             />
@@ -80,7 +80,7 @@ export function HeaderUI({
               selected={endDate}
               minDate={startDate}
               dateFormat="dd/MM/yyyy"
-              onChange={date => onChangeEndDate(date)}
+              onChange={onChangeEndDate}
               locale="ru"
               className="date_picker"
             />
