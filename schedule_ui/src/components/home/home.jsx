@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route } from "react-router-dom";
-import { addDays, differenceInDays } from "date-fns";
+import { addDays, differenceInDays, differenceInCalendarDays } from "date-fns";
 import { isEmpty, cloneDeep } from "lodash";
 import {
   useUnitsTree,
@@ -14,6 +14,7 @@ import { ConfirmationServiceProvider } from "components/confirmation-service/con
 import { EventTypes } from "components/event-types/event-types";
 import { Periods } from "components/periods/periods";
 import { getDayWithoutMinutes } from "utils/date";
+import { FOUR_MONTH } from "constants/calendar";
 
 import "./home.scss";
 
@@ -44,7 +45,7 @@ export function Home() {
   const astronomicalDate = getDayWithoutMinutes(new Date());
   const [operationalDate, setOperationalDate] = useState(astronomicalDate);
   const [startDate, setStartDate] = useState(astronomicalDate);
-  const [endDate, setEndDate] = useState(addDays(astronomicalDate, 122));
+  const [endDate, setEndDate] = useState(addDays(astronomicalDate, FOUR_MONTH));
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();
@@ -66,6 +67,20 @@ export function Home() {
     fetchPeriods();
   };
 
+  const setStartDateHander = date => {
+    if (differenceInCalendarDays(endDate, date) > FOUR_MONTH) {
+      setEndDate(addDays(date, FOUR_MONTH));
+    }
+    setStartDate(date);
+  };
+
+  const setEndDateHander = date => {
+    if (differenceInCalendarDays(date, startDate) > FOUR_MONTH) {
+      setStartDate(addDays(date, -FOUR_MONTH));
+    }
+    setEndDate(date);
+  };
+
   return (
     <ConfirmationServiceProvider>
       <Container fluid>
@@ -74,8 +89,8 @@ export function Home() {
           endDate={endDate}
           operationalDate={operationalDate}
           onChangeOperationalDate={setOperationalDate}
-          onChangeStartDate={setStartDate}
-          onChangeEndDate={setEndDate}
+          onChangeStartDate={setStartDateHander}
+          onChangeEndDate={setEndDateHander}
         />
         <main className="h-75 emblem-background">
           <Route

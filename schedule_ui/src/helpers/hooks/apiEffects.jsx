@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "components/auth-service/auth-service";
-import { getUnits, getUnitsTree, getEventTypes, getPeriods } from "helpers/api";
+import { getUnitsTree, getEventTypes, getPeriods } from "helpers/api";
 
 const handleError = (error, logout) => {
   if (error.code === "403" || error.code === "401") {
@@ -8,27 +8,6 @@ const handleError = (error, logout) => {
   } else {
     console.log(error);
   }
-};
-
-export const useUnits = () => {
-  const [units, setUnits] = useState([]);
-  const { logout } = useAuth();
-  const fetchUnits = useCallback(async () => {
-    try {
-      const data = await getUnits();
-
-      setUnits(data);
-      console.log("set Units");
-    } catch (error) {
-      handleError(error, logout);
-    }
-  }, [logout]);
-
-  useEffect(() => {
-    fetchUnits();
-  }, [fetchUnits]);
-
-  return [units, fetchUnits];
 };
 
 export const useUnitsTree = initialDateFrom => {

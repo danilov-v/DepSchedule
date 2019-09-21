@@ -25,3 +25,5 @@ export const EVENT_TYPE_COLORS = [
   "#d0ccff",
   "#dcb684",
 ];
+
+export const FOUR_MONTH = 122;
