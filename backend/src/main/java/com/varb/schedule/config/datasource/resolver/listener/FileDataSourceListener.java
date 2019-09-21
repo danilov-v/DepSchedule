@@ -1,4 +1,4 @@
-package com.varb.schedule.config.datasource.listener;
+package com.varb.schedule.config.datasource.resolver.listener;
 
 import com.varb.schedule.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public abstract class FileDataSourceListener extends DataSourceListener {
     private boolean isLiquibaseEnabled;
 
     @Override
-    String formatFilePath(String property) {
+    public String formatJdbcUrl(String property) {
         String dbPath = property.replace("jdbc:h2:", "");
 
         String resolvedFilePath = formatFilePath(dbPath, checkFileExists);

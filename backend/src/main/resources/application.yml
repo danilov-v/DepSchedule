@@ -2,9 +2,9 @@ spring:
   application.name: DepSchedule
   #  jackson.default-property-inclusion: non_null
   datasource:
-#    jdbc-url: jdbc:h2:file:${rootDir}/backend/src/main/resources/db/storage/ScheduleDB
-    filePath: ${rootDir}/storage/ScheduleDB.mv.db
-    filePathInProjectDir: ${rootDir}/backend/storage/ScheduleDB.mv.db
+#    jdbc-url: jdbc:h2:file:${projectDir}/backend/src/main/resources/db/storage/ScheduleDB
+    filePathInJarDir: ${jarDir}/storage/ScheduleDB.mv.db
+    filePathInProjectDir: ${projectDir}/backend/storage/ScheduleDB.mv.db
     driverClassName: org.h2.Driver
     username: sa
     password: password

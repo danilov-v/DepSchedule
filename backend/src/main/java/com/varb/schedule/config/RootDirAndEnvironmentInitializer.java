@@ -26,23 +26,23 @@ public class RootDirAndEnvironmentInitializer implements ApplicationContextIniti
     @Override
     public void initialize(@NonNull ConfigurableApplicationContext appCtx) {
         environment = appCtx.getEnvironment();
-        String rootProjectDir = getAbsoluteProjectPath();
-        Map<String, Object> propertyMap = Map.of("rootDir", rootProjectDir);
+        Map<String, Object> propertyMap = getAbsoluteProjectPath();
         environment.getPropertySources()
                 .addFirst(new MapPropertySource("custom-props", propertyMap));
     }
 
-    private String getAbsoluteProjectPath() {
+    private Map<String, Object> getAbsoluteProjectPath() {
         boolean bootFromJar = BootSourceResolver.isBootFromJar();
 
-        String rootProjectDir;
-        if (!bootFromJar) //Если приложение запущено не из jar
-            rootProjectDir = getAbsoluteProjectPathToBackendDir();
-        else
-            rootProjectDir = getAbsoluteProjectPathToJar();
-
-        log.info("RootProjectDir: " + rootProjectDir);
-        return rootProjectDir;
+        if (!bootFromJar) {
+            String rootProjectDir = getAbsoluteProjectPathToBackendDir();
+            log.info("RootDir: " + rootProjectDir);
+            return Map.of("projectDir", rootProjectDir);
+        } else {
+            String jarDir = getAbsoluteProjectPathToJar();
+            log.info("RootDir: " + jarDir);
+            return Map.of("jarDir", jarDir);
+        }
     }
 
     private String getAbsoluteProjectPathToJar() {

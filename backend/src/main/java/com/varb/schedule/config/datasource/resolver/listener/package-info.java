@@ -4,7 +4,7 @@
  */
 @NonNullApi
 @NonNullFields
-package com.varb.schedule.config.datasource.listener;
+package com.varb.schedule.config.datasource.resolver.listener;
 
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;
