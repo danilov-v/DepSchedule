@@ -4,11 +4,11 @@ import com.varb.schedule.config.BootSourceResolver;
 
 import java.util.Optional;
 
-public class FilePathDatasourceListener extends FileDataSourceListener {
+public class FilePathDatasourceReader extends FileDataSourceReader {
     private static final String DB_FILE_PATH_IN_JAR_DIR_PROP_NAME = "spring.datasource.filePathInJarDir";
     private static final String DB_FILE_PATH_IN_PROJECT_DIR_PROP_NAME = "spring.datasource.filePathInProjectDir";
 
-    public FilePathDatasourceListener(boolean checkFileExists) {
+    public FilePathDatasourceReader(boolean checkFileExists) {
         super(checkFileExists);
     }
 

@@ -4,11 +4,11 @@ import org.springframework.lang.Nullable;
 
 import java.util.Optional;
 
-public class JdbcUrlFileDataSourceListener extends FileDataSourceListener {
+public class JdbcUrlFileDataSourceReader extends FileDataSourceReader {
     private static final String DB_JDBC_URL_PROP_NAME = "spring.datasource.jdbc-url";
     private static final String DB_URL_PROP_NAME = "spring.datasource.url";
 
-    public JdbcUrlFileDataSourceListener(boolean checkFileExists) {
+    public JdbcUrlFileDataSourceReader(boolean checkFileExists) {
         super(checkFileExists);
     }
 

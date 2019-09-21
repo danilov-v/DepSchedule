@@ -1,38 +1,41 @@
 package com.varb.schedule.config.datasource.resolver;
 
-import com.varb.schedule.config.datasource.resolver.listener.DataSourceListener;
+import com.varb.schedule.config.datasource.resolver.listener.DataSourceReader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class DataSourceResolver {
-    private List<DataSourceListener> listeners = new ArrayList<>();
+    private List<DataSourceReader> readers = new ArrayList<>();
     private List<String> checkedPropNames = new ArrayList<>();
 
-    public DataSourceResolverResult add(DataSourceListener dataSourceListener) {
-        addListener(dataSourceListener);
-        return new DataSourceResolverResult();
+    private DataSourceResolver(){}
+
+    static public DataSourceResolverResult add(DataSourceReader dataSourceReader) {
+        DataSourceResolver dataSourceResolver = new DataSourceResolver();
+        dataSourceResolver.addReader(dataSourceReader);
+        return dataSourceResolver.new DataSourceResolverResult();
     }
 
-    private void addListener(DataSourceListener dataSourceListener) {
-        listeners.add(dataSourceListener);
+    private void addReader(DataSourceReader dataSourceReader) {
+        readers.add(dataSourceReader);
     }
 
     public class DataSourceResolverResult {
-        public DataSourceResolverResult add(DataSourceListener dataSourceListener) {
-            addListener(dataSourceListener);
+        public DataSourceResolverResult add(DataSourceReader dataSourceReader) {
+            addReader(dataSourceReader);
             return this;
         }
 
         public String getResult() {
-            assert !listeners.isEmpty();
+            assert !readers.isEmpty();
 
-            for (DataSourceListener listener : listeners) {
-                Optional<String> prop = listener.getPathToDbFromProp();
-                checkedPropNames.addAll(listener.getCheckedPropNames());
+            for (DataSourceReader reader : readers) {
+                Optional<String> prop = reader.getPathToDbFromProp();
+                checkedPropNames.addAll(reader.getCheckedPropNames());
                 if (prop.isPresent()) {
-                    return listener.formatJdbcUrl(prop.get());
+                    return reader.formatJdbcUrl(prop.get());
                 }
             }
 

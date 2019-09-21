@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Slf4j
-public abstract class FileDataSourceListener extends DataSourceListener {
+public abstract class FileDataSourceReader extends DataSourceReader {
     private final boolean checkFileExists;
 
-    public FileDataSourceListener(boolean checkFileExists) {
+    public FileDataSourceReader(boolean checkFileExists) {
         this.checkFileExists = checkFileExists;
     }
 

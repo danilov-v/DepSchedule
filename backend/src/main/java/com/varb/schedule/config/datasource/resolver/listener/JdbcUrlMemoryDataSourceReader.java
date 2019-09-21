@@ -2,7 +2,7 @@ package com.varb.schedule.config.datasource.resolver.listener;
 
 import java.util.Optional;
 
-public class JdbcUrlMemoryDataSourceListener extends DataSourceListener {
+public class JdbcUrlMemoryDataSourceReader extends DataSourceReader {
     private static final String DB_URL_PROP_NAME = "spring.datasource.jdbc-url";
 
     @Override

@@ -1,9 +1,9 @@
 package com.varb.schedule.config;
 
 import com.varb.schedule.config.datasource.resolver.DataSourceResolver;
-import com.varb.schedule.config.datasource.resolver.listener.FilePathDatasourceListener;
-import com.varb.schedule.config.datasource.resolver.listener.JdbcUrlFileDataSourceListener;
-import com.varb.schedule.config.datasource.resolver.listener.JdbcUrlMemoryDataSourceListener;
+import com.varb.schedule.config.datasource.resolver.listener.FilePathDatasourceReader;
+import com.varb.schedule.config.datasource.resolver.listener.JdbcUrlFileDataSourceReader;
+import com.varb.schedule.config.datasource.resolver.listener.JdbcUrlMemoryDataSourceReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,11 +33,10 @@ public class DataSourceConfiguration {
     private String getDbFileUrl() {
         boolean checkFileExists = !isLiquibaseEnabled;
 
-        String result = new DataSourceResolver()
-                .add(new JdbcUrlMemoryDataSourceListener())
-                .add(new JdbcUrlFileDataSourceListener(checkFileExists))
-                .add(new FilePathDatasourceListener(checkFileExists))
+        return DataSourceResolver
+                .add(new JdbcUrlMemoryDataSourceReader())
+                .add(new JdbcUrlFileDataSourceReader(checkFileExists))
+                .add(new FilePathDatasourceReader(checkFileExists))
                 .getResult();
-        return result;
     }
 }

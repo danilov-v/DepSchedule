@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DataSourceListener {
+public abstract class DataSourceReader {
     protected final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     private List<String> checkedPropNames = new ArrayList<>();
