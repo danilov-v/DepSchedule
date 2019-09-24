@@ -3,7 +3,6 @@ package com.varb.schedule.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.lang.NonNull;
@@ -13,18 +12,17 @@ import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
-public class RootDirAndEnvironmentInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class RootDirInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     private static final String BACKEND_PROJECT_DIRECTORY = "backend";
 
     /**
-     * Програмно прописываем свойство 'project.basedir' в PropertySource
+     * Програмно прописываем свойство 'projectDir' (или 'jarDir' если запускаем из jar) в PropertySource
      */
     @Override
     public void initialize(@NonNull ConfigurableApplicationContext appCtx) {
-        ConfigurableEnvironment environment = appCtx.getEnvironment();
-
-        BootSourceResolver bootSourceResolver = new BootSourceResolver(environment);
-        Map<String, Object> propertyMap = getAbsoluteProjectPath(bootSourceResolver.isBootFromJar());
+        var environment = appCtx.getEnvironment();
+        var bootSourceResolver = new BootSourceResolver(environment);
+        var propertyMap = getAbsoluteProjectPath(bootSourceResolver.isBootFromJar());
 
         environment.getPropertySources()
                 .addFirst(new MapPropertySource("custom-props", propertyMap));
@@ -65,10 +63,4 @@ public class RootDirAndEnvironmentInitializer implements ApplicationContextIniti
             throw new IllegalStateException(e);
         }
     }
-
-//    public static ConfigurableEnvironment getEnvironment() {
-//        if (environment == null)
-//            throw new IllegalStateException("environment can not be null");
-//        return environment;
-//    }
 }
