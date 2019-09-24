@@ -32,15 +32,15 @@ public class DataSourceConfiguration {
     }
 
     /**
-     * Проверка конфигурации jdbc-url"
+     * Получение url к базе данных"
      */
     private String getDbFileUrl() {
         boolean checkDbFileExists = !isLiquibaseEnabled;
 
         return DataSourceResolver
-                .add(new JdbcUrlMemoryDataSourceReader())
-                .add(new JdbcUrlFileDataSourceReader(checkDbFileExists))
-                .add(new FilePathDatasourceReader(checkDbFileExists, bootSourceResolver.isBootFromJar()))
+                .use(new JdbcUrlMemoryDataSourceReader())
+                .ifEmptyThen(new JdbcUrlFileDataSourceReader(checkDbFileExists))
+                .ifEmptyThen(new FilePathDatasourceReader(checkDbFileExists, bootSourceResolver.isBootFromJar()))
                 .getResult(environment);
     }
 }

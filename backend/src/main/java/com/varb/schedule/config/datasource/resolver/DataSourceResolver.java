@@ -13,7 +13,7 @@ public class DataSourceResolver {
 
     private DataSourceResolver(){}
 
-    static public DataSourceResolverResult add(DataSourceReader dataSourceReader) {
+    public static DataSourceResolverResult use(DataSourceReader dataSourceReader) {
         DataSourceResolver dataSourceResolver = new DataSourceResolver();
         dataSourceResolver.addReader(dataSourceReader);
         return dataSourceResolver.new DataSourceResolverResult();
@@ -24,7 +24,7 @@ public class DataSourceResolver {
     }
 
     public class DataSourceResolverResult {
-        public DataSourceResolverResult add(DataSourceReader dataSourceReader) {
+        public DataSourceResolverResult ifEmptyThen(DataSourceReader dataSourceReader) {
             addReader(dataSourceReader);
             return this;
         }
