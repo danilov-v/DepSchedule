@@ -1,7 +1,6 @@
 package com.varb.schedule.springtests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.varb.schedule.buisness.logic.repository.EventTypeRepository;
 import com.varb.schedule.buisness.models.dto.EventTypePostDto;
 import com.varb.schedule.buisness.models.dto.EventTypeResponseDto;
@@ -17,8 +16,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,6 +54,7 @@ public class EventTypeSpringBootTest extends AbstractIntegrationTest {
     @Test
     public void testPostEventType() throws Exception {
         String color = "Purple", description = "Type Description";
+        Long expectedTypeId = 1L;
         EventTypePostDto postDto = new EventTypePostDto();
         postDto.setColor(color);
         postDto.setDescription(description);
@@ -66,13 +65,19 @@ public class EventTypeSpringBootTest extends AbstractIntegrationTest {
                 .content(asJsonString(postDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.typeId").value(1L))
+                .andExpect(jsonPath("$.typeId").value(expectedTypeId))
                 .andExpect(jsonPath("$.color").value(color))
                 .andExpect(jsonPath("$.description").value(description));
 
         //second-level validation
-        Optional<EventType> eventType = eventTypeRepository.findById(1L);
+        Optional<EventType> eventTypeOpt = eventTypeRepository.findById(expectedTypeId);
+        assertTrue(!eventTypeOpt.isEmpty());
 
-        //add assert here
+        EventType eventType = eventTypeOpt.get();
+        assertAll("Assertion of added event type",
+                () -> assertEquals(expectedTypeId, eventType.getTypeId()),
+                () -> assertEquals(color, eventType.getColor()),
+                () -> assertEquals(description, eventType.getDescription())
+        );
     }
 }
