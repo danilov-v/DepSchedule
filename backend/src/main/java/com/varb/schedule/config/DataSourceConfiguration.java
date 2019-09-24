@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import javax.sql.DataSource;
 
@@ -18,6 +19,9 @@ import javax.sql.DataSource;
 @Configuration
 @RequiredArgsConstructor
 public class DataSourceConfiguration {
+    private final ConfigurableEnvironment environment;
+    private final BootSourceResolver bootSourceResolver;
+
     @Value("${spring.liquibase.enabled:false}")
     private boolean isLiquibaseEnabled;
 
@@ -31,12 +35,12 @@ public class DataSourceConfiguration {
      * Проверка конфигурации jdbc-url"
      */
     private String getDbFileUrl() {
-        boolean checkFileExists = !isLiquibaseEnabled;
+        boolean checkDbFileExists = !isLiquibaseEnabled;
 
         return DataSourceResolver
                 .add(new JdbcUrlMemoryDataSourceReader())
-                .add(new JdbcUrlFileDataSourceReader(checkFileExists))
-                .add(new FilePathDatasourceReader(checkFileExists))
-                .getResult();
+                .add(new JdbcUrlFileDataSourceReader(checkDbFileExists))
+                .add(new FilePathDatasourceReader(checkDbFileExists, bootSourceResolver.isBootFromJar()))
+                .getResult(environment);
     }
 }

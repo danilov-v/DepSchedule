@@ -7,7 +7,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,23 +16,21 @@ import java.util.Map;
 public class RootDirAndEnvironmentInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     private static final String BACKEND_PROJECT_DIRECTORY = "backend";
 
-    @Nullable
-    private static ConfigurableEnvironment environment;
-
     /**
      * Програмно прописываем свойство 'project.basedir' в PropertySource
      */
     @Override
     public void initialize(@NonNull ConfigurableApplicationContext appCtx) {
-        environment = appCtx.getEnvironment();
-        Map<String, Object> propertyMap = getAbsoluteProjectPath();
+        ConfigurableEnvironment environment = appCtx.getEnvironment();
+
+        BootSourceResolver bootSourceResolver = new BootSourceResolver(environment);
+        Map<String, Object> propertyMap = getAbsoluteProjectPath(bootSourceResolver.isBootFromJar());
+
         environment.getPropertySources()
                 .addFirst(new MapPropertySource("custom-props", propertyMap));
     }
 
-    private Map<String, Object> getAbsoluteProjectPath() {
-        boolean bootFromJar = BootSourceResolver.isBootFromJar();
-
+    private Map<String, Object> getAbsoluteProjectPath(boolean bootFromJar) {
         if (!bootFromJar) {
             String rootProjectDir = getAbsoluteProjectPathToBackendDir();
             log.info("RootDir: " + rootProjectDir);
@@ -69,9 +66,9 @@ public class RootDirAndEnvironmentInitializer implements ApplicationContextIniti
         }
     }
 
-    public static ConfigurableEnvironment getEnvironment() {
-        if (environment == null)
-            throw new IllegalStateException("environment can not be null");
-        return environment;
-    }
+//    public static ConfigurableEnvironment getEnvironment() {
+//        if (environment == null)
+//            throw new IllegalStateException("environment can not be null");
+//        return environment;
+//    }
 }

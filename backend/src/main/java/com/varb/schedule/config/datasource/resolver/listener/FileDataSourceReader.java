@@ -13,7 +13,7 @@ import java.io.IOException;
 public abstract class FileDataSourceReader extends DataSourceReader {
     private final boolean checkFileExists;
 
-    public FileDataSourceReader(boolean checkFileExists) {
+    FileDataSourceReader(boolean checkFileExists) {
         this.checkFileExists = checkFileExists;
     }
 

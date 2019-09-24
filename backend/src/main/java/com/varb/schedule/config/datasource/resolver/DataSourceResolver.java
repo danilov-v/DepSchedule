@@ -1,6 +1,7 @@
 package com.varb.schedule.config.datasource.resolver;
 
 import com.varb.schedule.config.datasource.resolver.listener.DataSourceReader;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,12 @@ public class DataSourceResolver {
             return this;
         }
 
-        public String getResult() {
+        public String getResult(ConfigurableEnvironment environment) {
             assert !readers.isEmpty();
 
             for (DataSourceReader reader : readers) {
+                reader.setEnvironment(environment);
+
                 Optional<String> prop = reader.getPathToDbFromProp();
                 checkedPropNames.addAll(reader.getCheckedPropNames());
                 if (prop.isPresent()) {
