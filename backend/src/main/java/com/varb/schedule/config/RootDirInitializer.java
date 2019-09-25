@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.lang.NonNull;
 
 import java.io.File;
@@ -30,34 +29,32 @@ public class RootDirInitializer implements ApplicationContextInitializer<Configu
 
     private Map<String, Object> getAbsoluteProjectPath(boolean bootFromJar) {
         if (!bootFromJar) {
-            String rootProjectDir = getAbsoluteProjectPathToBackendDir();
+            String rootProjectDir = getPathToProjectDir();
             log.info("RootDir: " + rootProjectDir);
             return Map.of("projectDir", rootProjectDir);
         } else {
-            String jarDir = getAbsoluteProjectPathToJar();
+            String jarDir = getPathToJarDir();
             log.info("RootDir: " + jarDir);
             return Map.of("jarDir", jarDir);
         }
     }
 
-    private String getAbsoluteProjectPathToJar() {
+    private String getPathToJarDir() {
         try {
-            File file = new DefaultResourceLoader().getResource("file:./").getFile();
-            return file.getCanonicalPath();
-
+            return new File("./").getCanonicalPath();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private String getAbsoluteProjectPathToBackendDir() {
+    private String getPathToProjectDir() {
         try {
-            File rootProjectDir = new DefaultResourceLoader().getResource("file:./").getFile();
+            String rootProjectDir = new File("./").getCanonicalPath();
 
-            if (rootProjectDir.getPath().endsWith(BACKEND_PROJECT_DIRECTORY))
-                rootProjectDir = rootProjectDir.getParentFile();
+            if (rootProjectDir.endsWith(BACKEND_PROJECT_DIRECTORY))
+                rootProjectDir = new File(rootProjectDir).getParent();
 
-            return rootProjectDir.getCanonicalPath();
+            return rootProjectDir;
 
         } catch (IOException e) {
             throw new IllegalStateException(e);

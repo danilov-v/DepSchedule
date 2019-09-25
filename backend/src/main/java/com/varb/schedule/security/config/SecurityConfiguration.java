@@ -1,7 +1,7 @@
 package com.varb.schedule.security.config;
 
 import com.varb.schedule.exception.ServiceException;
-import com.varb.schedule.exception.handlers.ExceptionFormatter;
+import com.varb.schedule.exception.handlers.ExceptionResolver;
 import com.varb.schedule.security.token.TokenRequestFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final TokenRequestFilter tokenRequestFilter;
     private final PasswordEncoder passwordEncoder;
-    private final ExceptionFormatter exceptionFormatter;
+    private final ExceptionResolver exceptionResolver;
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/**"));
@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-
+                .cors().and()
                 //.exceptionHandling().authenticationEntryPoint(forbiddenEntryPoint())
                 //.and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -84,7 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return (request, response, exception) -> {
             log.error("", exception);
             ServiceException serviceException = new ServiceException(exception, HttpStatus.FORBIDDEN);
-            exceptionFormatter.toHttpServletResponse(response, serviceException);
+            exceptionResolver.resolve(serviceException, request, response);
         };
     }
 
@@ -92,7 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, exception) -> {
             ServiceException serviceException = new ServiceException(exception, HttpStatus.UNAUTHORIZED);
-            exceptionFormatter.toHttpServletResponse(response, serviceException);
+            exceptionResolver.resolve(serviceException, request, response);
         };
     }
 

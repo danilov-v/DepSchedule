@@ -3,7 +3,7 @@ spring:
   #  jackson.default-property-inclusion: non_null
   datasource:
 #    jdbc-url: jdbc:h2:file:${projectDir}/backend/src/main/resources/db/storage/ScheduleDB
-    filePathInJarDir: ${jarDir}/storage/ScheduleDB.mv.db
+    filePathInJarDir: ${jarDir}/storage/ScheduleDB
     filePathInProjectDir: ${projectDir}/backend/storage/ScheduleDB.mv.db
     driverClassName: org.h2.Driver
     username: sa

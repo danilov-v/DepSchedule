@@ -37,10 +37,12 @@ public class DataSourceConfiguration {
     private String getDbFileUrl() {
         boolean checkDbFileExists = !isLiquibaseEnabled;
 
-        return DataSourceResolver
+        String jdbcUrl = DataSourceResolver
                 .use(new JdbcUrlMemoryDataSourceReader())
                 .ifEmptyThen(new JdbcUrlFileDataSourceReader(checkDbFileExists))
                 .ifEmptyThen(new FilePathDatasourceReader(checkDbFileExists, bootSourceResolver.isBootFromJar()))
                 .getResult(environment);
+        log.info("JDBC URL = "+jdbcUrl);
+        return jdbcUrl;
     }
 }

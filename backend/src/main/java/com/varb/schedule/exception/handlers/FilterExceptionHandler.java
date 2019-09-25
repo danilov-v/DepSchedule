@@ -1,7 +1,6 @@
 package com.varb.schedule.exception.handlers;
 
 import com.varb.schedule.exception.ServiceException;
-import com.varb.schedule.utils.JsonMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -16,31 +15,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Перехватывает ошибки, порождённые в фильтрах
- * либо не перехваченные в {@link BusinessExceptionHandler} ошибки бизнес-логики
+ * Перехватывает ошибки в фильтрах
+ * и перенаправляет в {@link BusinessExceptionHandler}
  */
 @Slf4j
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class FilterExceptionHandler extends OncePerRequestFilter {
-    private final JsonMapper jsonMapper;
-    private final ExceptionFormatter exceptionFormatter;
+    private final ExceptionResolver exceptionResolver;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try {
             filterChain.doFilter(request, response);
         } catch (ServiceException serviceException) {
-            log.error("", serviceException);
-            buildServiceExceptionResponse(serviceException, response);
+            buildServiceExceptionResponse(serviceException, request, response);
         } catch (Exception ex) {
-            log.error("", ex);
-            buildServiceExceptionResponse(new ServiceException(ex, HttpStatus.INTERNAL_SERVER_ERROR), response);
+            buildServiceExceptionResponse(new ServiceException(ex, HttpStatus.INTERNAL_SERVER_ERROR), request, response);
         }
     }
 
-    private void buildServiceExceptionResponse(ServiceException serviceException, HttpServletResponse response) throws IOException {
-        exceptionFormatter.toHttpServletResponse(response, serviceException);
+    private void buildServiceExceptionResponse(ServiceException serviceException, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        exceptionResolver.resolve(serviceException, request, response);
     }
 }

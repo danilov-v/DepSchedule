@@ -2,6 +2,7 @@ package com.varb.schedule.config.datasource.resolver.listener;
 
 import com.varb.schedule.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public abstract class FileDataSourceReader extends DataSourceReader {
 
         String resolvedFilePath = formatFilePath(dbPath, checkFileExists);
 
+        resolvedFilePath = StringUtils.removeEnd(resolvedFilePath, ".mv.db");
         return "jdbc:h2:file:" + resolvedFilePath;
     }
 
