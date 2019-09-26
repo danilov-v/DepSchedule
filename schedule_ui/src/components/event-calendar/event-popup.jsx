@@ -169,7 +169,7 @@ export function EventPopup({
                 <DatePicker
                   selected={dateTo}
                   selectsEnd
-                  startDate={dateTo}
+                  startDate={dateFrom}
                   endDate={dateTo}
                   onChange={handleChangeDate("dateTo")}
                   minDate={dateFrom}

@@ -128,7 +128,7 @@ export function PeriodsPopup({
               <DatePicker
                 selected={endDate}
                 selectsEnd
-                startDate={endDate}
+                startDate={startDate}
                 endDate={endDate}
                 onChange={handleChangeDate("endDate")}
                 minDate={startDate}
