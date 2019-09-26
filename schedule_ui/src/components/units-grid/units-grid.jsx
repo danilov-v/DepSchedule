@@ -68,7 +68,7 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
 
   const onAddUnit = unitParentId => {
     if (unitParentId) {
-      setUnitData({ parentId: unitParentId });
+      setUnitData({ parentId: unitParentId, title: "" });
     } else {
       setUnitData(undefined);
     }
