@@ -119,7 +119,7 @@ export function PeriodsPopup({
                 onChange={handleChangeDate("startDate")}
                 locale="ru"
                 dateFormat="dd/MM/yyyy"
-                placeholderText="15/09/2019"
+                placeholderText="13/04/1995"
                 className={classnames("form-control", {
                   "is-invalid":
                     errorsShown && (errors["dates"] || errors["startDate"]),
