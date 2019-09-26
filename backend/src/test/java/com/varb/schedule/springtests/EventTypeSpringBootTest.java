@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
 public class EventTypeSpringBootTest extends AbstractIntegrationTest {
 
     private final String baseUrl = "/api/eventType";
@@ -40,7 +38,7 @@ public class EventTypeSpringBootTest extends AbstractIntegrationTest {
                 mvcResult.getResponse().getContentAsString(), new TypeReference<List<EventTypeResponseDto>>() {});
 
         //assertion according to the initialization data of InsertEventTypeData.sql
-        assertAll("Has to return two event types",
+        assertAll("Has to return initialized before the test event types",
                 () -> assertEquals("red", dtoList.get(0).getColor()),
                 () -> assertEquals("mobilization", dtoList.get(0).getDescription()),
                 () -> assertEquals("green", dtoList.get(1).getColor()),
@@ -79,9 +77,10 @@ public class EventTypeSpringBootTest extends AbstractIntegrationTest {
     @Sql("/db/scripts/spring/InsertEventTypeData.sql")
     public void testPutEventType() throws Exception {
         //Get event type to update
-        assertTrue(eventTypeRepository.findAll().size() > 0);
-        EventType eventType = eventTypeRepository.findAll().get(0);
-        final long typeId = eventType.getTypeId().longValue();
+        List<EventType> initializedData = eventTypeRepository.findAll();
+        assertTrue(initializedData.size() > 0);
+        EventType eventType = initializedData.get(0);
+        final long typeId = eventType.getTypeId();
         String description = eventType.getDescription();
         //set new color - to be updated
         String newColor = "Purple";
@@ -99,6 +98,8 @@ public class EventTypeSpringBootTest extends AbstractIntegrationTest {
 
         //second-level validation
         assertAll("Assertion of just updated event type",
+                () -> assertTrue(eventTypeRepository.findById(typeId).isPresent()),
+                () -> assertTrue(eventType == eventTypeRepository.findById(typeId).get()),
                 () -> assertEquals(typeId, eventType.getTypeId().longValue()),
                 () -> assertEquals(newColor, eventType.getColor()),
                 () -> assertEquals(description, eventType.getDescription())

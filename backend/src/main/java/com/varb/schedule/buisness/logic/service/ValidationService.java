@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Service
 public class ValidationService {
-    private static final String WRONG_DATES = "WRONG_DATES";
+    public static final String WRONG_DATES = "WRONG_DATES";
     private static final String WRONG_DATES_MESSAGE = "Дата начала должна предшествовать дате окончания.";
 
     public void checkDates(LocalDate dateFrom, LocalDate dateTo) {
