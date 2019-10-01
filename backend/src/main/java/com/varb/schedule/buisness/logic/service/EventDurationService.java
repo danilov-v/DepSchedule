@@ -24,6 +24,12 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
     private final UnitService unitService;
     private final EventTypeService eventTypeService;
 
+    /**
+     * Изменяем длительность поумолчанию для событий в подразделении {@code unitId} и типом {@code eventTypeId}
+     *
+     * @param unitId Id подразделения
+     * @param eventTypeId Id типа события
+     */
     public EventDuration merge(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
 

@@ -18,6 +18,7 @@
         },
         "body": {
           "unitId": 200,
+          "duration": 6,
           "dateFrom": "2019-11-20",
           "note": "описание",
           "eventTypeId": 1
@@ -27,7 +28,7 @@
         "status": 200,
         "body": {
           "eventId": "$NOT.NULL",
-          "duration": "$EQ.5",
+          "duration": "$EQ.6",
           "unitId": "$EQ.${$.add_event.request.body.unitId}",
           "dateFrom": "${$.add_event.request.body.dateFrom}",
           "note": "${$.add_event.request.body.note}",
@@ -55,7 +56,7 @@
         "status": 200,
         "body": {
           "eventId": "$EQ.${$.add_event.response.body.eventId}",
-          "duration": "$EQ.6",
+          "duration": "$EQ.5",
           "unitId": "$EQ.${$.put_event.request.body.unitId}",
           "dateFrom": "${$.put_event.request.body.dateFrom}",
           "note": "${$.put_event.request.body.note}",

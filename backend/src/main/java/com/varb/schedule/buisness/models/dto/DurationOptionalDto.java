@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * DurationOptionalDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
 
 public class DurationOptionalDto   {
   @JsonProperty("duration")
