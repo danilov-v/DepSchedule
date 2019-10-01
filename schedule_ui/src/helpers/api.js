@@ -30,6 +30,7 @@ const makeApiCall = async (apiPath, params) => {
   try {
     data = await result.json();
   } catch (error) {
+    //EMPTY RESPONSE BODY CAUSE ERROR IN result.json();
     data = {};
   }
 

@@ -23,7 +23,7 @@ public class PeriodService extends AbstractService<Period, Long> {
     private final PeriodRepository periodRepository;
     private final ModelMapperCustomize modelMapper;
     private final ValidationService validationService;
-    private static final String DATES_INTERSECTION = "DATES_INTERSECTION";
+    public static final String DATES_INTERSECTION = "DATES_INTERSECTION";
     private static final String DATES_INTERSECTION_MESSAGE = "Данный период пересекается с уже существующим. Проверьте даты его начала и окончания.";
 
     public Period add(PeriodPostDto periodPost) {
