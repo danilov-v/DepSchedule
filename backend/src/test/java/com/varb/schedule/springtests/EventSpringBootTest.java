@@ -2,10 +2,13 @@ package com.varb.schedule.springtests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.varb.schedule.buisness.logic.repository.EventRepository;
+import com.varb.schedule.buisness.logic.service.EventService;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.buisness.models.entity.Event;
+import com.varb.schedule.buisness.models.entity.Period;
+import com.varb.schedule.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -163,6 +167,11 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
     @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
             @Sql("/db/scripts/spring/InsertEventData.sql")})
     public void testPutEvent() throws Exception {
+        /*TODO refactor after implementation of right logic - Duration
+         duration from EventDuration is supposed to be used only for usability
+         so it mustn't affect the logic during update or add operations. Exclude it from calculation
+         */
+
         List<Event> initializedData = eventRepository.findAll();
         //validate data has been initialized correctly
         assertTrue(initializedData.size() > 0);
@@ -174,7 +183,7 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         final Long eventTypeId = event.getEventTypeId();
         final Long unitId = event.getUnitId();
         //calculate duration
-        //TODO Integer duration;
+        int duration = Math.toIntExact(ChronoUnit.DAYS.between(dateFrom, dateTo)) - 1;
 
         String newNote = "Changed note";
         EventPutDto putDto = new EventPutDto();
@@ -206,4 +215,47 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         );
     }
 
+    @Test
+    @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
+            @Sql("/db/scripts/spring/InsertEventData.sql")})
+    public void testDeleteEvent() throws Exception {
+        List<Event> initializedData = eventRepository.findAll();
+        int rowsNum = initializedData.size();
+        assertTrue(rowsNum > 0);
+        Event eventToDelete = initializedData.get(0);
+
+        mockMvc.perform(delete(baseUrl + "/" + eventToDelete.getEventId())
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+
+        //assert after deleting one event
+        List<Event> afterDeleteList = eventRepository.findAll();
+        assertEquals(rowsNum - 1, afterDeleteList.size());
+        assertFalse(afterDeleteList.contains(eventToDelete));
+    }
+
+    @Test
+    @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
+            @Sql("/db/scripts/spring/InsertEventData.sql")})
+    public void testIntersections() throws Exception {
+        //set dateFrom and duration to have intersection
+        LocalDate dateFrom = LocalDate.of(2019, 9, 30);
+        Integer duration = 5;
+        EventPostDto postDto = new EventPostDto();
+        postDto.setEventTypeId(1L);
+        postDto.setUnitId(200L);
+        postDto.setDateFrom(dateFrom);
+        postDto.setDuration(duration);
+        postDto.setNote("Intersection");
+
+        MvcResult mvcResult = mockMvc.perform(post(baseUrl)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(asJsonString(postDto)))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        assertTrue(mvcResult.getResolvedException() instanceof ServiceException);
+        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((ServiceException)mvcResult.getResolvedException()).getCode());
+
+    }
 }

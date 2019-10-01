@@ -29,7 +29,7 @@ public class EventService extends AbstractService<Event, Long> {
     private final EventDurationService eventDurationService;
     private final ValidationService validationService;
 
-    private static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
+    public static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
     private static final String DATES_INTERSECTION_MESSAGE = "Данное событие пересекается с уже существующим. " +
             "Проверьте даты его начала и окончания.";
 
