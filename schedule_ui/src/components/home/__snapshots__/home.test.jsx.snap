@@ -1,3 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`home.jsx <Home /> should render and match snapshot 1`] = `<Timeline />`;
+exports[`home.jsx <Home /> should render and match snapshot 1`] = `
+<ConfirmationServiceProvider>
+  <Container
+    fluid={true}
+    tag="div"
+  >
+    <withRouter(HeaderUI)
+      endDate={2020-01-30T21:00:00.000Z}
+      onChangeEndDate={[Function]}
+      onChangeOperationalDate={[Function]}
+      onChangeStartDate={[Function]}
+      operationalDate={2019-09-30T21:00:00.000Z}
+      startDate={2019-09-30T21:00:00.000Z}
+    />
+    <main
+      className="h-75 emblem-background"
+    >
+      <Route
+        exact={true}
+        path="/"
+        render={[Function]}
+      />
+      <Route
+        path="/event_types"
+        render={[Function]}
+      />
+      <Route
+        path="/periods"
+        render={[Function]}
+      />
+    </main>
+  </Container>
+</ConfirmationServiceProvider>
+`;
