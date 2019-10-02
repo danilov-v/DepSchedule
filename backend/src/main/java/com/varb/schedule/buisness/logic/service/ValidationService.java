@@ -11,7 +11,7 @@ public class ValidationService {
     private static final String WRONG_DATES_MESSAGE = "Дата начала должна предшествовать дате окончания.";
 
     public void checkDates(LocalDate dateFrom, LocalDate dateTo) {
-        if (!dateFrom.isBefore(dateTo))
+        if (dateTo.compareTo(dateFrom) >= 0) //dateTo >= dateFrom
             throw new ServiceException(
                     "startDate " + dateFrom + " >= " + "endDate " + dateTo,
                     WRONG_DATES_MESSAGE,
