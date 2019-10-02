@@ -20,7 +20,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "login", description = "the login API")

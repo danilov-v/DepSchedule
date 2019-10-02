@@ -736,7 +736,7 @@ components:
     EventPost:
       allOf:
         - $ref: "#/components/schemas/EventBaseReq"
-        - $ref: "#/components/schemas/DurationOptional"
+        - $ref: "#/components/schemas/DurationRequired"
     EventResponse:
       required:
         - eventId

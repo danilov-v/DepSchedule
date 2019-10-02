@@ -1,1 +1,1 @@
-./gradlew bootRun
+./gradlew bootRun -Pprofile=security

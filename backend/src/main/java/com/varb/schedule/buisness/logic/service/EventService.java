@@ -25,11 +25,13 @@ public class EventService extends AbstractService<Event, Long> {
     private final EventRepository eventRepository;
     private final ModelMapperCustomize modelMapper;
     private final EventTypeService eventTypeService;
+    private final UnitService unitService;
     private final EventDurationService eventDurationService;
     private final ValidationService validationService;
 
-    private static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
-    private static final String DATES_INTERSECTION_MESSAGE = "Данное событие пересекается с уже существующим. Проверьте даты его начала и окончания.";
+    public static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
+    private static final String DATES_INTERSECTION_MESSAGE = "Данное событие пересекается с уже существующим. " +
+            "Проверьте даты его начала и окончания.";
 
 
     public Event add(EventPostDto eventPostDto) {
@@ -49,32 +51,41 @@ public class EventService extends AbstractService<Event, Long> {
         return eventRepository.findBetweenDates(dateFrom, dateTo);
     }
 
+    /**
+     * Проверка события перед сохранением
+     * @param duration Длительность события переданная в DTO
+     * <br>Если событие создавалось с помощью метода POST, {@code duration} != null
+     * <br>Если событие изменялось с помощью метода PUT, {@code duration} может быть null
+     */
     private void checkBeforeSave(Event event, @Nullable Integer duration) {
         Long unitId = event.getUnitId();
         Long eventTypeId = event.getEventTypeId();
 
         eventTypeService.checkExists(eventTypeId);
+        unitService.checkExists(unitId);
 
 //        if (unitService.findById(unitId).getUnitLevel() < UnitLevelEnum.SUBUNIT.getValue())
 //            throw new ServiceException("Событие может быть добавлено только к " +
 //                    "unit(UnitLevel=" + UnitLevelEnum.SUBUNIT.getValue() + ")");
 
+
         if (duration != null) {
             assert duration > 0;
+
             eventDurationService.merge(
-                    event.getUnitId(),
-                    event.getEventTypeId(),
+                    unitId, eventTypeId,
                     new EventDurationPutDto().duration(duration));
+
+            event.setDateTo(
+                    event.getDateFrom()
+                            .plusDays(duration));
         }
 
-        event.setDateTo(
-                event.getDateFrom()
-                        .plusDays(eventDurationService
-                                .findById(unitId, eventTypeId)
-                                .getDuration()));
-
         validationService.checkDates(event.getDateFrom(), event.getDateTo());
+        checkIntersection(event);
+    }
 
+    private void checkIntersection(Event event) {
         List<Event> eventList = eventRepository.findIntersection(
                 event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
 
@@ -85,7 +96,6 @@ public class EventService extends AbstractService<Event, Long> {
                     DATES_INTERSECTION_MESSAGE,
                     INTERSECTION_OF_EVENTS);
         }
-
     }
 
     @Override

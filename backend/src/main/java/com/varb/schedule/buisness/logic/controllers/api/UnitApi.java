@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-06T09:40:00.421712+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "unit", description = "the unit API")
