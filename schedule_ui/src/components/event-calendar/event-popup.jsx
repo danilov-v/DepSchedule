@@ -15,7 +15,7 @@ import {
 import DatePicker from "react-datepicker";
 import classnames from "classnames";
 import { omit } from "lodash";
-import { isDate, addDays, format, differenceInDays } from "date-fns";
+import { setHours, isDate, addDays, format, differenceInDays } from "date-fns";
 import {
   FAILED_EVENT_NOTIFICATION_DATA,
   SUCCESS_EVENT_NOTIFICATION_DATA,
@@ -104,7 +104,10 @@ export function EventPopup({
   };
 
   async function submitForm() {
-    const duration = differenceInDays(dateTo, dateFrom);
+    const duration = differenceInDays(
+      setHours(dateTo, 0),
+      setHours(dateFrom, 0)
+    );
 
     const data = {
       ...omit(values, ["dateTo"]),
