@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`periods-popup.jsx <PeriodsPopup /> should render and match snapshot with create type 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  returnFocusAfterClose={true}
+  role="dialog"
+  scrollable={false}
+  toggle={[Function]}
+  unmountOnClose={true}
+  zIndex={1050}
+>
+  <Form
+    className="p-3"
+    tag="form"
+  >
+    <ModalHeader
+      charCode={215}
+      closeAriaLabel="Close"
+      tag="h5"
+      toggle={[Function]}
+      wrapTag="div"
+    >
+      Создание
+       Периода
+    </ModalHeader>
+    <ModalBody
+      tag="div"
+    >
+      <FormGroup
+        tag="div"
+      >
+        <Label
+          for="description"
+          tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          Имя Периода
+        </Label>
+        <Input
+          invalid={false}
+          name="name"
+          onChange={[Function]}
+          placeholder="Период..."
+          rows="6"
+          type="text"
+          value="test"
+        />
+        <FormFeedback
+          tag="div"
+        />
+      </FormGroup>
+      <Label
+        for="unitParent"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Длительность События
+      </Label>
+      <FormGroup
+        tag="div"
+      >
+        <div
+          className="d-flex"
+        >
+          <DatePicker
+            allowSameDay={false}
+            className="form-control"
+            dateFormat="dd/MM/yyyy"
+            dateFormatCalendar="LLLL yyyy"
+            disabled={false}
+            disabledKeyboardNavigation={false}
+            dropdownMode="scroll"
+            endDate={null}
+            inlineFocusSelectedMonth={false}
+            locale="ru"
+            maxDate={null}
+            monthsShown={1}
+            nextMonthButtonLabel="Next month"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClickOutside={[Function]}
+            onFocus={[Function]}
+            onInputClick={[Function]}
+            onInputError={[Function]}
+            onKeyDown={[Function]}
+            onMonthChange={[Function]}
+            onSelect={[Function]}
+            onYearChange={[Function]}
+            placeholderText="13/04/1995"
+            preventOpenOnFocus={false}
+            previousMonthButtonLabel="Previous Month"
+            readOnly={false}
+            renderDayContents={[Function]}
+            selected={null}
+            selectsStart={true}
+            shouldCloseOnSelect={true}
+            showMonthYearPicker={false}
+            showTimeInput={false}
+            showTimeSelect={false}
+            startDate={null}
+            strictParsing={false}
+            timeCaption="Time"
+            timeInputLabel="Time"
+            timeIntervals={30}
+            withPortal={false}
+          />
+          <DatePicker
+            allowSameDay={false}
+            className="form-control"
+            dateFormat="dd/MM/yyyy"
+            dateFormatCalendar="LLLL yyyy"
+            disabled={false}
+            disabledKeyboardNavigation={false}
+            dropdownMode="scroll"
+            endDate={null}
+            inlineFocusSelectedMonth={false}
+            locale="ru"
+            minDate={null}
+            monthsShown={1}
+            nextMonthButtonLabel="Next month"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClickOutside={[Function]}
+            onFocus={[Function]}
+            onInputClick={[Function]}
+            onInputError={[Function]}
+            onKeyDown={[Function]}
+            onMonthChange={[Function]}
+            onSelect={[Function]}
+            onYearChange={[Function]}
+            placeholderText="04/12/1995"
+            preventOpenOnFocus={false}
+            previousMonthButtonLabel="Previous Month"
+            readOnly={false}
+            renderDayContents={[Function]}
+            selected={null}
+            selectsEnd={true}
+            shouldCloseOnSelect={true}
+            showMonthYearPicker={false}
+            showTimeInput={false}
+            showTimeSelect={false}
+            startDate={null}
+            strictParsing={false}
+            timeCaption="Time"
+            timeInputLabel="Time"
+            timeIntervals={30}
+            withPortal={false}
+          />
+        </div>
+        <FormFeedback
+          className=""
+          tag="div"
+        />
+      </FormGroup>
+    </ModalBody>
+    <ModalFooter
+      tag="div"
+    >
+      <Button
+        className="mr-3"
+        color="success"
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Создать
+      </Button>
+      <Button
+        color="primary"
+        onClick={[Function]}
+        tag="button"
+      >
+        Закрыть
+      </Button>
+    </ModalFooter>
+  </Form>
+</Modal>
+`;
+
+exports[`periods-popup.jsx <PeriodsPopup /> should render and match snapshot with edit type 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  returnFocusAfterClose={true}
+  role="dialog"
+  scrollable={false}
+  toggle={[Function]}
+  unmountOnClose={true}
+  zIndex={1050}
+>
+  <Form
+    className="p-3"
+    tag="form"
+  >
+    <ModalHeader
+      charCode={215}
+      closeAriaLabel="Close"
+      tag="h5"
+      toggle={[Function]}
+      wrapTag="div"
+    >
+      Редакитрование
+       Периода
+    </ModalHeader>
+    <ModalBody
+      tag="div"
+    >
+      <FormGroup
+        tag="div"
+      >
+        <Label
+          for="description"
+          tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          Имя Периода
+        </Label>
+        <Input
+          invalid={false}
+          name="name"
+          onChange={[Function]}
+          placeholder="Период..."
+          rows="6"
+          type="text"
+          value="test"
+        />
+        <FormFeedback
+          tag="div"
+        />
+      </FormGroup>
+      <Label
+        for="unitParent"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Длительность События
+      </Label>
+      <FormGroup
+        tag="div"
+      >
+        <div
+          className="d-flex"
+        >
+          <DatePicker
+            allowSameDay={false}
+            className="form-control"
+            dateFormat="dd/MM/yyyy"
+            dateFormatCalendar="LLLL yyyy"
+            disabled={false}
+            disabledKeyboardNavigation={false}
+            dropdownMode="scroll"
+            endDate={null}
+            inlineFocusSelectedMonth={false}
+            locale="ru"
+            maxDate={null}
+            monthsShown={1}
+            nextMonthButtonLabel="Next month"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClickOutside={[Function]}
+            onFocus={[Function]}
+            onInputClick={[Function]}
+            onInputError={[Function]}
+            onKeyDown={[Function]}
+            onMonthChange={[Function]}
+            onSelect={[Function]}
+            onYearChange={[Function]}
+            placeholderText="13/04/1995"
+            preventOpenOnFocus={false}
+            previousMonthButtonLabel="Previous Month"
+            readOnly={false}
+            renderDayContents={[Function]}
+            selected={null}
+            selectsStart={true}
+            shouldCloseOnSelect={true}
+            showMonthYearPicker={false}
+            showTimeInput={false}
+            showTimeSelect={false}
+            startDate={null}
+            strictParsing={false}
+            timeCaption="Time"
+            timeInputLabel="Time"
+            timeIntervals={30}
+            withPortal={false}
+          />
+          <DatePicker
+            allowSameDay={false}
+            className="form-control"
+            dateFormat="dd/MM/yyyy"
+            dateFormatCalendar="LLLL yyyy"
+            disabled={false}
+            disabledKeyboardNavigation={false}
+            dropdownMode="scroll"
+            endDate={null}
+            inlineFocusSelectedMonth={false}
+            locale="ru"
+            minDate={null}
+            monthsShown={1}
+            nextMonthButtonLabel="Next month"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClickOutside={[Function]}
+            onFocus={[Function]}
+            onInputClick={[Function]}
+            onInputError={[Function]}
+            onKeyDown={[Function]}
+            onMonthChange={[Function]}
+            onSelect={[Function]}
+            onYearChange={[Function]}
+            placeholderText="04/12/1995"
+            preventOpenOnFocus={false}
+            previousMonthButtonLabel="Previous Month"
+            readOnly={false}
+            renderDayContents={[Function]}
+            selected={null}
+            selectsEnd={true}
+            shouldCloseOnSelect={true}
+            showMonthYearPicker={false}
+            showTimeInput={false}
+            showTimeSelect={false}
+            startDate={null}
+            strictParsing={false}
+            timeCaption="Time"
+            timeInputLabel="Time"
+            timeIntervals={30}
+            withPortal={false}
+          />
+        </div>
+        <FormFeedback
+          className=""
+          tag="div"
+        />
+      </FormGroup>
+    </ModalBody>
+    <ModalFooter
+      tag="div"
+    >
+      <Button
+        className="mr-3"
+        color="success"
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Обновить
+      </Button>
+      <Button
+        color="primary"
+        onClick={[Function]}
+        tag="button"
+      >
+        Закрыть
+      </Button>
+    </ModalFooter>
+  </Form>
+</Modal>
+`;
