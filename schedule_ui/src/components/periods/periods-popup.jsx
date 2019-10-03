@@ -22,7 +22,7 @@ import {
   FAILED_PERIOD_NOTIFICATION_DATA,
 } from "constants/notifications";
 
-const validatePeriodForm = values => {
+export const validatePeriodForm = values => {
   let errors = {};
 
   if (!isDate(values.startDate) && !isDate(values.endDate))
@@ -91,7 +91,7 @@ export function PeriodsPopup({
     <Modal isOpen={isOpen} toggle={toggle}>
       <Form className="p-3">
         <ModalHeader toggle={toggle}>
-          {type === "create" ? "Создание" : "Редакитрование"} Периоды
+          {type === "create" ? "Создание" : "Редакитрование"} Периода
         </ModalHeader>
         <ModalBody>
           <FormGroup>
