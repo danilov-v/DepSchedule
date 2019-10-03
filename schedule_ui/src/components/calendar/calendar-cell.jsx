@@ -20,7 +20,11 @@ export function CalendarCell({ text, fluid }) {
 }
 
 CalendarCell.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  text: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.node,
+  ]),
   fluid: PropTypes.bool,
 };
 

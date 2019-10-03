@@ -12,6 +12,7 @@ import { MANAGE_EVENTS } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
 import { useAuth } from "components/auth-service/auth-service";
 import { getAllDatesFromRange } from "utils/date";
+import { CELL_WIDTH } from "constants/calendar";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
 
@@ -30,7 +31,7 @@ const getOffset = (startDateCord, dateFrom) => {
     new Date(dateFrom).setHours(0, 0, 0, 0),
     startDateCord.setHours(0, 0, 0, 0)
   );
-  return diff * 35;
+  return diff * CELL_WIDTH;
 };
 
 export function UnitEventRow({

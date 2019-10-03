@@ -21,4 +21,12 @@
       width: 100%;
     }
   }
+
+  &-month {
+    &-cell-text {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
 }

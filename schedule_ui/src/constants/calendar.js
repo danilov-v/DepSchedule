@@ -27,3 +27,6 @@ export const EVENT_TYPE_COLORS = [
 ];
 
 export const FOUR_MONTH = 122;
+
+export const CELL_WIDTH = 35;
+export const CELL_WIDTH_BORDER = 1;

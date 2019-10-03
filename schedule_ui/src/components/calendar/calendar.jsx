@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import { CalendarCell } from "./calendar-cell";
 import { MONTH_TRANSLATIONS } from "../../constants/calendar";
+import { CalendarMonthCellText } from "./calendar-month-cell-text";
 
 import "./calendar.scss";
 
@@ -15,7 +16,12 @@ export function Calendar({ range, operationalRange }) {
             <Row className="calendar-title" noGutters>
               <Col>
                 <CalendarCell
-                  text={MONTH_TRANSLATIONS[month.name]}
+                  text={
+                    <CalendarMonthCellText
+                      text={MONTH_TRANSLATIONS[month.name]}
+                      length={month.days.length}
+                    />
+                  }
                   fluid={month.days && month.days.length > 1}
                 />
               </Col>
@@ -36,7 +42,12 @@ export function Calendar({ range, operationalRange }) {
             <Row className="calendar-title" noGutters>
               <Col>
                 <CalendarCell
-                  text={MONTH_TRANSLATIONS[month.name]}
+                  text={
+                    <CalendarMonthCellText
+                      text={MONTH_TRANSLATIONS[month.name]}
+                      length={month.days.length}
+                    />
+                  }
                   fluid={month.days && month.days.length > 1}
                 />
               </Col>

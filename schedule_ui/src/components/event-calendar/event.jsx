@@ -2,11 +2,12 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { truncate } from "lodash";
 import { UncontrolledTooltip } from "reactstrap";
+import { CELL_WIDTH } from "constants/calendar";
 
 export function Event({ event, rightOffset, color, title, onClick }) {
   const style = {
     background: color,
-    width: (event.duration + 1) * 35 + "px",
+    width: (event.duration + 1) * CELL_WIDTH + "px",
     right: rightOffset + "px",
   };
   return (
