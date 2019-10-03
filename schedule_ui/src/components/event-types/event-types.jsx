@@ -18,7 +18,7 @@ const DEFAULT_EVENT_TYPE = {
 };
 
 export function EventTypes({ eventTypes, onEventTypesUpdate }) {
-  const { authBody } = useAuth();
+  const { getRole } = useAuth();
   const [isFormOpen, toggleForm] = useState(false);
   const [formType, setFormType] = useState("create");
   const [defaultFormData, setDefaultFormData] = useState(DEFAULT_EVENT_TYPE);
@@ -55,7 +55,7 @@ export function EventTypes({ eventTypes, onEventTypesUpdate }) {
         size="lg"
         className="font-weight-bold float-right"
         onClick={() => toggleEventTypeForm("create")}
-        hidden={!checkPermission(authBody.role, MANAGE_EVENT_TYPES)}
+        hidden={!checkPermission(getRole(), MANAGE_EVENT_TYPES)}
       >
         +
       </Button>

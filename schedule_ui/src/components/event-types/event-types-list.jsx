@@ -19,7 +19,7 @@ export function EventTypesList({
   onEventTypeRemove,
 }) {
   const confirm = useConfirmation();
-  const { authBody } = useAuth();
+  const { getRole } = useAuth();
 
   const tryToRemove = typeId => {
     confirm(EVENT_TYPE_CONFIRMATION_OPTIONS).then(async () => {
@@ -30,7 +30,7 @@ export function EventTypesList({
       }
     });
   };
-  const isManageAble = checkPermission(authBody.role, MANAGE_EVENT_TYPES);
+  const isManageAble = checkPermission(getRole(), MANAGE_EVENT_TYPES);
 
   const renderRow = (eventType, index) => (
     <tr key={eventType.typeId}>

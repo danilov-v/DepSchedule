@@ -6,8 +6,8 @@ import { checkPermission } from "utils/permishions";
 import { useAuth } from "components/auth-service/auth-service";
 
 export function PeriodsList({ periods, onPeriodEdit, onPeriodRemove }) {
-  const { authBody } = useAuth();
-  const isManageAble = checkPermission(authBody.role, MANAGE_PERIODS);
+  const { getRole } = useAuth();
+  const isManageAble = checkPermission(getRole(), MANAGE_PERIODS);
 
   const renderRow = (period, index) => (
     <tr key={period.periodId}>

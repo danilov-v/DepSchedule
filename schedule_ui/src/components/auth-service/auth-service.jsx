@@ -1,6 +1,6 @@
 import React, { useState, useContext, createContext, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { isString, isEmpty } from "lodash";
+import { isString, isEmpty, get } from "lodash";
 import { signIn, signOut } from "helpers/api";
 import { NotificationManager } from "helpers/notification-manager";
 import { FAILED_LOGIN } from "constants/notifications";
@@ -45,8 +45,11 @@ export const AuthServiceProvider = ({ children }) => {
     }
   };
 
+  const getRole = () => get(authBody, "role");
+
   const defaultContext = {
     authBody,
+    getRole,
     login,
     logout,
   };

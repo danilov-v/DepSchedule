@@ -60,7 +60,7 @@ const renderUnit = (
 export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
   const confirm = useConfirmation();
   const [unitData, setUnitData] = useState(null);
-  const { authBody } = useAuth();
+  const { getRole } = useAuth();
 
   const onCloseEditPopup = () => {
     setUnitData(null);
@@ -93,7 +93,7 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
     });
   };
 
-  const isManageAble = checkPermission(authBody.role, MANAGE_UNITS);
+  const isManageAble = checkPermission(getRole(), MANAGE_UNITS);
 
   return (
     <div className="units-grid">

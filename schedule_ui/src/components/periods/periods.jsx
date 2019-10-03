@@ -23,7 +23,7 @@ export function Periods({ periods, onPeriodsUpdate }) {
   const [isFormOpen, toggleForm] = useState(false);
   const [formType, setFormType] = useState("create");
   const [defaultFormData, setDefaultFormData] = useState(DEFAULT_PERIOD);
-  const { authBody } = useAuth();
+  const { getRole } = useAuth();
   const confirm = useConfirmation();
 
   const onPeriodSubmit = periodData =>
@@ -70,7 +70,7 @@ export function Periods({ periods, onPeriodsUpdate }) {
         size="lg"
         className="font-weight-bold float-right"
         onClick={toggle.bind(null, "create", undefined)}
-        hidden={!checkPermission(authBody.role, MANAGE_PERIODS)}
+        hidden={!checkPermission(getRole(), MANAGE_PERIODS)}
       >
         +
       </Button>

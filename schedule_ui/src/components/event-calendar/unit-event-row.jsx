@@ -40,8 +40,8 @@ export function UnitEventRow({
   openCreateForm,
   openEditForm,
 }) {
-  const { authBody } = useAuth();
-  const isManageAble = checkPermission(authBody.role, MANAGE_EVENTS);
+  const { getRole } = useAuth();
+  const isManageAble = checkPermission(getRole(), MANAGE_EVENTS);
   const allDates = getAllDatesFromRange(range);
   const startDateCord = allDates[allDates.length - 1];
 
