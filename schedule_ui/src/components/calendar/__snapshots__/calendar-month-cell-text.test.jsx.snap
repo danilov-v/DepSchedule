@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calendar-month-cell-text <CalendarMonthCellText /> should render and match snapshot 1`] = `
+<p
+  className="m-0 calendar-month-cell-text"
+  style={
+    Object {
+      "maxWidth": 170,
+    }
+  }
+>
+  test
+</p>
+`;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { CELL_WIDTH, CELL_WIDTH_BORDER } from "constants/calendar";
 
 export function CalendarMonthCellText({ text, length }) {
@@ -11,3 +12,13 @@ export function CalendarMonthCellText({ text, length }) {
     </p>
   );
 }
+
+CalendarMonthCellText.propTypes = {
+  text: PropTypes.string,
+  length: PropTypes.number,
+};
+
+CalendarMonthCellText.defaultProps = {
+  text: "",
+  length: 0,
+};
