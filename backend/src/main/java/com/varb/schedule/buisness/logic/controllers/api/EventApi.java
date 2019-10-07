@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "event", description = "the event API")
@@ -109,6 +111,30 @@ public interface EventApi {
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     default ResponseEntity<EventResponseDto> eventPut(@ApiParam(value = "",required=true) @PathVariable("eventId") Long eventId,@ApiParam(value = ""  )  @Valid @RequestBody EventPutDto eventPutDto) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.valueOf(200));
+
+    }
+
+
+    @ApiOperation(value = "Список последних событий", nickname = "eventRecentList", notes = "", response = EventResponseDto.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "JWT")
+    }, tags={ "event", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Array of recent event", response = EventResponseDto.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
+        @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
+    @RequestMapping(value = "/event/recentList",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    default ResponseEntity<List<EventResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

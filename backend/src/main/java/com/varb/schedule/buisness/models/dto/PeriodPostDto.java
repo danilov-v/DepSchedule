@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * PeriodPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 public class PeriodPostDto   {
   @JsonProperty("name")

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -11,20 +13,52 @@ import java.util.Objects;
 /**
  * EventBaseReqDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 public class EventBaseReqDto   {
+  @JsonProperty("duration")
+  private Integer duration;
+
   @JsonProperty("unitId")
   private Long unitId;
 
   @JsonProperty("dateFrom")
   private LocalDate dateFrom;
 
+  @JsonProperty("location")
+  private LocationDto location = null;
+
+  @JsonProperty("planned")
+  private Boolean planned;
+
   @JsonProperty("note")
   private String note;
 
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
+
+  public EventBaseReqDto duration(Integer duration) {
+    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 0
+   * maximum: 1000
+   * @return duration
+  */
+  @ApiModelProperty(required = true, value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
+  @NotNull
+
+@Min(0) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Integer duration) {
+    this.duration = duration;
+  }
 
   public EventBaseReqDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -35,8 +69,7 @@ public class EventBaseReqDto   {
    * Id подразделения (может ссылаться только на подразделение 4-го уровня)
    * @return unitId
   */
-  @ApiModelProperty(required = true, value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
-  @NotNull
+  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
 
 
   public Long getUnitId() {
@@ -56,8 +89,7 @@ public class EventBaseReqDto   {
    * Дата начала события
    * @return dateFrom
   */
-  @ApiModelProperty(required = true, value = "Дата начала события")
-  @NotNull
+  @ApiModelProperty(value = "Дата начала события")
 
   @Valid
 
@@ -67,6 +99,47 @@ public class EventBaseReqDto   {
 
   public void setDateFrom(LocalDate dateFrom) {
     this.dateFrom = dateFrom;
+  }
+
+  public EventBaseReqDto location(LocationDto location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  */
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public LocationDto getLocation() {
+    return location;
+  }
+
+  public void setLocation(LocationDto location) {
+    this.location = location;
+  }
+
+  public EventBaseReqDto planned(Boolean planned) {
+    this.planned = planned;
+    return this;
+  }
+
+  /**
+   * Запланированность события
+   * @return planned
+  */
+  @ApiModelProperty(value = "Запланированность события")
+
+
+  public Boolean getPlanned() {
+    return planned;
+  }
+
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public EventBaseReqDto note(String note) {
@@ -98,8 +171,7 @@ public class EventBaseReqDto   {
    * Ссылка на тип события 
    * @return eventTypeId
   */
-  @ApiModelProperty(required = true, value = "Ссылка на тип события ")
-  @NotNull
+  @ApiModelProperty(value = "Ссылка на тип события ")
 
 
   public Long getEventTypeId() {
@@ -120,15 +192,18 @@ public class EventBaseReqDto   {
       return false;
     }
     EventBaseReqDto eventBaseReq = (EventBaseReqDto) o;
-    return Objects.equals(this.unitId, eventBaseReq.unitId) &&
+    return Objects.equals(this.duration, eventBaseReq.duration) &&
+        Objects.equals(this.unitId, eventBaseReq.unitId) &&
         Objects.equals(this.dateFrom, eventBaseReq.dateFrom) &&
+        Objects.equals(this.location, eventBaseReq.location) &&
+        Objects.equals(this.planned, eventBaseReq.planned) &&
         Objects.equals(this.note, eventBaseReq.note) &&
         Objects.equals(this.eventTypeId, eventBaseReq.eventTypeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId);
+    return Objects.hash(duration, unitId, dateFrom, location, planned, note, eventTypeId);
   }
 
   @Override
@@ -136,8 +211,11 @@ public class EventBaseReqDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventBaseReqDto {\n");
     
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
     sb.append("}");

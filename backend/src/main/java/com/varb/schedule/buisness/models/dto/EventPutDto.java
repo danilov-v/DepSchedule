@@ -12,14 +12,23 @@ import java.util.Objects;
 /**
  * EventPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 public class EventPutDto   {
+  @JsonProperty("duration")
+  private Integer duration;
+
   @JsonProperty("unitId")
   private Long unitId;
 
   @JsonProperty("dateFrom")
   private LocalDate dateFrom;
+
+  @JsonProperty("location")
+  private LocationDto location = null;
+
+  @JsonProperty("planned")
+  private Boolean planned;
 
   @JsonProperty("note")
   private String note;
@@ -27,8 +36,27 @@ public class EventPutDto   {
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
 
-  @JsonProperty("duration")
-  private Integer duration;
+  public EventPutDto duration(Integer duration) {
+    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 0
+   * maximum: 1000
+   * @return duration
+  */
+  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
+
+@Min(0) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Integer duration) {
+    this.duration = duration;
+  }
 
   public EventPutDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -71,6 +99,47 @@ public class EventPutDto   {
     this.dateFrom = dateFrom;
   }
 
+  public EventPutDto location(LocationDto location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  */
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public LocationDto getLocation() {
+    return location;
+  }
+
+  public void setLocation(LocationDto location) {
+    this.location = location;
+  }
+
+  public EventPutDto planned(Boolean planned) {
+    this.planned = planned;
+    return this;
+  }
+
+  /**
+   * Запланированность события
+   * @return planned
+  */
+  @ApiModelProperty(value = "Запланированность события")
+
+
+  public Boolean getPlanned() {
+    return planned;
+  }
+
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
+  }
+
   public EventPutDto note(String note) {
     this.note = note;
     return this;
@@ -111,28 +180,6 @@ public class EventPutDto   {
     this.eventTypeId = eventTypeId;
   }
 
-  public EventPutDto duration(Integer duration) {
-    this.duration = duration;
-    return this;
-  }
-
-  /**
-   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
-   * minimum: 0
-   * maximum: 1000
-   * @return duration
-  */
-  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
-
-@Min(0) @Max(1000) 
-  public Integer getDuration() {
-    return duration;
-  }
-
-  public void setDuration(Integer duration) {
-    this.duration = duration;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -143,16 +190,18 @@ public class EventPutDto   {
       return false;
     }
     EventPutDto eventPut = (EventPutDto) o;
-    return Objects.equals(this.unitId, eventPut.unitId) &&
+    return Objects.equals(this.duration, eventPut.duration) &&
+        Objects.equals(this.unitId, eventPut.unitId) &&
         Objects.equals(this.dateFrom, eventPut.dateFrom) &&
+        Objects.equals(this.location, eventPut.location) &&
+        Objects.equals(this.planned, eventPut.planned) &&
         Objects.equals(this.note, eventPut.note) &&
-        Objects.equals(this.eventTypeId, eventPut.eventTypeId) &&
-        Objects.equals(this.duration, eventPut.duration);
+        Objects.equals(this.eventTypeId, eventPut.eventTypeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId, duration);
+    return Objects.hash(duration, unitId, dateFrom, location, planned, note, eventTypeId);
   }
 
   @Override
@@ -160,11 +209,13 @@ public class EventPutDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventPutDto {\n");
     
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
-    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("}");
     return sb.toString();
   }

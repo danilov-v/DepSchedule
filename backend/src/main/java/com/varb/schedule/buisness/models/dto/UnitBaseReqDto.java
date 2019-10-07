@@ -8,11 +8,11 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * UnitResponseDto
+ * UnitBaseReqDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
-public class UnitResponseDto   {
+public class UnitBaseReqDto   {
   @JsonProperty("title")
   private String title;
 
@@ -25,10 +25,7 @@ public class UnitResponseDto   {
   @JsonProperty("parentId")
   private Long parentId;
 
-  @JsonProperty("unitId")
-  private Long unitId;
-
-  public UnitResponseDto title(String title) {
+  public UnitBaseReqDto title(String title) {
     this.title = title;
     return this;
   }
@@ -49,7 +46,7 @@ public class UnitResponseDto   {
     this.title = title;
   }
 
-  public UnitResponseDto flag(String flag) {
+  public UnitBaseReqDto flag(String flag) {
     this.flag = flag;
     return this;
   }
@@ -70,7 +67,7 @@ public class UnitResponseDto   {
     this.flag = flag;
   }
 
-  public UnitResponseDto exists(Boolean exists) {
+  public UnitBaseReqDto exists(Boolean exists) {
     this.exists = exists;
     return this;
   }
@@ -91,7 +88,7 @@ public class UnitResponseDto   {
     this.exists = exists;
   }
 
-  public UnitResponseDto parentId(Long parentId) {
+  public UnitBaseReqDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
   }
@@ -111,26 +108,6 @@ public class UnitResponseDto   {
     this.parentId = parentId;
   }
 
-  public UnitResponseDto unitId(Long unitId) {
-    this.unitId = unitId;
-    return this;
-  }
-
-  /**
-   * Get unitId
-   * @return unitId
-  */
-  @ApiModelProperty(value = "")
-
-
-  public Long getUnitId() {
-    return unitId;
-  }
-
-  public void setUnitId(Long unitId) {
-    this.unitId = unitId;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -140,29 +117,27 @@ public class UnitResponseDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UnitResponseDto unitResponse = (UnitResponseDto) o;
-    return Objects.equals(this.title, unitResponse.title) &&
-        Objects.equals(this.flag, unitResponse.flag) &&
-        Objects.equals(this.exists, unitResponse.exists) &&
-        Objects.equals(this.parentId, unitResponse.parentId) &&
-        Objects.equals(this.unitId, unitResponse.unitId);
+    UnitBaseReqDto unitBaseReq = (UnitBaseReqDto) o;
+    return Objects.equals(this.title, unitBaseReq.title) &&
+        Objects.equals(this.flag, unitBaseReq.flag) &&
+        Objects.equals(this.exists, unitBaseReq.exists) &&
+        Objects.equals(this.parentId, unitBaseReq.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, exists, parentId, unitId);
+    return Objects.hash(title, flag, exists, parentId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UnitResponseDto {\n");
+    sb.append("class UnitBaseReqDto {\n");
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
-    sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

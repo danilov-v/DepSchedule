@@ -13,14 +13,23 @@ import java.util.Objects;
 /**
  * EventResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 public class EventResponseDto   {
+  @JsonProperty("duration")
+  private Integer duration;
+
   @JsonProperty("unitId")
   private Long unitId;
 
   @JsonProperty("dateFrom")
   private LocalDate dateFrom;
+
+  @JsonProperty("location")
+  private LocationDto location = null;
+
+  @JsonProperty("planned")
+  private Boolean planned;
 
   @JsonProperty("note")
   private String note;
@@ -28,11 +37,31 @@ public class EventResponseDto   {
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
 
-  @JsonProperty("duration")
-  private Integer duration;
-
   @JsonProperty("eventId")
   private Long eventId;
+
+  public EventResponseDto duration(Integer duration) {
+    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 0
+   * maximum: 1000
+   * @return duration
+  */
+  @ApiModelProperty(required = true, value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
+  @NotNull
+
+@Min(0) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Integer duration) {
+    this.duration = duration;
+  }
 
   public EventResponseDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -43,8 +72,7 @@ public class EventResponseDto   {
    * Id подразделения (может ссылаться только на подразделение 4-го уровня)
    * @return unitId
   */
-  @ApiModelProperty(required = true, value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
-  @NotNull
+  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
 
 
   public Long getUnitId() {
@@ -64,8 +92,7 @@ public class EventResponseDto   {
    * Дата начала события
    * @return dateFrom
   */
-  @ApiModelProperty(required = true, value = "Дата начала события")
-  @NotNull
+  @ApiModelProperty(value = "Дата начала события")
 
   @Valid
 
@@ -75,6 +102,47 @@ public class EventResponseDto   {
 
   public void setDateFrom(LocalDate dateFrom) {
     this.dateFrom = dateFrom;
+  }
+
+  public EventResponseDto location(LocationDto location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  */
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public LocationDto getLocation() {
+    return location;
+  }
+
+  public void setLocation(LocationDto location) {
+    this.location = location;
+  }
+
+  public EventResponseDto planned(Boolean planned) {
+    this.planned = planned;
+    return this;
+  }
+
+  /**
+   * Запланированность события
+   * @return planned
+  */
+  @ApiModelProperty(value = "Запланированность события")
+
+
+  public Boolean getPlanned() {
+    return planned;
+  }
+
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public EventResponseDto note(String note) {
@@ -106,8 +174,7 @@ public class EventResponseDto   {
    * Ссылка на тип события 
    * @return eventTypeId
   */
-  @ApiModelProperty(required = true, value = "Ссылка на тип события ")
-  @NotNull
+  @ApiModelProperty(value = "Ссылка на тип события ")
 
 
   public Long getEventTypeId() {
@@ -116,29 +183,6 @@ public class EventResponseDto   {
 
   public void setEventTypeId(Long eventTypeId) {
     this.eventTypeId = eventTypeId;
-  }
-
-  public EventResponseDto duration(Integer duration) {
-    this.duration = duration;
-    return this;
-  }
-
-  /**
-   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
-   * minimum: 0
-   * maximum: 1000
-   * @return duration
-  */
-  @ApiModelProperty(required = true, value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
-  @NotNull
-
-@Min(0) @Max(1000) 
-  public Integer getDuration() {
-    return duration;
-  }
-
-  public void setDuration(Integer duration) {
-    this.duration = duration;
   }
 
   public EventResponseDto eventId(Long eventId) {
@@ -171,17 +215,19 @@ public class EventResponseDto   {
       return false;
     }
     EventResponseDto eventResponse = (EventResponseDto) o;
-    return Objects.equals(this.unitId, eventResponse.unitId) &&
+    return Objects.equals(this.duration, eventResponse.duration) &&
+        Objects.equals(this.unitId, eventResponse.unitId) &&
         Objects.equals(this.dateFrom, eventResponse.dateFrom) &&
+        Objects.equals(this.location, eventResponse.location) &&
+        Objects.equals(this.planned, eventResponse.planned) &&
         Objects.equals(this.note, eventResponse.note) &&
         Objects.equals(this.eventTypeId, eventResponse.eventTypeId) &&
-        Objects.equals(this.duration, eventResponse.duration) &&
         Objects.equals(this.eventId, eventResponse.eventId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId, duration, eventId);
+    return Objects.hash(duration, unitId, dateFrom, location, planned, note, eventTypeId, eventId);
   }
 
   @Override
@@ -189,11 +235,13 @@ public class EventResponseDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventResponseDto {\n");
     
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
-    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    eventId: ").append(toIndentedString(eventId)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -4,26 +4,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * EventBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 public class EventBaseDto   {
+  @JsonProperty("duration")
+  private Integer duration;
+
   @JsonProperty("unitId")
   private Long unitId;
 
   @JsonProperty("dateFrom")
   private LocalDate dateFrom;
 
+  @JsonProperty("location")
+  private LocationDto location = null;
+
+  @JsonProperty("planned")
+  private Boolean planned;
+
   @JsonProperty("note")
   private String note;
 
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
+
+  public EventBaseDto duration(Integer duration) {
+    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 0
+   * maximum: 1000
+   * @return duration
+  */
+  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
+
+@Min(0) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Integer duration) {
+    this.duration = duration;
+  }
 
   public EventBaseDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -64,6 +97,47 @@ public class EventBaseDto   {
 
   public void setDateFrom(LocalDate dateFrom) {
     this.dateFrom = dateFrom;
+  }
+
+  public EventBaseDto location(LocationDto location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  */
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public LocationDto getLocation() {
+    return location;
+  }
+
+  public void setLocation(LocationDto location) {
+    this.location = location;
+  }
+
+  public EventBaseDto planned(Boolean planned) {
+    this.planned = planned;
+    return this;
+  }
+
+  /**
+   * Запланированность события
+   * @return planned
+  */
+  @ApiModelProperty(value = "Запланированность события")
+
+
+  public Boolean getPlanned() {
+    return planned;
+  }
+
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public EventBaseDto note(String note) {
@@ -116,15 +190,18 @@ public class EventBaseDto   {
       return false;
     }
     EventBaseDto eventBase = (EventBaseDto) o;
-    return Objects.equals(this.unitId, eventBase.unitId) &&
+    return Objects.equals(this.duration, eventBase.duration) &&
+        Objects.equals(this.unitId, eventBase.unitId) &&
         Objects.equals(this.dateFrom, eventBase.dateFrom) &&
+        Objects.equals(this.location, eventBase.location) &&
+        Objects.equals(this.planned, eventBase.planned) &&
         Objects.equals(this.note, eventBase.note) &&
         Objects.equals(this.eventTypeId, eventBase.eventTypeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId);
+    return Objects.hash(duration, unitId, dateFrom, location, planned, note, eventTypeId);
   }
 
   @Override
@@ -132,8 +209,11 @@ public class EventBaseDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventBaseDto {\n");
     
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
     sb.append("}");

@@ -19,7 +19,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "eventDuration", description = "the eventDuration API")

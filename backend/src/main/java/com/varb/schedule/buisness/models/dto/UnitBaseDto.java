@@ -3,16 +3,15 @@ package com.varb.schedule.buisness.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * UnitResponseDto
+ * UnitBaseDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
-public class UnitResponseDto   {
+public class UnitBaseDto   {
   @JsonProperty("title")
   private String title;
 
@@ -25,10 +24,7 @@ public class UnitResponseDto   {
   @JsonProperty("parentId")
   private Long parentId;
 
-  @JsonProperty("unitId")
-  private Long unitId;
-
-  public UnitResponseDto title(String title) {
+  public UnitBaseDto title(String title) {
     this.title = title;
     return this;
   }
@@ -37,8 +33,7 @@ public class UnitResponseDto   {
    * Название подразделения
    * @return title
   */
-  @ApiModelProperty(required = true, value = "Название подразделения")
-  @NotNull
+  @ApiModelProperty(value = "Название подразделения")
 
 @Size(min=2) 
   public String getTitle() {
@@ -49,7 +44,7 @@ public class UnitResponseDto   {
     this.title = title;
   }
 
-  public UnitResponseDto flag(String flag) {
+  public UnitBaseDto flag(String flag) {
     this.flag = flag;
     return this;
   }
@@ -58,8 +53,7 @@ public class UnitResponseDto   {
    * Путь к изображению флага
    * @return flag
   */
-  @ApiModelProperty(required = true, value = "Путь к изображению флага")
-  @NotNull
+  @ApiModelProperty(value = "Путь к изображению флага")
 
 
   public String getFlag() {
@@ -70,7 +64,7 @@ public class UnitResponseDto   {
     this.flag = flag;
   }
 
-  public UnitResponseDto exists(Boolean exists) {
+  public UnitBaseDto exists(Boolean exists) {
     this.exists = exists;
     return this;
   }
@@ -79,8 +73,7 @@ public class UnitResponseDto   {
    * Планируемое подразделение? (true/false)
    * @return exists
   */
-  @ApiModelProperty(required = true, value = "Планируемое подразделение? (true/false)")
-  @NotNull
+  @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
 
 
   public Boolean getExists() {
@@ -91,7 +84,7 @@ public class UnitResponseDto   {
     this.exists = exists;
   }
 
-  public UnitResponseDto parentId(Long parentId) {
+  public UnitBaseDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
   }
@@ -111,26 +104,6 @@ public class UnitResponseDto   {
     this.parentId = parentId;
   }
 
-  public UnitResponseDto unitId(Long unitId) {
-    this.unitId = unitId;
-    return this;
-  }
-
-  /**
-   * Get unitId
-   * @return unitId
-  */
-  @ApiModelProperty(value = "")
-
-
-  public Long getUnitId() {
-    return unitId;
-  }
-
-  public void setUnitId(Long unitId) {
-    this.unitId = unitId;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -140,29 +113,27 @@ public class UnitResponseDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UnitResponseDto unitResponse = (UnitResponseDto) o;
-    return Objects.equals(this.title, unitResponse.title) &&
-        Objects.equals(this.flag, unitResponse.flag) &&
-        Objects.equals(this.exists, unitResponse.exists) &&
-        Objects.equals(this.parentId, unitResponse.parentId) &&
-        Objects.equals(this.unitId, unitResponse.unitId);
+    UnitBaseDto unitBase = (UnitBaseDto) o;
+    return Objects.equals(this.title, unitBase.title) &&
+        Objects.equals(this.flag, unitBase.flag) &&
+        Objects.equals(this.exists, unitBase.exists) &&
+        Objects.equals(this.parentId, unitBase.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, exists, parentId, unitId);
+    return Objects.hash(title, flag, exists, parentId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UnitResponseDto {\n");
+    sb.append("class UnitBaseDto {\n");
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
-    sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -9,11 +9,17 @@ import java.util.Objects;
 /**
  * UnitPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T17:01:51.686219+03:00[Europe/Minsk]")
 
 public class UnitPutDto   {
   @JsonProperty("title")
   private String title;
+
+  @JsonProperty("flag")
+  private String flag;
+
+  @JsonProperty("exists")
+  private Boolean exists;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -36,6 +42,46 @@ public class UnitPutDto   {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public UnitPutDto flag(String flag) {
+    this.flag = flag;
+    return this;
+  }
+
+  /**
+   * Путь к изображению флага
+   * @return flag
+  */
+  @ApiModelProperty(value = "Путь к изображению флага")
+
+
+  public String getFlag() {
+    return flag;
+  }
+
+  public void setFlag(String flag) {
+    this.flag = flag;
+  }
+
+  public UnitPutDto exists(Boolean exists) {
+    this.exists = exists;
+    return this;
+  }
+
+  /**
+   * Планируемое подразделение? (true/false)
+   * @return exists
+  */
+  @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
+
+
+  public Boolean getExists() {
+    return exists;
+  }
+
+  public void setExists(Boolean exists) {
+    this.exists = exists;
   }
 
   public UnitPutDto parentId(Long parentId) {
@@ -69,12 +115,14 @@ public class UnitPutDto   {
     }
     UnitPutDto unitPut = (UnitPutDto) o;
     return Objects.equals(this.title, unitPut.title) &&
+        Objects.equals(this.flag, unitPut.flag) &&
+        Objects.equals(this.exists, unitPut.exists) &&
         Objects.equals(this.parentId, unitPut.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, parentId);
+    return Objects.hash(title, flag, exists, parentId);
   }
 
   @Override
@@ -83,6 +131,8 @@ public class UnitPutDto   {
     sb.append("class UnitPutDto {\n");
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
+    sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
     return sb.toString();
