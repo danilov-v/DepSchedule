@@ -20,6 +20,8 @@ tags:
     description: 'Действия с пользователями системы'
   - name: period
     description: "Информация о периодах (High Level Section)"
+  - name: time
+    description: "Информация об оперативном времени"
 paths:
   /event:
     get:
@@ -782,26 +784,26 @@ components:
     EventBase:
       allOf:
         - $ref: "#/components/schemas/DurationOptional"
-      properties:
-        unitId:
-          type: integer
-          format: int64
-          description: "Id подразделения
-            (может ссылаться только на подразделение 4-го уровня)"
-        dateFrom:
-          type: string
-          format: date
-          description: "Дата начала события"
-        location:
-          $ref: "#/components/schemas/Location"
-        planned:
-          type: boolean
-          description: "Запланированность события"
-        note:
-          type: string
-          description: "Примечание"
-        eventTypeId:
-          $ref: "#/components/schemas/EventTypeId"
+        -  properties:
+            unitId:
+              type: integer
+              format: int64
+              description: "Id подразделения
+                (может ссылаться только на подразделение 4-го уровня)"
+            dateFrom:
+              type: string
+              format: date
+              description: "Дата начала события"
+            location:
+              $ref: "#/components/schemas/Location"
+            planned:
+              type: boolean
+              description: "Запланированность события"
+            note:
+              type: string
+              description: "Примечание"
+            eventTypeId:
+              $ref: "#/components/schemas/EventTypeId"
     EventBaseReq:
       required:
         - dateFrom
@@ -811,26 +813,26 @@ components:
         - planned
       allOf:
         - $ref: "#/components/schemas/DurationRequired"
-      properties:
-        unitId:
-          type: integer
-          format: int64
-          description: "Id подразделения
-            (может ссылаться только на подразделение 4-го уровня)"
-        dateFrom:
-          type: string
-          format: date
-          description: "Дата начала события"
-        location:
-          $ref: "#/components/schemas/Location"
-        planned:
-          type: boolean
-          description: "Запланированность события"
-        note:
-          type: string
-          description: "Примечание"
-        eventTypeId:
-          $ref: "#/components/schemas/EventTypeId"
+        -  properties:
+            unitId:
+              type: integer
+              format: int64
+              description: "Id подразделения
+                (может ссылаться только на подразделение 4-го уровня)"
+            dateFrom:
+              type: string
+              format: date
+              description: "Дата начала события"
+            location:
+              $ref: "#/components/schemas/Location"
+            planned:
+              type: boolean
+              description: "Запланированность события"
+            note:
+              type: string
+              description: "Примечание"
+            eventTypeId:
+              $ref: "#/components/schemas/EventTypeId"
     EventPut:
       allOf:
         - $ref: "#/components/schemas/EventBase"
