@@ -16,7 +16,6 @@ import {
   ModalFooter,
   FormFeedback,
 } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePicker from "react-datepicker";
 import classnames from "classnames";
 import { omit } from "lodash";
