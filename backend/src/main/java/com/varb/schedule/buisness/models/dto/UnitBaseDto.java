@@ -7,11 +7,11 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * UnitPutDto
+ * UnitBaseDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T16:47:13.207234+03:00[Europe/Minsk]")
 
-public class UnitPutDto   {
+public class UnitBaseDto   {
   @JsonProperty("title")
   private String title;
 
@@ -24,7 +24,7 @@ public class UnitPutDto   {
   @JsonProperty("parentId")
   private Long parentId;
 
-  public UnitPutDto title(String title) {
+  public UnitBaseDto title(String title) {
     this.title = title;
     return this;
   }
@@ -44,7 +44,7 @@ public class UnitPutDto   {
     this.title = title;
   }
 
-  public UnitPutDto flag(String flag) {
+  public UnitBaseDto flag(String flag) {
     this.flag = flag;
     return this;
   }
@@ -64,7 +64,7 @@ public class UnitPutDto   {
     this.flag = flag;
   }
 
-  public UnitPutDto exists(Boolean exists) {
+  public UnitBaseDto exists(Boolean exists) {
     this.exists = exists;
     return this;
   }
@@ -84,7 +84,7 @@ public class UnitPutDto   {
     this.exists = exists;
   }
 
-  public UnitPutDto parentId(Long parentId) {
+  public UnitBaseDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
   }
@@ -113,11 +113,11 @@ public class UnitPutDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UnitPutDto unitPut = (UnitPutDto) o;
-    return Objects.equals(this.title, unitPut.title) &&
-        Objects.equals(this.flag, unitPut.flag) &&
-        Objects.equals(this.exists, unitPut.exists) &&
-        Objects.equals(this.parentId, unitPut.parentId);
+    UnitBaseDto unitBase = (UnitBaseDto) o;
+    return Objects.equals(this.title, unitBase.title) &&
+        Objects.equals(this.flag, unitBase.flag) &&
+        Objects.equals(this.exists, unitBase.exists) &&
+        Objects.equals(this.parentId, unitBase.parentId);
   }
 
   @Override
@@ -128,7 +128,7 @@ public class UnitPutDto   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UnitPutDto {\n");
+    sb.append("class UnitBaseDto {\n");
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");

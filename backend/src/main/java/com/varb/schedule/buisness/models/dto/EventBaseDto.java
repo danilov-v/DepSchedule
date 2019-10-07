@@ -3,107 +3,39 @@ package com.varb.schedule.buisness.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
 /**
  * EventBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T16:47:13.207234+03:00[Europe/Minsk]")
 
 public class EventBaseDto   {
-  @JsonProperty("unitId")
-  private Long unitId;
+  @JsonProperty("duration")
+  private Integer duration;
 
-  @JsonProperty("dateFrom")
-  private LocalDate dateFrom;
-
-  @JsonProperty("note")
-  private String note;
-
-  @JsonProperty("eventTypeId")
-  private Long eventTypeId;
-
-  public EventBaseDto unitId(Long unitId) {
-    this.unitId = unitId;
+  public EventBaseDto duration(Integer duration) {
+    this.duration = duration;
     return this;
   }
 
   /**
-   * Id подразделения (может ссылаться только на подразделение 4-го уровня)
-   * @return unitId
+   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
+   * minimum: 0
+   * maximum: 1000
+   * @return duration
   */
-  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
 
-
-  public Long getUnitId() {
-    return unitId;
+@Min(0) @Max(1000) 
+  public Integer getDuration() {
+    return duration;
   }
 
-  public void setUnitId(Long unitId) {
-    this.unitId = unitId;
-  }
-
-  public EventBaseDto dateFrom(LocalDate dateFrom) {
-    this.dateFrom = dateFrom;
-    return this;
-  }
-
-  /**
-   * Дата начала события
-   * @return dateFrom
-  */
-  @ApiModelProperty(value = "Дата начала события")
-
-  @Valid
-
-  public LocalDate getDateFrom() {
-    return dateFrom;
-  }
-
-  public void setDateFrom(LocalDate dateFrom) {
-    this.dateFrom = dateFrom;
-  }
-
-  public EventBaseDto note(String note) {
-    this.note = note;
-    return this;
-  }
-
-  /**
-   * Примечание
-   * @return note
-  */
-  @ApiModelProperty(value = "Примечание")
-
-
-  public String getNote() {
-    return note;
-  }
-
-  public void setNote(String note) {
-    this.note = note;
-  }
-
-  public EventBaseDto eventTypeId(Long eventTypeId) {
-    this.eventTypeId = eventTypeId;
-    return this;
-  }
-
-  /**
-   * Ссылка на тип события 
-   * @return eventTypeId
-  */
-  @ApiModelProperty(value = "Ссылка на тип события ")
-
-
-  public Long getEventTypeId() {
-    return eventTypeId;
-  }
-
-  public void setEventTypeId(Long eventTypeId) {
-    this.eventTypeId = eventTypeId;
+  public void setDuration(Integer duration) {
+    this.duration = duration;
   }
 
 
@@ -116,15 +48,12 @@ public class EventBaseDto   {
       return false;
     }
     EventBaseDto eventBase = (EventBaseDto) o;
-    return Objects.equals(this.unitId, eventBase.unitId) &&
-        Objects.equals(this.dateFrom, eventBase.dateFrom) &&
-        Objects.equals(this.note, eventBase.note) &&
-        Objects.equals(this.eventTypeId, eventBase.eventTypeId);
+    return Objects.equals(this.duration, eventBase.duration);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, note, eventTypeId);
+    return Objects.hash(duration);
   }
 
   @Override
@@ -132,10 +61,7 @@ public class EventBaseDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventBaseDto {\n");
     
-    sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
-    sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
-    sb.append("    note: ").append(toIndentedString(note)).append("\n");
-    sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("}");
     return sb.toString();
   }

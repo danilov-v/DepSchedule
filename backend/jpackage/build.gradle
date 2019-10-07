@@ -5,9 +5,6 @@ task link(type: Exec, dependsOn: 'clean') {
 
     def buildPath = file("../build")
 
-//    if (!buildPath.exists() || !buildPath.isDirectory())
-//        throw new GradleException("directory '$buildPath' not found")
-
     commandLine "${jdk14Path}/bin/jpackage",
             "--runtime-image", "${jdk12Path}",
             "--input", "../build",

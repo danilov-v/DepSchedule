@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * UserPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-01T16:57:30.002524+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T16:47:13.207234+03:00[Europe/Minsk]")
 
 public class UserPutDto   {
   @JsonProperty("login")

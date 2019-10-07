@@ -3,15 +3,16 @@ package com.varb.schedule.buisness.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * UnitPutDto
+ * UnitBaseReqDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-07T16:47:13.207234+03:00[Europe/Minsk]")
 
-public class UnitPutDto   {
+public class UnitBaseReqDto   {
   @JsonProperty("title")
   private String title;
 
@@ -24,7 +25,7 @@ public class UnitPutDto   {
   @JsonProperty("parentId")
   private Long parentId;
 
-  public UnitPutDto title(String title) {
+  public UnitBaseReqDto title(String title) {
     this.title = title;
     return this;
   }
@@ -33,7 +34,8 @@ public class UnitPutDto   {
    * Название подразделения
    * @return title
   */
-  @ApiModelProperty(value = "Название подразделения")
+  @ApiModelProperty(required = true, value = "Название подразделения")
+  @NotNull
 
 @Size(min=2) 
   public String getTitle() {
@@ -44,7 +46,7 @@ public class UnitPutDto   {
     this.title = title;
   }
 
-  public UnitPutDto flag(String flag) {
+  public UnitBaseReqDto flag(String flag) {
     this.flag = flag;
     return this;
   }
@@ -53,7 +55,8 @@ public class UnitPutDto   {
    * Путь к изображению флага
    * @return flag
   */
-  @ApiModelProperty(value = "Путь к изображению флага")
+  @ApiModelProperty(required = true, value = "Путь к изображению флага")
+  @NotNull
 
 
   public String getFlag() {
@@ -64,7 +67,7 @@ public class UnitPutDto   {
     this.flag = flag;
   }
 
-  public UnitPutDto exists(Boolean exists) {
+  public UnitBaseReqDto exists(Boolean exists) {
     this.exists = exists;
     return this;
   }
@@ -73,7 +76,8 @@ public class UnitPutDto   {
    * Планируемое подразделение? (true/false)
    * @return exists
   */
-  @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
+  @ApiModelProperty(required = true, value = "Планируемое подразделение? (true/false)")
+  @NotNull
 
 
   public Boolean getExists() {
@@ -84,7 +88,7 @@ public class UnitPutDto   {
     this.exists = exists;
   }
 
-  public UnitPutDto parentId(Long parentId) {
+  public UnitBaseReqDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
   }
@@ -113,11 +117,11 @@ public class UnitPutDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UnitPutDto unitPut = (UnitPutDto) o;
-    return Objects.equals(this.title, unitPut.title) &&
-        Objects.equals(this.flag, unitPut.flag) &&
-        Objects.equals(this.exists, unitPut.exists) &&
-        Objects.equals(this.parentId, unitPut.parentId);
+    UnitBaseReqDto unitBaseReq = (UnitBaseReqDto) o;
+    return Objects.equals(this.title, unitBaseReq.title) &&
+        Objects.equals(this.flag, unitBaseReq.flag) &&
+        Objects.equals(this.exists, unitBaseReq.exists) &&
+        Objects.equals(this.parentId, unitBaseReq.parentId);
   }
 
   @Override
@@ -128,7 +132,7 @@ public class UnitPutDto   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UnitPutDto {\n");
+    sb.append("class UnitBaseReqDto {\n");
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");

@@ -74,6 +74,34 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /event/recentList:
+    get:
+      operationId: eventRecentList
+      summary: Список последних событий
+      tags:
+        - event
+      parameters:
+        - name: count
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+      responses:
+        200:
+          description: Array of recent event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
   /event/{eventId}:
     put:
       operationId: eventPut
@@ -607,6 +635,44 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /time:
+    get:
+      operationId: timeGet
+      summary: Получение информации об оперативном времени
+      tags:
+        - time
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Time'
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      operationId: timnePut
+      summary: Редактировать информацию об оперативном времени
+      tags:
+        - time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Time'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Time'
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
 components:
   responses:
     BadRequest:
@@ -622,12 +688,42 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorMessage"
   schemas:
-    UnitPut:
+    UnitBaseReq:
+      required:
+        - title
+        - flag
+        - exists
       properties:
         title:
           type: string
           minLength: 2
           description: "Название подразделения"
+        flag:
+          type: string
+          description: "Путь к изображению флага"
+        exists:
+          type: boolean
+          description: "Планируемое подразделение? (true/false)"
+        parentId:
+          type: integer
+          format: int64
+          description: |
+            Ссылка на подразделение верхнего уровня
+            (для подразделения первого уровня не указывается!)
+    #        unitLevel:
+    #          $ref: "#/components/schemas/UnitLevel"
+    UnitBase:
+      properties:
+        title:
+          type: string
+          minLength: 2
+          description: "Название подразделения"
+        flag:
+          type: string
+          description: "Путь к изображению флага"
+        exists:
+          type: boolean
+          description: "Планируемое подразделение? (true/false)"
         parentId:
           type: integer
           format: int64
@@ -637,28 +733,18 @@ components:
     #        unitLevel:
     #          $ref: "#/components/schemas/UnitLevel"
     UnitPost:
-      required:
-        - title
-      properties:
-        title:
-          type: string
-          minLength: 2
-          description: "Название подразделения"
-        parentId:
-          type: integer
-          format: int64
-          description: |
-            Ссылка на подразделение верхнего уровня
-            (для подразделения первого уровня не указывается!)
-    #        unitLevel:
-    #          $ref: "#/components/schemas/UnitLevel"
+      allOf:
+        - $ref: "#/components/schemas/UnitBaseReq"
+    UnitPut:
+      allOf:
+        - $ref: "#/components/schemas/UnitBase"
     UnitResponse:
       required:
         - unitId
         - title
       #        - unitLevel
       allOf:
-        - $ref: "#/components/schemas/UnitPut"
+        - $ref: "#/components/schemas/UnitBaseReq"
         - properties:
             unitId:
               type: integer
@@ -669,7 +755,7 @@ components:
         - unitId
         - title
       allOf:
-        - $ref: "#/components/schemas/UnitPut"
+        - $ref: "#/components/schemas/UnitBaseReq"
         - properties:
             unitId:
               type: integer
@@ -694,6 +780,8 @@ components:
     #        * `3` - Пункт управления
     #        * `4` - Подразделение
     EventBase:
+      allOf:
+        - $ref: "#/components/schemas/DurationOptional"
       properties:
         unitId:
           type: integer
@@ -704,6 +792,11 @@ components:
           type: string
           format: date
           description: "Дата начала события"
+        location:
+          $ref: "#/components/schemas/Location"
+        planned:
+          type: boolean
+          description: "Запланированность события"
         note:
           type: string
           description: "Примечание"
@@ -714,6 +807,10 @@ components:
         - dateFrom
         - eventTypeId
         - unitId
+        - location
+        - planned
+      allOf:
+        - $ref: "#/components/schemas/DurationRequired"
       properties:
         unitId:
           type: integer
@@ -724,6 +821,11 @@ components:
           type: string
           format: date
           description: "Дата начала события"
+        location:
+          $ref: "#/components/schemas/Location"
+        planned:
+          type: boolean
+          description: "Запланированность события"
         note:
           type: string
           description: "Примечание"
@@ -732,11 +834,9 @@ components:
     EventPut:
       allOf:
         - $ref: "#/components/schemas/EventBase"
-        - $ref: "#/components/schemas/DurationOptional"
     EventPost:
       allOf:
         - $ref: "#/components/schemas/EventBaseReq"
-        - $ref: "#/components/schemas/DurationRequired"
     EventResponse:
       required:
         - eventId
@@ -746,7 +846,6 @@ components:
               type: integer
               format: int64
         - $ref: "#/components/schemas/EventBaseReq"
-        - $ref: "#/components/schemas/DurationRequired"
     EventTypePut:
       properties:
         description:
@@ -920,7 +1019,34 @@ components:
         - admin
         - user
         - anonym
-    
+    Location:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Название нас. пункта"
+        type:
+          type: string
+          description: |
+            Тип локации
+            * `statical` - Стационар
+            * `district` - Район
+          enum:
+            - statical
+            - district
+    Time:
+      type: object
+      properties:
+        shift:
+          type: integer
+          format: int32
+          description: "Сдвиг оперативного времени относительно астрономического"
+        isAstronomical:
+          type: boolean
+          description: |
+            Относительно какого времени создаются события?
+            * `true` - Астрономическое
+            * `false` - Оперативное
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."
