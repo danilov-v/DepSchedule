@@ -39,7 +39,11 @@ describe("calendar.jsx", () => {
   describe("<Calendar />", () => {
     it("should render and match snapshot", () => {
       const component = shallow(
-        <Calendar range={data} unitGroups={unitsGroups} />
+        <Calendar
+          range={data}
+          operationalRange={data}
+          unitGroups={unitsGroups}
+        />
       );
 
       expect(component).toMatchSnapshot();

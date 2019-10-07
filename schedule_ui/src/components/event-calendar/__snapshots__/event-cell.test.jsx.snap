@@ -3,6 +3,5 @@
 exports[`event-cell-row.jsx <EventCell /> should render and match snapshot 1`] = `
 <div
   className="event-cell"
-  onClick={[Function]}
 />
 `;

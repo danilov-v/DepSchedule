@@ -17,4 +17,11 @@ export function EventCell({ onClick, hasEvent, marked }) {
 
 EventCell.propTypes = {
   onClick: PropTypes.func,
+  hasEvent: PropTypes.bool,
+  marked: PropTypes.bool,
+};
+
+EventCell.defaultProps = {
+  hasEvent: false,
+  marked: false,
 };

@@ -73,6 +73,12 @@ Calendar.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
+  operationalRange: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      days: PropTypes.arrayOf(PropTypes.object),
+    })
+  ),
 };
 
 Calendar.defaultProps = {

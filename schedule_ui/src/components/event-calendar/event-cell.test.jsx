@@ -10,17 +10,12 @@ describe("event-cell-row.jsx", () => {
       expect(component).toMatchSnapshot();
     });
 
-    it("should call onClick prop with eventOwnerId and eventDate as arguments", () => {
-      const date = new Date("2019-12-4");
-      const id = 1;
-
+    it("should call onClick prop", () => {
       const mockFunction = jest.fn();
-      const component = shallow(
-        <EventCell eventOwnerId={id} eventDate={date} onClick={mockFunction} />
-      );
+      const component = shallow(<EventCell onClick={mockFunction} />);
 
       component.find("div").simulate("click");
-      expect(mockFunction).toHaveBeenCalledWith(id, date);
+      expect(mockFunction).toHaveBeenCalled();
     });
   });
 });
