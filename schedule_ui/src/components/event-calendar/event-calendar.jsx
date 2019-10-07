@@ -9,7 +9,7 @@ import "./event-calendar.scss";
 
 const DEFAULT_FORM_DATA = {
   dateFrom: null,
-  duration: null,
+  duration: 0,
   eventId: null,
   eventTypeId: "",
   note: "",

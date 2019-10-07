@@ -30,4 +30,22 @@
       background: #f5c6cb52;
     }
   }
+
+  &-end-date {
+    color: #606060;
+    font-size: 0.95em;
+  }
+}
+
+.event-popup {
+  .duration-adjust-control {
+    display: inline-block;
+    transform: rotate(90deg);
+    cursor: pointer;
+  }
+
+  .sub-text {
+    color: #606060;
+    font-size: 0.9em;
+  }
 }
