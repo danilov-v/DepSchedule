@@ -78,7 +78,7 @@ export function EventPopup({
 
   const onChangeDuration = e => {
     const duration = e.target.value;
-    if (duration < 0) return;
+    if (duration < 0 || duration > 10000) return;
 
     const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
 
