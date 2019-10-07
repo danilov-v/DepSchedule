@@ -1,12 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  Row,
+  Col,
   Button,
   Form,
   FormGroup,
+  InputGroup,
+  InputGroupAddon,
   Label,
   Input,
-  CustomInput,
   Modal,
   ModalHeader,
   ModalBody,
@@ -74,8 +77,9 @@ export function EventPopup({
     }
   };
 
-  const onChangeDuration = duration => {
-    if (duration < 0 || duration > 365) return;
+  const onChangeDuration = e => {
+    const duration = e.target.value;
+    if (duration < 0) return;
 
     const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
 
@@ -152,27 +156,42 @@ export function EventPopup({
               ))}
             </Input>
           </FormGroup>
-          <Label for="unitParent">Дата начала События</Label>
+          <Label for="unitParent">Длительность События</Label>
           <FormGroup>
-            <div className="d-flex align-items-end">
-              <DatePicker
-                selected={dateFrom}
-                selectsStart
-                startDate={dateFrom}
-                endDate={dateTo}
-                onChange={handleChangeDate}
-                locale="ru"
-                dateFormat="dd/MM/yyyy"
-                className={classnames("form-control", {
-                  "is-invalid":
-                    errors["iventsIntersection"] ||
-                    (errors["dateFrom"] && errorsShown),
-                })}
-              />
-              <span className="ml-2 sub-text">
-                {dateTo && format(dateTo, "'длится по' yyyy-MM-dd")}
-              </span>
-            </div>
+            <Row>
+              <Col className="pr-0" md="6">
+                <DatePicker
+                  selected={dateFrom}
+                  selectsStart
+                  startDate={dateFrom}
+                  endDate={dateTo}
+                  onChange={handleChangeDate}
+                  locale="ru"
+                  dateFormat="dd/MM/yyyy"
+                  className={classnames("form-control", {
+                    "is-invalid":
+                      errors["iventsIntersection"] ||
+                      (errors["dateFrom"] && errorsShown),
+                  })}
+                />
+              </Col>
+              <Col className="pl-0" md="6">
+                <InputGroup>
+                  <Input
+                    type="number"
+                    name="duration"
+                    id="duration"
+                    value={duration}
+                    onChange={onChangeDuration}
+                    invalid={errorsShown && !!errors["iventsIntersection"]}
+                  />
+                  <InputGroupAddon addonType="append">дн.</InputGroupAddon>
+                </InputGroup>
+              </Col>
+            </Row>
+            <span className="sub-text">
+              {dateTo && format(dateTo, "'длится по' yyyy-MM-dd")}
+            </span>
             <FormFeedback
               className={classnames({
                 "d-block":
@@ -186,37 +205,6 @@ export function EventPopup({
                 errors["dateFrom"] ||
                 errors["dateTo"]}
             </FormFeedback>
-          </FormGroup>
-          <FormGroup>
-            <Label for="duration">Длительность События</Label>
-            <div
-              className={classnames("sub-text", {
-                "text-danger": errorsShown && !!errors["iventsIntersection"],
-              })}
-            >
-              {duration} (дней)
-              <span className="duration-adjust-control">
-                <FontAwesomeIcon
-                  onClick={e => onChangeDuration(+duration + 1)}
-                  className="ml-1 mr-1"
-                  icon="caret-left"
-                />
-                <FontAwesomeIcon
-                  onClick={e => onChangeDuration(+duration - 1)}
-                  icon="caret-right"
-                />
-              </span>
-            </div>
-            <CustomInput
-              type="range"
-              min="0"
-              max="100"
-              value={duration}
-              id="duration"
-              name="duration"
-              onChange={e => onChangeDuration(+e.target.value)}
-            />
-            <FormFeedback>{errors["iventsIntersection"]}</FormFeedback>
           </FormGroup>
           <FormGroup>
             <Label for="note">Описание События</Label>
