@@ -1,0 +1,16 @@
+.unit-popup {
+  &-flag-item {
+    height: 40px;
+  }
+
+  .dropdown {
+    label {
+      cursor: pointer;
+    }
+
+    &-menu {
+      overflow-y: scroll;
+      max-height: 400px;
+    }
+  }
+}

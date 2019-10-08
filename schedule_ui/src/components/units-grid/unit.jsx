@@ -34,7 +34,9 @@ export function Unit({
       )}
       data-unit-id={unitId}
     >
-      {title}
+      {/* <div>1</div> */}
+      <div>{title}</div>
+
       <Row style={manageStyle} className="unit-actions" noGutters>
         <Col xs={4} className={iconClass} onClick={addUnit}>
           <FontAwesomeIcon icon="plus" />

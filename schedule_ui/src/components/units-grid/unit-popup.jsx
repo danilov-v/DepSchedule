@@ -10,6 +10,10 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
 } from "reactstrap";
 import { get, isBoolean } from "lodash";
 import { createUnit, updateUnit } from "helpers/api";
@@ -18,11 +22,16 @@ import {
   SUCCESS_UNIT_NOTIFICATION_DATA_EDIT,
   FAILED_UNIT_NOTIFICATION_DATA,
 } from "constants/notifications";
+import { FLAGS_MAP, NO_FLAG } from "constants/flags";
 import { NotificationManager } from "helpers/notification-manager";
+
+import "./unit-popup.scss";
 
 const DEFAULT_FORM_DATA = {
   title: "",
   parentId: 0,
+  flag: NO_FLAG.url,
+  planned: false,
 };
 
 const validate = formData =>
@@ -32,18 +41,15 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
   const [isValid, setValidState] = useState(null);
   const [formData, setData] = useState(unit);
   const titleInputEl = useRef(null);
-
   const toggleModal = () => {
     onClose();
   };
-
   const onInputChange = event => {
     const newFormData = { ...formData, title: get(event, "target.value") };
 
     setValidState(validate(newFormData));
     setData(newFormData);
   };
-
   const onSelectChange = event =>
     setData({ ...formData, parentId: +get(event, "target.value") });
 
@@ -84,8 +90,26 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
     });
   };
 
+  const onFlagChange = flag => {
+    const { url } = flag;
+    const newFormData = { ...formData, flag: url };
+
+    setData(newFormData);
+  };
+
+  const onPlannedChange = event => {
+    const { checked } = event.target;
+
+    setData({ ...formData, planned: checked });
+  };
+
   return (
-    <Modal isOpen={true} toggle={toggleModal} onEnter={onEnter}>
+    <Modal
+      className="unit-popup"
+      isOpen={true}
+      toggle={toggleModal}
+      onEnter={onEnter}
+    >
       <Form className="p-3" onSubmit={onSubmit}>
         <ModalHeader toggle={toggleModal}>
           {isEdit ? "Редактирование" : "Создание"} Подразделения
@@ -120,6 +144,57 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
                 </option>
               ))}
             </Input>
+          </FormGroup>
+          <FormGroup>
+            <UncontrolledDropdown>
+              <DropdownToggle tag="label">
+                Флаг Подразделения
+                <div>
+                  {formData.flag ? (
+                    <img
+                      src={formData.flag}
+                      className="unit-popup-flag-item"
+                      alt="flag preview"
+                    />
+                  ) : (
+                    <span className="font-italic">{NO_FLAG.text}</span>
+                  )}
+                </div>
+              </DropdownToggle>
+
+              <DropdownMenu>
+                <DropdownItem
+                  value={NO_FLAG.id}
+                  onClick={() => onFlagChange(NO_FLAG)}
+                >
+                  <span>{NO_FLAG.text}</span>
+                </DropdownItem>
+                {FLAGS_MAP.map(flag => (
+                  <DropdownItem
+                    key={flag.id}
+                    value={flag.id}
+                    onClick={() => onFlagChange(flag)}
+                  >
+                    <img
+                      src={flag.url}
+                      className="unit-popup-flag-item"
+                      alt="flag drop-down-preview"
+                    />
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </FormGroup>
+          <FormGroup check>
+            <Label for="unitPlanned" check>
+              <Input
+                type="checkbox"
+                name="unitPlanned"
+                id="unitPlanned"
+                onChange={onPlannedChange}
+              />
+              Запланировано
+            </Label>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
