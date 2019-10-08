@@ -14,14 +14,7 @@ import java.sql.SQLException;
  */
 @Configuration
 @Profile("h2Server")
-public class H2TcpServerConfiguration {
-
-    public H2TcpServerConfiguration(@Value("${h2.tcp.port:9092}") String h2TcpPort) {
-        this.h2TcpPort = h2TcpPort;
-    }
-
-    // TCP port for remote connections, default 9092
-    private final String h2TcpPort;
+public class H2Configuration {
 
     /**
      * TCP connection to connect with SQL clients to the embedded h2 database.
@@ -30,7 +23,18 @@ public class H2TcpServerConfiguration {
      */
     @Bean
     @ConditionalOnExpression("${spring.h2.tcp.enabled:false}")
-    public Server h2TcpServer() throws SQLException {
+    public Server tcpServerStart(@Value("${spring.h2.tcp.port:9092}") String h2TcpPort) throws SQLException {
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", h2TcpPort).start();
+    }
+
+    /**
+     * Web console for the embedded h2 database.
+     *
+     * Go to http://localhost:8082 and connect to the database "jdbc:h2:mem:testdb", username "sa", password empty.
+     */
+    @Bean
+    @ConditionalOnExpression("${spring.h2.web.enabled:false}")
+    public Server webServerStart(@Value("${spring.h2.web.port:8082}") String h2WebPort) throws SQLException {
+        return Server.createWebServer("-web", "-webAllowOthers", "-webPort", h2WebPort).start();
     }
 }
