@@ -26,7 +26,7 @@ public class UnitService extends AbstractService<Unit, Long> {
     public Unit add(UnitPostDto unitPost) {
         Unit unit = modelMapper.map(unitPost, Unit.class);
         checkParent(unit);
-        return unitRepository.save(unit);
+        return save(unit);
     }
 
     public Unit update(Long unitId, UnitPutDto unitPut) {

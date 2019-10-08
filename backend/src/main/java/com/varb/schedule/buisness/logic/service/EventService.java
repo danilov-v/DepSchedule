@@ -37,7 +37,7 @@ public class EventService extends AbstractService<Event, Long> {
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
         checkBeforeSave(event, eventPostDto.getDuration());
-        return eventRepository.save(event);
+        return save(event);
     }
 
     public Event update(Long eventId, EventPutDto eventPut) {

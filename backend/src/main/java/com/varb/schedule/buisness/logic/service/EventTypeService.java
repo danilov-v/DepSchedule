@@ -1,6 +1,5 @@
 package com.varb.schedule.buisness.logic.service;
 
-import com.varb.schedule.buisness.logic.repository.EventTypeRepository;
 import com.varb.schedule.buisness.models.dto.EventTypePostDto;
 import com.varb.schedule.buisness.models.dto.EventTypePutDto;
 import com.varb.schedule.buisness.models.entity.EventType;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class EventTypeService extends AbstractService<EventType, Long> {
-    private final EventTypeRepository eventTypeRepository;
     private final ModelMapperCustomize modelMapper;
 
     public EventType update(Long typeId, EventTypePutDto eventTypePut) {
@@ -26,7 +24,7 @@ public class EventTypeService extends AbstractService<EventType, Long> {
 
     public EventType add(EventTypePostDto eventTypePost) {
         EventType eventType = modelMapper.map(eventTypePost, EventType.class);
-        return eventTypeRepository.save(eventType);
+        return save(eventType);
     }
 
     @Override

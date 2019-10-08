@@ -1,6 +1,5 @@
 package com.varb.schedule.buisness.logic.service;
 
-import com.varb.schedule.buisness.logic.repository.UserRepository;
 import com.varb.schedule.buisness.models.dto.UserPostDto;
 import com.varb.schedule.buisness.models.dto.UserPutDto;
 import com.varb.schedule.buisness.models.dto.UserResponseDto;
@@ -21,7 +20,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserService extends AbstractService<User, String> {
-    private final UserRepository userRepository;
     private final ModelMapperCustomize modelMapper;
     private final AuthenticationServiceImpl userAuthenticationService;
     private final UserDetailsServiceImpl userDetailsService;
@@ -31,7 +29,7 @@ public class UserService extends AbstractService<User, String> {
 
         String token = userAuthenticationService.register(userDetailsService.mapToUserDetails(user));
 
-        user = userRepository.save(user);
+        user = save(user);
 
         UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
         return userResponseDto.token(UUID.fromString(token));

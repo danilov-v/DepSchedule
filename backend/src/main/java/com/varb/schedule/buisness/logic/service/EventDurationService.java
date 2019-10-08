@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,19 +31,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
      */
     public EventDuration merge(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
-
-        EventDuration eventDuration;
-        Optional<EventDuration> optionalEventDuration = findByIdOptional(new EventDurationPK(unitId, eventTypeId));
-
-        if (optionalEventDuration.isPresent()) {
-            eventDuration = optionalEventDuration.get();
-            modelMapper.map(eventDurationPutDto, eventDuration);
-        } else {
-            eventDuration = modelMapper.map(eventDurationPutDto, EventDuration.class);
-            eventDurationRepository.save(eventDuration.setCompositePK(new EventDurationPK(unitId, eventTypeId)));
-        }
-
-        return eventDuration;
+        return merge(new EventDurationPK(unitId, eventTypeId), eventDurationPutDto);
     }
 
     public void delete(Long unitId, Long eventTypeId) {

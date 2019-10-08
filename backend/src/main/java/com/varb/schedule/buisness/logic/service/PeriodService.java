@@ -30,7 +30,7 @@ public class PeriodService extends AbstractService<Period, Long> {
         Period period = modelMapper.map(periodPost, Period.class);
         checkBeforeSave(period);
         //if everything is ok - there's no intersections and dates are correct, process it further
-        return periodRepository.save(period);
+        return save(period);
     }
 
     public Period update(Long periodId, PeriodPutDto periodPut) {
@@ -41,7 +41,7 @@ public class PeriodService extends AbstractService<Period, Long> {
     }
 
     private void checkBeforeUpdate(Period period) {
-        //validate updated merged period entity
+        //validate updated period entity
         validationService.checkDates(period.getStartDate(), period.getEndDate());
 
         List<Period> intersections = periodRepository.
