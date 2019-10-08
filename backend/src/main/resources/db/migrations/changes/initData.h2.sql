@@ -55,3 +55,5 @@ delete from USER where LOGIN = 'user' or LOGIN = 'superuser';
 INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES ('user', '$2a$10$N2X1UXEOMBS2Zc3pSH6RcOVMFe4jWy2q0nE8aFRfazAuxua0ztEZe', 'USER');
 INSERT INTO USER (LOGIN, PASSWORD, ROLE) VALUES ('superuser', '$2a$10$QeYXY5JCyeIkZLsVfcPsTOu6bwM/xr64gg8C.c2uVdNHldPlJZOQ.', 'SUPERUSER');
 
+--changeset gonchar:CALENDAR__DATA-7
+INSERT INTO CALENDAR (SHIFT, IS_ASTRONOMICAL, NAME) VALUES (0, true, 'Календарь 1')

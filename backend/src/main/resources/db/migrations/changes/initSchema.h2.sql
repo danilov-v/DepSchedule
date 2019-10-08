@@ -47,3 +47,8 @@ ALTER TABLE EVENT ADD CONSTRAINT EVENT__EVENT_TYPE__CONSTRAINT FOREIGN KEY (EVEN
 --changeset gonchar:UNIT__UNIT__CONSTRAINT-16
 ALTER TABLE UNIT ADD CONSTRAINT UNIT__UNIT__CONSTRAINT FOREIGN KEY (PARENT_ID) REFERENCES UNIT (UNIT_ID) ON UPDATE CASCADE ON DELETE CASCADE;
 
+--changeset gonchar:CALENDAR-17
+create table CALENDAR(NAME varchar(255) not null, SHIFT int default 0 not null, IS_ASTRONOMICAL boolean default true not null,
+constraint CALENDAR_PK
+    primary key (NAME));
+comment on column CALENDAR.shift is 'Сдвиг оперативного времени относительно астрономического';

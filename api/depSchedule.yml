@@ -637,40 +637,115 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
-  /time:
+  /calendar:
     get:
-      operationId: timeGet
-      summary: Получение информации об оперативном времени
+      operationId: calendarGet
+      summary: Получение информации о конкретном календаре
       tags:
-        - time
+        - calendar
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Time'
+                $ref: '#/components/schemas/CalendarBaseReq'
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      operationId: calendarPostAndSetActive
+      summary: Создать календарь (Календарь автоматически становится активным)
+      tags:
+        - calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarBaseReq'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarBaseReq'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
     put:
-      operationId: timnePut
-      summary: Редактировать информацию об оперативном времени
+      operationId: calendarPutAndSetActive
+      summary: Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)
       tags:
-        - time
+        - calendar
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Time'
+              $ref: '#/components/schemas/CalendarBase'
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Time'
+                $ref: '#/components/schemas/CalendarBaseReq'
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      operationId: calendarDelete
+      summary: Удалить информацию о календаре
+      tags:
+        - calendar
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /calendar/list:
+    get:
+      operationId: calendarNamesGet
+      summary: Получение информации о всех календарях
+      tags:
+        - calendar
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    $ref: "#/components/schemas/CalendarBaseReq"
+                  calendarList:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CalendarName"
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -785,25 +860,25 @@ components:
       allOf:
         - $ref: "#/components/schemas/DurationOptional"
         -  properties:
-            unitId:
-              type: integer
-              format: int64
-              description: "Id подразделения
+             unitId:
+               type: integer
+               format: int64
+               description: "Id подразделения
                 (может ссылаться только на подразделение 4-го уровня)"
-            dateFrom:
-              type: string
-              format: date
-              description: "Дата начала события"
-            location:
-              $ref: "#/components/schemas/Location"
-            planned:
-              type: boolean
-              description: "Запланированность события"
-            note:
-              type: string
-              description: "Примечание"
-            eventTypeId:
-              $ref: "#/components/schemas/EventTypeId"
+             dateFrom:
+               type: string
+               format: date
+               description: "Дата начала события"
+             location:
+               $ref: "#/components/schemas/Location"
+             planned:
+               type: boolean
+               description: "Запланированность события"
+             note:
+               type: string
+               description: "Примечание"
+             eventTypeId:
+               $ref: "#/components/schemas/EventTypeId"
     EventBaseReq:
       required:
         - dateFrom
@@ -814,25 +889,25 @@ components:
       allOf:
         - $ref: "#/components/schemas/DurationRequired"
         -  properties:
-            unitId:
-              type: integer
-              format: int64
-              description: "Id подразделения
+             unitId:
+               type: integer
+               format: int64
+               description: "Id подразделения
                 (может ссылаться только на подразделение 4-го уровня)"
-            dateFrom:
-              type: string
-              format: date
-              description: "Дата начала события"
-            location:
-              $ref: "#/components/schemas/Location"
-            planned:
-              type: boolean
-              description: "Запланированность события"
-            note:
-              type: string
-              description: "Примечание"
-            eventTypeId:
-              $ref: "#/components/schemas/EventTypeId"
+             dateFrom:
+               type: string
+               format: date
+               description: "Дата начала события"
+             location:
+               $ref: "#/components/schemas/Location"
+             planned:
+               type: boolean
+               description: "Запланированность события"
+             note:
+               type: string
+               description: "Примечание"
+             eventTypeId:
+               $ref: "#/components/schemas/EventTypeId"
     EventPut:
       allOf:
         - $ref: "#/components/schemas/EventBase"
@@ -886,6 +961,11 @@ components:
       format: int64
       description: |
         Ссылка на тип события
+    CalendarName:
+      type: string
+      minimum: 2
+      maximum: 100
+      description: "Наименование календаря"
     Duration:
       type: integer
       format: int32
@@ -1036,17 +1116,36 @@ components:
           enum:
             - statical
             - district
-    Time:
+    CalendarBase:
       type: object
       properties:
+        name:
+          $ref: "#/components/schemas/CalendarName"
         shift:
           type: integer
           format: int32
-          description: "Сдвиг оперативного времени относительно астрономического"
+          description: "Сдвиг оперативного времени относительно астрономического (изначально установлен '0')"
         isAstronomical:
           type: boolean
           description: |
-            Относительно какого времени создаются события?
+            Относительно какого времени создаются события? (изначально установлен 'true')
+            * `true` - Астрономическое
+            * `false` - Оперативное
+    CalendarBaseReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/CalendarName"
+        shift:
+          type: integer
+          format: int32
+          description: "Сдвиг оперативного времени относительно астрономического (изначально установлен '0')"
+        isAstronomical:
+          type: boolean
+          description: |
+            Относительно какого времени создаются события? (изначально установлен 'true')
             * `true` - Астрономическое
             * `false` - Оперативное
     ErrorMessage:
