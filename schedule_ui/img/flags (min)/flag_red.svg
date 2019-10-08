@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="180mm"
+   height="155mm"
+   version="1.1"
+   viewBox="0 0 180 155"
+   id="svg28"
+   sodipodi:docname="flag_red.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <defs
+     id="defs32" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2560"
+     inkscape:window-height="981"
+     id="namedview30"
+     showgrid="false"
+     inkscape:zoom="0.32521701"
+     inkscape:cx="403.00013"
+     inkscape:cy="362.83465"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg28" />
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(0.90738681,0,0,1,-0.09731413,-129.82909)"
+     id="g26">
+    <g
+       transform="translate(9.8392,1.1339)"
+       id="g24">
+      <path
+         d="M 187.51,141.46 Z"
+         id="path4"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000;stroke-width:0.30302px" />
+      <flowRoot
+         font-size="40px"
+         letter-spacing="0px"
+         word-spacing="0px"
+         style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000"
+         xml:space="preserve"
+         id="flowRoot12"><flowRegion
+           id="flowRegion8"><rect
+             x="1367.7"
+             y="38.765999"
+             width="127.28"
+             height="402.04001"
+             id="rect6" /></flowRegion><flowPara
+           id="flowPara10" /></flowRoot>      <flowRoot
+         font-size="40px"
+         letter-spacing="0px"
+         word-spacing="0px"
+         style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000"
+         xml:space="preserve"
+         id="flowRoot20"><flowRegion
+           id="flowRegion16"><rect
+             x="135.36"
+             y="252.92"
+             width="220.21001"
+             height="153.53999"
+             id="rect14" /></flowRegion><flowPara
+           id="flowPara18" /></flowRoot>      <path
+         d="m -4.9117,282.46 -0.11273,-146.26 1.985,8.0584 c 31.509,-14.591 57.653,-15.472 77.824,-1.0864 0.65921,4.2467 0.0934,8.9018 5.0292,11.723 23.475,-3.4997 29.835,-0.80874 29.739,4.2177 3.4371,11.622 6.0123,21.398 25.314,20.816 7.5441,-15.712 34.207,40.638 51.31,60.958 -4.173,-4.3119 -8.5268,-8.1265 -13.698,-9.6934 -10.386,-2.2781 -18.967,6.2782 -28.43,9.5395 -13.93,0.40527 -20.437,-4.6766 -28.972,-8.2588 -8.7892,-0.62757 -17.367,4.2314 -25.907,10.08 -16.694,0.50253 -29.004,-6.2147 -41.54,-12.561 -20.095,-4.0318 -36.062,5.2026 -52.806,11.943"
+         id="path22"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#e60000;stroke-width:5" />
+    </g>
+  </g>
+</svg>
