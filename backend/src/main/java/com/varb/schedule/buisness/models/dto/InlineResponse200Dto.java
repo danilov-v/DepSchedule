@@ -11,17 +11,17 @@ import java.util.Objects;
 /**
  * InlineResponse200Dto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:10:57.427864+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
 
 public class InlineResponse200Dto   {
   @JsonProperty("active")
-  private CalendarBaseReqDto active = null;
+  private CalendarExtendedReqDto active = null;
 
   @JsonProperty("calendarList")
   @Valid
   private List<String> calendarList = null;
 
-  public InlineResponse200Dto active(CalendarBaseReqDto active) {
+  public InlineResponse200Dto active(CalendarExtendedReqDto active) {
     this.active = active;
     return this;
   }
@@ -34,11 +34,11 @@ public class InlineResponse200Dto   {
 
   @Valid
 
-  public CalendarBaseReqDto getActive() {
+  public CalendarExtendedReqDto getActive() {
     return active;
   }
 
-  public void setActive(CalendarBaseReqDto active) {
+  public void setActive(CalendarExtendedReqDto active) {
     this.active = active;
   }
 

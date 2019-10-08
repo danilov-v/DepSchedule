@@ -2,7 +2,7 @@ package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.CalendarRepository;
 import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
-import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarExtendedReqDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class CalendarService extends AbstractService<Calendar, String> {
     private final ModelMapperCustomize modelMapper;
     private final CalendarRepository calendarRepository;
 
-    public Calendar add(CalendarBaseReqDto calendarDto) {
+    public Calendar add(CalendarExtendedReqDto calendarDto) {
         Calendar calendar = modelMapper.map(calendarDto, Calendar.class);
         return save(calendar);
     }
@@ -27,8 +27,9 @@ public class CalendarService extends AbstractService<Calendar, String> {
         Calendar calendar = findById(name);
 
         if (!calendar.getName().equals(calendarBaseDto.getName())) { //Если PrimaryKey изменился
-            delete(name); //Удаляем старую сущность
-            calendar = new Calendar(calendar); //Клонируем старую
+            Calendar oldCalendar = calendar;
+            calendar = new Calendar(oldCalendar); //Клонируем старую сущность
+            calendarRepository.delete(oldCalendar); //Удаляем старую сущность из бд
         }
 
         modelMapper.map(calendarBaseDto, calendar);

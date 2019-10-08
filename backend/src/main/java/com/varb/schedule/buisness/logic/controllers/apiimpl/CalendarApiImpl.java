@@ -5,7 +5,7 @@ import com.varb.schedule.buisness.logic.controllers.api.CalendarApi;
 import com.varb.schedule.buisness.logic.service.CalendarService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
 import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
-import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarExtendedReqDto;
 import com.varb.schedule.buisness.models.dto.InlineResponse200Dto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -41,7 +41,7 @@ public class CalendarApiImpl implements CalendarApi {
                 .map(Calendar::getName)
                 .collect(Collectors.toList());
 
-        CalendarBaseReqDto active = modelMapper.map(calendarList.get(0), CalendarBaseReqDto.class); //TODO Заглушка!! Переделать
+        CalendarExtendedReqDto active = modelMapper.map(calendarList.get(0), CalendarExtendedReqDto.class); //TODO Заглушка!! Переделать
 
         return ResponseEntity.ok(new InlineResponse200Dto()
                 .active(active)
@@ -50,13 +50,13 @@ public class CalendarApiImpl implements CalendarApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<CalendarBaseReqDto> calendarGet(String name) {
+    public ResponseEntity<CalendarExtendedReqDto> calendarGet(String name) {
         return ResponseEntity.ok(
-                modelMapper.map(calendarService.findById(name), CalendarBaseReqDto.class));
+                modelMapper.map(calendarService.findById(name), CalendarExtendedReqDto.class));
     }
 
     @Override
-    public ResponseEntity<CalendarBaseReqDto> calendarPostAndSetActive(@Valid CalendarBaseReqDto calendarBaseReqDto) {
+    public ResponseEntity<CalendarExtendedReqDto> calendarPostAndSetActive(@Valid CalendarExtendedReqDto calendarBaseReqDto) {
         throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 //        return ResponseEntity.ok(
 //                modelMapper.map(calendarService.add(calendarBaseReqDto), CalendarBaseReqDto.class));
@@ -64,8 +64,8 @@ public class CalendarApiImpl implements CalendarApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<CalendarBaseReqDto> calendarPutAndSetActive(@NotNull @Valid String name, @Valid CalendarBaseDto calendarBaseDto) {
+    public ResponseEntity<CalendarExtendedReqDto> calendarPutAndSetActive(@NotNull @Valid String name, @Valid CalendarBaseDto calendarBaseDto) {
         return ResponseEntity.ok(
-                modelMapper.map(calendarService.update(name, calendarBaseDto), CalendarBaseReqDto.class));
+                modelMapper.map(calendarService.update(name, calendarBaseDto), CalendarExtendedReqDto.class));
     }
 }

@@ -6,7 +6,7 @@
 package com.varb.schedule.buisness.logic.controllers.api;
 
 import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
-import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarExtendedReqDto;
 import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
 import com.varb.schedule.buisness.models.dto.InlineResponse200Dto;
 import io.swagger.annotations.*;
@@ -23,7 +23,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:10:57.427864+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "calendar", description = "the calendar API")
@@ -49,17 +49,17 @@ public interface CalendarApi {
     }
 
 
-    @ApiOperation(value = "Получение информации о конкретном календаре", nickname = "calendarGet", notes = "", response = CalendarBaseReqDto.class, authorizations = {
+    @ApiOperation(value = "Получение информации о конкретном календаре", nickname = "calendarGet", notes = "", response = CalendarExtendedReqDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CalendarBaseReqDto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarExtendedReqDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
     @RequestMapping(value = "/calendar",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<CalendarBaseReqDto> calendarGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name) {
+    default ResponseEntity<CalendarExtendedReqDto> calendarGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -97,18 +97,18 @@ public interface CalendarApi {
     }
 
 
-    @ApiOperation(value = "Создать календарь (Календарь автоматически становится активным)", nickname = "calendarPostAndSetActive", notes = "", response = CalendarBaseReqDto.class, authorizations = {
+    @ApiOperation(value = "Создать календарь (Календарь автоматически становится активным)", nickname = "calendarPostAndSetActive", notes = "", response = CalendarExtendedReqDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CalendarBaseReqDto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarExtendedReqDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
     @RequestMapping(value = "/calendar",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<CalendarBaseReqDto> calendarPostAndSetActive(@ApiParam(value = ""  )  @Valid @RequestBody CalendarBaseReqDto calendarBaseReqDto) {
+    default ResponseEntity<CalendarExtendedReqDto> calendarPostAndSetActive(@ApiParam(value = ""  )  @Valid @RequestBody CalendarExtendedReqDto calendarExtendedReqDto) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -122,18 +122,18 @@ public interface CalendarApi {
     }
 
 
-    @ApiOperation(value = "Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)", nickname = "calendarPutAndSetActive", notes = "", response = CalendarBaseReqDto.class, authorizations = {
+    @ApiOperation(value = "Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)", nickname = "calendarPutAndSetActive", notes = "", response = CalendarExtendedReqDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CalendarBaseReqDto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarExtendedReqDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
     @RequestMapping(value = "/calendar",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    default ResponseEntity<CalendarBaseReqDto> calendarPutAndSetActive(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name,@ApiParam(value = ""  )  @Valid @RequestBody CalendarBaseDto calendarBaseDto) {
+    default ResponseEntity<CalendarExtendedReqDto> calendarPutAndSetActive(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name,@ApiParam(value = ""  )  @Valid @RequestBody CalendarBaseDto calendarBaseDto) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

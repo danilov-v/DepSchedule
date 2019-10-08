@@ -7,11 +7,11 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * CalendarBaseReqDto
+ * CalendarExtendedReqDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:10:57.427864+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
 
-public class CalendarBaseReqDto   {
+public class CalendarExtendedReqDto   {
   @JsonProperty("name")
   private String name;
 
@@ -21,7 +21,7 @@ public class CalendarBaseReqDto   {
   @JsonProperty("isAstronomical")
   private Boolean isAstronomical;
 
-  public CalendarBaseReqDto name(String name) {
+  public CalendarExtendedReqDto name(String name) {
     this.name = name;
     return this;
   }
@@ -42,7 +42,7 @@ public class CalendarBaseReqDto   {
     this.name = name;
   }
 
-  public CalendarBaseReqDto shift(Integer shift) {
+  public CalendarExtendedReqDto shift(Integer shift) {
     this.shift = shift;
     return this;
   }
@@ -62,7 +62,7 @@ public class CalendarBaseReqDto   {
     this.shift = shift;
   }
 
-  public CalendarBaseReqDto isAstronomical(Boolean isAstronomical) {
+  public CalendarExtendedReqDto isAstronomical(Boolean isAstronomical) {
     this.isAstronomical = isAstronomical;
     return this;
   }
@@ -71,7 +71,8 @@ public class CalendarBaseReqDto   {
    * Относительно какого времени создаются события? (изначально установлен 'true') * `true` - Астрономическое * `false` - Оперативное 
    * @return isAstronomical
   */
-  @ApiModelProperty(value = "Относительно какого времени создаются события? (изначально установлен 'true') * `true` - Астрономическое * `false` - Оперативное ")
+  @ApiModelProperty(required = true, value = "Относительно какого времени создаются события? (изначально установлен 'true') * `true` - Астрономическое * `false` - Оперативное ")
+  @NotNull
 
 
   public Boolean getIsAstronomical() {
@@ -91,10 +92,10 @@ public class CalendarBaseReqDto   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CalendarBaseReqDto calendarBaseReq = (CalendarBaseReqDto) o;
-    return Objects.equals(this.name, calendarBaseReq.name) &&
-        Objects.equals(this.shift, calendarBaseReq.shift) &&
-        Objects.equals(this.isAstronomical, calendarBaseReq.isAstronomical);
+    CalendarExtendedReqDto calendarExtendedReq = (CalendarExtendedReqDto) o;
+    return Objects.equals(this.name, calendarExtendedReq.name) &&
+        Objects.equals(this.shift, calendarExtendedReq.shift) &&
+        Objects.equals(this.isAstronomical, calendarExtendedReq.isAstronomical);
   }
 
   @Override
@@ -105,7 +106,7 @@ public class CalendarBaseReqDto   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CalendarBaseReqDto {\n");
+    sb.append("class CalendarExtendedReqDto {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    shift: ").append(toIndentedString(shift)).append("\n");

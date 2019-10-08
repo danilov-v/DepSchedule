@@ -655,7 +655,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CalendarBaseReq'
+                $ref: '#/components/schemas/CalendarExtendedReq'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -669,14 +669,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarBaseReq'
+              $ref: '#/components/schemas/CalendarExtendedReq'
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CalendarBaseReq'
+                $ref: '#/components/schemas/CalendarExtendedReq'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -703,7 +703,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CalendarBaseReq'
+                $ref: '#/components/schemas/CalendarExtendedReq'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -741,7 +741,7 @@ paths:
                 type: object
                 properties:
                   active:
-                    $ref: "#/components/schemas/CalendarBaseReq"
+                    $ref: "#/components/schemas/CalendarExtendedReq"
                   calendarList:
                     type: array
                     items:
@@ -1125,16 +1125,11 @@ components:
           type: integer
           format: int32
           description: "Сдвиг оперативного времени относительно астрономического (изначально установлен '0')"
-        isAstronomical:
-          type: boolean
-          description: |
-            Относительно какого времени создаются события? (изначально установлен 'true')
-            * `true` - Астрономическое
-            * `false` - Оперативное
-    CalendarBaseReq:
+    CalendarExtendedReq:
       type: object
       required:
         - name
+        - isAstronomical
       properties:
         name:
           $ref: "#/components/schemas/CalendarName"

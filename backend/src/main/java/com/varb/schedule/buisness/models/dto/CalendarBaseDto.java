@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * CalendarBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:10:57.427864+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
 
 public class CalendarBaseDto   {
   @JsonProperty("name")
@@ -16,9 +16,6 @@ public class CalendarBaseDto   {
 
   @JsonProperty("shift")
   private Integer shift;
-
-  @JsonProperty("isAstronomical")
-  private Boolean isAstronomical;
 
   public CalendarBaseDto name(String name) {
     this.name = name;
@@ -60,26 +57,6 @@ public class CalendarBaseDto   {
     this.shift = shift;
   }
 
-  public CalendarBaseDto isAstronomical(Boolean isAstronomical) {
-    this.isAstronomical = isAstronomical;
-    return this;
-  }
-
-  /**
-   * Относительно какого времени создаются события? (изначально установлен 'true') * `true` - Астрономическое * `false` - Оперативное 
-   * @return isAstronomical
-  */
-  @ApiModelProperty(value = "Относительно какого времени создаются события? (изначально установлен 'true') * `true` - Астрономическое * `false` - Оперативное ")
-
-
-  public Boolean getIsAstronomical() {
-    return isAstronomical;
-  }
-
-  public void setIsAstronomical(Boolean isAstronomical) {
-    this.isAstronomical = isAstronomical;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -91,13 +68,12 @@ public class CalendarBaseDto   {
     }
     CalendarBaseDto calendarBase = (CalendarBaseDto) o;
     return Objects.equals(this.name, calendarBase.name) &&
-        Objects.equals(this.shift, calendarBase.shift) &&
-        Objects.equals(this.isAstronomical, calendarBase.isAstronomical);
+        Objects.equals(this.shift, calendarBase.shift);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, shift, isAstronomical);
+    return Objects.hash(name, shift);
   }
 
   @Override
@@ -107,7 +83,6 @@ public class CalendarBaseDto   {
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    shift: ").append(toIndentedString(shift)).append("\n");
-    sb.append("    isAstronomical: ").append(toIndentedString(isAstronomical)).append("\n");
     sb.append("}");
     return sb.toString();
   }
