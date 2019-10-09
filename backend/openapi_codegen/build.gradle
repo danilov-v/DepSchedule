@@ -45,7 +45,7 @@ tasks.register("clean") {
 group = "openapi tools"
     description = 'clean generated files'
     delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/logic/controllers/api"
-    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/models"
+    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/models/dto"
 }
 
 generateCode.group = "openapi tools"
