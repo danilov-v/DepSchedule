@@ -9,6 +9,7 @@ import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,63 +37,50 @@ public class EventService extends AbstractService<Event, Long> {
 
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
-        checkBeforeSave(event, eventPostDto.getDuration());
+        checkBeforeSave(event);
+        updateEventDuration(event);
         return save(event);
     }
 
     public Event update(Long eventId, EventPutDto eventPut) {
         Event event = findById(eventId);
         modelMapper.map(eventPut, event);
-        checkBeforeSave(event, eventPut.getDuration());
+        checkBeforeSave(event);
+        updateEventDuration(event);
         return event;
     }
 
     public List<Event> getAllBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo) {
+        validationService.checkDates(dateFrom, dateTo);
         return eventRepository.findBetweenDates(dateFrom, dateTo);
     }
 
-    /**
-     * Проверка события перед сохранением
-     * @param duration Длительность события переданная в DTO
-     * <br>Если событие создавалось с помощью метода POST, {@code duration} != null
-     * <br>Если событие изменялось с помощью метода PUT, {@code duration} может быть null
-     */
-    private void checkBeforeSave(Event event, @Nullable Integer duration) {
+    private void checkBeforeSave(Event event) {
         Long unitId = event.getUnitId();
         Long eventTypeId = event.getEventTypeId();
-
         eventTypeService.checkExists(eventTypeId);
         unitService.checkExists(unitId);
 
-//        if (unitService.findById(unitId).getUnitLevel() < UnitLevelEnum.SUBUNIT.getValue())
-//            throw new ServiceException("Событие может быть добавлено только к " +
-//                    "unit(UnitLevel=" + UnitLevelEnum.SUBUNIT.getValue() + ")");
+        assert event.getDuration() > 0;
+        LocalDate dateTo = event.getDateFrom().plusDays(event.getDuration());
 
-
-        if (duration != null) {
-            assert duration > 0;
-
-            eventDurationService.merge(
-                    unitId, eventTypeId,
-                    new EventDurationPutDto().duration(duration));
-
-            event.setDateTo(
-                    event.getDateFrom()
-                            .plusDays(duration));
-        }
-
-        validationService.checkDates(event.getDateFrom(), event.getDateTo());
-        checkIntersection(event);
+        checkIntersection(event, dateTo);
     }
 
-    private void checkIntersection(Event event) {
+    private void updateEventDuration(Event event) {
+        eventDurationService.merge(
+                event.getUnitId(), event.getEventTypeId(),
+                new EventDurationPutDto().duration(event.getDuration()));
+    }
+
+    private void checkIntersection(Event event, LocalDate dateTo) {
         List<Event> eventList = eventRepository.findIntersection(
-                event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
+                event.getDateFrom(), dateTo, event.getUnitId(), event.getEventId());
 
         if (!eventList.isEmpty()) {
             String ids = eventList.stream().map(e -> e.getEventId().toString()).collect(Collectors.joining(","));
             throw new ServiceException(
-                    "Event you want to add has intersections with other periods with ids: [" + ids + "])",
+                    "Event you want to add has intersections with other events with ids: [" + ids + "])",
                     DATES_INTERSECTION_MESSAGE,
                     INTERSECTION_OF_EVENTS);
         }

@@ -9,15 +9,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    //@Query("select e from Event e where e.dateFrom >= :dateFrom and (:dateTo is null or e.dateTo <= :dateTo)")
     @Query("select e from Event e " +
             "where " +
-            "   :dateFrom <= e.dateTo and (:dateTo is null or :dateTo >= e.dateFrom)")
+            "   :dateFrom <= dateadd(day, e.duration, e.dateFrom) and (:dateTo is null or :dateTo >= e.dateFrom)")
     List<Event> findBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo);
 
     @Query("select e from Event e " +
             "where " +
-            "   :dateFrom <= e.dateTo and :dateTo >= e.dateFrom " +
+            "   :dateFrom <= dateadd(day, e.duration, e.dateFrom) and :dateTo >= e.dateFrom " +
             "   and  e.unitId = :unitId " +
             "   and (:eventId is null or :eventId <> e.eventId)")
     List<Event> findIntersection(LocalDate dateFrom, LocalDate dateTo, Long unitId, @Nullable Long eventId);

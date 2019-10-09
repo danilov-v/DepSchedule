@@ -1,2 +1,10 @@
 --liquibase formatted sql  logicalFilePath:changesAfterInitData.h2.sql
 
+--changeset eldar:ADD DURATION COLUMN
+ALTER TABLE EVENT ADD DURATION INT NOT NULL;
+
+--changeset eldar:SET DURATION COLUMN
+UPDATE EVENT SET DURATION = DATEDIFF(DAY, DATE_FROM, DATE_TO);
+
+--changeset eldar:DROP DATE_TO COLUMN
+ALTER TABLE EVENT DROP COLUMN DATE_TO;

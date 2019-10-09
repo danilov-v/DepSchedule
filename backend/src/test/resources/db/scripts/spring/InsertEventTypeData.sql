@@ -1,5 +1,3 @@
 INSERT INTO PUBLIC.EVENT_TYPE (COLOR, DESCRIPTION)
-values ('red', 'mobilization');
-
-INSERT INTO PUBLIC.EVENT_TYPE (COLOR, DESCRIPTION)
-values ('green', 'deployment');
+values  ('red', 'mobilization'),
+        ('green', 'deployment');
