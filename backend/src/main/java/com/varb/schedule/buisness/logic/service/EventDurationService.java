@@ -24,7 +24,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
     private final EventTypeService eventTypeService;
 
     /**
-     * Изменяем длительность поумолчанию для событий в подразделении {@code unitId} и типом {@code eventTypeId}
+     * Изменяем длительность по умолчанию для событий в подразделении {@code unitId} и с типом {@code eventTypeId}
      *
      * @param unitId Id подразделения
      * @param eventTypeId Id типа события

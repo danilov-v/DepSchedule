@@ -7,7 +7,6 @@ import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.buisness.models.entity.Event;
-import com.varb.schedule.buisness.models.entity.Period;
 import com.varb.schedule.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -151,14 +149,12 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         List<Event> afterAdd = eventRepository.findAll();
         assertTrue(afterAdd.size() == 1);
         Event event = afterAdd.get(0);
-        //compose dateTo
-        LocalDate dateTo = dateFrom.plusDays(duration);
-        assertAll("Assertion of just added period",
+        assertAll("Assertion of just added event",
                 () -> assertNotNull(event.getEventId()),
                 () -> assertEquals(unitId, event.getUnitId()),
                 () -> assertEquals(eventTypeId, event.getEventTypeId()),
                 () -> assertEquals(dateFrom, event.getDateFrom()),
-                () -> assertEquals(dateTo, event.getDateTo()),
+                () -> assertEquals(duration, event.getDuration()),
                 () -> assertEquals(note, event.getNote())
         );
     }
@@ -179,15 +175,14 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         Event event = initializedData.get(0);
         final Long eventId = event.getEventId();
         final LocalDate dateFrom = event.getDateFrom();
-        final LocalDate dateTo = event.getDateTo();
         final Long eventTypeId = event.getEventTypeId();
         final Long unitId = event.getUnitId();
-        //calculate duration
-        int duration = Math.toIntExact(ChronoUnit.DAYS.between(dateFrom, dateTo)) - 1;
 
         String newNote = "Changed note";
+        final Integer newDuration = 10;
         EventPutDto putDto = new EventPutDto();
         putDto.setNote(newNote);
+        putDto.setDuration(newDuration);
 
         mockMvc.perform(put(baseUrl + "/" + eventId)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -199,18 +194,18 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.unitId").value(unitId))
                 .andExpect(jsonPath("$.eventTypeId").value(eventTypeId))
                 .andExpect(jsonPath("$.dateFrom").value(dateFrom.toString()))
-                //.andExpect(jsonPath("$.duration").value(duration))
+                .andExpect(jsonPath("$.duration").value(newDuration))
                 .andExpect(jsonPath("$.note").value(newNote));
 
         //second level validation
         assertAll("Assertion of just updated event",
                 () -> assertTrue(eventRepository.findById(eventId).isPresent()),
-                () -> assertTrue(event == eventRepository.findById(eventId).get()),
+                () -> assertSame(event, eventRepository.findById(eventId).get()),
                 () -> assertEquals(eventId, event.getEventId()),
                 () -> assertEquals(unitId, event.getUnitId()),
                 () -> assertEquals(eventTypeId, event.getEventTypeId()),
                 () -> assertEquals(dateFrom, event.getDateFrom()),
-                () -> assertEquals(dateTo, event.getDateTo()),
+                () -> assertEquals(newDuration, event.getDuration()),
                 () -> assertEquals(newNote, event.getNote())
         );
     }

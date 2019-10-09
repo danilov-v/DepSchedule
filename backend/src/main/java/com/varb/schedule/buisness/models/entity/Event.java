@@ -25,7 +25,7 @@ public class Event {
     private LocalDate dateFrom;
 
     @Column(nullable = false)
-    private LocalDate dateTo;
+    private Integer duration;
 
     @Nullable
     private String note;

@@ -31,7 +31,7 @@ const DEFAULT_FORM_DATA = {
   title: "",
   parentId: 0,
   flag: NO_FLAG.url,
-  planned: false,
+  exists: false,
 };
 
 const validate = formData =>
@@ -100,7 +100,7 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
   const onPlannedChange = event => {
     const { checked } = event.target;
 
-    setData({ ...formData, planned: checked });
+    setData({ ...formData, exists: checked });
   };
 
   return (
