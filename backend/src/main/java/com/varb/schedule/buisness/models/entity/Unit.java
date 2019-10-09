@@ -27,6 +27,12 @@ public class Unit {
     @Column(nullable = false)
     private String title;
 
+    @Nullable
+    private String flag;
+
+    @Column(nullable = false)
+    private Boolean exists;
+
 //    @Nullable
 //    private Integer unitLevel;
 

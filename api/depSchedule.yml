@@ -768,7 +768,6 @@ components:
     UnitBaseReq:
       required:
         - title
-        - flag
       properties:
         title:
           type: string

@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * UnitBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
 
 public class UnitBaseDto   {
   @JsonProperty("title")
@@ -19,7 +19,7 @@ public class UnitBaseDto   {
   private String flag;
 
   @JsonProperty("exists")
-  private Boolean exists;
+  private Boolean exists = true;
 
   @JsonProperty("parentId")
   private Long parentId;

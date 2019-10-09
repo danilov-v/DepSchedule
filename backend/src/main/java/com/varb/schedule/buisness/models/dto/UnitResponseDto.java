@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * UnitResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
 
 public class UnitResponseDto   {
   @JsonProperty("title")
@@ -20,7 +20,7 @@ public class UnitResponseDto   {
   private String flag;
 
   @JsonProperty("exists")
-  private Boolean exists;
+  private Boolean exists = true;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -58,8 +58,7 @@ public class UnitResponseDto   {
    * Путь к изображению флага
    * @return flag
   */
-  @ApiModelProperty(required = true, value = "Путь к изображению флага")
-  @NotNull
+  @ApiModelProperty(value = "Путь к изображению флага")
 
 
   public String getFlag() {
@@ -79,8 +78,7 @@ public class UnitResponseDto   {
    * Планируемое подразделение? (true/false)
    * @return exists
   */
-  @ApiModelProperty(required = true, value = "Планируемое подразделение? (true/false)")
-  @NotNull
+  @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
 
 
   public Boolean getExists() {
