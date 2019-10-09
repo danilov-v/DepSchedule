@@ -769,7 +769,6 @@ components:
       required:
         - title
         - flag
-        - exists
       properties:
         title:
           type: string
@@ -780,6 +779,7 @@ components:
           description: "Путь к изображению флага"
         exists:
           type: boolean
+          default: true
           description: "Планируемое подразделение? (true/false)"
         parentId:
           type: integer
@@ -800,6 +800,7 @@ components:
           description: "Путь к изображению флага"
         exists:
           type: boolean
+          default: true
           description: "Планируемое подразделение? (true/false)"
         parentId:
           type: integer
