@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * CalendarBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
 
 public class CalendarBaseDto   {
   @JsonProperty("name")
@@ -16,6 +16,9 @@ public class CalendarBaseDto   {
 
   @JsonProperty("shift")
   private Integer shift;
+
+  @JsonProperty("isAstronomical")
+  private Boolean isAstronomical;
 
   public CalendarBaseDto name(String name) {
     this.name = name;
@@ -43,10 +46,10 @@ public class CalendarBaseDto   {
   }
 
   /**
-   * Сдвиг оперативного времени относительно астрономического (изначально установлен '0')
+   * Сдвиг оперативного времени относительно астрономического
    * @return shift
   */
-  @ApiModelProperty(value = "Сдвиг оперативного времени относительно астрономического (изначально установлен '0')")
+  @ApiModelProperty(value = "Сдвиг оперативного времени относительно астрономического")
 
 
   public Integer getShift() {
@@ -55,6 +58,26 @@ public class CalendarBaseDto   {
 
   public void setShift(Integer shift) {
     this.shift = shift;
+  }
+
+  public CalendarBaseDto isAstronomical(Boolean isAstronomical) {
+    this.isAstronomical = isAstronomical;
+    return this;
+  }
+
+  /**
+   * Относительно какого времени создаются события? * `true` - Астрономическое * `false` - Оперативное 
+   * @return isAstronomical
+  */
+  @ApiModelProperty(value = "Относительно какого времени создаются события? * `true` - Астрономическое * `false` - Оперативное ")
+
+
+  public Boolean getIsAstronomical() {
+    return isAstronomical;
+  }
+
+  public void setIsAstronomical(Boolean isAstronomical) {
+    this.isAstronomical = isAstronomical;
   }
 
 
@@ -68,12 +91,13 @@ public class CalendarBaseDto   {
     }
     CalendarBaseDto calendarBase = (CalendarBaseDto) o;
     return Objects.equals(this.name, calendarBase.name) &&
-        Objects.equals(this.shift, calendarBase.shift);
+        Objects.equals(this.shift, calendarBase.shift) &&
+        Objects.equals(this.isAstronomical, calendarBase.isAstronomical);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, shift);
+    return Objects.hash(name, shift, isAstronomical);
   }
 
   @Override
@@ -83,6 +107,7 @@ public class CalendarBaseDto   {
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    shift: ").append(toIndentedString(shift)).append("\n");
+    sb.append("    isAstronomical: ").append(toIndentedString(isAstronomical)).append("\n");
     sb.append("}");
     return sb.toString();
   }

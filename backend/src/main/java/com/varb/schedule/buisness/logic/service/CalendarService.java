@@ -2,7 +2,7 @@ package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.CalendarRepository;
 import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
-import com.varb.schedule.buisness.models.dto.CalendarExtendedReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -14,30 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class CalendarService extends AbstractService<Calendar, String> {
+public class CalendarService extends AbstractService<Calendar, Long> {
     private final ModelMapperCustomize modelMapper;
     private final CalendarRepository calendarRepository;
 
-    public Calendar add(CalendarExtendedReqDto calendarDto) {
+    public Calendar add(CalendarBaseReqDto calendarDto) {
         Calendar calendar = modelMapper.map(calendarDto, Calendar.class);
         return save(calendar);
     }
 
-    public Calendar update(String name, CalendarBaseDto calendarBaseDto) {
-        Calendar calendar = findById(name);
-
-        if (!calendar.getName().equals(calendarBaseDto.getName())) { //Если PrimaryKey изменился
-            Calendar oldCalendar = calendar;
-            calendar = new Calendar(oldCalendar); //Клонируем старую сущность
-            calendarRepository.delete(oldCalendar); //Удаляем старую сущность из бд
-        }
-
-        modelMapper.map(calendarBaseDto, calendar);
-        return save(calendar); //Сохраняем новую сущность с новым PrimaryKey
+    public Calendar update(long calendarId, CalendarBaseDto calendarDto) {
+        Calendar calendar = findById(calendarId);
+        modelMapper.map(calendarDto, calendar);
+        return calendar;
     }
 
     @Override
-    protected String notFindMessage(String name) {
-        return "Не существует календаря (name=" + name + ")";
+    protected String notFindMessage(Long calendarId) {
+        return "Не существует календаря (calendarId=" + calendarId + ")";
     }
 }

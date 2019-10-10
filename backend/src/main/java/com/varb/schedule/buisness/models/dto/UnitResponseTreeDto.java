@@ -13,7 +13,7 @@ import java.util.*;
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")

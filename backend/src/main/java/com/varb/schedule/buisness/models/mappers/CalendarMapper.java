@@ -1,6 +1,8 @@
 package com.varb.schedule.buisness.models.mappers;
 
-import com.varb.schedule.buisness.models.dto.CalendarExtendedReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
+import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,13 +19,19 @@ public class CalendarMapper {
     @PostConstruct
     void init() {
 
-        modelMapper.addMappings(new PropertyMap<Calendar, CalendarExtendedReqDto>() {
+        modelMapper.addMappings(new PropertyMap<Calendar, CalendarResponseDto>() {
             protected void configure() {
                 map().setIsAstronomical(source.isAstronomical());
             }
         });
 
-        modelMapper.addMappings(new PropertyMap<CalendarExtendedReqDto, Calendar>() {
+        modelMapper.addMappings(new PropertyMap<CalendarBaseReqDto, Calendar>() {
+            protected void configure() {
+                map().setAstronomical(source.getIsAstronomical());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<CalendarBaseDto, Calendar>() {
             protected void configure() {
                 map().setAstronomical(source.getIsAstronomical());
             }

@@ -3,9 +3,7 @@ package com.varb.schedule.buisness.models.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Accessors(chain = true)
@@ -15,6 +13,9 @@ public class Calendar {
     public Calendar() {
     }
 
+    /**
+     * Copy constructor
+     */
     public Calendar(Calendar that){
         name = that.getName();
         shift = that.getShift();
@@ -22,6 +23,10 @@ public class Calendar {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long calendarId;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

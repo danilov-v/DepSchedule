@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @Profile("security")
@@ -46,7 +45,7 @@ public class UserService extends AbstractService<User, String> {
         userAuthenticationService.logout(login);
     }
 
-    public User update(String login, @Valid UserPutDto userPut) {
+    public User update(String login, UserPutDto userPut) {
         User user = findById(login);
         modelMapper.map(userPut, user);
         return user;

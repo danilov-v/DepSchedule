@@ -20,8 +20,8 @@ tags:
     description: 'Действия с пользователями системы'
   - name: period
     description: "Информация о периодах (High Level Section)"
-  - name: time
-    description: "Информация об оперативном времени"
+  - name: calendar
+    description: "Информация о календарях(Наименование, сдвиг оперативного времени) "
 paths:
   /event:
     get:
@@ -637,61 +637,42 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
-  /calendar:
+  /calendar/{calendarId}:
     get:
-      operationId: calendarGet
+      operationId: calendarGetById
       summary: Получение информации о конкретном календаре
       tags:
         - calendar
       parameters:
-        - name: name
-          in: query
+        - name: calendarId
+          in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CalendarExtendedReq'
-        400:
-          $ref: "#/components/responses/BadRequest"
-        500:
-          $ref: "#/components/responses/InternalServerError"
-    post:
-      operationId: calendarPostAndSetActive
-      summary: Создать календарь (Календарь автоматически становится активным)
-      tags:
-        - calendar
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CalendarExtendedReq'
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CalendarExtendedReq'
+                $ref: '#/components/schemas/CalendarResponse'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
     put:
-      operationId: calendarPutAndSetActive
+      operationId: calendarPut
       summary: Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)
       tags:
         - calendar
       parameters:
-        - name: name
-          in: query
+        - name: calendarId
+          in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
@@ -703,7 +684,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CalendarExtendedReq'
+                $ref: '#/components/schemas/CalendarResponse'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -714,11 +695,12 @@ paths:
       tags:
         - calendar
       parameters:
-        - name: name
-          in: query
+        - name: calendarId
+          in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         200:
           description: successful operation
@@ -726,10 +708,10 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
-  /calendar/list:
+  /calendar:
     get:
-      operationId: calendarNamesGet
-      summary: Получение информации о всех календарях
+      operationId: calendarGet
+      summary: Получение информации о календарях
       tags:
         - calendar
       responses:
@@ -738,14 +720,30 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  active:
-                    $ref: "#/components/schemas/CalendarExtendedReq"
-                  calendarList:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/CalendarName"
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      operationId: calendarPost
+      summary: Создать календарь (Календарь автоматически становится активным)
+      tags:
+        - calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarBaseReq'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -857,31 +855,31 @@ components:
     #        * `3` - Пункт управления
     #        * `4` - Подразделение
     EventBase:
-        properties:
-             unitId:
-               type: integer
-               format: int64
-               description: "Id подразделения
+      properties:
+        unitId:
+          type: integer
+          format: int64
+          description: "Id подразделения
                 (может ссылаться только на подразделение 4-го уровня)"
-             dateFrom:
-               type: string
-               format: date
-               description: "Дата начала события"
-             dateTo:
-               type: string
-               format: date
-               description: "Дата конца события"
-             location:
-               $ref: "#/components/schemas/Location"
-             planned:
-               type: boolean
-               default: false
-               description: "Запланированность события"
-             note:
-               type: string
-               description: "Примечание"
-             eventTypeId:
-               $ref: "#/components/schemas/EventTypeId"
+        dateFrom:
+          type: string
+          format: date
+          description: "Дата начала события"
+        dateTo:
+          type: string
+          format: date
+          description: "Дата конца события"
+        location:
+          $ref: "#/components/schemas/Location"
+        planned:
+          type: boolean
+          default: false
+          description: "Запланированность события"
+        note:
+          type: string
+          description: "Примечание"
+        eventTypeId:
+          $ref: "#/components/schemas/EventTypeId"
     EventBaseReq:
       required:
         - dateFrom
@@ -890,30 +888,30 @@ components:
         - location
         - planned
       properties:
-             unitId:
-               type: integer
-               format: int64
-               description: "Id подразделения
+        unitId:
+          type: integer
+          format: int64
+          description: "Id подразделения
                 (может ссылаться только на подразделение 4-го уровня)"
-             dateFrom:
-               type: string
-               format: date
-               description: "Дата начала события"
-             dateTo:
-                type: string
-                format: date
-                description: "Дата конца события"
-             location:
-               $ref: "#/components/schemas/Location"
-             planned:
-               type: boolean
-               default: false
-               description: "Запланированность события"
-             note:
-               type: string
-               description: "Примечание"
-             eventTypeId:
-               $ref: "#/components/schemas/EventTypeId"
+        dateFrom:
+          type: string
+          format: date
+          description: "Дата начала события"
+        dateTo:
+          type: string
+          format: date
+          description: "Дата конца события"
+        location:
+          $ref: "#/components/schemas/Location"
+        planned:
+          type: boolean
+          default: false
+          description: "Запланированность события"
+        note:
+          type: string
+          description: "Примечание"
+        eventTypeId:
+          $ref: "#/components/schemas/EventTypeId"
     EventPut:
       allOf:
         - $ref: "#/components/schemas/EventBase"
@@ -1130,11 +1128,18 @@ components:
         shift:
           type: integer
           format: int32
-          description: "Сдвиг оперативного времени относительно астрономического (изначально установлен '0')"
-    CalendarExtendedReq:
+          description: "Сдвиг оперативного времени относительно астрономического"
+        isAstronomical:
+          type: boolean
+          description: |
+            Относительно какого времени создаются события?
+            * `true` - Астрономическое
+            * `false` - Оперативное
+    CalendarBaseReq:
       type: object
       required:
         - name
+        - shift
         - isAstronomical
       properties:
         name:
@@ -1142,13 +1147,22 @@ components:
         shift:
           type: integer
           format: int32
-          description: "Сдвиг оперативного времени относительно астрономического (изначально установлен '0')"
+          description: "Сдвиг оперативного времени относительно астрономического"
         isAstronomical:
           type: boolean
           description: |
-            Относительно какого времени создаются события? (изначально установлен 'true')
+            Относительно какого времени создаются события?
             * `true` - Астрономическое
             * `false` - Оперативное
+    CalendarResponse:
+      required:
+        - calendarId
+      allOf:
+        - properties:
+            calendarId:
+              type: integer
+              format: int64
+        - $ref: "#/components/schemas/CalendarBaseReq"
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."
@@ -1170,4 +1184,4 @@ components:
     JWT:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: UUID

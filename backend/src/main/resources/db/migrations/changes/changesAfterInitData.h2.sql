@@ -32,3 +32,15 @@ ALTER TABLE EVENT DROP COLUMN DURATION;
 
 --changeset gonchar:RENAME_COLUMN_EXISTS_TO_ACTIVE
 alter table UNIT alter column "EXISTS" rename to PLANNED;
+
+--changeset gonchar:CHANGE_PRIMARY_KEY__add_CALENDAR_ID
+alter table CALENDAR
+    add CALENDAR_ID BIGINT auto_increment;
+
+--changeset gonchar:CHANGE_PRIMARY_KEY__DROP_PRIMARY_KEY
+alter table CALENDAR drop primary key;
+
+--changeset gonchar:CHANGE_PRIMARY_KEY__ADD_CONSTRAINT_CALENDAR_pk
+alter table CALENDAR
+    add constraint CALENDAR_pk
+        primary key (CALENDAR_ID);

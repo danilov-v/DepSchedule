@@ -6,9 +6,9 @@
 package com.varb.schedule.buisness.logic.controllers.api;
 
 import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
-import com.varb.schedule.buisness.models.dto.CalendarExtendedReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
 import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
-import com.varb.schedule.buisness.models.dto.InlineResponse200Dto;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,20 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "calendar", description = "the calendar API")
@@ -46,30 +40,30 @@ public interface CalendarApi {
         @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
-    @RequestMapping(value = "/calendar",
+    @RequestMapping(value = "/calendar/{calendarId}",
         produces = { "application/json" }, 
         method = RequestMethod.DELETE)
-    default ResponseEntity<Void> calendarDelete(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name) {
+    default ResponseEntity<Void> calendarDelete(@ApiParam(value = "",required=true) @PathVariable("calendarId") Long calendarId) {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
 
-    @ApiOperation(value = "Получение информации о конкретном календаре", nickname = "calendarGet", notes = "", response = CalendarExtendedReqDto.class, authorizations = {
+    @ApiOperation(value = "Получение информации о календарях", nickname = "calendarGet", notes = "", response = CalendarResponseDto.class, responseContainer = "List", authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CalendarExtendedReqDto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarResponseDto.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
     @RequestMapping(value = "/calendar",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<CalendarExtendedReqDto> calendarGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name) {
+    default ResponseEntity<List<CalendarResponseDto>> calendarGet() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"shift\" : 0,  \"name\" : \"name\",  \"isAstronomical\" : true}");
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
                     break;
                 }
             }
@@ -79,21 +73,21 @@ public interface CalendarApi {
     }
 
 
-    @ApiOperation(value = "Получение информации о всех календарях", nickname = "calendarNamesGet", notes = "", response = InlineResponse200Dto.class, authorizations = {
+    @ApiOperation(value = "Получение информации о конкретном календаре", nickname = "calendarGetById", notes = "", response = CalendarResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200Dto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarResponseDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
-    @RequestMapping(value = "/calendar/list",
+    @RequestMapping(value = "/calendar/{calendarId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<InlineResponse200Dto> calendarNamesGet() {
+    default ResponseEntity<CalendarResponseDto> calendarGetById(@ApiParam(value = "",required=true) @PathVariable("calendarId") Long calendarId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"active\" : {    \"shift\" : 0,    \"name\" : \"name\",    \"isAstronomical\" : true  },  \"calendarList\" : [ null, null ]}");
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
                     break;
                 }
             }
@@ -103,22 +97,22 @@ public interface CalendarApi {
     }
 
 
-    @ApiOperation(value = "Создать календарь (Календарь автоматически становится активным)", nickname = "calendarPostAndSetActive", notes = "", response = CalendarExtendedReqDto.class, authorizations = {
+    @ApiOperation(value = "Создать календарь (Календарь автоматически становится активным)", nickname = "calendarPost", notes = "", response = CalendarResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CalendarExtendedReqDto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarResponseDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
     @RequestMapping(value = "/calendar",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<CalendarExtendedReqDto> calendarPostAndSetActive(@ApiParam(value = ""  )  @Valid @RequestBody CalendarExtendedReqDto calendarExtendedReqDto) {
+    default ResponseEntity<CalendarResponseDto> calendarPost(@ApiParam(value = ""  )  @Valid @RequestBody CalendarBaseReqDto calendarBaseReqDto) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"shift\" : 0,  \"name\" : \"name\",  \"isAstronomical\" : true}");
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
                     break;
                 }
             }
@@ -128,22 +122,22 @@ public interface CalendarApi {
     }
 
 
-    @ApiOperation(value = "Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)", nickname = "calendarPutAndSetActive", notes = "", response = CalendarExtendedReqDto.class, authorizations = {
+    @ApiOperation(value = "Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)", nickname = "calendarPut", notes = "", response = CalendarResponseDto.class, authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "calendar", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CalendarExtendedReqDto.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CalendarResponseDto.class),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
-    @RequestMapping(value = "/calendar",
+    @RequestMapping(value = "/calendar/{calendarId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    default ResponseEntity<CalendarExtendedReqDto> calendarPutAndSetActive(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "name", required = true) String name,@ApiParam(value = ""  )  @Valid @RequestBody CalendarBaseDto calendarBaseDto) {
+    default ResponseEntity<CalendarResponseDto> calendarPut(@ApiParam(value = "",required=true) @PathVariable("calendarId") Long calendarId,@ApiParam(value = ""  )  @Valid @RequestBody CalendarBaseDto calendarBaseDto) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"shift\" : 0,  \"name\" : \"name\",  \"isAstronomical\" : true}");
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
                     break;
                 }
             }

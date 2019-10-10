@@ -17,7 +17,7 @@ def liquibaseModuleDir = this.projectDir.toString()
 def snapshotFileName = 'snapshot.json'
 def dbDir = rootProjectDir + '/backend/src/main/resources/db/'
 def dbMigrationDir = dbDir + 'migrations/'
-def dbStorageDir = dbDir + 'storage/'
+def dbStorageDir = rootProjectDir+ '/backend/storage/'
 def liquibaseProp = [
         localDbUrl       : 'jdbc:h2:file:' + dbStorageDir + 'ScheduleDB',
         localDbUsername  : 'sa',
@@ -46,7 +46,7 @@ task generateSchema(type: JavaExec) {
     args "--username=" + liquibaseProp.localDbUsername
     args "--password=" + liquibaseProp.localDbPassword
     args "--logLevel=" + liquibaseProp.logLevel
-    args "--diffTypes=" + "data"
+    //args "--diffTypes=" + "data"
     args "generateChangelog"
 }
 

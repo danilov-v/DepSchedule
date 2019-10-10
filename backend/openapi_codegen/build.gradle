@@ -8,8 +8,13 @@ def rootDirToGenerate = "$projectDir/../".toString()
 /**
  * https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
  */
-task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask, dependsOn: 'cleanOldClasses') {
+task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask/*, dependsOn: 'cleanOldClasses'*/) {
     group = "openapi tools"
+
+    doFirst {//clean old classes
+        delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/logic/controllers/api"
+        delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/models/dto"
+    }
 
     generatorName = "spring"
     inputSpec = "$rootDirToGenerate/../api/depSchedule.yml".toString()
@@ -43,10 +48,10 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
     }
 }
 
-tasks.register("cleanOldClasses") {
-    group = "openapi tools"
-
-    description = 'clean generated files'
-    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/logic/controllers/api"
-    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/models/dto"
-}
+//tasks.register("cleanOldClasses") {
+//    group = "openapi tools"
+//
+//    description = 'clean generated files'
+//    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/logic/controllers/api"
+//    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/models/dto"
+//}
