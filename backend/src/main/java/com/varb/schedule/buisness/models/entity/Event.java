@@ -1,5 +1,6 @@
 package com.varb.schedule.buisness.models.entity;
 
+import com.varb.schedule.buisness.models.business.LocationTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.lang.Nullable;
@@ -29,5 +30,15 @@ public class Event {
 
     @Nullable
     private String note;
+
+    @Column(nullable = false)
+    private Boolean planned;
+
+    @Column(nullable = false)
+    private String locationName;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LocationTypeEnum locationType;
 
 }
