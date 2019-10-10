@@ -1,4 +1,4 @@
-package com.varb.schedule.springtests;
+package com.varb.schedule.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.varb.schedule.buisness.logic.repository.PeriodRepository;

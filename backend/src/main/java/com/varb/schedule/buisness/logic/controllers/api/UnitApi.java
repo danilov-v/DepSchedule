@@ -5,21 +5,33 @@
  */
 package com.varb.schedule.buisness.logic.controllers.api;
 
-import com.varb.schedule.buisness.models.dto.*;
+import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
+import java.time.LocalDate;
+import com.varb.schedule.buisness.models.dto.UnitPostDto;
+import com.varb.schedule.buisness.models.dto.UnitPutDto;
+import com.varb.schedule.buisness.models.dto.UnitResponseDto;
+import com.varb.schedule.buisness.models.dto.UnitResponseTreeDto;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import javax.validation.constraints.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "unit", description = "the unit API")

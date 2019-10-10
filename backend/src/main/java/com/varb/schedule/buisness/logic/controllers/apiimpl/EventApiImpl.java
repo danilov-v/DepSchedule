@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +32,14 @@ public class EventApiImpl implements EventApi {
         return ResponseEntity.ok(
                 modelMapper.mapList(
                         eventService.getAllBetweenDates(dateFrom, dateTo.orElse(null)),
+                        EventResponseDto.class));
+    }
+
+    @Override
+    public ResponseEntity<List<EventResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @Valid Integer count) {
+        return ResponseEntity.ok(
+                modelMapper.mapList(
+                        eventService.getRecent(count),
                         EventResponseDto.class));
     }
 

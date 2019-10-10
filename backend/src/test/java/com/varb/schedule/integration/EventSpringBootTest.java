@@ -1,4 +1,4 @@
-package com.varb.schedule.springtests;
+package com.varb.schedule.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.varb.schedule.buisness.logic.repository.EventRepository;
@@ -6,6 +6,7 @@ import com.varb.schedule.buisness.logic.service.EventService;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
+import com.varb.schedule.buisness.models.dto.LocationDto;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.exception.ServiceException;
 import org.junit.jupiter.api.Test;
@@ -17,12 +18,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class EventSpringBootTest extends AbstractIntegrationTest {
 
@@ -51,24 +52,28 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andReturn();
 
         List<EventResponseDto> dtoList = objectMapper.readValue(
-                mvcResult.getResponse().getContentAsString(), new TypeReference<List<EventResponseDto>>() {});
+                mvcResult.getResponse().getContentAsString(), new TypeReference<List<EventResponseDto>>() {
+                });
+
+        EventResponseDto firstEntity = dtoList.get(0);
+        EventResponseDto secondEntity = dtoList.get(1);
 
         //assertion according to the initialization data of sql scripts above
         assertAll("Has to return initialized before the test events",
                 //first entity
-                () -> assertEquals(1L, dtoList.get(0).getEventId().longValue()),
-                () -> assertEquals(1L, dtoList.get(0).getEventTypeId().longValue()),
-                () -> assertEquals(200L, dtoList.get(0).getUnitId().longValue()),
-                () -> assertEquals(LocalDate.of(2019, 9, 26), dtoList.get(0).getDateFrom()),
-                () -> assertEquals(4, dtoList.get(0).getDuration().intValue()),
-                () -> assertEquals("NOT NULL", dtoList.get(0).getNote()),
+                () -> assertEquals(1L, firstEntity.getEventId().longValue()),
+                () -> assertEquals(1L, firstEntity.getEventTypeId().longValue()),
+                () -> assertEquals(200L, firstEntity.getUnitId().longValue()),
+                () -> assertEquals(LocalDate.of(2019, 9, 26), firstEntity.getDateFrom()),
+                () -> assertEquals(4, (int) ChronoUnit.DAYS.between(firstEntity.getDateFrom(), firstEntity.getDateTo())),
+                () -> assertEquals("NOT NULL", firstEntity.getNote()),
                 //second entity
-                () -> assertEquals(2L, dtoList.get(1).getEventId().longValue()),
-                () -> assertEquals(2L, dtoList.get(1).getEventTypeId().longValue()),
-                () -> assertEquals(300L, dtoList.get(1).getUnitId().longValue()),
-                () -> assertEquals(LocalDate.of(2019, 10, 3), dtoList.get(1).getDateFrom()),
-                () -> assertEquals(2, dtoList.get(1).getDuration().intValue()),
-                () -> assertNull(dtoList.get(1).getNote())
+                () -> assertEquals(2L, secondEntity.getEventId().longValue()),
+                () -> assertEquals(2L, secondEntity.getEventTypeId().longValue()),
+                () -> assertEquals(300L, secondEntity.getUnitId().longValue()),
+                () -> assertEquals(LocalDate.of(2019, 10, 3), secondEntity.getDateFrom()),
+                () -> assertEquals(2, (int) ChronoUnit.DAYS.between(secondEntity.getDateFrom(), secondEntity.getDateTo())),
+                () -> assertNull(secondEntity.getNote())
         );
     }
 
@@ -84,7 +89,8 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andReturn();
 
         List<EventResponseDto> dtoList = objectMapper.readValue(
-                mvcResult.getResponse().getContentAsString(), new TypeReference<List<EventResponseDto>>() {});
+                mvcResult.getResponse().getContentAsString(), new TypeReference<List<EventResponseDto>>() {
+                });
 
         //we expect only one event here
         assertTrue(dtoList.size() == 1);
@@ -96,7 +102,7 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 () -> assertEquals(1L, firstEvent.getEventTypeId().longValue()),
                 () -> assertEquals(200L, firstEvent.getUnitId().longValue()),
                 () -> assertEquals(LocalDate.of(2019, 9, 26), firstEvent.getDateFrom()),
-                () -> assertEquals(4, firstEvent.getDuration().intValue()),
+                () -> assertEquals(4, (int) ChronoUnit.DAYS.between(firstEvent.getDateFrom(), firstEvent.getDateTo())),
                 () -> assertEquals("NOT NULL", firstEvent.getNote())
         );
     }
@@ -113,7 +119,7 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         assertAll(
                 () -> assertTrue(mvcResult.getResolvedException() instanceof MissingServletRequestParameterException),
                 () -> assertEquals("dateFrom",
-                        ((MissingServletRequestParameterException)mvcResult.getResolvedException()).getParameterName())
+                        ((MissingServletRequestParameterException) mvcResult.getResolvedException()).getParameterName())
         );
     }
 
@@ -122,15 +128,18 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
     public void testPostEvent() throws Exception {
         final Long unitId = 200L;
         final Long eventTypeId = 1L;
-        final LocalDate dateFrom = LocalDate.of(2019, 5, 28);
-        final Integer duration = 5;
+        final LocalDate dateFrom = LocalDate.of(2019, 5, 20);
+        final LocalDate dateTo = LocalDate.of(2019, 5, 25);
         final String note = "Note here";
-        EventPostDto postDto = new EventPostDto();
-        postDto.setEventTypeId(eventTypeId);
-        postDto.setUnitId(unitId);
-        postDto.setDateFrom(dateFrom);
-        postDto.setDuration(duration);
-        postDto.setNote(note);
+        final LocationDto location = new LocationDto().name("Минск").type(LocationDto.TypeEnum.STATICAL);
+
+        EventPostDto postDto = new EventPostDto()
+                .eventTypeId(eventTypeId)
+                .unitId(unitId)
+                .dateFrom(dateFrom)
+                .dateTo(dateTo)
+                .note(note)
+                .location(location);
 
         mockMvc.perform(post(baseUrl)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -142,19 +151,23 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.unitId").value(unitId))
                 .andExpect(jsonPath("$.eventTypeId").value(eventTypeId))
                 .andExpect(jsonPath("$.dateFrom").value(dateFrom.toString()))
-                .andExpect(jsonPath("$.duration").value(duration))
-                .andExpect(jsonPath("$.note").value(note));
+                .andExpect(jsonPath("$.dateTo").value(dateTo.toString()))
+                .andExpect(jsonPath("$.note").value(note))
+        //TODO
+//                .andExpect(jsonPath("$.location.name").value(location.getName()))
+//                .andExpect(jsonPath("$.location.type").value(location.getType()))
+        ;
 
         //second level validation
         List<Event> afterAdd = eventRepository.findAll();
-        assertTrue(afterAdd.size() == 1);
+        assertEquals(1, afterAdd.size());
         Event event = afterAdd.get(0);
-        assertAll("Assertion of just added event",
+        assertAll("Assertion of just added period",
                 () -> assertNotNull(event.getEventId()),
                 () -> assertEquals(unitId, event.getUnitId()),
                 () -> assertEquals(eventTypeId, event.getEventTypeId()),
                 () -> assertEquals(dateFrom, event.getDateFrom()),
-                () -> assertEquals(duration, event.getDuration()),
+                () -> assertEquals(dateTo, event.getDateTo()),
                 () -> assertEquals(note, event.getNote())
         );
     }
@@ -175,14 +188,15 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         Event event = initializedData.get(0);
         final Long eventId = event.getEventId();
         final LocalDate dateFrom = event.getDateFrom();
+        final LocalDate dateTo = event.getDateTo();
         final Long eventTypeId = event.getEventTypeId();
         final Long unitId = event.getUnitId();
+        //calculate duration
+        int duration = Math.toIntExact(ChronoUnit.DAYS.between(dateFrom, dateTo)) - 1;
 
         String newNote = "Changed note";
-        final Integer newDuration = 10;
         EventPutDto putDto = new EventPutDto();
         putDto.setNote(newNote);
-        putDto.setDuration(newDuration);
 
         mockMvc.perform(put(baseUrl + "/" + eventId)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -194,19 +208,18 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.unitId").value(unitId))
                 .andExpect(jsonPath("$.eventTypeId").value(eventTypeId))
                 .andExpect(jsonPath("$.dateFrom").value(dateFrom.toString()))
-                .andExpect(jsonPath("$.duration").value(newDuration))
+                //.andExpect(jsonPath("$.duration").value(duration))
                 .andExpect(jsonPath("$.note").value(newNote));
 
+        Event eventFromDb = eventRepository.findById(eventId).get();
         //second level validation
         assertAll("Assertion of just updated event",
-                () -> assertTrue(eventRepository.findById(eventId).isPresent()),
-                () -> assertSame(event, eventRepository.findById(eventId).get()),
-                () -> assertEquals(eventId, event.getEventId()),
-                () -> assertEquals(unitId, event.getUnitId()),
-                () -> assertEquals(eventTypeId, event.getEventTypeId()),
-                () -> assertEquals(dateFrom, event.getDateFrom()),
-                () -> assertEquals(newDuration, event.getDuration()),
-                () -> assertEquals(newNote, event.getNote())
+                () -> assertEquals(eventId, eventFromDb.getEventId()),
+                () -> assertEquals(unitId, eventFromDb.getUnitId()),
+                () -> assertEquals(eventTypeId, eventFromDb.getEventTypeId()),
+                () -> assertEquals(dateFrom, eventFromDb.getDateFrom()),
+                () -> assertEquals(dateTo, eventFromDb.getDateTo()),
+                () -> assertEquals(newNote, eventFromDb.getNote())
         );
     }
 
@@ -223,6 +236,8 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
+
+
         //assert after deleting one event
         List<Event> afterDeleteList = eventRepository.findAll();
         assertEquals(rowsNum - 1, afterDeleteList.size());
@@ -234,14 +249,15 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
             @Sql("/db/scripts/spring/InsertEventData.sql")})
     public void testIntersections() throws Exception {
         //set dateFrom and duration to have intersection
-        LocalDate dateFrom = LocalDate.of(2019, 9, 30);
-        Integer duration = 5;
-        EventPostDto postDto = new EventPostDto();
-        postDto.setEventTypeId(1L);
-        postDto.setUnitId(200L);
-        postDto.setDateFrom(dateFrom);
-        postDto.setDuration(duration);
-        postDto.setNote("Intersection");
+        LocalDate dateFrom = LocalDate.of(2019, 9, 20);
+        LocalDate dateTo = LocalDate.of(2019, 9, 27);
+        EventPostDto postDto = new EventPostDto()
+                .eventTypeId(1L)
+                .unitId(200L)
+                .dateFrom(dateFrom)
+                .dateTo(dateTo)
+                .note("Intersection")
+                .location(new LocationDto().name("Минск").type(LocationDto.TypeEnum.STATICAL));
 
         MvcResult mvcResult = mockMvc.perform(post(baseUrl)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -250,7 +266,7 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andExpect(status().isBadRequest()).andReturn();
 
         assertTrue(mvcResult.getResolvedException() instanceof ServiceException);
-        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((ServiceException)mvcResult.getResolvedException()).getCode());
+        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((ServiceException) mvcResult.getResolvedException()).getCode());
 
     }
 }

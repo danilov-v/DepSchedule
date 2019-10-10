@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Data
+@Data()
 @Accessors(chain = true)
 @Entity
 public class Event {
@@ -25,7 +25,7 @@ public class Event {
     private LocalDate dateFrom;
 
     @Column(nullable = false)
-    private Integer duration;
+    private LocalDate dateTo;
 
     @Nullable
     private String note;

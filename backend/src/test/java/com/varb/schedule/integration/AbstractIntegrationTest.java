@@ -1,4 +1,4 @@
-package com.varb.schedule.springtests;
+package com.varb.schedule.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

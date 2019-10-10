@@ -15,5 +15,3 @@ public class ScheduleApplication {
     }
 
 }
-
-//TODO 4.разобраться как с помощью gradle запускать отдельный модуль а не весь проект

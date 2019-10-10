@@ -776,9 +776,9 @@ components:
         flag:
           type: string
           description: "Путь к изображению флага"
-        exists:
+        planned:
           type: boolean
-          default: true
+          default: false
           description: "Планируемое подразделение? (true/false)"
         parentId:
           type: integer
@@ -797,9 +797,9 @@ components:
         flag:
           type: string
           description: "Путь к изображению флага"
-        exists:
+        planned:
           type: boolean
-          default: true
+          default: false
           description: "Планируемое подразделение? (true/false)"
         parentId:
           type: integer
@@ -857,9 +857,7 @@ components:
     #        * `3` - Пункт управления
     #        * `4` - Подразделение
     EventBase:
-      allOf:
-        - $ref: "#/components/schemas/DurationOptional"
-        -  properties:
+        properties:
              unitId:
                type: integer
                format: int64
@@ -869,10 +867,15 @@ components:
                type: string
                format: date
                description: "Дата начала события"
+             dateTo:
+               type: string
+               format: date
+               description: "Дата конца события"
              location:
                $ref: "#/components/schemas/Location"
              planned:
                type: boolean
+               default: false
                description: "Запланированность события"
              note:
                type: string
@@ -886,9 +889,7 @@ components:
         - unitId
         - location
         - planned
-      allOf:
-        - $ref: "#/components/schemas/DurationRequired"
-        -  properties:
+      properties:
              unitId:
                type: integer
                format: int64
@@ -898,10 +899,15 @@ components:
                type: string
                format: date
                description: "Дата начала события"
+             dateTo:
+                type: string
+                format: date
+                description: "Дата конца события"
              location:
                $ref: "#/components/schemas/Location"
              planned:
                type: boolean
+               default: false
                description: "Запланированность события"
              note:
                type: string

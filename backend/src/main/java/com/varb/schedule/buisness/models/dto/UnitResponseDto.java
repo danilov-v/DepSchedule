@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * UnitResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 public class UnitResponseDto   {
   @JsonProperty("title")
@@ -19,8 +19,8 @@ public class UnitResponseDto   {
   @JsonProperty("flag")
   private String flag;
 
-  @JsonProperty("exists")
-  private Boolean exists = true;
+  @JsonProperty("planned")
+  private Boolean planned = false;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -69,24 +69,24 @@ public class UnitResponseDto   {
     this.flag = flag;
   }
 
-  public UnitResponseDto exists(Boolean exists) {
-    this.exists = exists;
+  public UnitResponseDto planned(Boolean planned) {
+    this.planned = planned;
     return this;
   }
 
   /**
    * Планируемое подразделение? (true/false)
-   * @return exists
+   * @return planned
   */
   @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
 
 
-  public Boolean getExists() {
-    return exists;
+  public Boolean getPlanned() {
+    return planned;
   }
 
-  public void setExists(Boolean exists) {
-    this.exists = exists;
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public UnitResponseDto parentId(Long parentId) {
@@ -141,14 +141,14 @@ public class UnitResponseDto   {
     UnitResponseDto unitResponse = (UnitResponseDto) o;
     return Objects.equals(this.title, unitResponse.title) &&
         Objects.equals(this.flag, unitResponse.flag) &&
-        Objects.equals(this.exists, unitResponse.exists) &&
+        Objects.equals(this.planned, unitResponse.planned) &&
         Objects.equals(this.parentId, unitResponse.parentId) &&
         Objects.equals(this.unitId, unitResponse.unitId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, exists, parentId, unitId);
+    return Objects.hash(title, flag, planned, parentId, unitId);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class UnitResponseDto   {
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
-    sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("}");

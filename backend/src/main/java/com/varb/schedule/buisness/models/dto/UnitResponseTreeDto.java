@@ -13,7 +13,7 @@ import java.util.*;
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")
@@ -22,8 +22,8 @@ public class UnitResponseTreeDto   {
   @JsonProperty("flag")
   private String flag;
 
-  @JsonProperty("exists")
-  private Boolean exists = true;
+  @JsonProperty("planned")
+  private Boolean planned = false;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -84,24 +84,24 @@ public class UnitResponseTreeDto   {
     this.flag = flag;
   }
 
-  public UnitResponseTreeDto exists(Boolean exists) {
-    this.exists = exists;
+  public UnitResponseTreeDto planned(Boolean planned) {
+    this.planned = planned;
     return this;
   }
 
   /**
    * Планируемое подразделение? (true/false)
-   * @return exists
+   * @return planned
   */
   @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
 
 
-  public Boolean getExists() {
-    return exists;
+  public Boolean getPlanned() {
+    return planned;
   }
 
-  public void setExists(Boolean exists) {
-    this.exists = exists;
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public UnitResponseTreeDto parentId(Long parentId) {
@@ -242,7 +242,7 @@ public class UnitResponseTreeDto   {
     UnitResponseTreeDto unitResponseTree = (UnitResponseTreeDto) o;
     return Objects.equals(this.title, unitResponseTree.title) &&
         Objects.equals(this.flag, unitResponseTree.flag) &&
-        Objects.equals(this.exists, unitResponseTree.exists) &&
+        Objects.equals(this.planned, unitResponseTree.planned) &&
         Objects.equals(this.parentId, unitResponseTree.parentId) &&
         Objects.equals(this.unitId, unitResponseTree.unitId) &&
         Objects.equals(this.events, unitResponseTree.events) &&
@@ -252,7 +252,7 @@ public class UnitResponseTreeDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, exists, parentId, unitId, events, childUnit, eventDuration);
+    return Objects.hash(title, flag, planned, parentId, unitId, events, childUnit, eventDuration);
   }
 
   @Override
@@ -262,7 +262,7 @@ public class UnitResponseTreeDto   {
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
-    sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    events: ").append(toIndentedString(events)).append("\n");

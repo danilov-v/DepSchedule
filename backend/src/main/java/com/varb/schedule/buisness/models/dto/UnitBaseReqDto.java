@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * UnitBaseReqDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 public class UnitBaseReqDto   {
   @JsonProperty("title")
@@ -19,8 +19,8 @@ public class UnitBaseReqDto   {
   @JsonProperty("flag")
   private String flag;
 
-  @JsonProperty("exists")
-  private Boolean exists = true;
+  @JsonProperty("planned")
+  private Boolean planned = false;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -66,24 +66,24 @@ public class UnitBaseReqDto   {
     this.flag = flag;
   }
 
-  public UnitBaseReqDto exists(Boolean exists) {
-    this.exists = exists;
+  public UnitBaseReqDto planned(Boolean planned) {
+    this.planned = planned;
     return this;
   }
 
   /**
    * Планируемое подразделение? (true/false)
-   * @return exists
+   * @return planned
   */
   @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
 
 
-  public Boolean getExists() {
-    return exists;
+  public Boolean getPlanned() {
+    return planned;
   }
 
-  public void setExists(Boolean exists) {
-    this.exists = exists;
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public UnitBaseReqDto parentId(Long parentId) {
@@ -118,13 +118,13 @@ public class UnitBaseReqDto   {
     UnitBaseReqDto unitBaseReq = (UnitBaseReqDto) o;
     return Objects.equals(this.title, unitBaseReq.title) &&
         Objects.equals(this.flag, unitBaseReq.flag) &&
-        Objects.equals(this.exists, unitBaseReq.exists) &&
+        Objects.equals(this.planned, unitBaseReq.planned) &&
         Objects.equals(this.parentId, unitBaseReq.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, exists, parentId);
+    return Objects.hash(title, flag, planned, parentId);
   }
 
   @Override
@@ -134,7 +134,7 @@ public class UnitBaseReqDto   {
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
-    sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
     return sb.toString();

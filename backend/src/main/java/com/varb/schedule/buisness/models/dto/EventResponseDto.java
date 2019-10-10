@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,23 +11,23 @@ import java.util.Objects;
 /**
  * EventResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 public class EventResponseDto   {
-  @JsonProperty("duration")
-  private Integer duration;
-
   @JsonProperty("unitId")
   private Long unitId;
 
   @JsonProperty("dateFrom")
   private LocalDate dateFrom;
 
+  @JsonProperty("dateTo")
+  private LocalDate dateTo;
+
   @JsonProperty("location")
   private LocationDto location = null;
 
   @JsonProperty("planned")
-  private Boolean planned;
+  private Boolean planned = false;
 
   @JsonProperty("note")
   private String note;
@@ -40,29 +38,6 @@ public class EventResponseDto   {
   @JsonProperty("eventId")
   private Long eventId;
 
-  public EventResponseDto duration(Integer duration) {
-    this.duration = duration;
-    return this;
-  }
-
-  /**
-   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
-   * minimum: 0
-   * maximum: 1000
-   * @return duration
-  */
-  @ApiModelProperty(required = true, value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
-  @NotNull
-
-@Min(0) @Max(1000) 
-  public Integer getDuration() {
-    return duration;
-  }
-
-  public void setDuration(Integer duration) {
-    this.duration = duration;
-  }
-
   public EventResponseDto unitId(Long unitId) {
     this.unitId = unitId;
     return this;
@@ -72,7 +47,8 @@ public class EventResponseDto   {
    * Id подразделения (может ссылаться только на подразделение 4-го уровня)
    * @return unitId
   */
-  @ApiModelProperty(value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @ApiModelProperty(required = true, value = "Id подразделения (может ссылаться только на подразделение 4-го уровня)")
+  @NotNull
 
 
   public Long getUnitId() {
@@ -92,7 +68,8 @@ public class EventResponseDto   {
    * Дата начала события
    * @return dateFrom
   */
-  @ApiModelProperty(value = "Дата начала события")
+  @ApiModelProperty(required = true, value = "Дата начала события")
+  @NotNull
 
   @Valid
 
@@ -104,6 +81,27 @@ public class EventResponseDto   {
     this.dateFrom = dateFrom;
   }
 
+  public EventResponseDto dateTo(LocalDate dateTo) {
+    this.dateTo = dateTo;
+    return this;
+  }
+
+  /**
+   * Дата конца события
+   * @return dateTo
+  */
+  @ApiModelProperty(value = "Дата конца события")
+
+  @Valid
+
+  public LocalDate getDateTo() {
+    return dateTo;
+  }
+
+  public void setDateTo(LocalDate dateTo) {
+    this.dateTo = dateTo;
+  }
+
   public EventResponseDto location(LocationDto location) {
     this.location = location;
     return this;
@@ -113,7 +111,8 @@ public class EventResponseDto   {
    * Get location
    * @return location
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -134,7 +133,8 @@ public class EventResponseDto   {
    * Запланированность события
    * @return planned
   */
-  @ApiModelProperty(value = "Запланированность события")
+  @ApiModelProperty(required = true, value = "Запланированность события")
+  @NotNull
 
 
   public Boolean getPlanned() {
@@ -174,7 +174,8 @@ public class EventResponseDto   {
    * Ссылка на тип события 
    * @return eventTypeId
   */
-  @ApiModelProperty(value = "Ссылка на тип события ")
+  @ApiModelProperty(required = true, value = "Ссылка на тип события ")
+  @NotNull
 
 
   public Long getEventTypeId() {
@@ -215,9 +216,9 @@ public class EventResponseDto   {
       return false;
     }
     EventResponseDto eventResponse = (EventResponseDto) o;
-    return Objects.equals(this.duration, eventResponse.duration) &&
-        Objects.equals(this.unitId, eventResponse.unitId) &&
+    return Objects.equals(this.unitId, eventResponse.unitId) &&
         Objects.equals(this.dateFrom, eventResponse.dateFrom) &&
+        Objects.equals(this.dateTo, eventResponse.dateTo) &&
         Objects.equals(this.location, eventResponse.location) &&
         Objects.equals(this.planned, eventResponse.planned) &&
         Objects.equals(this.note, eventResponse.note) &&
@@ -227,7 +228,7 @@ public class EventResponseDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(duration, unitId, dateFrom, location, planned, note, eventTypeId, eventId);
+    return Objects.hash(unitId, dateFrom, dateTo, location, planned, note, eventTypeId, eventId);
   }
 
   @Override
@@ -235,9 +236,9 @@ public class EventResponseDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventResponseDto {\n");
     
-    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");

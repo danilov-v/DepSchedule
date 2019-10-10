@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * UnitPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-09T17:33:46.060950+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 public class UnitPutDto   {
   @JsonProperty("title")
@@ -18,8 +18,8 @@ public class UnitPutDto   {
   @JsonProperty("flag")
   private String flag;
 
-  @JsonProperty("exists")
-  private Boolean exists = true;
+  @JsonProperty("planned")
+  private Boolean planned = false;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -64,24 +64,24 @@ public class UnitPutDto   {
     this.flag = flag;
   }
 
-  public UnitPutDto exists(Boolean exists) {
-    this.exists = exists;
+  public UnitPutDto planned(Boolean planned) {
+    this.planned = planned;
     return this;
   }
 
   /**
    * Планируемое подразделение? (true/false)
-   * @return exists
+   * @return planned
   */
   @ApiModelProperty(value = "Планируемое подразделение? (true/false)")
 
 
-  public Boolean getExists() {
-    return exists;
+  public Boolean getPlanned() {
+    return planned;
   }
 
-  public void setExists(Boolean exists) {
-    this.exists = exists;
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
   }
 
   public UnitPutDto parentId(Long parentId) {
@@ -116,13 +116,13 @@ public class UnitPutDto   {
     UnitPutDto unitPut = (UnitPutDto) o;
     return Objects.equals(this.title, unitPut.title) &&
         Objects.equals(this.flag, unitPut.flag) &&
-        Objects.equals(this.exists, unitPut.exists) &&
+        Objects.equals(this.planned, unitPut.planned) &&
         Objects.equals(this.parentId, unitPut.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, exists, parentId);
+    return Objects.hash(title, flag, planned, parentId);
   }
 
   @Override
@@ -132,7 +132,7 @@ public class UnitPutDto   {
     
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
-    sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
     return sb.toString();

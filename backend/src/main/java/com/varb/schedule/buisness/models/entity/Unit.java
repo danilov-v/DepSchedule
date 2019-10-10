@@ -31,7 +31,7 @@ public class Unit {
     private String flag;
 
     @Column(nullable = false)
-    private Boolean exists;
+    private Boolean planned;
 
 //    @Nullable
 //    private Integer unitLevel;

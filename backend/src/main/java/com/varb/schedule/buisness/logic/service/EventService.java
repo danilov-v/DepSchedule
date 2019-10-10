@@ -9,12 +9,13 @@ import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,16 +38,14 @@ public class EventService extends AbstractService<Event, Long> {
 
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
-        checkBeforeSave(event);
-        updateEventDuration(event);
+        prepareBeforeSave(event);
         return save(event);
     }
 
     public Event update(Long eventId, EventPutDto eventPut) {
         Event event = findById(eventId);
         modelMapper.map(eventPut, event);
-        checkBeforeSave(event);
-        updateEventDuration(event);
+        prepareBeforeSave(event);
         return event;
     }
 
@@ -55,27 +54,43 @@ public class EventService extends AbstractService<Event, Long> {
         return eventRepository.findBetweenDates(dateFrom, dateTo);
     }
 
-    private void checkBeforeSave(Event event) {
+    public List<Event> getRecent(int count) {
+        return eventRepository.findRecent(PageRequest.of(0, count));
+    }
+
+    /**
+     * Подготовительные операции перед сохранением события
+     */
+    private void prepareBeforeSave(Event event) {
+        checkConsistencyBeforeSave(event);
+        updateEventDuration(event);
+    }
+
+    /**
+     * Проверка согласованности данных
+     */
+    private void checkConsistencyBeforeSave(Event event) {
         Long unitId = event.getUnitId();
         Long eventTypeId = event.getEventTypeId();
         eventTypeService.checkExists(eventTypeId);
         unitService.checkExists(unitId);
 
-        assert event.getDuration() > 0;
-        LocalDate dateTo = event.getDateFrom().plusDays(event.getDuration());
-
-        checkIntersection(event, dateTo);
+        checkIntersection(event);
     }
 
+    /**
+     * Update 'duration' in {@link com.varb.schedule.buisness.models.entity.EventDuration}
+     */
     private void updateEventDuration(Event event) {
+        int duration = (int) ChronoUnit.DAYS.between(event.getDateFrom(), event.getDateTo());
         eventDurationService.merge(
                 event.getUnitId(), event.getEventTypeId(),
-                new EventDurationPutDto().duration(event.getDuration()));
+                new EventDurationPutDto().duration(duration));
     }
 
-    private void checkIntersection(Event event, LocalDate dateTo) {
+    private void checkIntersection(Event event) {
         List<Event> eventList = eventRepository.findIntersection(
-                event.getDateFrom(), dateTo, event.getUnitId(), event.getEventId());
+                event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
 
         if (!eventList.isEmpty()) {
             String ids = eventList.stream().map(e -> e.getEventId().toString()).collect(Collectors.joining(","));

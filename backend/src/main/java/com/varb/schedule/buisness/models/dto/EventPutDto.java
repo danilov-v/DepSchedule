@@ -4,59 +4,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * EventPutDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-08T17:22:45.458023+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T11:29:07.772005+03:00[Europe/Minsk]")
 
 public class EventPutDto   {
-  @JsonProperty("duration")
-  private Integer duration;
-
   @JsonProperty("unitId")
   private Long unitId;
 
   @JsonProperty("dateFrom")
   private LocalDate dateFrom;
 
+  @JsonProperty("dateTo")
+  private LocalDate dateTo;
+
   @JsonProperty("location")
   private LocationDto location = null;
 
   @JsonProperty("planned")
-  private Boolean planned;
+  private Boolean planned = false;
 
   @JsonProperty("note")
   private String note;
 
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
-
-  public EventPutDto duration(Integer duration) {
-    this.duration = duration;
-    return this;
-  }
-
-  /**
-   * Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)
-   * minimum: 0
-   * maximum: 1000
-   * @return duration
-  */
-  @ApiModelProperty(value = "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)")
-
-@Min(0) @Max(1000) 
-  public Integer getDuration() {
-    return duration;
-  }
-
-  public void setDuration(Integer duration) {
-    this.duration = duration;
-  }
 
   public EventPutDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -97,6 +73,27 @@ public class EventPutDto   {
 
   public void setDateFrom(LocalDate dateFrom) {
     this.dateFrom = dateFrom;
+  }
+
+  public EventPutDto dateTo(LocalDate dateTo) {
+    this.dateTo = dateTo;
+    return this;
+  }
+
+  /**
+   * Дата конца события
+   * @return dateTo
+  */
+  @ApiModelProperty(value = "Дата конца события")
+
+  @Valid
+
+  public LocalDate getDateTo() {
+    return dateTo;
+  }
+
+  public void setDateTo(LocalDate dateTo) {
+    this.dateTo = dateTo;
   }
 
   public EventPutDto location(LocationDto location) {
@@ -190,9 +187,9 @@ public class EventPutDto   {
       return false;
     }
     EventPutDto eventPut = (EventPutDto) o;
-    return Objects.equals(this.duration, eventPut.duration) &&
-        Objects.equals(this.unitId, eventPut.unitId) &&
+    return Objects.equals(this.unitId, eventPut.unitId) &&
         Objects.equals(this.dateFrom, eventPut.dateFrom) &&
+        Objects.equals(this.dateTo, eventPut.dateTo) &&
         Objects.equals(this.location, eventPut.location) &&
         Objects.equals(this.planned, eventPut.planned) &&
         Objects.equals(this.note, eventPut.note) &&
@@ -201,7 +198,7 @@ public class EventPutDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(duration, unitId, dateFrom, location, planned, note, eventTypeId);
+    return Objects.hash(unitId, dateFrom, dateTo, location, planned, note, eventTypeId);
   }
 
   @Override
@@ -209,9 +206,9 @@ public class EventPutDto   {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventPutDto {\n");
     
-    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
