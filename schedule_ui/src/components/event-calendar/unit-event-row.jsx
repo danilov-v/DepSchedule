@@ -1,12 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Row } from "reactstrap";
-import {
-  differenceInDays,
-  isWithinInterval,
-  addDays,
-  isSameDay,
-} from "date-fns";
+import { differenceInDays, isWithinInterval, isSameDay } from "date-fns";
 import { constant } from "lodash";
 import { MANAGE_EVENTS } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
@@ -18,10 +13,10 @@ import { Event } from "./event";
 
 const isEventInDate = (date, events) =>
   events
-    ? events.some(({ dateFrom, duration }) =>
+    ? events.some(({ dateFrom, dateTo }) =>
         isWithinInterval(date, {
           start: new Date(dateFrom).setHours(0, 0, 0, 0),
-          end: addDays(new Date(dateFrom), duration).setHours(0, 0, 0, 0),
+          end: new Date(dateTo).setHours(0, 0, 0, 0),
         })
       )
     : false;
