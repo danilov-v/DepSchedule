@@ -44,6 +44,11 @@ import svg20Dashed from "img/flags_min/vs_red_dashed.svg";
 import svg21Dashed from "img/flags_min/zt_black_dashed.svg";
 import svg22Dashed from "img/flags_min/zt_red_dashed.svg";
 
+import staticalSvg from "img/statical.svg";
+import districtSvg from "img/district.svg";
+import districtSvgDashed from "img/district_dashed.svg";
+import staticalSvgDashed from "img/statical_dashed.svg";
+
 export const DASHED_PREFIX = "_dashed";
 
 export const NO_FLAG = {
@@ -162,5 +167,18 @@ export const FLAGS_MAP = [
     url: svg22,
     urlDashed: svg22Dashed,
     id: 22,
+  },
+];
+
+export const FLAG_LOCATIONS = [
+  {
+    url: staticalSvg,
+    urlDashed: staticalSvgDashed,
+    id: "statical",
+  },
+  {
+    url: districtSvg,
+    urlDashed: districtSvgDashed,
+    id: "district",
   },
 ];

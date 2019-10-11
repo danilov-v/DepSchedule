@@ -7,6 +7,20 @@
   font-weight: bold;
   cursor: pointer;
 
+  &-flag-container {
+    position: absolute;
+
+    .flag {
+      width: 35px;
+      height: 35px;
+    }
+
+    .location {
+      width: 35px;
+      height: 20px;
+    }
+  }
+
   &-row {
     position: relative;
     overflow: hidden;
