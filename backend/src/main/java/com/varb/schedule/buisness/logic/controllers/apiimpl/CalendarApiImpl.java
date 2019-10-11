@@ -8,9 +8,7 @@ import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
 import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
 import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 
@@ -26,9 +24,8 @@ public class CalendarApiImpl implements CalendarApi {
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
     public ResponseEntity<Void> calendarDelete(Long calendarId) {
-        throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
-//        calendarService.delete(calendarId);
-//        return ResponseEntity.ok().build();
+        calendarService.delete(calendarId);
+        return ResponseEntity.ok().build();
     }
 
     @Secured(PrivilegeEnum.Code.READ)
@@ -48,9 +45,8 @@ public class CalendarApiImpl implements CalendarApi {
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
     public ResponseEntity<CalendarResponseDto> calendarPost(@Valid CalendarBaseReqDto calendarBaseReqDto) {
-        throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
-//        return ResponseEntity.ok(
-//                modelMapper.map(calendarService.add(calendarBaseReqDto), CalendarBaseReqDto.class));
+        return ResponseEntity.ok(
+                modelMapper.map(calendarService.add(calendarBaseReqDto), CalendarResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
