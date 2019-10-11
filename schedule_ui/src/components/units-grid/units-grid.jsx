@@ -21,7 +21,7 @@ import { useAuth } from "components/auth-service/auth-service";
 import "./units-grid.scss";
 
 const renderUnit = (
-  { childUnit, title, unitId },
+  { childUnit, title, unitId, flag },
   isTopLevel = true,
   isManageAble,
   handlers
@@ -49,6 +49,7 @@ const renderUnit = (
       key={unitId}
       title={title}
       unitId={unitId}
+      flag={flag}
       lastGen
       lastOfGroup={isTopLevel}
       isManageAble={isManageAble}
