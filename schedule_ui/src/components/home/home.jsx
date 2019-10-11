@@ -47,7 +47,7 @@ export function Home() {
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();
-  const [finishedEvents, fetchFinishedEvents] = useFinishedEvents(10);
+  const [finishedEvents] = useFinishedEvents(50);
   console.log(finishedEvents);
   const operationalRange = [
     operationalDate,
@@ -118,10 +118,10 @@ export function Home() {
               />
             )}
           />
-          {/* <Route
+          <Route
             path="/finished_events"
             render={() => <FinishedEvents finishedEvents={finishedEvents} />}
-          /> */}
+          />
           <Route
             path="/periods"
             render={() => (

@@ -18,7 +18,6 @@ import {
 } from "reactstrap";
 import DatePicker from "react-datepicker";
 import classnames from "classnames";
-import { omit } from "lodash";
 import { isDate, addDays, format } from "date-fns";
 import {
   FAILED_EVENT_NOTIFICATION_DATA,

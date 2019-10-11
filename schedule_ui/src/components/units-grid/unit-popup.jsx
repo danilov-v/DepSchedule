@@ -45,7 +45,8 @@ const setCorrectFlagName = formData =>
       FLAGS_MAP.find(
         item => item.url === formData.flag || item.urlDashed === formData.flag
       ),
-      formData.planned ? "urlDashed" : "url"
+      formData.planned ? "urlDashed" : "url",
+      null
     )
   );
 

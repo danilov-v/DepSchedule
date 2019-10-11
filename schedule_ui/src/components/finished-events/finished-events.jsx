@@ -8,15 +8,15 @@ export function FinishedEvents({ finishedEvents }) {
     <tr key={event.eventId}>
       <th scope="row">{index}</th>
       <td>{event.unitId}</td>
-      <td>{event.name}</td>
-      <td>{event.startDate}</td>
-      <td>{event.endDate}</td>
+      <td>{event.eventId}</td>
+      <td>{event.dateFrom}</td>
+      <td>{event.dateTo}</td>
     </tr>
   );
 
   return (
     <Container>
-      <Title text="Периоды" />
+      <Title text="Последнии завершённые события" />
       <div className="event-type-list">
         <Table hover>
           <thead>
