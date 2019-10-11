@@ -5,6 +5,7 @@ import { isEmpty, cloneDeep, pick } from "lodash";
 import {
   useUnitsTree,
   useEventTypes,
+  useFinishedEvents,
   usePeriods,
 } from "helpers/hooks/apiEffects";
 import { Container } from "reactstrap";
@@ -12,6 +13,7 @@ import { Timeline } from "components/timeline/timeline";
 import { Header } from "components/header/header";
 import { ConfirmationServiceProvider } from "components/confirmation-service/confirmation-service";
 import { EventTypes } from "components/event-types/event-types";
+import { FinishedEvents } from "components/finished-events/finished-events";
 import { Periods } from "components/periods/periods";
 import { getDayWithoutMinutes } from "utils/date";
 import { FOUR_MONTH } from "constants/calendar";
@@ -45,6 +47,8 @@ export function Home() {
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();
+  const [finishedEvents] = useFinishedEvents(50);
+  console.log(finishedEvents);
   const operationalRange = [
     operationalDate,
     addDays(operationalDate, differenceInDays(endDate, startDate)),
@@ -113,6 +117,10 @@ export function Home() {
                 onEventTypesUpdate={onEventTypesUpdate}
               />
             )}
+          />
+          <Route
+            path="/finished_events"
+            render={() => <FinishedEvents finishedEvents={finishedEvents} />}
           />
           <Route
             path="/periods"

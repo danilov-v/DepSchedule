@@ -6,6 +6,7 @@ import {
   UNITS_URL,
   EVENT_URL,
   EVENT_TYPE_URL,
+  EVENT_RECENT_LIST,
   PERIODS,
   LOGIN,
   LOGOUT,
@@ -86,6 +87,9 @@ export const createEventType = async eventTypeData =>
     method: "POST",
     body: JSON.stringify(eventTypeData),
   });
+
+export const getFinishedEvents = async count =>
+  await makeApiCall(`${EVENT_RECENT_LIST}/?count=${count}`);
 
 export const updateEventType = async eventTypeData =>
   await makeApiCall(`${EVENT_TYPE_URL}/${eventTypeData.typeId}`, {
