@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { UnitEventRow } from "./unit-event-row";
 import { EventPopup } from "./event-popup";
 import { createEvent, updateEvent, removeEvent } from "helpers/api";
-import { isDate, addDays } from "date-fns";
+import { isDate, addDays, differenceInDays } from "date-fns";
 
 import "./event-calendar.scss";
 
@@ -58,12 +58,14 @@ export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
       setUnit(unit);
 
       const dateFrom = new Date(event.dateFrom);
-      const dateTo = addDays(dateFrom, event.duration);
+      const dateTo = new Date(event.dateTo);
+      const duration = differenceInDays(dateTo, dateFrom);
 
       setDefaultFormData({
         ...event,
         dateFrom,
         dateTo,
+        duration,
       });
     } else {
       setDefaultFormData(DEFAULT_FORM_DATA);

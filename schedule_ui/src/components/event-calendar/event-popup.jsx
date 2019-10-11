@@ -115,7 +115,8 @@ export function EventPopup({
 
   async function submitForm() {
     const data = {
-      ...omit(values, ["dateTo"]),
+      ...values,
+      dateTo: format(values.dateTo, "yyyy-MM-dd"),
       dateFrom: format(values.dateFrom, "yyyy-MM-dd"),
     };
     try {
@@ -254,6 +255,7 @@ EventPopup.propTypes = {
   ),
   defaultFormData: PropTypes.shape({
     dateFrom: PropTypes.instanceOf(Date),
+    dateTo: PropTypes.instanceOf(Date),
     duration: PropTypes.number,
     eventId: PropTypes.number,
     eventTypeId: "",
