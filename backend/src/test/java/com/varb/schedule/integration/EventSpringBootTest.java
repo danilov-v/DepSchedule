@@ -153,9 +153,8 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.dateFrom").value(dateFrom.toString()))
                 .andExpect(jsonPath("$.dateTo").value(dateTo.toString()))
                 .andExpect(jsonPath("$.note").value(note))
-        //TODO
-//                .andExpect(jsonPath("$.location.name").value(location.getName()))
-//                .andExpect(jsonPath("$.location.type").value(location.getType()))
+                .andExpect(jsonPath("$.location.name").value(location.getName()))
+                .andExpect(jsonPath("$.location.type").value(location.getType().toString()))
         ;
 
         //second level validation
