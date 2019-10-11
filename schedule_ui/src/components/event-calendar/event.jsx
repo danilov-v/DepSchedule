@@ -3,11 +3,16 @@ import PropTypes from "prop-types";
 import { truncate } from "lodash";
 import { UncontrolledTooltip } from "reactstrap";
 import { CELL_WIDTH } from "constants/calendar";
+import { differenceInDays } from "date-fns";
+
+const getEventLength = ({ dateFrom, dateTo }) =>
+  (differenceInDays(new Date(dateTo), new Date(dateFrom)) + 1) * CELL_WIDTH +
+  "px";
 
 export function Event({ event, rightOffset, color, title, onClick }) {
   const style = {
     background: color,
-    width: (event.duration + 1) * CELL_WIDTH + "px",
+    width: getEventLength(event),
     right: rightOffset + "px",
   };
   return (
