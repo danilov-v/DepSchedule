@@ -15,7 +15,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
 } from "reactstrap";
-import { get, isBoolean } from "lodash";
+import { get, isBoolean, set } from "lodash";
 import { createUnit, updateUnit } from "helpers/api";
 import {
   SUCCESS_UNIT_NOTIFICATION_DATA,
@@ -37,6 +37,18 @@ const DEFAULT_FORM_DATA = {
 const validate = formData =>
   Boolean(formData.title && formData.title.length >= 2);
 
+const setCorrectFlagName = formData =>
+  set(
+    formData,
+    "flag",
+    get(
+      FLAGS_MAP.find(
+        item => item.url === formData.flag || item.urlDashed === formData.flag
+      ),
+      formData.planned ? "urlDashed" : "url"
+    )
+  );
+
 export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
   const [isValid, setValidState] = useState(null);
   const [formData, setData] = useState(unit);
@@ -57,6 +69,7 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
     event.preventDefault();
 
     if (validate(formData)) {
+      setCorrectFlagName(formData);
       try {
         if (isEdit) {
           await updateUnit(formData);

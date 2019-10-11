@@ -95,6 +95,11 @@ export function HeaderUI({
               Периоды
             </Link>
           </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="finished_events">
+              <FontAwesomeIcon icon="list-ul" />
+            </NavLink>
+          </NavItem>
           <NavItem hidden={!isHomePage}>
             <NavLink href="#" onClick={print}>
               <FontAwesomeIcon icon="file-pdf" />
