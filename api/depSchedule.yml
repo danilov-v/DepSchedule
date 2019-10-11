@@ -1129,12 +1129,6 @@ components:
           type: integer
           format: int32
           description: "Сдвиг оперативного времени относительно астрономического"
-        isAstronomical:
-          type: boolean
-          description: |
-            Относительно какого времени создаются события?
-            * `true` - Астрономическое
-            * `false` - Оперативное
     CalendarBaseReq:
       type: object
       required:

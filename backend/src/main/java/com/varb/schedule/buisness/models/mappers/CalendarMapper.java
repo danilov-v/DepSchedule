@@ -1,6 +1,5 @@
 package com.varb.schedule.buisness.models.mappers;
 
-import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
 import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
 import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
@@ -26,12 +25,6 @@ public class CalendarMapper {
         });
 
         modelMapper.addMappings(new PropertyMap<CalendarBaseReqDto, Calendar>() {
-            protected void configure() {
-                map().setAstronomical(source.getIsAstronomical());
-            }
-        });
-
-        modelMapper.addMappings(new PropertyMap<CalendarBaseDto, Calendar>() {
             protected void configure() {
                 map().setAstronomical(source.getIsAstronomical());
             }

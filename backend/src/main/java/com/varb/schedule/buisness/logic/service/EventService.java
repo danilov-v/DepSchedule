@@ -4,6 +4,7 @@ import com.varb.schedule.buisness.logic.repository.EventRepository;
 import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
+import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.ServiceException;
@@ -30,6 +31,7 @@ public class EventService extends AbstractService<Event, Long> {
     private final UnitService unitService;
     private final EventDurationService eventDurationService;
     private final ValidationService validationService;
+    private final CalendarService calendarService;
 
     public static final String INTERSECTION_OF_EVENTS = "INTERSECTION_OF_EVENTS";
     private static final String DATES_INTERSECTION_MESSAGE = "Данное событие пересекается с уже существующим. " +
@@ -55,7 +57,15 @@ public class EventService extends AbstractService<Event, Long> {
     }
 
     public List<Event> getRecent(int count) {
-        return eventRepository.findRecent(PageRequest.of(0, count));
+        Long calendarId = 1L; //TODO hardCode, fix it when api will support multiple calendars
+        Calendar calendar = calendarService.findById(calendarId);
+
+        LocalDate relativeCurrentDate;
+        if (calendar.isAstronomical())
+            relativeCurrentDate = LocalDate.now();
+        else
+            relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
+        return eventRepository.findRecent(relativeCurrentDate, PageRequest.of(0, count));
     }
 
     /**
