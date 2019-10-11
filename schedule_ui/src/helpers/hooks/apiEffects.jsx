@@ -38,15 +38,16 @@ export const useUnitsTree = initialDateFrom => {
 
 export const useFinishedEvents = count => {
   const [finishedEvents, setFinishedEvents] = useState([]);
+  const { logout } = useAuth();
   const fetchFinishedEvents = useCallback(async () => {
     try {
       const data = await getFinishedEvents(count);
 
       setFinishedEvents(data);
     } catch (error) {
-      handleError(error);
+      handleError(error, logout);
     }
-  }, [count]);
+  }, [count, logout]);
 
   useEffect(() => {
     fetchFinishedEvents();
