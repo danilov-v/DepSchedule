@@ -37,7 +37,7 @@ public class Unit {
 //    private Integer unitLevel;
 
     @Setter(AccessLevel.PRIVATE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unitId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit")
     private Set<Event> events;
 
     @Setter(AccessLevel.PRIVATE)

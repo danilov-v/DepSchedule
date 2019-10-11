@@ -1,9 +1,6 @@
 package com.varb.schedule.buisness.models.mappers;
 
-import com.varb.schedule.buisness.models.dto.EventPostDto;
-import com.varb.schedule.buisness.models.dto.EventPutDto;
-import com.varb.schedule.buisness.models.dto.EventResponseDto;
-import com.varb.schedule.buisness.models.dto.LocationDto;
+import com.varb.schedule.buisness.models.dto.*;
 import com.varb.schedule.buisness.models.entity.Event;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.AbstractConverter;
@@ -33,6 +30,10 @@ public class EventMapper {
                 .addMappings(mapper -> mapper
                         .using(fillLocationDto)
                         .map(source -> source, EventResponseDto::setLocation));
+
+        modelMapper.typeMap(Event.class, EventRecentResponseDto.class)
+                .addMapping(source -> source.getUnit().getTitle(), EventRecentResponseDto::setUnitTitle)
+                .addMapping(source -> source.getEventType().getDescription(), EventRecentResponseDto::setEventTypeDescription);
 
         modelMapper.typeMap(EventPostDto.class, Event.class)
                 .addMapping(source -> source.getLocation().getName(), Event::setLocationName)

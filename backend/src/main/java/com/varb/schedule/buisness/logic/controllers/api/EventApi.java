@@ -5,10 +5,7 @@
  */
 package com.varb.schedule.buisness.logic.controllers.api;
 
-import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
-import com.varb.schedule.buisness.models.dto.EventPostDto;
-import com.varb.schedule.buisness.models.dto.EventPutDto;
-import com.varb.schedule.buisness.models.dto.EventResponseDto;
+import com.varb.schedule.buisness.models.dto.*;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-11T11:37:06.077592+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "event", description = "the event API")
@@ -124,21 +121,21 @@ public interface EventApi {
     }
 
 
-    @ApiOperation(value = "Список последних событий", nickname = "eventRecentList", notes = "", response = EventResponseDto.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Список последних событий", nickname = "eventRecentList", notes = "", response = EventRecentResponseDto.class, responseContainer = "List", authorizations = {
         @Authorization(value = "JWT")
     }, tags={ "event", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Array of recent event", response = EventResponseDto.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "Array of recent event", response = EventRecentResponseDto.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Bad request", response = ErrorMessageDto.class),
         @ApiResponse(code = 500, message = "Internal server error", response = ErrorMessageDto.class) })
     @RequestMapping(value = "/event/recentList",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
+    default ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "null");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"eventId\" : 0,  \"note\" : \"note\",  \"dateTo\" : \"2000-01-23\",  \"location\" : {    \"name\" : \"name\",    \"type\" : \"statical\"  },  \"eventTypeDescription\" : \"eventTypeDescription\",  \"planned\" : false,  \"dateFrom\" : \"2000-01-23\",  \"unitTitle\" : \"unitTitle\"}");
                     break;
                 }
             }

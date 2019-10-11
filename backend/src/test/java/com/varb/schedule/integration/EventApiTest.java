@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class EventSpringBootTest extends AbstractIntegrationTest {
+public class EventApiTest extends AbstractIntegrationTest {
 
     private final String baseUrl = "/api/event";
 
@@ -132,7 +132,15 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         final LocalDate dateTo = LocalDate.of(2019, 5, 25);
         final String note = "Note here";
         final LocationDto location = new LocationDto().name("Минск").type(LocationDto.TypeEnum.STATICAL);
-
+//        dateFrom: "2019-10-25"
+//        dateTo: "2019-10-26"
+//        duration: 1
+//        eventId: null
+//        eventTypeId: 43
+//        location: {name: "asdasd", type: "statical"}
+//        note: "asdasd"
+//        planned: true
+//        unitId: 550
         EventPostDto postDto = new EventPostDto()
                 .eventTypeId(eventTypeId)
                 .unitId(unitId)

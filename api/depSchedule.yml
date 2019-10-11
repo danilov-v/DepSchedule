@@ -99,7 +99,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/EventResponse"
+                  $ref: "#/components/schemas/EventRecentResponse"
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -768,9 +768,7 @@ components:
         - title
       properties:
         title:
-          type: string
-          minLength: 2
-          description: "Название подразделения"
+          $ref: "#/components/schemas/UnitTitle"
         flag:
           type: string
           description: "Путь к изображению флага"
@@ -789,9 +787,7 @@ components:
     UnitBase:
       properties:
         title:
-          type: string
-          minLength: 2
-          description: "Название подразделения"
+          $ref: "#/components/schemas/UnitTitle"
         flag:
           type: string
           description: "Путь к изображению флага"
@@ -918,6 +914,39 @@ components:
     EventPost:
       allOf:
         - $ref: "#/components/schemas/EventBaseReq"
+    EventRecentResponse:
+      required:
+        - eventId
+        - dateFrom
+        - eventTypeId
+        - unitId
+        - location
+        - planned
+      properties:
+        eventId:
+          type: integer
+          format: int64
+        unitTitle:
+          $ref: "#/components/schemas/UnitTitle"
+        dateFrom:
+          type: string
+          format: date
+          description: "Дата начала события"
+        dateTo:
+          type: string
+          format: date
+          description: "Дата конца события"
+        location:
+          $ref: "#/components/schemas/Location"
+        planned:
+          type: boolean
+          default: false
+          description: "Запланированность события"
+        note:
+          type: string
+          description: "Примечание"
+        eventTypeDescription:
+          $ref: "#/components/schemas/EventTypeDescription"
     EventResponse:
       required:
         - eventId
@@ -930,9 +959,7 @@ components:
     EventTypePut:
       properties:
         description:
-          type: string
-          description: "Описание события"
-          minLength: 3
+          $ref: "#/components/schemas/EventTypeDescription"
         color:
           type: string
           description: "Отображаемый цвет"
@@ -943,9 +970,7 @@ components:
         - color
       properties:
         description:
-          type: string
-          description: "Описание события"
-          minLength: 3
+          $ref: "#/components/schemas/EventTypeDescription"
         color:
           type: string
           description: "Отображаемый цвет"
@@ -954,28 +979,12 @@ components:
       required:
         - description
         - color
-        - type
+        - typeId
       allOf:
         - $ref: "#/components/schemas/EventTypePut"
         - properties:
             typeId:
               $ref: "#/components/schemas/EventTypeId"
-    EventTypeId:
-      type: integer
-      format: int64
-      description: |
-        Ссылка на тип события
-    CalendarName:
-      type: string
-      minimum: 2
-      maximum: 100
-      description: "Наименование календаря"
-    Duration:
-      type: integer
-      format: int32
-      minimum: 0
-      maximum: 1000
-      description: "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)"
     DurationOptional:
       properties:
         duration:
@@ -1173,7 +1182,30 @@ components:
         userMessage:
           type: string
           description: "Сообщение для пользователя"
-  
+    EventTypeId:
+      type: integer
+      format: int64
+      description: |
+        Ссылка на тип события
+    CalendarName:
+      type: string
+      minimum: 2
+      maximum: 100
+      description: "Наименование календаря"
+    Duration:
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 1000
+      description: "Длительность события в днях(указывается если длительность по умолчанию не задана либо её надо изменить)"
+    UnitTitle:
+      type: string
+      minLength: 2
+      description: "Название подразделения"
+    EventTypeDescription:
+      type: string
+      description: "Описание события"
+      minLength: 3
   securitySchemes:
     JWT:
       type: http

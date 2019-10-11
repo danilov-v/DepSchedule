@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class PeriodSpringBootTest extends AbstractIntegrationTest {
+public class PeriodApiTest extends AbstractIntegrationTest {
 
     private final String baseUrl = "/api/period";
 
