@@ -67,6 +67,7 @@ export function UnitEventRow({
             rightOffset={getOffset(startDateCord, event.dateFrom)}
             color={color}
             title={description}
+            flag={unit.flag}
             onClick={
               isManageAble
                 ? openEditForm.bind(null, unit, event)

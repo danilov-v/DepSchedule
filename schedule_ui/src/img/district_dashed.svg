@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="180mm"
+   height="86mm"
+   version="1.1"
+   viewBox="0 0 180 86"
+   id="svg28"
+   sodipodi:docname="district_dashed.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <defs
+     id="defs32">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1839"
+       is_visible="true"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#pattern1103"
+       id="pattern1824"
+       patternTransform="translate(-0.00426303,-151.68661)" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1101"
+       is_visible="true"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <linearGradient
+       id="linearGradient1095"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop1093" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect835"
+       is_visible="true"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect827"
+       is_visible="true"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect835-3"
+       is_visible="true"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="119.98053"
+       height="150.97035"
+       patternTransform="matrix(0.29158825,0,0,0.26458333,61.534059,139.46403)"
+       id="pattern1103">
+      <path
+         inkscape:original-d="M 0.35850907,0.34556037 C 40.125005,50.431141 79.879514,100.52424 119.62202,150.62479"
+         inkscape:path-effect="#path-effect1101"
+         inkscape:connector-curvature="0"
+         id="path1099"
+         d="M 0.35850907,0.34556037 C 40.113997,50.439877 79.868514,100.53297 119.62202,150.62479"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="151.68394"
+       height="120.87967"
+       patternTransform="matrix(0.29158825,0,0,0.26458333,56.911891,143.44478)"
+       id="pattern1826">
+      <rect
+         transform="rotate(90.342051)"
+         id="rect1106"
+         y="-151.68661"
+         x="-0.0042760405"
+         height="150.97037"
+         width="119.98053"
+         style="fill:url(#pattern1824);stroke:none;stroke-width:3.60025787" />
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="204.98502"
+       height="182.36814"
+       patternTransform="matrix(0.29158825,0,0,0.26458333,1.908719,144.65856)"
+       id="pattern1841">
+      <path
+         inkscape:original-d="M 0.30006508,181.95785 C 68.438919,121.43242 136.56722,60.916555 204.68495,0.41028807"
+         inkscape:path-effect="#path-effect1839"
+         inkscape:connector-curvature="0"
+         id="path1837"
+         d="M 0.30006508,181.95785 C 68.439017,121.43253 136.56732,60.916668 204.68495,0.41028807"
+         style="fill:none;stroke:#000000;stroke-width:1.00394237px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </pattern>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1280"
+     inkscape:window-height="981"
+     id="namedview30"
+     showgrid="false"
+     inkscape:zoom="0.65043402"
+     inkscape:cx="540.1275"
+     inkscape:cy="380.95852"
+     inkscape:window-x="1280"
+     inkscape:window-y="28"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g24" />
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(0.90738681,0,0,1,-0.09731413,-198.82909)"
+     id="g26">
+    <g
+       transform="translate(9.8392,1.1339)"
+       id="g24">
+      <flowRoot
+         font-size="40px"
+         letter-spacing="0px"
+         word-spacing="0px"
+         style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none"
+         xml:space="preserve"
+         id="flowRoot12"><flowRegion
+           id="flowRegion8"
+           style="stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none"><rect
+             x="1367.7"
+             y="38.765999"
+             width="127.28"
+             height="402.04001"
+             id="rect6"
+             style="stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none" /></flowRegion><flowPara
+           id="flowPara10" /></flowRoot>      <flowRoot
+         font-size="40px"
+         letter-spacing="0px"
+         word-spacing="0px"
+         style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none"
+         xml:space="preserve"
+         id="flowRoot20"><flowRegion
+           id="flowRegion16"
+           style="stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none"><rect
+             x="135.36"
+             y="252.92"
+             width="220.21001"
+             height="153.53999"
+             id="rect14"
+             style="stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none" /></flowRegion><flowPara
+           id="flowPara18" /></flowRoot>      <ellipse
+         style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#646464;stroke-width:8.16003418;stroke-miterlimit:4;stroke-dasharray:24.48010364, 8.16003455;stroke-dashoffset:0;stroke-opacity:1"
+         id="path1879"
+         ry="38.280048"
+         rx="94.562622"
+         cy="240.4986"
+         cx="90.947609" />
+    </g>
+  </g>
+</svg>
