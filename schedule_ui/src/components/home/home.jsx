@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Route } from "react-router-dom";
 import { addDays, differenceInDays, differenceInCalendarDays } from "date-fns";
-import { isEmpty, cloneDeep } from "lodash";
+import { isEmpty, cloneDeep, pick } from "lodash";
 import {
   useUnitsTree,
   useEventTypes,
@@ -31,11 +31,7 @@ function getUnitsFromUnitsTree(root) {
         stack.push(unit);
       });
     }
-    array.push({
-      parentId: node.parentId,
-      title: node.title,
-      unitId: node.unitId,
-    });
+    array.push(pick(node, ["parentId", "title", "unitId", "flag", "planned"]));
   }
 
   return array;

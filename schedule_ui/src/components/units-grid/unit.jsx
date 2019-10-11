@@ -7,6 +7,7 @@ import classnames from "classnames";
 export function Unit({
   title,
   unitId,
+  flag,
   lastGen,
   lastOfGroup,
   isManageAble,
@@ -34,7 +35,7 @@ export function Unit({
       )}
       data-unit-id={unitId}
     >
-      {/* <div>1</div> */}
+      {flag && <img src={flag} alt="Unit flag preview" className="unit-flag" />}
       <div>{title}</div>
 
       <Row style={manageStyle} className="unit-actions" noGutters>
@@ -55,5 +56,10 @@ export function Unit({
 Unit.propTypes = {
   title: PropTypes.string.isRequired,
   unitId: PropTypes.number.isRequired,
+  flag: PropTypes.string,
   lastGen: PropTypes.bool,
+};
+
+Unit.defaultProps = {
+  flag: null,
 };
