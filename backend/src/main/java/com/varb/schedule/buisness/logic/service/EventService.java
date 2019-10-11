@@ -65,6 +65,7 @@ public class EventService extends AbstractService<Event, Long> {
             relativeCurrentDate = LocalDate.now();
         else
             relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
+
         return eventRepository.findRecent(relativeCurrentDate, PageRequest.of(0, count));
     }
 

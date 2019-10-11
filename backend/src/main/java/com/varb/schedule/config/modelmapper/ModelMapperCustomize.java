@@ -17,6 +17,5 @@ public class ModelMapperCustomize extends ModelMapper {
             return Collections.emptyList();
         Type type = Array.newInstance(destinationType, 0).getClass();
         return Arrays.asList(super.map(source, type));
-//        return super.map(source, new TypeToken<List<D>>() {}.getType());
     }
 }
