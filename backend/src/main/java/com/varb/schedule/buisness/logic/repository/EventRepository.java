@@ -17,10 +17,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("select e from Event e " +
             "where " +
-            "   e.dateTo <= current_date " +
+            "   e.dateTo <= :relativeCurrentDate " +
             "order by e.dateTo desc")
 
-    List<Event> findRecent(Pageable pageable);
+    List<Event> findRecent(LocalDate relativeCurrentDate, Pageable pageable);
 
     @Query("select e from Event e " +
             "where " +
