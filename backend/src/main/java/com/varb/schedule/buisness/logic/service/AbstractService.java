@@ -1,6 +1,6 @@
 package com.varb.schedule.buisness.logic.service;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -52,7 +52,7 @@ public abstract class AbstractService<T, ID> {
     }
 
     //<editor-fold desc="Метод merge() (Пока сложно реализовать в абстрактном классе)">
-    //    public T merge(ID id, Object dto){
+//        public T merge(ID id, Object dto){
 //        T entity;
 //        Optional<T> optionalCalendar = findByIdOptional(id);
 //
@@ -60,8 +60,7 @@ public abstract class AbstractService<T, ID> {
 //            entity = optionalCalendar.get();
 //            modelMapper.map(dto, entity);
 //        } else {
-//            entity = modelMapper.map(dto, entityClass);
-//            entity.set
+//            entity = modelMapper.map(dto, T.class);
 //            save(entity);
 //        }
 //
@@ -70,14 +69,14 @@ public abstract class AbstractService<T, ID> {
     //</editor-fold>
 
     /**
-     * @throws ServiceException if entity not exists.
+     * @throws WebApiException if entity not exists.
      */
     void checkExists(ID id) {
         repository.findById(id).orElseThrow(() -> notFindException(id));
     }
 
-    protected ServiceException notFindException(ID id){
-        return new ServiceException(notFindMessage(id));
+    protected WebApiException notFindException(ID id){
+        return new WebApiException(notFindMessage(id));
     }
 
     protected abstract String notFindMessage(ID id);

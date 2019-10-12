@@ -2,7 +2,7 @@ package com.varb.schedule.security.registration;
 
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
 import com.varb.schedule.buisness.models.business.RoleEnum;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import com.varb.schedule.security.config.Principal;
 import com.varb.schedule.security.config.UserDetailsServiceImpl;
 import com.varb.schedule.security.token.TokenService;
@@ -54,7 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private void checkPassword(String password, String encodedPassword) {
         if (!passwordEncoder.matches(password, encodedPassword)) {
             String message = "Неправильный пароль";
-            throw new ServiceException(message, message, HttpStatus.UNAUTHORIZED, INVALID_PASSWORD);
+            throw new WebApiException(message, message, INVALID_PASSWORD, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -69,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String userMessage = "Отказано в доступе. Вы можете логиниться под этим пользователем" +
                     " только с компьютера на котором развёрнут сервер";
 
-            throw new ServiceException(devMessage, userMessage, HttpStatus.UNAUTHORIZED, IP_ADDRESS_MISMATCH);
+            throw new WebApiException(devMessage, userMessage, IP_ADDRESS_MISMATCH, HttpStatus.UNAUTHORIZED);
         }
     }
 

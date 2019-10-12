@@ -5,7 +5,7 @@ import com.varb.schedule.buisness.models.dto.PeriodPostDto;
 import com.varb.schedule.buisness.models.dto.PeriodPutDto;
 import com.varb.schedule.buisness.models.entity.Period;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class PeriodService extends AbstractService<Period, Long> {
         //It is correct behaviour
         intersections.removeIf(p -> p.getPeriodId().equals(period.getPeriodId()));
         if (!intersections.isEmpty()) {
-            throw new ServiceException(
+            throw new WebApiException(
                     intersectionsExceptionDevMessage(intersections),
                     DATES_INTERSECTION_MESSAGE,
                     DATES_INTERSECTION);
@@ -64,7 +64,7 @@ public class PeriodService extends AbstractService<Period, Long> {
         List<Period> intersections = periodRepository.
                 findIntersections(period.getStartDate(), period.getEndDate());
         if (!intersections.isEmpty()) {
-            throw new ServiceException(
+            throw new WebApiException(
                     intersectionsExceptionDevMessage(intersections),
                     DATES_INTERSECTION_MESSAGE,
                     DATES_INTERSECTION);

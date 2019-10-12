@@ -7,7 +7,7 @@ import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -105,7 +105,7 @@ public class EventService extends AbstractService<Event, Long> {
 
         if (!eventList.isEmpty()) {
             String ids = eventList.stream().map(e -> e.getEventId().toString()).collect(Collectors.joining(","));
-            throw new ServiceException(
+            throw new WebApiException(
                     "Event you want to add has intersections with other events with ids: [" + ids + "])",
                     DATES_INTERSECTION_MESSAGE,
                     INTERSECTION_OF_EVENTS);

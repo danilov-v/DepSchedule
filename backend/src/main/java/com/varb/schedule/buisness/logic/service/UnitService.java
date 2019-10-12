@@ -5,7 +5,7 @@ import com.varb.schedule.buisness.models.dto.UnitPostDto;
 import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import com.varb.schedule.buisness.models.entity.Unit;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -52,7 +52,7 @@ public class UnitService extends AbstractService<Unit, Long> {
         }
 
         if(parentId.equals(unit.getUnitId()))
-            throw new ServiceException("Невозможно установить parentId равное unitId");
+            throw new WebApiException("Невозможно установить parentId равное unitId");
 
         checkExists(parentId);
 

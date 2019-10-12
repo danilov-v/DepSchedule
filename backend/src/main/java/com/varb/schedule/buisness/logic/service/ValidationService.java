@@ -1,6 +1,6 @@
 package com.varb.schedule.buisness.logic.service;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ public class ValidationService {
     public void checkDates(@Nullable LocalDate dateFrom, @Nullable LocalDate dateTo) {
         if (dateTo != null && dateFrom != null
                 && dateTo.compareTo(dateFrom) < 0) //if dateTo < dateFrom
-            throw new ServiceException(
+            throw new WebApiException(
                     "startDate " + dateFrom + " >= " + "endDate " + dateTo,
                     WRONG_DATES_MESSAGE,
                     WRONG_DATES);
