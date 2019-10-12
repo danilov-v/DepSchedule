@@ -43,4 +43,7 @@ public class Unit {
     @Setter(AccessLevel.PRIVATE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "compositePK.unitId")
     private Set<EventDuration> eventDurations;
+
+    @Column(nullable = false, updatable = false)
+    private Long calendarId;
 }
