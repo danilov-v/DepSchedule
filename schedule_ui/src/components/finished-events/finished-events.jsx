@@ -1,14 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Container, Table } from "reactstrap";
+import { useFinishedEvents } from "helpers/hooks/apiEffects";
 import { Title } from "components/title/title";
 
-export function FinishedEvents({ finishedEvents }) {
+export function FinishedEvents() {
+  const [finishedEvents] = useFinishedEvents(50);
+  console.log(finishedEvents);
   const renderRow = (event, index) => (
     <tr key={event.eventId}>
       <th scope="row">{index}</th>
-      <td>{event.unitId}</td>
-      <td>{event.eventId}</td>
+      <td>{event.unitTitle}</td>
+      <td>{event.eventTypeDescription}</td>
       <td>{event.dateFrom}</td>
       <td>{event.dateTo}</td>
     </tr>

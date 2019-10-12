@@ -5,7 +5,6 @@ import { isEmpty, cloneDeep, pick } from "lodash";
 import {
   useUnitsTree,
   useEventTypes,
-  useFinishedEvents,
   usePeriods,
 } from "helpers/hooks/apiEffects";
 import { Container } from "reactstrap";
@@ -47,8 +46,7 @@ export function Home() {
   const [eventTypes, fetchEventTypes] = useEventTypes();
   const [unitsTree, fetchUnitsTree] = useUnitsTree(startDate);
   const [periods, fetchPeriods] = usePeriods();
-  const [finishedEvents] = useFinishedEvents(50);
-  console.log(finishedEvents);
+
   const operationalRange = [
     operationalDate,
     addDays(operationalDate, differenceInDays(endDate, startDate)),
@@ -118,10 +116,7 @@ export function Home() {
               />
             )}
           />
-          <Route
-            path="/finished_events"
-            render={() => <FinishedEvents finishedEvents={finishedEvents} />}
-          />
+          <Route path="/finished_events" render={() => <FinishedEvents />} />
           <Route
             path="/periods"
             render={() => (
