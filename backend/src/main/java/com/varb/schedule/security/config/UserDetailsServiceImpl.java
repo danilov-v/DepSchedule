@@ -4,7 +4,7 @@ import com.varb.schedule.buisness.logic.repository.UserRepository;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
 import com.varb.schedule.buisness.models.business.RoleEnum;
 import com.varb.schedule.buisness.models.entity.User;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) {
         User user = userRepository.findById(login)
-                .orElseThrow(() -> new ServiceException("Пользователь не найден в системе (login = " + login + ")",
+                .orElseThrow(() -> new WebApiException("Пользователь не найден в системе (login = " + login + ")",
                         HttpStatus.UNAUTHORIZED));
 
         return mapToUserDetails(user);

@@ -5,7 +5,7 @@ import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
 import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,7 +35,7 @@ public class CalendarService extends AbstractService<Calendar, Long> {
     @Override
     public void delete(Long calendarId) {
         if (calendarId == 1L)
-            throw new ServiceException("Until you can delete the calendar with calendarId = 1", HttpStatus.FORBIDDEN);
+            throw new WebApiException("Until you can delete the calendar with calendarId = 1", HttpStatus.FORBIDDEN);
         super.delete(calendarId);
     }
 

@@ -22,7 +22,7 @@ public class Event {
 
 
 
-    @Setter(AccessLevel.NONE)
+    @Setter(AccessLevel.PRIVATE)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "EVENT_TYPE_ID", nullable = false)
     private EventType eventType;
@@ -37,7 +37,7 @@ public class Event {
 
 
 
-    @Setter(AccessLevel.NONE)
+    @Setter(AccessLevel.PRIVATE)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "UNIT_ID", nullable = false)
     private Unit unit;

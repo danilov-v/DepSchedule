@@ -8,7 +8,7 @@ import com.varb.schedule.buisness.models.dto.PeriodPostDto;
 import com.varb.schedule.buisness.models.dto.PeriodPutDto;
 import com.varb.schedule.buisness.models.dto.PeriodResponseDto;
 import com.varb.schedule.buisness.models.entity.Period;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -156,8 +156,8 @@ public class PeriodApiTest extends AbstractIntegrationTest {
                 .content(asJsonString(postDto)))
                 .andExpect(status().isBadRequest()).andReturn();
 
-        assertTrue(mvcResult.getResolvedException() instanceof ServiceException);
-        assertEquals(PeriodService.DATES_INTERSECTION, ((ServiceException)mvcResult.getResolvedException()).getCode());
+        assertTrue(mvcResult.getResolvedException() instanceof WebApiException);
+        assertEquals(PeriodService.DATES_INTERSECTION, ((WebApiException)mvcResult.getResolvedException()).getCode());
 
         postDto.setEndDate(LocalDate.of(2019, 9, 28));
 
@@ -167,7 +167,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
                 .content(asJsonString(postDto)))
                 .andExpect(status().isBadRequest()).andReturn();
 
-        assertTrue(mvcResult.getResolvedException() instanceof ServiceException);
-        assertEquals(ValidationService.WRONG_DATES, ((ServiceException)mvcResult.getResolvedException()).getCode());
+        assertTrue(mvcResult.getResolvedException() instanceof WebApiException);
+        assertEquals(ValidationService.WRONG_DATES, ((WebApiException)mvcResult.getResolvedException()).getCode());
     }
 }

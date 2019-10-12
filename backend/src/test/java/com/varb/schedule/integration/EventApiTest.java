@@ -8,7 +8,7 @@ import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.buisness.models.dto.LocationDto;
 import com.varb.schedule.buisness.models.entity.Event;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -272,8 +272,8 @@ public class EventApiTest extends AbstractIntegrationTest {
                 .content(asJsonString(postDto)))
                 .andExpect(status().isBadRequest()).andReturn();
 
-        assertTrue(mvcResult.getResolvedException() instanceof ServiceException);
-        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((ServiceException) mvcResult.getResolvedException()).getCode());
+        assertTrue(mvcResult.getResolvedException() instanceof WebApiException);
+        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((WebApiException) mvcResult.getResolvedException()).getCode());
 
     }
 }

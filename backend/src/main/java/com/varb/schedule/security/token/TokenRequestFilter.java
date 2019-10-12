@@ -1,6 +1,6 @@
 package com.varb.schedule.security.token;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class TokenRequestFilter extends OncePerRequestFilter {
             // Token is in the form "Bearer token". Remove Bearer word and get
             // only the Token
             if (!requestTokenHeader.startsWith("Bearer "))
-                throw new ServiceException("Token does not begin with 'Bearer '", HttpStatus.UNAUTHORIZED);
+                throw new WebApiException("Token does not begin with 'Bearer '", HttpStatus.UNAUTHORIZED);
 
             String token = requestTokenHeader.substring(7);
 

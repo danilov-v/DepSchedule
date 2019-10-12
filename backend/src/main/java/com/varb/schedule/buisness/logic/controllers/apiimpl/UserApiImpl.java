@@ -11,7 +11,7 @@ import com.varb.schedule.buisness.models.dto.UserPostDto;
 import com.varb.schedule.buisness.models.dto.UserPutDto;
 import com.varb.schedule.buisness.models.dto.UserResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import com.varb.schedule.security.config.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -47,7 +47,7 @@ public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
     @Secured(PrivilegeEnum.Code.SUPER)
     public ResponseEntity<UserResponseDto> register(@Valid UserPostDto userPostDto) {
         if (1 == 1) //Пока что нет необходимости в функции регистрации
-            throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
+            throw new WebApiException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 
         return ResponseEntity.ok(userService.register(userPostDto));
     }
@@ -56,7 +56,7 @@ public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
     @Secured(PrivilegeEnum.Code.SUPER)
     public ResponseEntity<UserResponseDto> userPut(String login, @Valid UserPutDto userPutDto) {
         if (1 == 1) //Пока что нет необходимости в функции изменения пользователя
-            throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
+            throw new WebApiException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 
         return ResponseEntity.ok(
                 modelMapper.map(userService.update(login, userPutDto), UserResponseDto.class));
@@ -66,7 +66,7 @@ public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
     @Secured(PrivilegeEnum.Code.SUPER)
     public ResponseEntity<Void> userDelete(String login) {
         if (1 == 1) //Пока что нет необходимости в функции удаления пользователя
-            throw new ServiceException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
+            throw new WebApiException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 
         userService.delete(login);
         return ResponseEntity.ok().build();

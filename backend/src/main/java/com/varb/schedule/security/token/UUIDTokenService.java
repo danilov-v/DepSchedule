@@ -1,6 +1,6 @@
 package com.varb.schedule.security.token;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import com.varb.schedule.security.config.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -29,7 +29,7 @@ public class UUIDTokenService implements TokenService {
     public UserDetails getUserDetails(String token) {
         return userDetailsServiceImpl.loadUserByUsername(
                 Optional.ofNullable(tokens.get(UUID.fromString(token)))
-                        .orElseThrow(() -> new ServiceException("Не валидная сессия (token="+token+")", HttpStatus.FORBIDDEN))
+                        .orElseThrow(() -> new WebApiException("Не валидная сессия (token="+token+")", HttpStatus.FORBIDDEN))
         );
     }
 
