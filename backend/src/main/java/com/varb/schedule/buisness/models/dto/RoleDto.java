@@ -1,7 +1,13 @@
 package com.varb.schedule.buisness.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * Gets or Sets Role
