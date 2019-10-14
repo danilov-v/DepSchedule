@@ -94,14 +94,14 @@ public class PeriodApiTest extends AbstractIntegrationTest {
         assertTrue(initializedData.size() > 0);
         Period period = initializedData.get(0);
 
-        long periodId = period.getPeriodId();
+        final long periodId = period.getPeriodId();
         String newName = "Changed name";
         final LocalDate startDate = period.getStartDate();
         final LocalDate endDate = period.getEndDate();
         PeriodPutDto putDto = new PeriodPutDto();
         putDto.setName(newName);
 
-        mockMvc.perform(put(baseUrl + "/" + period.getPeriodId())
+        mockMvc.perform(put(baseUrl + "/" + periodId)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(asJsonString(putDto)))
@@ -136,7 +136,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
-        //assert after deleting one event type
+        //assert after deleting one period
         List<Period> afterDeleteList = periodRepository.findAll();
         assertEquals(rowsNum - 1, afterDeleteList.size());
         assertFalse(afterDeleteList.contains(periodToDelete));

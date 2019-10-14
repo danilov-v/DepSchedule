@@ -36,8 +36,8 @@ public class UnitService extends AbstractService<Unit, Long> {
         return unit;
     }
 
-    public Set<Unit> getAllExtended(LocalDate dateFrom, @Nullable LocalDate dateTo) {
-        return unitRepository.findAllWithChilds(dateFrom, dateTo);
+    public Set<Unit> getAllExtended(Long calendarId, LocalDate dateFrom, @Nullable LocalDate dateTo) {
+        return unitRepository.findAllWithChilds(calendarId, dateFrom, dateTo);
     }
 
     private void checkParent(Unit unit) {

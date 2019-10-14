@@ -31,7 +31,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-11T17:21:10.312503+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-12T11:13:14.156717+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "unit", description = "the unit API")
@@ -67,7 +67,7 @@ public interface UnitApi {
     @RequestMapping(value = "/unit",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<UnitResponseDto>> unitGet() {
+    default ResponseEntity<List<UnitResponseDto>> unitGet(@ApiParam(value = "") @Valid @RequestParam(value = "calendarId", required = false) Optional<Long> calendarId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -91,7 +91,7 @@ public interface UnitApi {
     @RequestMapping(value = "/unit/tree",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "dateFrom", required = true) LocalDate dateFrom,@ApiParam(value = "") @Valid @RequestParam(value = "dateTo", required = false) Optional<LocalDate> dateTo) {
+    default ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "calendarId", required = true) Long calendarId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "dateFrom", required = true) LocalDate dateFrom,@ApiParam(value = "") @Valid @RequestParam(value = "dateTo", required = false) Optional<LocalDate> dateTo) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

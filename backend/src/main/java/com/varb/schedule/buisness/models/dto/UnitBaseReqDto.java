@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * UnitBaseReqDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-11T17:21:10.312503+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-12T11:13:14.156717+03:00[Europe/Minsk]")
 
 public class UnitBaseReqDto   {
   @JsonProperty("title")
@@ -24,9 +24,6 @@ public class UnitBaseReqDto   {
 
   @JsonProperty("planned")
   private Boolean planned = false;
-
-  @JsonProperty("calendarId")
-  private Long calendarId;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -92,27 +89,6 @@ public class UnitBaseReqDto   {
     this.planned = planned;
   }
 
-  public UnitBaseReqDto calendarId(Long calendarId) {
-    this.calendarId = calendarId;
-    return this;
-  }
-
-  /**
-   * Ссылка на календарь
-   * @return calendarId
-  */
-  @ApiModelProperty(required = true, value = "Ссылка на календарь")
-  @NotNull
-
-
-  public Long getCalendarId() {
-    return calendarId;
-  }
-
-  public void setCalendarId(Long calendarId) {
-    this.calendarId = calendarId;
-  }
-
   public UnitBaseReqDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
@@ -146,13 +122,12 @@ public class UnitBaseReqDto   {
     return Objects.equals(this.title, unitBaseReq.title) &&
         Objects.equals(this.flag, unitBaseReq.flag) &&
         Objects.equals(this.planned, unitBaseReq.planned) &&
-        Objects.equals(this.calendarId, unitBaseReq.calendarId) &&
         Objects.equals(this.parentId, unitBaseReq.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, planned, calendarId, parentId);
+    return Objects.hash(title, flag, planned, parentId);
   }
 
   @Override
@@ -163,7 +138,6 @@ public class UnitBaseReqDto   {
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
-    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
     return sb.toString();

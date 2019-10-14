@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * EventDurationResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-11T17:21:10.312503+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-12T11:13:14.156717+03:00[Europe/Minsk]")
 
 public class EventDurationResponseDto   {
   @JsonProperty("duration")
