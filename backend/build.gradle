@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath 'com.google.guava:guava:28.1-jre'
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
     id 'java'
@@ -41,10 +47,25 @@ if (hasProperty('profile')) {
                             include("application.yml")
             tree.each {
                 File file ->
-                    file.append('spring.profiles.active: ' + profile);
+                    insertAtTheBeginningOfFile(file, 'spring.profiles.active: ' + profile)
             }
         }
     }
+}
+
+ext.insertAtTheBeginningOfFile = { File file, String str->
+    def oldFile = file
+    def newFile = File.createTempFile("application_yml", UUID.randomUUID().toString())
+
+    newFile.withWriter { output ->
+        output.write(str)
+        output.write("\n")
+        oldFile.eachLine { line ->
+            output.write(line)
+            output.write("\n")
+        }
+    }
+    com.google.common.io.Files.move(newFile, oldFile)
 }
 
 compileJava {
