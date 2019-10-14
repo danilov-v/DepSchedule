@@ -1,7 +1,7 @@
 package com.varb.schedule.exception.handlers;
 
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -31,22 +31,22 @@ public class ValidateExceptionHandler extends ResponseEntityExceptionHandler {
         String errorMessage = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> "'" + fieldError.getField() + "' " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
-        ServiceException serviceException = new ServiceException(ex, errorMessage, HttpStatus.BAD_REQUEST);
-        return handleServiceExceptionInternal(serviceException);
+        WebApiException webApiException = new WebApiException(ex, errorMessage, HttpStatus.BAD_REQUEST);
+        return handleServiceExceptionInternal(webApiException);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ServiceException serviceException = new ServiceException(ex, ex.getMostSpecificCause().getMessage(), HttpStatus.BAD_REQUEST);
-        return handleServiceExceptionInternal(serviceException);
+        WebApiException webApiException = new WebApiException(ex, ex.getMostSpecificCause().getMessage(), HttpStatus.BAD_REQUEST);
+        return handleServiceExceptionInternal(webApiException);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleServiceExceptionInternal(new ServiceException(ex, HttpStatus.BAD_REQUEST));
+        return handleServiceExceptionInternal(new WebApiException(ex, HttpStatus.BAD_REQUEST));
     }
 
-    protected ResponseEntity<Object> handleServiceExceptionInternal(ServiceException ex) {
+    protected ResponseEntity<Object> handleServiceExceptionInternal(WebApiException ex) {
         log.error("", ex);
         return exceptionFormatter.toResponseEntity(ex);
     }

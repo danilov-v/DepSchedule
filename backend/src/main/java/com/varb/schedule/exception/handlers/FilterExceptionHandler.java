@@ -1,6 +1,6 @@
 package com.varb.schedule.exception.handlers;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -29,14 +29,14 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (ServiceException serviceException) {
-            buildServiceExceptionResponse(serviceException, request, response);
+        } catch (WebApiException webApiException) {
+            buildServiceExceptionResponse(webApiException, request, response);
         } catch (Exception ex) {
-            buildServiceExceptionResponse(new ServiceException(ex, HttpStatus.INTERNAL_SERVER_ERROR), request, response);
+            buildServiceExceptionResponse(new WebApiException(ex, HttpStatus.INTERNAL_SERVER_ERROR), request, response);
         }
     }
 
-    private void buildServiceExceptionResponse(ServiceException serviceException, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        exceptionResolver.resolve(serviceException, request, response);
+    private void buildServiceExceptionResponse(WebApiException webApiException, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        exceptionResolver.resolve(webApiException, request, response);
     }
 }

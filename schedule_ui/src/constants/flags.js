@@ -44,6 +44,11 @@ import svg20Dashed from "img/flags_min/vs_red_dashed.svg";
 import svg21Dashed from "img/flags_min/zt_black_dashed.svg";
 import svg22Dashed from "img/flags_min/zt_red_dashed.svg";
 
+import staticalSvg from "img/statical.svg";
+import districtSvg from "img/district.svg";
+import districtSvgDashed from "img/district_dashed.svg";
+import staticalSvgDashed from "img/statical_dashed.svg";
+
 export const DASHED_PREFIX = "_dashed";
 
 export const NO_FLAG = {
@@ -55,181 +60,125 @@ export const NO_FLAG = {
 export const FLAGS_MAP = [
   {
     url: svg1,
+    urlDashed: svg1Dashed,
     id: 1,
   },
   {
     url: svg2,
+    urlDashed: svg2Dashed,
     id: 2,
   },
   {
     url: svg3,
+    urlDashed: svg3Dashed,
     id: 3,
   },
   {
     url: svg4,
+    urlDashed: svg4Dashed,
     id: 4,
   },
   {
     url: svg5,
+    urlDashed: svg5Dashed,
     id: 5,
   },
   {
     url: svg6,
+    urlDashed: svg6Dashed,
     id: 6,
   },
   {
     url: svg7,
+    urlDashed: svg7Dashed,
     id: 7,
   },
   {
     url: svg8,
+    urlDashed: svg8Dashed,
     id: 8,
   },
   {
     url: svg9,
+    urlDashed: svg9Dashed,
     id: 9,
   },
   {
     url: svg10,
+    urlDashed: svg10Dashed,
     id: 10,
   },
   {
     url: svg11,
+    urlDashed: svg11Dashed,
     id: 11,
   },
   {
     url: svg12,
+    urlDashed: svg12Dashed,
     id: 12,
   },
   {
     url: svg13,
+    urlDashed: svg13Dashed,
     id: 13,
   },
   {
     url: svg14,
+    urlDashed: svg14Dashed,
     id: 14,
   },
   {
     url: svg15,
+    urlDashed: svg15Dashed,
     id: 15,
   },
   {
     url: svg16,
+    urlDashed: svg16Dashed,
     id: 16,
   },
   {
     url: svg17,
+    urlDashed: svg17Dashed,
     id: 17,
   },
   {
     url: svg18,
+    urlDashed: svg18Dashed,
     id: 18,
   },
   {
     url: svg19,
+    urlDashed: svg19Dashed,
     id: 19,
   },
   {
     url: svg20,
+    urlDashed: svg20Dashed,
     id: 20,
   },
   {
     url: svg21,
+    urlDashed: svg21Dashed,
     id: 21,
   },
   {
     url: svg22,
+    urlDashed: svg22Dashed,
     id: 22,
   },
 ];
 
-export const FLAGS_MAP_DASHED = [
+export const FLAG_LOCATIONS = [
   {
-    url: svg1Dashed,
-    id: 1,
+    url: staticalSvg,
+    urlDashed: staticalSvgDashed,
+    id: "statical",
   },
   {
-    url: svg2Dashed,
-    id: 2,
-  },
-  {
-    url: svg3Dashed,
-    id: 3,
-  },
-  {
-    url: svg4Dashed,
-    id: 4,
-  },
-  {
-    url: svg5Dashed,
-    id: 5,
-  },
-  {
-    url: svg6Dashed,
-    id: 6,
-  },
-  {
-    url: svg7Dashed,
-    id: 7,
-  },
-  {
-    url: svg8Dashed,
-    id: 8,
-  },
-  {
-    url: svg9Dashed,
-    id: 9,
-  },
-  {
-    url: svg10Dashed,
-    id: 10,
-  },
-  {
-    url: svg11Dashed,
-    id: 11,
-  },
-  {
-    url: svg12Dashed,
-    id: 12,
-  },
-  {
-    url: svg13Dashed,
-    id: 13,
-  },
-  {
-    url: svg14Dashed,
-    id: 14,
-  },
-  {
-    url: svg15Dashed,
-    id: 15,
-  },
-  {
-    url: svg16Dashed,
-    id: 16,
-  },
-  {
-    url: svg17Dashed,
-    id: 17,
-  },
-  {
-    url: svg18Dashed,
-    id: 18,
-  },
-  {
-    url: svg19Dashed,
-    id: 19,
-  },
-  {
-    url: svg20Dashed,
-    id: 20,
-  },
-  {
-    url: svg21Dashed,
-    id: 21,
-  },
-  {
-    url: svg22Dashed,
-    id: 22,
+    url: districtSvg,
+    urlDashed: districtSvgDashed,
+    id: "district",
   },
 ];

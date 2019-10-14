@@ -1,30 +1,65 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
-import { truncate } from "lodash";
+import { truncate, get } from "lodash";
 import { UncontrolledTooltip } from "reactstrap";
 import { CELL_WIDTH } from "constants/calendar";
 import { differenceInDays } from "date-fns";
+import { FLAGS_MAP, FLAG_LOCATIONS } from "constants/flags";
 
 const getEventLength = ({ dateFrom, dateTo }) =>
-  (differenceInDays(new Date(dateTo), new Date(dateFrom)) + 1) * CELL_WIDTH +
-  "px";
+  differenceInDays(new Date(dateTo), new Date(dateFrom)) * CELL_WIDTH;
 
-export function Event({ event, rightOffset, color, title, onClick }) {
-  const style = {
+const getCorrectSvg = (flag, location, planned) => ({
+  flagSvg: get(
+    FLAGS_MAP.find(item => item.url === flag || item.urlDashed === flag),
+    planned ? "urlDashed" : "url",
+    null
+  ),
+  locationSvg: get(
+    FLAG_LOCATIONS.find(item => item.id === location),
+    planned ? "urlDashed" : "url",
+    null
+  ),
+});
+
+export function Event({ event, rightOffset, color, title, flag, onClick }) {
+  const eventLength = getEventLength(event);
+  const flagXCord = eventLength + rightOffset + "px";
+  const { flagSvg, locationSvg } = getCorrectSvg(
+    flag,
+    event.location.type,
+    event.planned
+  );
+
+  const eventStyle = {
     background: color,
-    width: getEventLength(event),
+    width: eventLength + "px",
     right: rightOffset + "px",
   };
+
   return (
     <Fragment>
       <div
         id={"event-" + event.eventId}
         className="event"
-        style={style}
+        style={eventStyle}
         onClick={onClick}
       >
         {title}
       </div>
+      {flag && (
+        <div
+          style={{ right: flagXCord }}
+          className="d-flex flex-column event-flag-container"
+        >
+          <img className="flag" src={flagSvg} alt="Event flag preview" />
+          <img
+            className="location"
+            src={locationSvg}
+            alt="Event flag preview"
+          />
+        </div>
+      )}
       <UncontrolledTooltip
         placement="bottom-start"
         target={"event-" + event.eventId}

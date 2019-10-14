@@ -8,7 +8,7 @@ import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.buisness.models.dto.LocationDto;
 import com.varb.schedule.buisness.models.entity.Event;
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class EventSpringBootTest extends AbstractIntegrationTest {
+public class EventApiTest extends AbstractIntegrationTest {
 
     private final String baseUrl = "/api/event";
 
@@ -132,7 +132,15 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
         final LocalDate dateTo = LocalDate.of(2019, 5, 25);
         final String note = "Note here";
         final LocationDto location = new LocationDto().name("Минск").type(LocationDto.TypeEnum.STATICAL);
-
+//        dateFrom: "2019-10-25"
+//        dateTo: "2019-10-26"
+//        duration: 1
+//        eventId: null
+//        eventTypeId: 43
+//        location: {name: "asdasd", type: "statical"}
+//        note: "asdasd"
+//        planned: true
+//        unitId: 550
         EventPostDto postDto = new EventPostDto()
                 .eventTypeId(eventTypeId)
                 .unitId(unitId)
@@ -264,8 +272,8 @@ public class EventSpringBootTest extends AbstractIntegrationTest {
                 .content(asJsonString(postDto)))
                 .andExpect(status().isBadRequest()).andReturn();
 
-        assertTrue(mvcResult.getResolvedException() instanceof ServiceException);
-        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((ServiceException) mvcResult.getResolvedException()).getCode());
+        assertTrue(mvcResult.getResolvedException() instanceof WebApiException);
+        assertEquals(EventService.INTERSECTION_OF_EVENTS, ((WebApiException) mvcResult.getResolvedException()).getCode());
 
     }
 }

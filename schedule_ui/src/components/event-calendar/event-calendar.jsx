@@ -8,12 +8,14 @@ import { isDate, addDays, differenceInDays } from "date-fns";
 import "./event-calendar.scss";
 
 const DEFAULT_FORM_DATA = {
+  unitId: null,
   dateFrom: null,
   duration: 0,
   eventId: null,
   eventTypeId: "",
   note: "",
-  unitId: null,
+  location: { name: "", type: "statical" },
+  planned: false,
 };
 
 export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
@@ -46,6 +48,7 @@ export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
           dateFrom,
           duration,
           eventTypeId,
+          planned: unit.planned,
         });
 
     setFormType("create");

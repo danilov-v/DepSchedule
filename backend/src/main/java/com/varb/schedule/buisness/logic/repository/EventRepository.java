@@ -16,6 +16,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo);
 
     @Query("select e from Event e " +
+            "join fetch e.eventType " +
+            "join fetch e.unit " +
             "where " +
             "   e.dateTo <= :relativeCurrentDate " +
             "order by e.dateTo desc")
@@ -25,7 +27,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("select e from Event e " +
             "where " +
             "   :dateFrom < e.dateTo and :dateTo > e.dateFrom " +
-            "   and  e.unitId = :unitId " +
+            "   and  e.unit.unitId = :unitId " +
             "   and (:eventId is null or :eventId <> e.eventId)")
     List<Event> findIntersection(LocalDate dateFrom, LocalDate dateTo, Long unitId, @Nullable Long eventId);
 }

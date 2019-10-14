@@ -1,6 +1,6 @@
 package com.varb.schedule.exception.handlers;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
@@ -22,10 +22,10 @@ public class BusinessExceptionHandler {
     /**
      * Исключения сервисного слоя
      */
-    @ExceptionHandler(ServiceException.class)
-    ResponseEntity<Object> handleBadRequest(ServiceException serviceException) {
-        log.error("", serviceException);
-        return exceptionFormatter.toResponseEntity(serviceException);
+    @ExceptionHandler(WebApiException.class)
+    ResponseEntity<Object> handleBadRequest(WebApiException webApiException) {
+        log.error("", webApiException);
+        return exceptionFormatter.toResponseEntity(webApiException);
     }
 
     /**
@@ -35,7 +35,7 @@ public class BusinessExceptionHandler {
     ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
         log.error("", ex);
         return exceptionFormatter.toResponseEntity(
-                new ServiceException(ex,
+                new WebApiException(ex,
                         StringEscapeUtils.unescapeJava(ex.getCause().getCause().getMessage()),
                         HttpStatus.BAD_REQUEST)
         );

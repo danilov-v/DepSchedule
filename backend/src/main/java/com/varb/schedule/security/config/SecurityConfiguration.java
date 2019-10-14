@@ -1,6 +1,6 @@
 package com.varb.schedule.security.config;
 
-import com.varb.schedule.exception.ServiceException;
+import com.varb.schedule.exception.WebApiException;
 import com.varb.schedule.exception.handlers.ExceptionResolver;
 import com.varb.schedule.security.token.TokenRequestFilter;
 import lombok.RequiredArgsConstructor;
@@ -83,16 +83,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, exception) -> {
             log.error("", exception);
-            ServiceException serviceException = new ServiceException(exception, HttpStatus.FORBIDDEN);
-            exceptionResolver.resolve(serviceException, request, response);
+            WebApiException webApiException = new WebApiException(exception, HttpStatus.FORBIDDEN);
+            exceptionResolver.resolve(webApiException, request, response);
         };
     }
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, exception) -> {
-            ServiceException serviceException = new ServiceException(exception, HttpStatus.UNAUTHORIZED);
-            exceptionResolver.resolve(serviceException, request, response);
+            WebApiException webApiException = new WebApiException(exception, HttpStatus.UNAUTHORIZED);
+            exceptionResolver.resolve(webApiException, request, response);
         };
     }
 

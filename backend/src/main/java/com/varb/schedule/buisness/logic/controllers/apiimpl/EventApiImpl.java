@@ -6,6 +6,7 @@ import com.varb.schedule.buisness.logic.service.EventService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
+import com.varb.schedule.buisness.models.dto.EventRecentResponseDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +37,14 @@ public class EventApiImpl implements EventApi {
     }
 
     @Override
-    public ResponseEntity<List<EventResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @Valid Integer count) {
+    public ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @Valid Integer count) {
         return ResponseEntity.ok(
                 modelMapper.mapList(
                         eventService.getRecent(count),
-                        EventResponseDto.class));
+                        EventRecentResponseDto.class));
     }
+
+
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override

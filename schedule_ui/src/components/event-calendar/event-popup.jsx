@@ -10,6 +10,7 @@ import {
   InputGroupAddon,
   Label,
   Input,
+  CustomInput,
   Modal,
   ModalHeader,
   ModalBody,
@@ -18,7 +19,6 @@ import {
 } from "reactstrap";
 import DatePicker from "react-datepicker";
 import classnames from "classnames";
-import { omit } from "lodash";
 import { isDate, addDays, format } from "date-fns";
 import {
   FAILED_EVENT_NOTIFICATION_DATA,
@@ -35,6 +35,9 @@ const validateEventForm = values => {
 
   if (!values.note || values.note.length < 5)
     errors["note"] = "Описание должно содержать минимум 5 символов";
+
+  if (!values.location.name || !values.location.name.trim())
+    errors["locationName"] = "Введите название локации";
 
   return errors;
 };
@@ -64,6 +67,11 @@ export function EventPopup({
     onChange({ [name]: value });
   };
 
+  const onChangeCheckbox = event => {
+    const { checked, name } = event.target;
+    onChange({ [name]: checked });
+  };
+
   const onChangeEventType = event => {
     const { value } = event.target;
 
@@ -90,6 +98,12 @@ export function EventPopup({
       dateFrom: date,
       dateTo: isDate(date) ? addDays(date, values.duration) : null,
     });
+
+  const onChangeLocation = e => {
+    onChange({
+      location: { ...values.location, [e.target.name]: e.target.value },
+    });
+  };
 
   const removeEvent = async () => {
     try {
@@ -128,7 +142,15 @@ export function EventPopup({
     }
   }
 
-  const { dateFrom, dateTo, note, eventTypeId, duration } = values;
+  const {
+    dateFrom,
+    dateTo,
+    note,
+    eventTypeId,
+    duration,
+    location,
+    planned,
+  } = values;
   return (
     <Modal className="event-popup" isOpen={isOpen} toggle={toggle}>
       <Form className="p-3" onSubmit={onSubmit}>
@@ -207,6 +229,43 @@ export function EventPopup({
             </FormFeedback>
           </FormGroup>
           <FormGroup>
+            <Label for="name">Локация</Label>
+            <Input
+              type="text"
+              name="name"
+              id="name"
+              value={location.name}
+              onChange={onChangeLocation}
+              invalid={errorsShown && !!errors["locationName"]}
+            />
+            <FormFeedback>{errors["locationName"]}</FormFeedback>
+          </FormGroup>
+          <FormGroup>
+            <Label for="locationType">Тип Локации</Label>
+            <div>
+              <CustomInput
+                type="radio"
+                id="district"
+                name="type"
+                className="d-inline-block mr-2"
+                value="district"
+                label="Район"
+                checked={location.type === "district"}
+                onChange={onChangeLocation}
+              />
+              <CustomInput
+                type="radio"
+                id="statical"
+                name="type"
+                className="d-inline-block "
+                value="statical"
+                checked={location.type === "statical"}
+                label="Стационар"
+                onChange={onChangeLocation}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup>
             <Label for="note">Описание События</Label>
             <Input
               type="textarea"
@@ -218,6 +277,16 @@ export function EventPopup({
               invalid={errorsShown && !!errors["note"]}
             />
             <FormFeedback>{errors["note"]}</FormFeedback>
+          </FormGroup>
+          <FormGroup>
+            <CustomInput
+              type="checkbox"
+              name="planned"
+              id="planned"
+              checked={planned}
+              onChange={onChangeCheckbox}
+              label="Запланировано"
+            />
           </FormGroup>
         </ModalBody>
         <ModalFooter>
@@ -261,5 +330,10 @@ EventPopup.propTypes = {
     eventTypeId: "",
     note: "",
     unitId: PropTypes.number,
+    location: PropTypes.shape({
+      type: PropTypes.string,
+      name: PropTypes.string,
+    }),
+    planned: PropTypes.bool,
   }),
 };
