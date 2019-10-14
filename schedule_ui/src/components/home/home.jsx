@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import { addDays, differenceInDays, differenceInCalendarDays } from "date-fns";
 import { isEmpty, cloneDeep, pick } from "lodash";
@@ -7,6 +8,7 @@ import {
   useEventTypes,
   usePeriods,
 } from "helpers/hooks/apiEffects";
+import { updateCalendar } from "helpers/api";
 import { Container } from "reactstrap";
 import { Timeline } from "components/timeline/timeline";
 import { Header } from "components/header/header";
@@ -38,9 +40,11 @@ function getUnitsFromUnitsTree(root) {
   return array;
 }
 
-export function Home() {
+export function Home({ activeCalendar }) {
   const astronomicalDate = getDayWithoutMinutes(new Date());
-  const [operationalDate, setOperationalDate] = useState(astronomicalDate);
+  const [operationalDate, setOperationalDate] = useState(
+    addDays(astronomicalDate, activeCalendar.shift)
+  );
   const [startDate, setStartDate] = useState(astronomicalDate);
   const [endDate, setEndDate] = useState(addDays(astronomicalDate, FOUR_MONTH));
   const [eventTypes, fetchEventTypes] = useEventTypes();
@@ -51,6 +55,14 @@ export function Home() {
     operationalDate,
     addDays(operationalDate, differenceInDays(endDate, startDate)),
   ];
+
+  const onOperationalDateChange = date => {
+    setOperationalDate(date);
+
+    const shift = differenceInCalendarDays(date, new Date());
+
+    updateCalendar(activeCalendar.calendarId, shift);
+  };
 
   const onUnitsUpdate = () => {
     fetchUnitsTree();
@@ -86,7 +98,7 @@ export function Home() {
           startDate={startDate}
           endDate={endDate}
           operationalDate={operationalDate}
-          onChangeOperationalDate={setOperationalDate}
+          onChangeOperationalDate={onOperationalDateChange}
           onChangeStartDate={setStartDateHander}
           onChangeEndDate={setEndDateHander}
         />
@@ -128,3 +140,16 @@ export function Home() {
     </ConfirmationServiceProvider>
   );
 }
+
+Home.propTypes = {
+  activeCalendar: PropTypes.shape({
+    calendarId: PropTypes.number,
+    name: PropTypes.string,
+    shift: PropTypes.number,
+    isAstronomical: PropTypes.bool,
+  }),
+};
+
+Home.defaultProps = {
+  activeCalendar: null,
+};
