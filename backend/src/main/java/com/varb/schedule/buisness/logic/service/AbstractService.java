@@ -71,8 +71,8 @@ public abstract class AbstractService<T, ID> {
     /**
      * @throws WebApiException if entity not exists.
      */
-    void checkExists(ID id) {
-        repository.findById(id).orElseThrow(() -> notFindException(id));
+    T checkExists(ID id) {
+        return repository.findById(id).orElseThrow(() -> notFindException(id));
     }
 
     protected WebApiException notFindException(ID id){

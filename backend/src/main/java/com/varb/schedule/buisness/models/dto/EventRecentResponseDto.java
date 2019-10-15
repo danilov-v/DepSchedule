@@ -1,18 +1,21 @@
 package com.varb.schedule.buisness.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.varb.schedule.buisness.models.dto.LocationDto;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.time.LocalDate;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * EventRecentResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-11T11:37:06.077592+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
 
 public class EventRecentResponseDto   {
   @JsonProperty("eventId")
@@ -38,6 +41,9 @@ public class EventRecentResponseDto   {
 
   @JsonProperty("eventTypeDescription")
   private String eventTypeDescription;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   public EventRecentResponseDto eventId(Long eventId) {
     this.eventId = eventId;
@@ -206,6 +212,27 @@ public class EventRecentResponseDto   {
     this.eventTypeDescription = eventTypeDescription;
   }
 
+  public EventRecentResponseDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -223,12 +250,13 @@ public class EventRecentResponseDto   {
         Objects.equals(this.location, eventRecentResponse.location) &&
         Objects.equals(this.planned, eventRecentResponse.planned) &&
         Objects.equals(this.note, eventRecentResponse.note) &&
-        Objects.equals(this.eventTypeDescription, eventRecentResponse.eventTypeDescription);
+        Objects.equals(this.eventTypeDescription, eventRecentResponse.eventTypeDescription) &&
+        Objects.equals(this.calendarId, eventRecentResponse.calendarId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(eventId, unitTitle, dateFrom, dateTo, location, planned, note, eventTypeDescription);
+    return Objects.hash(eventId, unitTitle, dateFrom, dateTo, location, planned, note, eventTypeDescription, calendarId);
   }
 
   @Override
@@ -244,6 +272,7 @@ public class EventRecentResponseDto   {
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeDescription: ").append(toIndentedString(eventTypeDescription)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

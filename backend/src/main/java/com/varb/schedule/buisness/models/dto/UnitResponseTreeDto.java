@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.*;
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-12T11:13:14.156717+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")
@@ -31,6 +31,9 @@ public class UnitResponseTreeDto   {
 
   @JsonProperty("planned")
   private Boolean planned = false;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -109,6 +112,27 @@ public class UnitResponseTreeDto   {
 
   public void setPlanned(Boolean planned) {
     this.planned = planned;
+  }
+
+  public UnitResponseTreeDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
   }
 
   public UnitResponseTreeDto parentId(Long parentId) {
@@ -250,6 +274,7 @@ public class UnitResponseTreeDto   {
     return Objects.equals(this.title, unitResponseTree.title) &&
         Objects.equals(this.flag, unitResponseTree.flag) &&
         Objects.equals(this.planned, unitResponseTree.planned) &&
+        Objects.equals(this.calendarId, unitResponseTree.calendarId) &&
         Objects.equals(this.parentId, unitResponseTree.parentId) &&
         Objects.equals(this.unitId, unitResponseTree.unitId) &&
         Objects.equals(this.events, unitResponseTree.events) &&
@@ -259,7 +284,7 @@ public class UnitResponseTreeDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, planned, parentId, unitId, events, childUnit, eventDuration);
+    return Objects.hash(title, flag, planned, calendarId, parentId, unitId, events, childUnit, eventDuration);
   }
 
   @Override
@@ -270,6 +295,7 @@ public class UnitResponseTreeDto   {
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
     sb.append("    events: ").append(toIndentedString(events)).append("\n");

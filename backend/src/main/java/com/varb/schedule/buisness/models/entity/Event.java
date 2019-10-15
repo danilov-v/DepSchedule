@@ -71,4 +71,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private LocationTypeEnum locationType;
 
+    //@Column(nullable = false, updatable = false)
+    //private Long calendarId;
+
 }

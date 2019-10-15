@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * PeriodPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-12T11:13:14.156717+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
 
 public class PeriodPostDto   {
   @JsonProperty("name")
@@ -26,6 +26,9 @@ public class PeriodPostDto   {
 
   @JsonProperty("endDate")
   private LocalDate endDate;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   public PeriodPostDto name(String name) {
     this.name = name;
@@ -92,6 +95,27 @@ public class PeriodPostDto   {
     this.endDate = endDate;
   }
 
+  public PeriodPostDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -104,12 +128,13 @@ public class PeriodPostDto   {
     PeriodPostDto periodPost = (PeriodPostDto) o;
     return Objects.equals(this.name, periodPost.name) &&
         Objects.equals(this.startDate, periodPost.startDate) &&
-        Objects.equals(this.endDate, periodPost.endDate);
+        Objects.equals(this.endDate, periodPost.endDate) &&
+        Objects.equals(this.calendarId, periodPost.calendarId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, startDate, endDate);
+    return Objects.hash(name, startDate, endDate, calendarId);
   }
 
   @Override
@@ -120,6 +145,7 @@ public class PeriodPostDto   {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

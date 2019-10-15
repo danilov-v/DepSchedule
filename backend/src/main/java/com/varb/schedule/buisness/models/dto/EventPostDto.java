@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * EventPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-12T11:13:14.156717+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
 
 public class EventPostDto   {
   @JsonProperty("unitId")
@@ -39,6 +39,9 @@ public class EventPostDto   {
 
   @JsonProperty("eventTypeId")
   private Long eventTypeId;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   public EventPostDto unitId(Long unitId) {
     this.unitId = unitId;
@@ -188,6 +191,27 @@ public class EventPostDto   {
     this.eventTypeId = eventTypeId;
   }
 
+  public EventPostDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -204,12 +228,13 @@ public class EventPostDto   {
         Objects.equals(this.location, eventPost.location) &&
         Objects.equals(this.planned, eventPost.planned) &&
         Objects.equals(this.note, eventPost.note) &&
-        Objects.equals(this.eventTypeId, eventPost.eventTypeId);
+        Objects.equals(this.eventTypeId, eventPost.eventTypeId) &&
+        Objects.equals(this.calendarId, eventPost.calendarId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitId, dateFrom, dateTo, location, planned, note, eventTypeId);
+    return Objects.hash(unitId, dateFrom, dateTo, location, planned, note, eventTypeId, calendarId);
   }
 
   @Override
@@ -224,6 +249,7 @@ public class EventPostDto   {
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeId: ").append(toIndentedString(eventTypeId)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

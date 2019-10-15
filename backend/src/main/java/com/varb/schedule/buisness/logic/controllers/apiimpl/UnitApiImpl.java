@@ -30,9 +30,9 @@ public class UnitApiImpl implements UnitApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<UnitResponseDto>> unitGet(@Valid Optional<Long> calendarId) {
+    public ResponseEntity<List<UnitResponseDto>> unitGet(@Valid Optional<Long>  calendarId) {
         return ResponseEntity.ok(
-                modelMapper.mapList(unitService.findAll(), UnitResponseDto.class));
+                modelMapper.mapList(unitService.findAll(calendarId.orElse(null)), UnitResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ)

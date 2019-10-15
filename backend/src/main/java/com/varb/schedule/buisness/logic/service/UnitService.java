@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -40,6 +41,16 @@ public class UnitService extends AbstractService<Unit, Long> {
         return unitRepository.findAllWithChilds(calendarId, dateFrom, dateTo);
     }
 
+    public List<Unit> findAll(@Nullable Long calendarId) {
+        if (calendarId != null) {
+            //units for specified calendarId
+            return unitRepository.findAllByCalendarId(calendarId);
+        }
+
+        //all units
+        return findAll();
+    }
+
     private void checkParent(Unit unit) {
         Long parentId = unit.getParentId();
 
@@ -52,9 +63,16 @@ public class UnitService extends AbstractService<Unit, Long> {
         }
 
         if(parentId.equals(unit.getUnitId()))
-            throw new WebApiException("Невозможно установить parentId равное unitId");
+            throw new WebApiException("Невозможно установить parentId равный unitId");
 
-        checkExists(parentId);
+        Unit parentUnit = checkExists(parentId);
+
+        //check that calendars are the same
+        if (!parentUnit.getCalendarId().equals(unit.getCalendarId())) {
+            throw new WebApiException(
+                    "Календарь, в котором создано родительское подразделение отличается от текущего: unit.calendarId = "
+                            +unit.getCalendarId() +", parentUnit.calendarId = " + parentUnit.getCalendarId());
+        }
 
 //        if (parent.getUnitLevel() >= unit.getUnitLevel())
 //            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
