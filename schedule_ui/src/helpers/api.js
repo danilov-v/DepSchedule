@@ -156,6 +156,12 @@ export const updateCalendar = async (calendarId, shift) =>
     method: "PUT",
     body: JSON.stringify({ shift }),
   });
+
+export const createCalendar = async name =>
+  makeApiCall(CALENDAR, {
+    method: "POST",
+    body: JSON.stringify({ name, shift: 0, isAstronomical: true }),
+  });
 /**
  * END CALENDARS API
  */

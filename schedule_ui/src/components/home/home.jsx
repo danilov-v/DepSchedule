@@ -40,7 +40,7 @@ function getUnitsFromUnitsTree(root) {
   return array;
 }
 
-export function Home({ activeCalendar }) {
+export function Home({ activeCalendar, changeCalendar }) {
   const astronomicalDate = getDayWithoutMinutes(new Date());
   const [operationalDate, setOperationalDate] = useState(
     addDays(astronomicalDate, activeCalendar.shift)
@@ -101,6 +101,7 @@ export function Home({ activeCalendar }) {
           onChangeOperationalDate={onOperationalDateChange}
           onChangeStartDate={setStartDateHander}
           onChangeEndDate={setEndDateHander}
+          onCalendarChange={changeCalendar}
         />
         <main className="h-75 emblem-background">
           <Route
@@ -148,6 +149,7 @@ Home.propTypes = {
     shift: PropTypes.number,
     isAstronomical: PropTypes.bool,
   }),
+  changeCalendar: PropTypes.func.isRequired,
 };
 
 Home.defaultProps = {
