@@ -24,8 +24,8 @@ public class Period {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    //@Column(nullable = false, updatable = false)
-    //private Long calendarId;
+    @Column(nullable = false, updatable = false)
+    private Long calendarId;
 }
 
 /*

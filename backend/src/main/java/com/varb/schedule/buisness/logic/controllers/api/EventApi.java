@@ -31,7 +31,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T16:45:25.018609+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "event", description = "the event API")
@@ -67,7 +67,7 @@ public interface EventApi {
     @RequestMapping(value = "/event",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "dateFrom", required = true) LocalDate dateFrom,@ApiParam(value = "") @Valid @RequestParam(value = "dateTo", required = false) Optional<LocalDate> dateTo) {
+    default ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "calendarId", required = true) Long calendarId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "dateFrom", required = true) LocalDate dateFrom,@ApiParam(value = "") @Valid @RequestParam(value = "dateTo", required = false) Optional<LocalDate> dateTo) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -141,7 +141,7 @@ public interface EventApi {
     @RequestMapping(value = "/event/recentList",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
+    default ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "calendarId", required = true) Long calendarId,@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

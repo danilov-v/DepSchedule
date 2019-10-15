@@ -30,6 +30,12 @@ paths:
       tags:
         - event
       parameters:
+        - name: calendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: dateFrom
           in: query
           required: true
@@ -83,6 +89,12 @@ paths:
       tags:
         - event
       parameters:
+        - name: calendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: count
           in: query
           required: true
@@ -568,6 +580,13 @@ paths:
       summary: Список периодов
       tags:
         - period
+      parameters:
+        - name: calendarId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Array of event

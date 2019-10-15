@@ -15,6 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @ApiController
 @RequiredArgsConstructor
@@ -25,9 +26,9 @@ public class PeriodApiImpl implements PeriodApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<PeriodResponseDto>> periodGet() {
+    public ResponseEntity<List<PeriodResponseDto>> periodGet(Optional<Long> calendarId) {
         return ResponseEntity.ok(
-                modelMapper.mapList(periodService.findAll(), PeriodResponseDto.class));
+                modelMapper.mapList(periodService.findAll(calendarId.orElse(null)), PeriodResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)

@@ -29,7 +29,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T16:45:25.018609+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "period", description = "the period API")
@@ -65,7 +65,7 @@ public interface PeriodApi {
     @RequestMapping(value = "/period",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<PeriodResponseDto>> periodGet() {
+    default ResponseEntity<List<PeriodResponseDto>> periodGet(@ApiParam(value = "") @Valid @RequestParam(value = "calendarId", required = false) Optional<Long> calendarId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

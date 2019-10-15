@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.*;
 /**
  * UserBaseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T13:05:40.298965+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T16:45:25.018609+03:00[Europe/Minsk]")
 
 public class UserBaseDto   {
   @JsonProperty("login")
