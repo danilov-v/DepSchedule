@@ -10,6 +10,7 @@ import {
   PERIODS,
   LOGIN,
   LOGOUT,
+  CALENDAR,
 } from "config/url";
 
 const makeApiCall = async (apiPath, params) => {
@@ -143,4 +144,24 @@ export const removePeriod = async periodId =>
 
 /**
  * END PERIODS API
+ */
+
+/**
+ * CALENDARS API
+ */
+export const getCalendars = async () => await makeApiCall(CALENDAR);
+
+export const updateCalendar = async (calendarId, shift) =>
+  await makeApiCall(`${CALENDAR}/${calendarId}`, {
+    method: "PUT",
+    body: JSON.stringify({ shift }),
+  });
+
+export const createCalendar = async name =>
+  makeApiCall(CALENDAR, {
+    method: "POST",
+    body: JSON.stringify({ name, shift: 0, isAstronomical: true }),
+  });
+/**
+ * END CALENDARS API
  */

@@ -29,6 +29,7 @@ export function HeaderUI({
   onChangeOperationalDate,
   onChangeStartDate,
   onChangeEndDate,
+  onCalendarChange,
   history,
 }) {
   const [isOpen, toggleNav] = useState(false);
@@ -110,7 +111,9 @@ export function HeaderUI({
               <FontAwesomeIcon icon="user-alt" />
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem>Профиль</DropdownItem>
+              <DropdownItem onClick={onCalendarChange}>
+                Сменить календарь
+              </DropdownItem>
               <DropdownItem divider />
               <DropdownItem onClick={logout}>Выйти</DropdownItem>
             </DropdownMenu>
@@ -130,4 +133,5 @@ HeaderUI.propTypes = {
   onChangeStartDate: PropTypes.func,
   onChangeEndDate: PropTypes.func,
   history: PropTypes.object,
+  onCalendarChange: PropTypes.func,
 };

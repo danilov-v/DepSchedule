@@ -1,5 +1,5 @@
 import React from "react";
-import { Home } from "components/home/home";
+import { Calendar } from "pages/calendar/calendar";
 import { Switch, Route } from "react-router-dom";
 import {
   AuthServiceProvider,
@@ -13,7 +13,7 @@ export function Auth() {
     <AuthServiceProvider>
       <Switch>
         <Route exact path="/login" render={() => <AuthPage />} />
-        <PrivateRoute path="/" render={() => <Home />} />
+        <PrivateRoute path="/" render={() => <Calendar />} />
       </Switch>
       <Notification />
     </AuthServiceProvider>
