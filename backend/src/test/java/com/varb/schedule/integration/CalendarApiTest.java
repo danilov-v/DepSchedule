@@ -4,14 +4,12 @@ import com.varb.schedule.buisness.logic.repository.CalendarRepository;
 import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
 import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
 import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
-import com.varb.schedule.buisness.models.entity.Calendar;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-
-import java.util.List;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,32 +26,33 @@ public class CalendarApiTest extends AbstractIntegrationTest {
     @DisplayName("Получение списка календарей")
     @Sql("/db/scripts/spring/InsertCalendarData.sql")
     public void testGetCalendarList() throws Exception {
-        List<Calendar> entitiesFromDb = repository.findAll();
+        var entities = repository.findAll();
 
         //validate data has been initialized correctly
-        assertTrue(entitiesFromDb.size() > 0);
+        assertTrue(entities.size() > 0);
 
-        final String responseStr = mockMvc.perform(get(baseUrl)
+        MvcResult mvcResult = mockMvc.perform(get(baseUrl)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andReturn()
-                .getResponse().getContentAsString();
+                .andReturn();
 
-        List<CalendarResponseDto> actualEntities = asObjectList(responseStr, CalendarResponseDto.class);
-        assertEquals(entitiesFromDb.size(), actualEntities.size());
+        final String responseStr = mvcResult.getResponse().getContentAsString();
 
-        for (Calendar entityFromDb : entitiesFromDb) {
-            CalendarResponseDto actualEntity = actualEntities.stream()
-                    .filter(dto -> dto.getCalendarId().equals(entityFromDb.getCalendarId())).findFirst().get();
+        var dtoList = asObjectList(responseStr, CalendarResponseDto.class);
+        assertEquals(entities.size(), dtoList.size());
+
+        for (var entity : entities) {
+            var dto = dtoList.stream()
+                    .filter(d -> d.getCalendarId().equals(entity.getCalendarId())).findFirst().get();
 
             //assertion according to the initialization data of sql scripts above
             assertAll("Has to return initialized before the test data",
                     //first entity
-                    () -> assertEquals(entityFromDb.getCalendarId(), actualEntity.getCalendarId()),
-                    () -> assertEquals(entityFromDb.getName(), actualEntity.getName()),
-                    () -> assertEquals(entityFromDb.isAstronomical(), actualEntity.getIsAstronomical()),
-                    () -> assertEquals(entityFromDb.getShift(), actualEntity.getShift().intValue())
+                    () -> assertEquals(entity.getCalendarId(), dto.getCalendarId()),
+                    () -> assertEquals(entity.getName(), dto.getName()),
+                    () -> assertEquals(entity.isAstronomical(), dto.getIsAstronomical()),
+                    () -> assertEquals(entity.getShift(), dto.getShift().intValue())
             );
         }
     }
@@ -62,35 +61,36 @@ public class CalendarApiTest extends AbstractIntegrationTest {
     @DisplayName("Получение конкретного календаря")
     @Sql("/db/scripts/spring/InsertCalendarData.sql")
     public void testGetCalendar() throws Exception {
-        List<Calendar> entitiesFromDb = repository.findAll();
+        var entities = repository.findAll();
 
         //validate data has been initialized correctly
-        assertTrue(entitiesFromDb.size() > 0);
-        Calendar entityFromDb = entitiesFromDb.get(0);
+        assertTrue(entities.size() > 0);
+        var entity = entities.get(0);
 
-        final String responseStr = mockMvc.perform(get(baseUrl + "/" + entityFromDb.getCalendarId())
+        final MvcResult mvcResult = mockMvc.perform(get(baseUrl + "/" + entity.getCalendarId())
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andReturn()
-                .getResponse().getContentAsString();
+                .andReturn();
 
-        CalendarResponseDto actualEntity = asObject(responseStr, CalendarResponseDto.class);
+        final String responseStr = mvcResult.getResponse().getContentAsString();
+
+        var dto = asObject(responseStr, CalendarResponseDto.class);
 
         //assertion according to the initialization data of sql scripts above
         assertAll("Has to return initialized before the test data",
                 //first entity
-                () -> assertEquals(entityFromDb.getCalendarId(), actualEntity.getCalendarId()),
-                () -> assertEquals(entityFromDb.getName(), actualEntity.getName()),
-                () -> assertEquals(entityFromDb.isAstronomical(), actualEntity.getIsAstronomical()),
-                () -> assertEquals(entityFromDb.getShift(), actualEntity.getShift().intValue())
+                () -> assertEquals(entity.getCalendarId(), dto.getCalendarId()),
+                () -> assertEquals(entity.getName(), dto.getName()),
+                () -> assertEquals(entity.isAstronomical(), dto.getIsAstronomical()),
+                () -> assertEquals(entity.getShift(), dto.getShift().intValue())
         );
     }
 
     @Test
     @DisplayName("Создание нового календаря")
     public void testPostCalendar() throws Exception {
-        CalendarBaseReqDto actualDto = new CalendarBaseReqDto()
+        var actualDto = new CalendarBaseReqDto()
                 .isAstronomical(false)
                 .name("test calendar")
                 .shift(5);
@@ -108,14 +108,14 @@ public class CalendarApiTest extends AbstractIntegrationTest {
         ;
 
         //second level validation
-        List<Calendar> afterAdd = repository.findAll();
-        assertEquals(1, afterAdd.size());
-        Calendar entityFromDb = afterAdd.get(0);
+        var entities = repository.findAll();
+        assertEquals(1, entities.size());
+        var entity = entities.get(0);
         assertAll("Assertion of just added period",
-                () -> assertNotNull(entityFromDb.getCalendarId()),
-                () -> assertEquals(actualDto.getName(), entityFromDb.getName()),
-                () -> assertEquals(actualDto.getShift().intValue(), entityFromDb.getShift()),
-                () -> assertEquals(actualDto.getIsAstronomical(), entityFromDb.isAstronomical())
+                () -> assertNotNull(entity.getCalendarId()),
+                () -> assertEquals(actualDto.getName(), entity.getName()),
+                () -> assertEquals(actualDto.getShift().intValue(), entity.getShift()),
+                () -> assertEquals(actualDto.getIsAstronomical(), entity.isAstronomical())
         );
     }
 
@@ -124,15 +124,14 @@ public class CalendarApiTest extends AbstractIntegrationTest {
     @Sql("/db/scripts/spring/InsertCalendarData.sql")
     public void testPutCalendar() throws Exception {
 
-        List<Calendar> entitiesFromDb = repository.findAll();
+        var entitiesBeforeUpdate = repository.findAll();
         //validate data has been initialized correctly
-        assertTrue(entitiesFromDb.size() > 0);
+        assertTrue(entitiesBeforeUpdate.size() > 0);
 
-        Calendar entityBeforeUpdate = entitiesFromDb.get(0);
+        var entityBeforeUpdate = entitiesBeforeUpdate.get(0);
         entityManager.detach(entityBeforeUpdate);
 
-        String newNote = "Changed note";
-        CalendarBaseDto actualDto = new CalendarBaseDto()
+        var actualDto = new CalendarBaseDto()
                 .name("newName")
                 .shift(12);
 
@@ -147,7 +146,7 @@ public class CalendarApiTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.shift").value(actualDto.getShift()))
                 .andExpect(jsonPath("$.isAstronomical").value(entityBeforeUpdate.isAstronomical()));
 
-        Calendar entityAfterUpdate = repository.findById(entityBeforeUpdate.getCalendarId()).get();
+        var entityAfterUpdate = repository.findById(entityBeforeUpdate.getCalendarId()).get();
         //second level validation
         assertAll("Assertion of just updated entityBeforeUpdate",
                 () -> assertEquals(entityBeforeUpdate.getCalendarId(), entityAfterUpdate.getCalendarId()),
@@ -161,12 +160,12 @@ public class CalendarApiTest extends AbstractIntegrationTest {
     @DisplayName("Удаление существующего календаря")
     @Sql("/db/scripts/spring/InsertCalendarData.sql")
     public void testDeleteEvent() throws Exception {
-        List<Calendar> entitiesFromDb = repository.findAll();
+        var entitiesFromDb = repository.findAll();
         //validate data has been initialized correctly
         assertTrue(entitiesFromDb.size() > 0);
 
         int rowsNum = entitiesFromDb.size();
-        Calendar calendarToDelete = entitiesFromDb.get(0);
+        var calendarToDelete = entitiesFromDb.get(0);
 
         mockMvc.perform(delete(baseUrl + "/" + calendarToDelete.getCalendarId())
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -174,7 +173,7 @@ public class CalendarApiTest extends AbstractIntegrationTest {
 
 
         //assert after deleting one event
-        List<Calendar> afterDeleteList = repository.findAll();
+        var afterDeleteList = repository.findAll();
         assertEquals(rowsNum - 1, afterDeleteList.size());
         assertFalse(afterDeleteList.contains(calendarToDelete));
     }
