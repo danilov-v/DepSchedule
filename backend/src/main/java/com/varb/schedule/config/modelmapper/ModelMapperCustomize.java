@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class ModelMapperCustomize extends ModelMapper {
 
-    public <D> List<D> mapList(Object source, Class<D> destinationType) {
+    public <D> List<D> mapToList(Object source, Class<D> destinationType) {
         if (source == null)
             return Collections.emptyList();
         Type type = Array.newInstance(destinationType, 0).getClass();

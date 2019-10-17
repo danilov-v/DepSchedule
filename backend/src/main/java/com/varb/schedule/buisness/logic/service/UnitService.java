@@ -65,7 +65,7 @@ public class UnitService extends AbstractService<Unit, Long> {
         if(parentId.equals(unit.getUnitId()))
             throw new WebApiException("Невозможно установить parentId равный unitId");
 
-        Unit parentUnit = checkExists(parentId);
+        Unit parentUnit = findById(parentId);
 
         //check that calendars are the same
         if (!parentUnit.getCalendarId().equals(unit.getCalendarId())) {

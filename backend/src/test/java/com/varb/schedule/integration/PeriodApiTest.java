@@ -59,7 +59,9 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     @Test
     @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testPostPeriod() throws Exception {
-        final LocalDate startDate = LocalDate.of(2019, 5, 28);
+        int beforeAddSize = periodRepository.findAll().size();
+
+        final LocalDate startDate = LocalDate.of(2019, 10, 17);
         final LocalDate endDate = LocalDate.of(2020, 5, 27);
         String name = "Just added period";
         final Long calendarId = 1L;
@@ -83,8 +85,9 @@ public class PeriodApiTest extends AbstractIntegrationTest {
 
         //second level validation
         var afterAdd = periodRepository.findAll();
-        assertTrue(afterAdd.size() == 1);
-        var entity = afterAdd.get(0);
+        assertTrue(afterAdd.size() == beforeAddSize + 1);
+        //take the last entity from list. We expect it is the one we added
+        var entity = afterAdd.get(beforeAddSize);
         assertAll("Assertion of just added period",
                 () -> assertNotNull(entity.getPeriodId()),
                 () -> assertEquals(calendarId, entity.getCalendarId()),

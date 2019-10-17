@@ -31,7 +31,7 @@ public class EventApiImpl implements EventApi {
     @Override
     public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid Long calendarId, @NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
-                modelMapper.mapList(
+                modelMapper.mapToList(
                         eventService.getAllBetweenDates(calendarId, dateFrom, dateTo.orElse(null)),
                         EventResponseDto.class));
     }
@@ -39,7 +39,7 @@ public class EventApiImpl implements EventApi {
     @Override
     public ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Valid Long calendarId, @NotNull @Min(1) @Max(100) @Valid Integer count) {
         return ResponseEntity.ok(
-                modelMapper.mapList(
+                modelMapper.mapToList(
                         eventService.getRecent(calendarId, count),
                         EventRecentResponseDto.class));
     }

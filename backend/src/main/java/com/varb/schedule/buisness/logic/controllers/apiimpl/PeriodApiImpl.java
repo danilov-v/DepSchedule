@@ -28,7 +28,7 @@ public class PeriodApiImpl implements PeriodApi {
     @Override
     public ResponseEntity<List<PeriodResponseDto>> periodGet(Optional<Long> calendarId) {
         return ResponseEntity.ok(
-                modelMapper.mapList(periodService.findAll(calendarId.orElse(null)), PeriodResponseDto.class));
+                modelMapper.mapToList(periodService.findAll(calendarId.orElse(null)), PeriodResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
