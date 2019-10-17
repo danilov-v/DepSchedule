@@ -26,7 +26,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
     private EventTypeRepository eventTypeRepository;
 
     @Test
-    @Sql("/db/scripts/spring/InsertEventTypeData.sql")
+    @Sql("/db/scripts/eventType/InsertEventTypeData.sql")
     public void testGetEventType() throws Exception {
 
         MvcResult mvcResult = mockMvc.perform(get(baseUrl)
@@ -74,7 +74,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql("/db/scripts/spring/InsertEventTypeData.sql")
+    @Sql("/db/scripts/eventType/InsertEventTypeData.sql")
     public void testPutEventType() throws Exception {
         //Get event type to update
         List<EventType> initializedData = eventTypeRepository.findAll();
@@ -107,7 +107,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql("/db/scripts/spring/InsertEventTypeData.sql")
+    @Sql("/db/scripts/eventType/InsertEventTypeData.sql")
     public void testDeleteEventType() throws Exception {
         List<EventType> initializedData = eventTypeRepository.findAll();
         int rowsNum = initializedData.size();

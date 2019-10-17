@@ -1,10 +1,7 @@
 package com.varb.schedule.buisness.models.entity;
 
 import com.varb.schedule.buisness.models.business.LocationTypeEnum;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.lang.Nullable;
 
@@ -13,6 +10,7 @@ import java.time.LocalDate;
 
 @Data()
 @EqualsAndHashCode(exclude = {"eventType", "unit"})
+@ToString(exclude = {"eventType", "unit"})
 @Accessors(chain = true)
 @Entity
 public class Event {

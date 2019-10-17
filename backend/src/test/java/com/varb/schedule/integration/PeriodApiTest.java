@@ -27,7 +27,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     private PeriodRepository periodRepository;
 
     @Test
-    @Sql("/db/scripts/spring/InsertPeriodData.sql")
+    @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testGetPeriod() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get(baseUrl)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -57,6 +57,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testPostPeriod() throws Exception {
         final LocalDate startDate = LocalDate.of(2019, 5, 28);
         final LocalDate endDate = LocalDate.of(2020, 5, 27);
@@ -94,7 +95,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql("/db/scripts/spring/InsertPeriodData.sql")
+    @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testPutPeriod() throws Exception {
         var initializedData = periodRepository.findAll();
         //validate data has been initialized correctly
@@ -134,7 +135,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql("/db/scripts/spring/InsertPeriodData.sql")
+    @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testDeletePeriod() throws Exception {
         var initializedData = periodRepository.findAll();
         int rowsNum = initializedData.size();
@@ -152,7 +153,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql("/db/scripts/spring/InsertPeriodData.sql")
+    @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testWrongDatesAndIntersections() throws Exception {
         var postDto = new PeriodPostDto();
         postDto.calendarId(1L)

@@ -33,8 +33,8 @@ public class EventApiTest extends AbstractIntegrationTest {
     private EventRepository eventRepository;
 
     @Test
-    @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
-            @Sql("/db/scripts/spring/InsertEventData.sql")})
+    @SqlGroup({@Sql("/db/scripts/event/EventTestRequiredData.sql"),
+            @Sql("/db/scripts/event/InsertEventData.sql")})
     public void testGetEvent() throws Exception {
         getWithOnlyDateFromParam();
         getWithBothDateFromAndDateToParams();
@@ -124,7 +124,7 @@ public class EventApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql("/db/scripts/spring/EventTestRequiredData.sql")
+    @Sql("/db/scripts/event/EventTestRequiredData.sql")
     public void testPostEvent() throws Exception {
         final Long unitId = 200L;
         final Long eventTypeId = 1L;
@@ -180,8 +180,8 @@ public class EventApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
-            @Sql("/db/scripts/spring/InsertEventData.sql")})
+    @SqlGroup({@Sql("/db/scripts/event/EventTestRequiredData.sql"),
+            @Sql("/db/scripts/event/InsertEventData.sql")})
     public void testPutEvent() throws Exception {
         /*TODO refactor after implementation of right logic - Duration
          duration from EventDuration is supposed to be used only for usability
@@ -231,8 +231,8 @@ public class EventApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
-            @Sql("/db/scripts/spring/InsertEventData.sql")})
+    @SqlGroup({@Sql("/db/scripts/event/EventTestRequiredData.sql"),
+            @Sql("/db/scripts/event/InsertEventData.sql")})
     public void testDeleteEvent() throws Exception {
         List<Event> initializedData = eventRepository.findAll();
         int rowsNum = initializedData.size();
@@ -252,8 +252,8 @@ public class EventApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @SqlGroup({@Sql("/db/scripts/spring/EventTestRequiredData.sql"),
-            @Sql("/db/scripts/spring/InsertEventData.sql")})
+    @SqlGroup({@Sql("/db/scripts/event/EventTestRequiredData.sql"),
+            @Sql("/db/scripts/event/InsertEventData.sql")})
     public void testIntersections() throws Exception {
         //set dateFrom and duration to have intersection
         LocalDate dateFrom = LocalDate.of(2019, 9, 20);
