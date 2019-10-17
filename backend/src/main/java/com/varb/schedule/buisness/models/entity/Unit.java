@@ -37,11 +37,11 @@ public class Unit {
 //    private Integer unitLevel;
 
     @Setter(AccessLevel.PRIVATE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.REMOVE)
     private Set<Event> events;
 
     @Setter(AccessLevel.PRIVATE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "compositePK.unitId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "compositePK.unitId", cascade = CascadeType.REMOVE)
     private Set<EventDuration> eventDurations;
 
     @Column(nullable = false, updatable = false)

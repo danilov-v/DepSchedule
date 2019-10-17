@@ -89,8 +89,6 @@ public class UnitApiTest extends AbstractIntegrationTest {
         public void testGetUnitThree() throws Exception {
             final String dateFrom = "2019-09-01";
             final String calendarId = "2";
-            final long expectedUnitSize = 4;
-            final long expectedEventSize = 2;
 
             final MvcResult mvcResult = mockMvc.perform(
                     get(UNIT_TREE)
