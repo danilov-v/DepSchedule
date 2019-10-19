@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * AbstractService for implement default service operations for a specific type.
  *
- * @param <T> the domain type the repository manages
+ * @param <T>  the domain type the repository manages
  * @param <ID> the type of the id of the entity the repository manages
  */
 @Slf4j
@@ -24,9 +26,19 @@ public abstract class AbstractService<T, ID> {
         this.repository = repository;
     }
 
+    @PersistenceContext
+    protected EntityManager entityManager;
+
     public void delete(ID id) {
         try {
             repository.deleteById(id);
+
+            //May be specified a foreign key constraint in the child table as ON DELETE CASCADE
+            //You'll need to invoke EntityManager.clear() after calling EntityManager.remove(parent)
+            // as the persistence context needs to be refreshed - the child entities are not supposed to exist
+            // in the persistence context after they've been deleted in the database
+            entityManager.flush();
+            entityManager.clear();
         } catch (EmptyResultDataAccessException ex) {
             log.error("", ex);
             throw notFindException(id);
@@ -75,7 +87,7 @@ public abstract class AbstractService<T, ID> {
         repository.findById(id).orElseThrow(() -> notFindException(id));
     }
 
-    protected WebApiException notFindException(ID id){
+    protected WebApiException notFindException(ID id) {
         return new WebApiException(notFindMessage(id));
     }
 

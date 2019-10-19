@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -381,6 +382,10 @@ public class UnitApiTest extends AbstractIntegrationTest {
         assertTrue(entityToDeleteOpt.isPresent());
         var entityToDelete = entityToDeleteOpt.get();
 
+        Optional<Event> eventOpt = eventRepository.findAll().stream().filter(e -> e.getUnit().getUnitId().equals(unitIdToDelete)).findFirst();
+        assertTrue(eventOpt.isPresent());
+        Event event = eventOpt.get();
+
         mockMvc.perform(delete(BASE_URL + "/" + entityToDelete.getUnitId())
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
@@ -391,7 +396,8 @@ public class UnitApiTest extends AbstractIntegrationTest {
         assertFalse(afterDeleteList.contains(entityToDelete));
 
         assertAll("Assertion of cascade delete",
-                () -> assertEquals(0, eventRepository.findAll().stream().filter(e -> e.getUnit().getUnitId().equals(unitIdToDelete)).count())
+                () -> assertEquals(0, eventRepository.findAll().stream().filter(e -> e.getUnit().getUnitId().equals(unitIdToDelete)).count()),
+                () -> assertFalse(eventRepository.findById(event.getEventId()).isPresent())
         );
     }
 }
