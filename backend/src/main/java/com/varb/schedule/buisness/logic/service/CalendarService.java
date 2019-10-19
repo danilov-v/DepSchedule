@@ -5,10 +5,8 @@ import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
 import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
-import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +27,6 @@ public class CalendarService extends AbstractService<Calendar, Long> {
         Calendar calendar = findById(calendarId);
         modelMapper.map(calendarDto, calendar);
         return calendar;
-    }
-
-    //TODO Remove it when api will support multiple calendars
-    @Override
-    public void delete(Long calendarId) {
-        if (calendarId == 1L)
-            throw new WebApiException("Until you can delete the calendar with calendarId = 1", HttpStatus.FORBIDDEN);
-        super.delete(calendarId);
     }
 
     @Override

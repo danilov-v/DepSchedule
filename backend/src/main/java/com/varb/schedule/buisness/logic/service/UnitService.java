@@ -57,12 +57,12 @@ public class UnitService extends AbstractService<Unit, Long> {
         if (parentId == null)
             return;
 
-        if (parentId==0L) {
+        if (parentId == 0L) {
             unit.setParentId(null);
             return;
         }
 
-        if(parentId.equals(unit.getUnitId()))
+        if (parentId.equals(unit.getUnitId()))
             throw new WebApiException("Невозможно установить parentId равный unitId");
 
         Unit parentUnit = findById(parentId);
@@ -71,7 +71,7 @@ public class UnitService extends AbstractService<Unit, Long> {
         if (!parentUnit.getCalendarId().equals(unit.getCalendarId())) {
             throw new WebApiException(
                     "Календарь, в котором создано родительское подразделение отличается от текущего: unit.calendarId = "
-                            +unit.getCalendarId() +", parentUnit.calendarId = " + parentUnit.getCalendarId());
+                            + unit.getCalendarId() + ", parentUnit.calendarId = " + parentUnit.getCalendarId());
         }
 
 //        if (parent.getUnitLevel() >= unit.getUnitLevel())
