@@ -963,8 +963,6 @@ components:
         - dateFrom
         - eventTypeId
         - unitId
-        - location
-        - planned
         - calendarId
       properties:
         eventId:
@@ -980,12 +978,6 @@ components:
           type: string
           format: date
           description: "Дата конца события"
-        location:
-          $ref: "#/components/schemas/Location"
-        planned:
-          type: boolean
-          default: false
-          description: "Запланированность события"
         note:
           type: string
           description: "Примечание"

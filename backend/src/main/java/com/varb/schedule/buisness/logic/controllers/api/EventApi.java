@@ -31,7 +31,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T16:45:25.018609+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "event", description = "the event API")
@@ -145,7 +145,7 @@ public interface EventApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"eventId\" : 0,  \"note\" : \"note\",  \"calendarId\" : 6,  \"dateTo\" : \"2000-01-23\",  \"location\" : {    \"name\" : \"name\",    \"type\" : \"statical\"  },  \"eventTypeDescription\" : \"eventTypeDescription\",  \"planned\" : false,  \"dateFrom\" : \"2000-01-23\",  \"unitTitle\" : \"unitTitle\"}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"eventId\" : 0,  \"note\" : \"note\",  \"calendarId\" : 6,  \"dateTo\" : \"2000-01-23\",  \"eventTypeDescription\" : \"eventTypeDescription\",  \"dateFrom\" : \"2000-01-23\",  \"unitTitle\" : \"unitTitle\"}");
                     break;
                 }
             }

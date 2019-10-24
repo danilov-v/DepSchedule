@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.*;
  * Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя.
  */
 @ApiModel(description = "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-15T16:45:25.018609+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
 
 public class ErrorMessageDto   {
   @JsonProperty("code")
