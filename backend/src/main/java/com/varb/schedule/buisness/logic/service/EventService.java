@@ -86,7 +86,7 @@ public class EventService extends AbstractService<Event, Long> {
         eventTypeService.checkExists(eventTypeId);
         Unit unit = unitService.findById(unitId);
         checkCalendarId(event, unit);
-
+        validationService.checkDates(event.getDateFrom(), event.getDateTo());
         checkIntersection(event);
     }
 

@@ -8,6 +8,7 @@ import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +42,7 @@ public class PeriodService extends AbstractService<Period, Long> {
     }
 
     public List<Period> findAll(Long calendarId) {
-        if (calendarId != null) {
-            return periodRepository.findAllByCalendarId(calendarId);
-        }
-
-        return findAll();
+        return periodRepository.findAllByCalendarId(calendarId);
     }
 
     private void checkBeforeUpdate(Period period) {

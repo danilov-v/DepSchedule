@@ -31,8 +31,14 @@ public class UnitApiImpl implements UnitApi {
     @Secured(PrivilegeEnum.Code.READ)
     @Override
     public ResponseEntity<List<UnitResponseDto>> unitGet(@Valid Optional<Long>  calendarId) {
+        List<Unit> resultList;
+        if(calendarId.isPresent()) {
+            resultList = unitService.findAll(calendarId.get());
+        } else {
+            resultList = unitService.findAll();
+        }
         return ResponseEntity.ok(
-                modelMapper.mapToList(unitService.findAll(calendarId.orElse(null)), UnitResponseDto.class));
+                modelMapper.mapToList(resultList, UnitResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ)

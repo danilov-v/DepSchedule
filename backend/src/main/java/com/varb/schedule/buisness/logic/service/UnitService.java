@@ -41,14 +41,8 @@ public class UnitService extends AbstractService<Unit, Long> {
         return unitRepository.findAllWithChilds(calendarId, dateFrom, dateTo);
     }
 
-    public List<Unit> findAll(@Nullable Long calendarId) {
-        if (calendarId != null) {
-            //units for specified calendarId
-            return unitRepository.findAllByCalendarId(calendarId);
-        }
-
-        //all units
-        return findAll();
+    public List<Unit> findAll(Long calendarId) {
+        return unitRepository.findAllByCalendarId(calendarId);
     }
 
     private void checkParent(Unit unit) {
