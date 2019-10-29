@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     @Modifying(clearAutomatically = true)
     @Query("update Calendar c set " +
-            "c.dateFrom = (select min(e.dateFrom) from Event e), " +
-            "c.dateTo =(select max(e.dateTo) from Event e) " +
+            "c.dateFrom = (select min(e.dateFrom) from Event e where e.calendarId = :calendarId), " +
+            "c.dateTo =(select max(e.dateTo) from Event e where e.calendarId = :calendarId) " +
             "where c.calendarId = :calendarId")
     void updateCalendarFrame(long calendarId);
 }
