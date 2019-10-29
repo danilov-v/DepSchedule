@@ -10,3 +10,4 @@ export const EVENT_TYPE_URL = "eventType";
 export const PERIODS = "period";
 export const LOGIN = "login";
 export const LOGOUT = "logout";
+export const CALENDAR = "calendar";

@@ -5,6 +5,7 @@ import {
   getEventTypes,
   getPeriods,
   getFinishedEvents,
+  getCalendars,
 } from "helpers/api";
 
 const handleError = (error, logout) => {
@@ -97,4 +98,24 @@ export const usePeriods = () => {
   }, [fetchPeriods]);
 
   return [periods, fetchPeriods];
+};
+
+export const useCalendars = () => {
+  const [calendars, setCalendars] = useState([]);
+  const { logout } = useAuth();
+  const fetchCalendars = useCallback(async () => {
+    try {
+      const data = await getCalendars();
+
+      setCalendars(data);
+    } catch (error) {
+      handleError(error, logout);
+    }
+  }, [logout]);
+
+  useEffect(() => {
+    fetchCalendars();
+  }, [fetchCalendars]);
+
+  return [calendars, fetchCalendars];
 };

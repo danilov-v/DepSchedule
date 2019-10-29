@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -20,12 +20,11 @@ import {
 import DatePicker from "react-datepicker";
 import classnames from "classnames";
 import { isDate, addDays, format } from "date-fns";
-import {
-  FAILED_EVENT_NOTIFICATION_DATA,
-  SUCCESS_EVENT_NOTIFICATION_DATA,
-} from "constants/notifications";
-import { NotificationManager } from "helpers/notification-manager";
+import { getEventFormSelector } from "redux/selectors/ui";
+import { getEventTypesSelector } from "redux/selectors/event-types";
+import { closeEventForm } from "redux/actions/forms";
 import { useForm } from "helpers/hooks/useForm";
+import { createEvent, updateEvent, removeEvent } from "redux/actions/scheduler";
 
 const validateEventForm = values => {
   let errors = {};
@@ -42,17 +41,11 @@ const validateEventForm = values => {
   return errors;
 };
 
-export function EventPopup({
-  type,
-  title,
-  isOpen,
-  toggle,
-  onEventSubmit,
-  onEventRemove,
-  eventTypeDurations,
-  eventTypes,
-  defaultFormData,
-}) {
+export function EventPopup() {
+  const dispatch = useDispatch();
+  const eventTypes = useSelector(getEventTypesSelector);
+  const { isOpen, isEdit, error, formData } = useSelector(getEventFormSelector);
+  const close = () => dispatch(closeEventForm());
   const {
     onChange,
     onSubmit,
@@ -60,7 +53,19 @@ export function EventPopup({
     errorsShown,
     setErrors,
     values,
-  } = useForm(submitForm, defaultFormData, validateEventForm);
+  } = useForm(submitForm, formData, validateEventForm);
+
+  useEffect(() => {
+    if (error && error.code) {
+      switch (error.code) {
+        case "INTERSECTION_OF_EVENTS":
+          setErrors({ iventsIntersection: error.userMessage });
+          break;
+        default:
+          return;
+      }
+    }
+  }, [setErrors, error]);
 
   const onInputChange = event => {
     const { value, name } = event.target;
@@ -75,8 +80,10 @@ export function EventPopup({
   const onChangeEventType = event => {
     const { value } = event.target;
 
-    if (eventTypeDurations) {
-      const duration = eventTypeDurations ? eventTypeDurations[value] || 1 : 1;
+    if (formData.unitEventTypeDuration) {
+      const duration = formData.unitEventTypeDuration
+        ? formData.unitEventTypeDuration[value] || 1
+        : 1;
       const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
       onChange({ eventTypeId: +value, duration, dateTo });
     } else {
@@ -105,27 +112,8 @@ export function EventPopup({
     });
   };
 
-  const removeEvent = async () => {
-    try {
-      await onEventRemove(values.eventId);
-      toggle();
-    } catch (e) {
-      NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
-    }
-  };
-
-  const handleError = ({ code, userMessage, devMessage }) => {
-    NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
-    console.log(devMessage);
-
-    switch (code) {
-      case "INTERSECTION_OF_EVENTS":
-        setErrors({ iventsIntersection: userMessage });
-        break;
-      default:
-        return;
-    }
-  };
+  const onRemoveEvent = () =>
+    dispatch(removeEvent({ eventId: values.eventId }));
 
   async function submitForm() {
     const data = {
@@ -133,12 +121,10 @@ export function EventPopup({
       dateTo: format(values.dateTo, "yyyy-MM-dd"),
       dateFrom: format(values.dateFrom, "yyyy-MM-dd"),
     };
-    try {
-      await onEventSubmit(data);
-      toggle();
-      NotificationManager.fire(SUCCESS_EVENT_NOTIFICATION_DATA);
-    } catch (e) {
-      handleError(e);
+    if (isEdit) {
+      dispatch(updateEvent({ event: data }));
+    } else {
+      dispatch(createEvent({ event: data }));
     }
   }
 
@@ -151,16 +137,17 @@ export function EventPopup({
     location,
     planned,
   } = values;
+
   return (
-    <Modal className="event-popup" isOpen={isOpen} toggle={toggle}>
+    <Modal className="event-popup" isOpen={isOpen} toggle={close}>
       <Form className="p-3" onSubmit={onSubmit}>
-        <ModalHeader toggle={toggle}>
-          {type === "create" ? "Создание" : "Редактирование"} События
+        <ModalHeader toggle={close}>
+          {isEdit ? "Редактирование" : "Создание"} События
         </ModalHeader>
         <ModalBody>
           <FormGroup>
             <Label for="unitTitle">Подразделение: </Label>
-            <i>{" " + title}</i>
+            <i>{" " + formData.unitTitle}</i>
           </FormGroup>
           <FormGroup>
             <Label for="unitParent">Тип События</Label>
@@ -291,14 +278,14 @@ export function EventPopup({
         </ModalBody>
         <ModalFooter>
           <Button type="submit" color="success" className="mr-3">
-            {type === "create" ? "Создать" : "Обновить"}
+            {isEdit ? "Обновить" : "Создать"}
           </Button>
-          {type === "edit" && (
-            <Button color="danger" onClick={removeEvent} className="mr-3">
+          {isEdit && (
+            <Button color="danger" onClick={onRemoveEvent} className="mr-3">
               Удалить
             </Button>
           )}
-          <Button color="primary" onClick={toggle}>
+          <Button color="primary" onClick={close}>
             Закрыть
           </Button>
         </ModalFooter>
@@ -306,34 +293,3 @@ export function EventPopup({
     </Modal>
   );
 }
-
-EventPopup.propTypes = {
-  type: PropTypes.string.isRequired,
-  title: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func,
-  onSubmit: PropTypes.func,
-  onEventRemove: PropTypes.func,
-  eventTypeDurations: PropTypes.object,
-  eventTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      description: PropTypes.string,
-      typeId: PropTypes.number,
-    })
-  ),
-  defaultFormData: PropTypes.shape({
-    dateFrom: PropTypes.instanceOf(Date),
-    dateTo: PropTypes.instanceOf(Date),
-    duration: PropTypes.number,
-    eventId: PropTypes.number,
-    eventTypeId: "",
-    note: "",
-    unitId: PropTypes.number,
-    location: PropTypes.shape({
-      type: PropTypes.string,
-      name: PropTypes.string,
-    }),
-    planned: PropTypes.bool,
-  }),
-};

@@ -1,7 +1,8 @@
 def jdk14Path = '/home/gonchar/Загрузки/jdk-14' //Перед запуском необходимо
 def jdk12Path = '/usr/java/jdk-12.0.1'          //указать точные пути к jdk!
 
-task link(type: Exec, dependsOn: 'clean') {
+// Задача упаковывает проект вместе с jre для запуска на машине, на которой не установлена java
+task pack(type: Exec, dependsOn: ['clean', ':backend:build']) {
 
     def buildPath = file("../build")
 

@@ -10,12 +10,15 @@ import {
   PERIODS,
   LOGIN,
   LOGOUT,
+  CALENDAR,
 } from "config/url";
+import { getToken } from "helpers/localstorage";
+
+const buildToken = token => (token ? `Bearer ${token}` : "");
 
 const makeApiCall = async (apiPath, params) => {
   const url = `${LOCALHOST_URL}:${DEFAULT_BE_PORT}/${API}/${apiPath}`;
-  const authBody = JSON.parse(window.localStorage.getItem("authBody"));
-  const token = authBody ? `Bearer ${authBody.token}` : "";
+  const token = buildToken(getToken());
   const request = new Request(url, {
     mode: "cors",
     headers: {
@@ -56,11 +59,15 @@ export const signOut = async () =>
     method: "PUT",
   });
 
+export const getLastEvents = async () =>
+  await makeApiCall(`${EVENT_URL}/recentList/?count=${50}`);
+
 export const getUnits = async () => await makeApiCall(UNITS_URL);
 
-export const getUnitsTree = async dateFrom =>
+export const getUnitsTree = async ({ dateFrom }) =>
   await makeApiCall(
-    `${UNITS_URL}/tree?dateFrom=${format(dateFrom, "yyyy-MM-dd")}`
+    `${UNITS_URL}/tree?dateFrom=${format(dateFrom, "yyyy-MM-dd")}`,
+    {}
   );
 
 export const createUnit = async unitData =>
@@ -80,7 +87,7 @@ export const deleteUnit = async unitId =>
     method: "DELETE",
   });
 
-export const getEventTypes = async () => await makeApiCall(EVENT_TYPE_URL);
+export const getEventTypes = async () => await makeApiCall(EVENT_TYPE_URL, {});
 
 export const createEventType = async eventTypeData =>
   await makeApiCall(EVENT_TYPE_URL, {
@@ -122,12 +129,16 @@ export const removeEvent = async eventId =>
 /**
  * PERIODS API
  */
-export const getPeriods = async () => await makeApiCall(PERIODS);
+export const getPeriods = async () => await makeApiCall(PERIODS, {});
 
 export const createPeriod = async periodData =>
   await makeApiCall(PERIODS, {
     method: "POST",
-    body: JSON.stringify(periodData),
+    body: JSON.stringify({
+      ...periodData,
+      startDate: format(periodData.startDate, "yyyy-MM-dd"),
+      endDate: format(periodData.endDate, "yyyy-MM-dd"),
+    }),
   });
 
 export const updatePeriod = async periodData =>
@@ -143,4 +154,29 @@ export const removePeriod = async periodId =>
 
 /**
  * END PERIODS API
+ */
+
+/**
+ * CALENDARS API
+ */
+export const getCalendars = async () => await makeApiCall(CALENDAR, null);
+
+export const updateCalendar = async (calendarId, shift) =>
+  await makeApiCall(`${CALENDAR}/${calendarId}`, {
+    method: "PUT",
+    body: JSON.stringify({ shift }),
+  });
+
+export const createCalendar = async ({ calendar }) =>
+  await makeApiCall(CALENDAR, {
+    method: "POST",
+    body: JSON.stringify(calendar),
+  });
+
+export const removeCalendar = async ({ calendarId }) =>
+  makeApiCall(`${CALENDAR}/${calendarId}`, {
+    method: "DELETE",
+  });
+/**
+ * END CALENDARS API
  */

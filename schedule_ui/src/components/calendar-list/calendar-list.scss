@@ -1,0 +1,21 @@
+.calendar-list {
+  .select-form {
+    position: absolute;
+    width: 350px;
+    height: 500px;
+    top: calc(50% - 150px);
+    left: calc(50% - 150px);
+  }
+
+  &-item {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &-row {
+    cursor: pointer;
+  }
+}

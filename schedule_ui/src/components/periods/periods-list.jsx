@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { Table, Button } from "reactstrap";
 import { MANAGE_PERIODS } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
-import { useAuth } from "components/auth-service/auth-service";
 
-export function PeriodsList({ periods, onPeriodEdit, onPeriodRemove }) {
-  const { getRole } = useAuth();
-  const isManageAble = checkPermission(getRole(), MANAGE_PERIODS);
+export function PeriodsList({
+  periods,
+  onPeriodEdit,
+  onPeriodRemove,
+  userRole,
+}) {
+  const isManageAble = checkPermission(userRole, MANAGE_PERIODS);
 
   const renderRow = (period, index) => (
     <tr key={period.periodId}>
@@ -52,6 +55,7 @@ PeriodsList.propTypes = {
   ),
   onPeriodEdit: PropTypes.func.isRequired,
   onPeriodRemove: PropTypes.func.isRequired,
+  userRole: PropTypes.string,
 };
 
 PeriodsList.defaultProps = {

@@ -2,21 +2,17 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { isNull, get } from "lodash";
 import classnames from "classnames";
-import { useConfirmation } from "components/confirmation-service/confirmation-service";
+import { useSelector, useDispatch } from "react-redux";
 import { getUnitRemoveConfirmationOptions } from "constants/confirmations";
-import {
-  SUCCESS_UNIT_NOTIFICATION_DATA_DELETE,
-  FAILED_UNIT_NOTIFICATION_DATA,
-} from "constants/notifications";
-import { deleteUnit } from "helpers/api";
-import { NotificationManager } from "helpers/notification-manager";
+import { MANAGE_UNITS } from "constants/permishions";
+import { getAuthData } from "redux/selectors/auth";
+import { removeUnit } from "redux/actions/scheduler";
+import { checkPermission } from "utils/permishions";
+import { useConfirmation } from "components/confirmation-service/confirmation-service";
 
 import { UnitPopup } from "./unit-popup";
 import { Unit } from "./unit";
 import { NewUnit } from "./new-unit";
-import { MANAGE_UNITS } from "constants/permishions";
-import { checkPermission } from "utils/permishions";
-import { useAuth } from "components/auth-service/auth-service";
 
 import "./units-grid.scss";
 
@@ -59,9 +55,10 @@ const renderUnit = (
 };
 
 export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
+  const dispatch = useDispatch();
   const confirm = useConfirmation();
   const [unitData, setUnitData] = useState(null);
-  const { getRole } = useAuth();
+  const { role } = useSelector(getAuthData);
 
   const onCloseEditPopup = () => {
     setUnitData(null);
@@ -81,20 +78,12 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
   };
   const onRemoveUnit = unitId => {
     const unit = units.find(unit => unit.unitId === unitId);
-    confirm(getUnitRemoveConfirmationOptions(unit)).then(async () => {
-      try {
-        await deleteUnit(unitId);
-
-        onUnitsUpdate();
-
-        NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA_DELETE);
-      } catch {
-        NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
-      }
-    });
+    confirm(getUnitRemoveConfirmationOptions(unit)).then(() =>
+      dispatch(removeUnit({ unitId }))
+    );
   };
 
-  const isManageAble = checkPermission(getRole(), MANAGE_UNITS);
+  const isManageAble = checkPermission(role, MANAGE_UNITS);
 
   return (
     <div className="units-grid">
@@ -129,5 +118,4 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
 UnitsGrid.propTypes = {
   units: PropTypes.arrayOf(PropTypes.object).isRequired,
   unitsTree: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onUnitsUpdate: PropTypes.func.isRequired,
 };

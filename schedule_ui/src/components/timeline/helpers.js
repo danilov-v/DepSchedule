@@ -1,4 +1,4 @@
-import { getDayWithoutMinutes } from "utils/date";
+import { isEmpty, pick, cloneDeep } from "lodash";
 
 export const getLastGenUnits = units => {
   const getUnitLastChilds = unit =>
@@ -12,9 +12,21 @@ export const getLastGenUnits = units => {
     .flat(5);
 };
 
-export const formatPeriods = periods =>
-  periods.map(period => ({
-    ...period,
-    startDate: getDayWithoutMinutes(new Date(period.startDate)),
-    endDate: getDayWithoutMinutes(new Date(period.endDate)),
-  }));
+export function getUnitsFromUnitsTree(root) {
+  if (!root.length) return [];
+
+  const stack = cloneDeep(root).reverse();
+  const array = [];
+
+  while (stack.length !== 0) {
+    const node = stack.pop();
+    if (!isEmpty(node.childUnit)) {
+      node.childUnit.forEach(unit => {
+        stack.push(unit);
+      });
+    }
+    array.push(pick(node, ["parentId", "title", "unitId", "flag", "planned"]));
+  }
+
+  return array;
+}

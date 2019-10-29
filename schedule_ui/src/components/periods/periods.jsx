@@ -1,85 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { getAuthData } from "redux/selectors/auth";
+import { getPeriodFormSelector } from "redux/selectors/ui";
+import { getPeriodsSelector } from "redux/selectors/scheduler";
+import {
+  createPeriod,
+  updatePeriod,
+  removePeriod,
+  fetchPeriods,
+} from "redux/actions/scheduler";
+import { openPeriodForm, closePeriodForm } from "redux/actions/forms";
 import { Button, Container } from "reactstrap";
 import { Title } from "components/title/title";
-import { removePeriod, createPeriod, updatePeriod } from "helpers/api";
 import { PERIOD_CONFIRMATION_OPTIONS } from "constants/confirmations";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { PeriodsList } from "./periods-list";
 import { PeriodsPopup } from "./periods-popup";
-import { NotificationManager } from "helpers/notification-manager";
-import { FAILED_PERIOD_NOTIFICATION_DATA } from "constants/notifications";
 import { MANAGE_PERIODS } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
-import { useAuth } from "components/auth-service/auth-service";
 
-const DEFAULT_PERIOD = {
-  name: "",
-  startDate: null,
-  endDate: null,
-};
-
-export function Periods({ periods, onPeriodsUpdate }) {
-  const [isFormOpen, toggleForm] = useState(false);
-  const [formType, setFormType] = useState("create");
-  const [defaultFormData, setDefaultFormData] = useState(DEFAULT_PERIOD);
-  const { getRole } = useAuth();
+export function Periods() {
+  const periods = useSelector(getPeriodsSelector);
+  const { isOpen, isEdit, initialFormData, error } = useSelector(
+    getPeriodFormSelector
+  );
+  const { role } = useSelector(getAuthData);
+  const dispatch = useDispatch();
   const confirm = useConfirmation();
 
+  useEffect(() => {
+    dispatch(fetchPeriods());
+  }, [dispatch]);
+
   const onPeriodSubmit = periodData =>
-    formType === "create"
-      ? createPeriod(periodData).then(onPeriodsUpdate)
-      : updatePeriod(periodData).then(onPeriodsUpdate);
+    isEdit
+      ? dispatch(updatePeriod(periodData))
+      : dispatch(createPeriod(periodData));
 
   const tryToRemove = periodId => {
-    confirm(PERIOD_CONFIRMATION_OPTIONS)
-      .then(async () => {
-        try {
-          await removePeriod(periodId);
-        } catch (e) {
-          NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
-        }
-      })
-      .then(onPeriodsUpdate);
+    confirm(PERIOD_CONFIRMATION_OPTIONS).then(() => {
+      dispatch(removePeriod(periodId));
+    });
   };
 
-  const toggle = (type, formData = { ...DEFAULT_PERIOD }) => {
-    if (type === "edit")
+  const openForm = (isEdit, formData = null) => {
+    if (!isOpen && isEdit)
       formData = {
         ...formData,
         startDate: new Date(formData.startDate),
         endDate: new Date(formData.endDate),
       };
 
-    setFormType(type);
-    setDefaultFormData(formData);
-    toggleForm(!isFormOpen);
+    dispatch(openPeriodForm(isEdit, formData));
   };
+
+  const closeForm = () => dispatch(closePeriodForm());
 
   return (
     <Container>
       <Title text="Периоды" />
       <PeriodsList
-        onPeriodEdit={toggle.bind(null, "edit")}
+        onPeriodEdit={openForm.bind(null, true)}
         onPeriodRemove={tryToRemove}
         periods={periods}
+        userRole={role}
       />
       <Button
         outline
         color="primary"
         size="lg"
         className="font-weight-bold float-right"
-        onClick={toggle.bind(null, "create", undefined)}
-        hidden={!checkPermission(getRole(), MANAGE_PERIODS)}
+        onClick={openForm.bind(null, false, undefined)}
+        hidden={!checkPermission(role, MANAGE_PERIODS)}
       >
         +
       </Button>
       <PeriodsPopup
-        type={formType}
-        isOpen={isFormOpen}
-        toggle={() => toggle(null)}
+        isEdit={isEdit}
+        isOpen={isOpen}
+        toggle={closeForm}
         onPeriodSubmit={onPeriodSubmit}
-        defaultFormData={defaultFormData}
+        defaultFormData={initialFormData}
+        error={error}
       />
     </Container>
   );
@@ -87,7 +90,6 @@ export function Periods({ periods, onPeriodsUpdate }) {
 
 Periods.propTypes = {
   periods: PropTypes.arrayOf(PropTypes.shape({})),
-  onPeriodsUpdate: PropTypes.func.isRequired,
 };
 
 Periods.defaultProps = {

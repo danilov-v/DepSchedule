@@ -55,3 +55,15 @@ body,
   size: A3 landscape;
   bleed: 1;
 }
+
+.emblem-background {
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(#fff, 0.85),
+      rgba(#fff, 0.85)
+    ),
+    url(force_emblem.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}

@@ -1,80 +1,64 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { openEventForm } from "redux/actions/forms";
+import { getEventTypesSelector } from "redux/selectors/event-types";
+import { fetchEventTypes } from "redux/actions/event-types";
 import { UnitEventRow } from "./unit-event-row";
 import { EventPopup } from "./event-popup";
-import { createEvent, updateEvent, removeEvent } from "helpers/api";
 import { isDate, addDays, differenceInDays } from "date-fns";
 
 import "./event-calendar.scss";
 
-const DEFAULT_FORM_DATA = {
-  unitId: null,
-  dateFrom: null,
-  duration: 0,
-  eventId: null,
-  eventTypeId: "",
-  note: "",
-  location: { name: "", type: "statical" },
-  planned: false,
-};
-
-export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
-  const [isFormOpen, toggle] = useState(false);
-  const [formType, setFormType] = useState("create");
-  const [unit, setUnit] = useState({});
-
-  const [defaultFormData, setDefaultFormData] = useState(DEFAULT_FORM_DATA);
-
-  const onEventCreate = formData => createEvent(formData).then(onUnitsUpdate);
-  const onEventUpdate = formData => updateEvent(formData).then(onUnitsUpdate);
-  const onEventRemove = eventId => removeEvent(eventId).then(onUnitsUpdate);
+export function EventCalendar({ range, units }) {
+  const dispatch = useDispatch();
+  const eventTypes = useSelector(getEventTypesSelector);
 
   const toggleCreateForm = (unit, dateFrom) => {
-    unit && setUnit(unit);
-
     const eventTypeId = eventTypes[0].typeId;
     const duration = unit.eventDuration
       ? unit.eventDuration[eventTypeId] || 1
       : 1;
-
     const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
 
-    isFormOpen
-      ? setDefaultFormData(DEFAULT_FORM_DATA)
-      : setDefaultFormData({
-          ...DEFAULT_FORM_DATA,
+    dispatch(
+      openEventForm({
+        formData: {
           unitId: unit.unitId,
+          unitTitle: unit.title,
+          unitEventTypeDuration: unit.eventDuration,
           dateTo,
           dateFrom,
           duration,
           eventTypeId,
           planned: unit.planned,
-        });
-
-    setFormType("create");
-    toggle(!isFormOpen);
+        },
+      })
+    );
   };
 
   const toggleEditForm = (unit, event) => {
-    if (!isFormOpen) {
-      setFormType("edit");
-      setUnit(unit);
+    const dateFrom = new Date(event.dateFrom);
+    const dateTo = new Date(event.dateTo);
+    const duration = differenceInDays(dateTo, dateFrom);
 
-      const dateFrom = new Date(event.dateFrom);
-      const dateTo = new Date(event.dateTo);
-      const duration = differenceInDays(dateTo, dateFrom);
-
-      setDefaultFormData({
-        ...event,
-        dateFrom,
-        dateTo,
-        duration,
-      });
-    } else {
-      setDefaultFormData(DEFAULT_FORM_DATA);
-    }
-    toggle(!isFormOpen);
+    dispatch(
+      openEventForm({
+        formData: {
+          ...event,
+          unitTitle: unit.title,
+          dateFrom,
+          dateTo,
+          duration,
+        },
+        isEdit: true,
+      })
+    );
   };
+
+  useEffect(() => {
+    dispatch(fetchEventTypes());
+  }, [dispatch]);
 
   return (
     <Fragment>
@@ -88,17 +72,7 @@ export function EventCalendar({ range, units, onUnitsUpdate, eventTypes }) {
           eventTypes={eventTypes}
         />
       ))}
-      <EventPopup
-        type={formType}
-        title={unit.title}
-        isOpen={isFormOpen}
-        toggle={toggleEditForm}
-        eventTypeDurations={unit.eventDuration}
-        onEventSubmit={formType === "create" ? onEventCreate : onEventUpdate}
-        defaultFormData={defaultFormData}
-        eventTypes={eventTypes}
-        onEventRemove={onEventRemove}
-      />
+      <EventPopup />
     </Fragment>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Route } from "react-router-dom";
 import { addDays, differenceInDays, differenceInCalendarDays } from "date-fns";
 import { isEmpty, cloneDeep, pick } from "lodash";
@@ -7,10 +8,13 @@ import {
   useEventTypes,
   usePeriods,
 } from "helpers/hooks/apiEffects";
+import { setActiveCalendar } from "redux/actions/calendars";
+import { getActiveCalendarSelector } from "redux/selectors/calendars";
+import { updateCalendar } from "helpers/api";
 import { Container } from "reactstrap";
 import { Timeline } from "components/timeline/timeline";
 import { Header } from "components/header/header";
-import { ConfirmationServiceProvider } from "components/confirmation-service/confirmation-service";
+
 import { EventTypes } from "components/event-types/event-types";
 import { FinishedEvents } from "components/finished-events/finished-events";
 import { Periods } from "components/periods/periods";
@@ -39,8 +43,14 @@ function getUnitsFromUnitsTree(root) {
 }
 
 export function Home() {
+  const dispatch = useDispatch();
+
+  const activeCalendar = useSelector(getActiveCalendarSelector);
+
   const astronomicalDate = getDayWithoutMinutes(new Date());
-  const [operationalDate, setOperationalDate] = useState(astronomicalDate);
+  const [operationalDate, setOperationalDate] = useState(
+    addDays(astronomicalDate, activeCalendar.shift)
+  );
   const [startDate, setStartDate] = useState(astronomicalDate);
   const [endDate, setEndDate] = useState(addDays(astronomicalDate, FOUR_MONTH));
   const [eventTypes, fetchEventTypes] = useEventTypes();
@@ -51,6 +61,17 @@ export function Home() {
     operationalDate,
     addDays(operationalDate, differenceInDays(endDate, startDate)),
   ];
+
+  const changeCalendar = () =>
+    dispatch(setActiveCalendar({ calendarId: null }));
+
+  const onOperationalDateChange = date => {
+    setOperationalDate(date);
+
+    const shift = differenceInCalendarDays(date, new Date());
+
+    updateCalendar(activeCalendar.calendarId, shift);
+  };
 
   const onUnitsUpdate = () => {
     fetchUnitsTree();
@@ -80,51 +101,50 @@ export function Home() {
   };
 
   return (
-    <ConfirmationServiceProvider>
-      <Container fluid>
-        <Header
-          startDate={startDate}
-          endDate={endDate}
-          operationalDate={operationalDate}
-          onChangeOperationalDate={setOperationalDate}
-          onChangeStartDate={setStartDateHander}
-          onChangeEndDate={setEndDateHander}
+    <Container fluid>
+      <Header
+        startDate={startDate}
+        endDate={endDate}
+        operationalDate={operationalDate}
+        onChangeOperationalDate={onOperationalDateChange}
+        onChangeStartDate={setStartDateHander}
+        onChangeEndDate={setEndDateHander}
+        onCalendarChange={changeCalendar}
+      />
+      <main className="h-75 emblem-background">
+        <Route
+          exact
+          path="/main"
+          render={() => (
+            <Timeline
+              operationalRange={operationalRange}
+              startDate={startDate}
+              endDate={endDate}
+              eventTypes={eventTypes}
+              unitsTree={unitsTree}
+              periods={periods}
+              units={getUnitsFromUnitsTree(unitsTree)}
+              onUnitsUpdate={onUnitsUpdate}
+            />
+          )}
         />
-        <main className="h-75 emblem-background">
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <Timeline
-                operationalRange={operationalRange}
-                startDate={startDate}
-                endDate={endDate}
-                eventTypes={eventTypes}
-                unitsTree={unitsTree}
-                periods={periods}
-                units={getUnitsFromUnitsTree(unitsTree)}
-                onUnitsUpdate={onUnitsUpdate}
-              />
-            )}
-          />
-          <Route
-            path="/event_types"
-            render={() => (
-              <EventTypes
-                eventTypes={eventTypes}
-                onEventTypesUpdate={onEventTypesUpdate}
-              />
-            )}
-          />
-          <Route path="/finished_events" render={() => <FinishedEvents />} />
-          <Route
-            path="/periods"
-            render={() => (
-              <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
-            )}
-          />
-        </main>
-      </Container>
-    </ConfirmationServiceProvider>
+        <Route
+          path="/event_types"
+          render={() => (
+            <EventTypes
+              eventTypes={eventTypes}
+              onEventTypesUpdate={onEventTypesUpdate}
+            />
+          )}
+        />
+        <Route path="/finished_events" render={() => <FinishedEvents />} />
+        <Route
+          path="/periods"
+          render={() => (
+            <Periods periods={periods} onPeriodsUpdate={onPeriodsUpdate} />
+          )}
+        />
+      </main>
+    </Container>
   );
 }

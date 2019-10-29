@@ -1,13 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "reactstrap";
-import { useConfirmation } from "components/confirmation-service/confirmation-service";
-import { EVENT_TYPE_CONFIRMATION_OPTIONS } from "constants/confirmations";
-import { FAILED_EVENT_TYPE_NOTIFICATION_DATA } from "constants/notifications";
-import { NotificationManager } from "helpers/notification-manager";
 import { MANAGE_EVENT_TYPES } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
-import { useAuth } from "components/auth-service/auth-service";
 
 const ColorCircle = ({ color }) => (
   <span className="color-circle mr-1" style={{ background: color }} />
@@ -17,20 +12,9 @@ export function EventTypesList({
   eventTypes,
   onEventTypeClick,
   onEventTypeRemove,
+  role,
 }) {
-  const confirm = useConfirmation();
-  const { getRole } = useAuth();
-
-  const tryToRemove = typeId => {
-    confirm(EVENT_TYPE_CONFIRMATION_OPTIONS).then(async () => {
-      try {
-        await onEventTypeRemove(typeId);
-      } catch (e) {
-        NotificationManager.fire(FAILED_EVENT_TYPE_NOTIFICATION_DATA);
-      }
-    });
-  };
-  const isManageAble = checkPermission(getRole(), MANAGE_EVENT_TYPES);
+  const isManageAble = checkPermission(role, MANAGE_EVENT_TYPES);
 
   const renderRow = (eventType, index) => (
     <tr key={eventType.typeId}>
@@ -46,7 +30,10 @@ export function EventTypesList({
         >
           Изменить
         </Button>
-        <Button close onClick={tryToRemove.bind(null, eventType.typeId)} />
+        <Button
+          close
+          onClick={onEventTypeRemove.bind(null, eventType.typeId)}
+        />
       </td>
     </tr>
   );
@@ -77,4 +64,5 @@ EventTypesList.propTypes = {
   ),
   onEventTypeClick: PropTypes.func,
   onEventTypeRemove: PropTypes.func,
+  role: PropTypes.string,
 };

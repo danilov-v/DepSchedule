@@ -1,8 +1,15 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { Row } from "reactstrap";
 import { cond, isEmpty, constant, stubTrue, get, isBoolean } from "lodash";
 import { isWithinInterval, differenceInDays, isAfter } from "date-fns";
+import {
+  getStartDateSelector,
+  getPeriodsSelector,
+} from "redux/selectors/scheduler";
+import { fetchPeriods } from "redux/actions/scheduler";
+import { getDayWithoutMinutes } from "utils/date";
 import { HighLevelSection } from "./high-level-section";
 
 const getDifferenceInDays = ({ day, currentSection, startDate }) =>
@@ -13,8 +20,22 @@ const getDifferenceInDays = ({ day, currentSection, startDate }) =>
       : currentSection.startDate
   );
 
-export function HighLevelSections({ startDate, range, periods }) {
+export const formatPeriods = periods =>
+  periods.map(period => ({
+    ...period,
+    startDate: getDayWithoutMinutes(new Date(period.startDate)),
+    endDate: getDayWithoutMinutes(new Date(period.endDate)),
+  }));
+
+export function HighLevelSections({ range }) {
+  const dispatch = useDispatch();
+  const periods = formatPeriods(useSelector(getPeriodsSelector));
+  const startDate = useSelector(getStartDateSelector);
   const renderingSection = {};
+
+  useEffect(() => {
+    dispatch(fetchPeriods());
+  }, [dispatch]);
 
   if (!periods.length) return null;
 
@@ -72,14 +93,6 @@ HighLevelSections.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       days: PropTypes.arrayOf(PropTypes.object),
-    })
-  ),
-  periods: PropTypes.arrayOf(
-    PropTypes.shape({
-      periodId: PropTypes.number,
-      name: PropTypes.string,
-      startDate: PropTypes.object,
-      endDate: PropTypes.object,
     })
   ),
 };

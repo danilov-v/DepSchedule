@@ -1,74 +1,82 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { Button, Container } from "reactstrap";
-import { createEventType, updateEventType, removeEventType } from "helpers/api";
+import { getEventTypesSelector } from "redux/selectors/event-types";
+import { getAuthData } from "redux/selectors/auth";
+import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { Title } from "components/title/title";
 import { EventTypesList } from "./event-types-list";
 import { EventTypePopup } from "./event-type-popup";
+import {
+  fetchEventTypes,
+  createEventType,
+  editEventType,
+  removeEventType,
+} from "redux/actions/event-types";
+import { openEventTypeForm, closeEventTypeForm } from "redux/actions/forms";
+import { getEventTypeFormSelector } from "redux/selectors/ui";
+import { EVENT_TYPE_CONFIRMATION_OPTIONS } from "constants/confirmations";
 import { MANAGE_EVENT_TYPES } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
-import { useAuth } from "components/auth-service/auth-service";
 
 import "./event-types.scss";
 
-const DEFAULT_EVENT_TYPE = {
-  color: "#f44336",
-  description: "",
-  typeId: null,
-};
+export function EventTypes() {
+  const eventTypes = useSelector(getEventTypesSelector);
+  const dispatch = useDispatch();
+  const confirm = useConfirmation();
+  const { role } = useSelector(getAuthData);
+  const { isOpen, isEdit, initialFormData, error } = useSelector(
+    getEventTypeFormSelector
+  );
 
-export function EventTypes({ eventTypes, onEventTypesUpdate }) {
-  const { getRole } = useAuth();
-  const [isFormOpen, toggleForm] = useState(false);
-  const [formType, setFormType] = useState("create");
-  const [defaultFormData, setDefaultFormData] = useState(DEFAULT_EVENT_TYPE);
+  useEffect(() => {
+    dispatch(fetchEventTypes());
+  }, [dispatch]);
 
-  const toggleEventTypeForm = (
-    type,
-    defaultFormData = { ...DEFAULT_EVENT_TYPE }
-  ) => {
-    setFormType(type);
-    setDefaultFormData(defaultFormData);
-    toggleForm(!isFormOpen);
-  };
+  const openForm = (isEdit, initialFormData = null) =>
+    dispatch(openEventTypeForm({ isEdit, initialFormData }));
 
-  const onEventTypeCreate = values =>
-    createEventType(values).then(onEventTypesUpdate);
+  const closeForm = () => dispatch(closeEventTypeForm());
 
-  const onEventTypeUpdate = values =>
-    updateEventType(values).then(onEventTypesUpdate);
+  const onEventTypeCreate = values => dispatch(createEventType(values));
+
+  const onEventTypeUpdate = values => dispatch(editEventType(values));
 
   const onEventTypeRemove = typeId =>
-    removeEventType(typeId).then(onEventTypesUpdate);
+    confirm(EVENT_TYPE_CONFIRMATION_OPTIONS).then(() =>
+      dispatch(removeEventType(typeId))
+    );
 
   return (
     <Container>
       <Title text="Типы событий" />
       <EventTypesList
         eventTypes={eventTypes}
-        onEventTypeClick={toggleEventTypeForm.bind(null, "edit")}
+        onEventTypeClick={openForm.bind(null, true)}
         onEventTypeRemove={onEventTypeRemove}
+        role={role}
       />
       <Button
         outline
         color="primary"
         size="lg"
         className="font-weight-bold float-right"
-        onClick={() => toggleEventTypeForm("create")}
-        hidden={!checkPermission(getRole(), MANAGE_EVENT_TYPES)}
+        onClick={openForm.bind(null, false, null)}
+        hidden={!checkPermission(role, MANAGE_EVENT_TYPES)}
       >
         +
       </Button>
       <EventTypePopup
-        type={formType}
-        isOpen={isFormOpen}
-        toggle={() => toggleEventTypeForm(null)}
-        onEventTypeSubmit={
-          formType === "create" ? onEventTypeCreate : onEventTypeUpdate
-        }
-        defaultFormData={defaultFormData}
+        isEdit={isEdit}
+        isOpen={isOpen}
+        toggle={closeForm}
+        onEventTypeSubmit={isEdit ? onEventTypeUpdate : onEventTypeCreate}
+        defaultFormData={initialFormData}
         eventTypes={eventTypes}
         onEventRemove={onEventTypeRemove}
+        error={error}
       />
     </Container>
   );
@@ -82,5 +90,4 @@ EventTypes.propTypes = {
       typeId: PropTypes.number,
     })
   ),
-  onEventTypesUpdate: PropTypes.func,
 };

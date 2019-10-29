@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -13,11 +13,6 @@ import {
   ModalFooter,
 } from "reactstrap";
 import { CirclePicker } from "react-color";
-import {
-  SUCCESS_EVENT_TYPE_NOTIFICATION_DATA,
-  FAILED_EVENT_TYPE_NOTIFICATION_DATA,
-} from "constants/notifications";
-import { NotificationManager } from "helpers/notification-manager";
 import { useForm } from "helpers/hooks/useForm";
 import { EVENT_TYPE_COLORS } from "constants/calendar";
 
@@ -31,17 +26,24 @@ const validateEvenTypeForm = values => {
 };
 
 export function EventTypePopup({
-  type,
+  isEdit,
   isOpen,
   toggle,
   onEventTypeSubmit,
   defaultFormData,
+  error,
 }) {
   const { onChange, onSubmit, errors, errorsShown, values } = useForm(
     submitForm,
     defaultFormData,
     validateEvenTypeForm
   );
+
+  useEffect(() => {
+    if (error) {
+      //HANDLE FORM ERRORS HERE
+    }
+  }, [error]);
 
   const handleInputChange = event => {
     const { value, name } = event.target;
@@ -50,15 +52,8 @@ export function EventTypePopup({
 
   const handleColorChange = color => onChange({ color: color.hex });
 
-  async function submitForm() {
-    try {
-      await onEventTypeSubmit(values);
-      toggle();
-
-      NotificationManager.fire(SUCCESS_EVENT_TYPE_NOTIFICATION_DATA);
-    } catch (e) {
-      NotificationManager.fire(FAILED_EVENT_TYPE_NOTIFICATION_DATA);
-    }
+  function submitForm() {
+    onEventTypeSubmit(values);
   }
 
   const { color, description } = values;
@@ -66,7 +61,7 @@ export function EventTypePopup({
     <Modal isOpen={isOpen} toggle={toggle}>
       <Form className="p-3">
         <ModalHeader toggle={toggle}>
-          {type === "create" ? "Создание" : "Редакитрование"} Типа события
+          {!isEdit ? "Создание" : "Редакитрование"} Типа события
         </ModalHeader>
         <ModalBody>
           <FormGroup>
@@ -98,7 +93,7 @@ export function EventTypePopup({
             className="mr-3"
             onClick={onSubmit}
           >
-            {type === "create" ? "Создать" : "Обновить"}
+            {!isEdit ? "Создать" : "Обновить"}
           </Button>
           <Button color="primary" onClick={toggle}>
             Закрыть
@@ -110,10 +105,11 @@ export function EventTypePopup({
 }
 
 EventTypePopup.propTypes = {
-  type: PropTypes.string,
+  isEdit: PropTypes.bool,
   isOpen: PropTypes.bool,
   toggle: PropTypes.func,
   onEventTypeSubmit: PropTypes.func,
+  error: PropTypes.object,
   defaultFormData: PropTypes.shape({
     color: PropTypes.string,
     description: PropTypes.string,

@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { Row } from "reactstrap";
 import { differenceInDays, isWithinInterval, isSameDay } from "date-fns";
 import { constant } from "lodash";
 import { MANAGE_EVENTS } from "constants/permishions";
 import { checkPermission } from "utils/permishions";
-import { useAuth } from "components/auth-service/auth-service";
+import { getAuthData } from "redux/selectors/auth";
 import { getAllDatesFromRange } from "utils/date";
 import { CELL_WIDTH } from "constants/calendar";
 import { EventCell } from "./event-cell";
@@ -36,8 +37,8 @@ export function UnitEventRow({
   openCreateForm,
   openEditForm,
 }) {
-  const { getRole } = useAuth();
-  const isManageAble = checkPermission(getRole(), MANAGE_EVENTS);
+  const { role } = useSelector(getAuthData);
+  const isManageAble = checkPermission(role, MANAGE_EVENTS);
   const allDates = getAllDatesFromRange(range);
   const startDateCord = allDates[allDates.length - 1];
 
