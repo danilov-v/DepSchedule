@@ -60,7 +60,7 @@ export const signOut = async () =>
   });
 
 export const getLastEvents = async () =>
-  await makeApiCall(`${EVENT_URL}/recentList/?count=${10}`);
+  await makeApiCall(`${EVENT_URL}/recentList/?count=${50}`);
 
 export const getUnits = async () => await makeApiCall(UNITS_URL);
 
