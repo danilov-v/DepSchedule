@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.QueryHint;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public interface UnitRepository extends JpaRepository<Unit, Long> {
@@ -16,9 +17,12 @@ public interface UnitRepository extends JpaRepository<Unit, Long> {
     @Query(value = "select distinct u from Unit u " +
             "left join fetch u.events e " +
             "left join fetch u.eventDurations d " +
-            "where " +
-            "      e is NULL OR " +
-            "          :dateFrom <= e.dateTo and (:dateTo is null or :dateTo >= e.dateFrom) "
+            "where u.calendarId = :calendarId AND" +
+            "      (e is NULL OR " +
+            "          :dateFrom <= e.dateTo and (:dateTo is null or :dateTo >= e.dateFrom)) "
     )
-    Set<Unit> findAllWithChilds(LocalDate dateFrom, @Nullable LocalDate dateTo);
+    Set<Unit> findAllWithChilds(Long calendarId, LocalDate dateFrom, @Nullable LocalDate dateTo);
+
+    @Query(value = "select u from Unit u where u.calendarId = :calendarId")
+    List<Unit> findAllByCalendarId(Long calendarId);
 }

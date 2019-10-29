@@ -32,7 +32,7 @@ public class CalendarApiImpl implements CalendarApi {
     @Override
     public ResponseEntity<List<CalendarResponseDto>> calendarGet() {
         return ResponseEntity.ok(
-                modelMapper.mapList(calendarService.findAll(), CalendarResponseDto.class));
+                modelMapper.mapToList(calendarService.findAll(), CalendarResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ)

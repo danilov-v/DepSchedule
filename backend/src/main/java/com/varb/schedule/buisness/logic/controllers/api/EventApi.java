@@ -5,23 +5,33 @@
  */
 package com.varb.schedule.buisness.logic.controllers.api;
 
-import com.varb.schedule.buisness.models.dto.*;
+import com.varb.schedule.buisness.models.dto.ErrorMessageDto;
+import com.varb.schedule.buisness.models.dto.EventPostDto;
+import com.varb.schedule.buisness.models.dto.EventPutDto;
+import com.varb.schedule.buisness.models.dto.EventRecentResponseDto;
+import com.varb.schedule.buisness.models.dto.EventResponseDto;
+import java.time.LocalDate;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import javax.validation.constraints.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-11T11:37:06.077592+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
 
 @Validated
 @Api(value = "event", description = "the event API")
@@ -57,7 +67,7 @@ public interface EventApi {
     @RequestMapping(value = "/event",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "dateFrom", required = true) LocalDate dateFrom,@ApiParam(value = "") @Valid @RequestParam(value = "dateTo", required = false) Optional<LocalDate> dateTo) {
+    default ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "calendarId", required = true) Long calendarId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "dateFrom", required = true) LocalDate dateFrom,@ApiParam(value = "") @Valid @RequestParam(value = "dateTo", required = false) Optional<LocalDate> dateTo) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -131,11 +141,11 @@ public interface EventApi {
     @RequestMapping(value = "/event/recentList",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
+    default ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "calendarId", required = true) Long calendarId,@NotNull @Min(1) @Max(100) @ApiParam(value = "", required = true) @Valid @RequestParam(value = "count", required = true) Integer count) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "{  \"eventId\" : 0,  \"note\" : \"note\",  \"dateTo\" : \"2000-01-23\",  \"location\" : {    \"name\" : \"name\",    \"type\" : \"statical\"  },  \"eventTypeDescription\" : \"eventTypeDescription\",  \"planned\" : false,  \"dateFrom\" : \"2000-01-23\",  \"unitTitle\" : \"unitTitle\"}");
+                    ApiUtil.setExampleResponse(request, "application/json", "{  \"eventId\" : 0,  \"note\" : \"note\",  \"calendarId\" : 6,  \"dateTo\" : \"2000-01-23\",  \"eventTypeDescription\" : \"eventTypeDescription\",  \"dateFrom\" : \"2000-01-23\",  \"unitTitle\" : \"unitTitle\"}");
                     break;
                 }
             }

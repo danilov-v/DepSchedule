@@ -1,17 +1,21 @@
 package com.varb.schedule.buisness.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.varb.schedule.buisness.models.dto.PeriodDto;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.time.LocalDate;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * PeriodResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
 
 public class PeriodResponseDto   {
   @JsonProperty("name")
@@ -22,6 +26,9 @@ public class PeriodResponseDto   {
 
   @JsonProperty("endDate")
   private LocalDate endDate;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   @JsonProperty("periodId")
   private Long periodId;
@@ -91,6 +98,27 @@ public class PeriodResponseDto   {
     this.endDate = endDate;
   }
 
+  public PeriodResponseDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
+  }
+
   public PeriodResponseDto periodId(Long periodId) {
     this.periodId = periodId;
     return this;
@@ -124,12 +152,13 @@ public class PeriodResponseDto   {
     return Objects.equals(this.name, periodResponse.name) &&
         Objects.equals(this.startDate, periodResponse.startDate) &&
         Objects.equals(this.endDate, periodResponse.endDate) &&
+        Objects.equals(this.calendarId, periodResponse.calendarId) &&
         Objects.equals(this.periodId, periodResponse.periodId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, startDate, endDate, periodId);
+    return Objects.hash(name, startDate, endDate, calendarId, periodId);
   }
 
   @Override
@@ -140,6 +169,7 @@ public class PeriodResponseDto   {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("    periodId: ").append(toIndentedString(periodId)).append("\n");
     sb.append("}");
     return sb.toString();

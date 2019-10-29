@@ -6,6 +6,7 @@ import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.buisness.models.entity.Event;
+import com.varb.schedule.buisness.models.entity.Unit;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
@@ -51,13 +52,12 @@ public class EventService extends AbstractService<Event, Long> {
         return event;
     }
 
-    public List<Event> getAllBetweenDates(LocalDate dateFrom, @Nullable LocalDate dateTo) {
+    public List<Event> getAllBetweenDates(Long calendarId, LocalDate dateFrom, @Nullable LocalDate dateTo) {
         validationService.checkDates(dateFrom, dateTo);
-        return eventRepository.findBetweenDates(dateFrom, dateTo);
+        return eventRepository.findBetweenDates(calendarId, dateFrom, dateTo);
     }
 
-    public List<Event> getRecent(int count) {
-        Long calendarId = 1L; //TODO hardCode, fix it when api will support multiple calendars
+    public List<Event> getRecent(Long calendarId, int count) {
         Calendar calendar = calendarService.findById(calendarId);
 
         LocalDate relativeCurrentDate;
@@ -66,7 +66,7 @@ public class EventService extends AbstractService<Event, Long> {
         else
             relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
 
-        return eventRepository.findRecent(relativeCurrentDate, PageRequest.of(0, count));
+        return eventRepository.findRecent(calendarId, relativeCurrentDate, PageRequest.of(0, count));
     }
 
     /**
@@ -84,8 +84,9 @@ public class EventService extends AbstractService<Event, Long> {
         Long unitId = event.getUnitId();
         Long eventTypeId = event.getEventTypeId();
         eventTypeService.checkExists(eventTypeId);
-        unitService.checkExists(unitId);
-
+        Unit unit = unitService.findById(unitId);
+        checkCalendarId(event, unit);
+        validationService.checkDates(event.getDateFrom(), event.getDateTo());
         checkIntersection(event);
     }
 
@@ -101,7 +102,7 @@ public class EventService extends AbstractService<Event, Long> {
 
     private void checkIntersection(Event event) {
         List<Event> eventList = eventRepository.findIntersection(
-                event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
+                event.getCalendarId(), event.getDateFrom(), event.getDateTo(), event.getUnitId(), event.getEventId());
 
         if (!eventList.isEmpty()) {
             String ids = eventList.stream().map(e -> e.getEventId().toString()).collect(Collectors.joining(","));
@@ -110,6 +111,14 @@ public class EventService extends AbstractService<Event, Long> {
                     DATES_INTERSECTION_MESSAGE,
                     INTERSECTION_OF_EVENTS);
         }
+    }
+
+    private void checkCalendarId(Event event, Unit unit) {
+        if (!unit.getCalendarId().equals(event.getCalendarId())) {
+            throw new WebApiException("Невозможно добавить событие в подразделение из другого календаря: "
+            +"event.calendarId = " +event.getCalendarId() +", unit.calendarId = " +unit.getCalendarId());
+        }
+
     }
 
     @Override

@@ -30,6 +30,12 @@ paths:
       tags:
         - event
       parameters:
+        - name: calendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: dateFrom
           in: query
           required: true
@@ -83,6 +89,12 @@ paths:
       tags:
         - event
       parameters:
+        - name: calendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: count
           in: query
           required: true
@@ -245,6 +257,13 @@ paths:
       summary: Список подразделений
       tags:
         - unit
+      parameters:
+        - name: calendarId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Array of unit
@@ -334,6 +353,12 @@ paths:
       tags:
         - unit
       parameters:
+        - name: calendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: dateFrom
           in: query
           required: true
@@ -555,6 +580,13 @@ paths:
       summary: Список периодов
       tags:
         - period
+      parameters:
+        - name: calendarId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Array of event
@@ -766,6 +798,7 @@ components:
     UnitBaseReq:
       required:
         - title
+        - calendarId
       properties:
         title:
           $ref: "#/components/schemas/UnitTitle"
@@ -776,6 +809,10 @@ components:
           type: boolean
           default: false
           description: "Планируемое подразделение? (true/false)"
+        calendarId:
+          type: integer
+          format: int64
+          description: "Ссылка на календарь"
         parentId:
           type: integer
           format: int64
@@ -825,6 +862,7 @@ components:
       required:
         - unitId
         - title
+        - calendarId
       allOf:
         - $ref: "#/components/schemas/UnitBaseReq"
         - properties:
@@ -883,6 +921,7 @@ components:
         - unitId
         - location
         - planned
+        - calendarId
       properties:
         unitId:
           type: integer
@@ -908,6 +947,10 @@ components:
           description: "Примечание"
         eventTypeId:
           $ref: "#/components/schemas/EventTypeId"
+        calendarId:
+          type: integer
+          format: int64
+          description: "Ссылка на календарь"
     EventPut:
       allOf:
         - $ref: "#/components/schemas/EventBase"
@@ -920,8 +963,7 @@ components:
         - dateFrom
         - eventTypeId
         - unitId
-        - location
-        - planned
+        - calendarId
       properties:
         eventId:
           type: integer
@@ -936,17 +978,15 @@ components:
           type: string
           format: date
           description: "Дата конца события"
-        location:
-          $ref: "#/components/schemas/Location"
-        planned:
-          type: boolean
-          default: false
-          description: "Запланированность события"
         note:
           type: string
           description: "Примечание"
         eventTypeDescription:
           $ref: "#/components/schemas/EventTypeDescription"
+        calendarId:
+          type: integer
+          format: int64
+          description: "Ссылка на календарь"
     EventResponse:
       required:
         - eventId
@@ -1023,6 +1063,7 @@ components:
         - name
         - startDate
         - endDate
+        - calendarId
       properties:
         name:
           type: string
@@ -1033,6 +1074,10 @@ components:
         endDate:
           type: string
           format: date
+        calendarId:
+          type: integer
+          format: int64
+          description: "Ссылка на календарь"
     PeriodResponse:
       required:
         - periodId

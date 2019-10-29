@@ -29,18 +29,18 @@ public class EventApiImpl implements EventApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
+    public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid Long calendarId, @NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
-                modelMapper.mapList(
-                        eventService.getAllBetweenDates(dateFrom, dateTo.orElse(null)),
+                modelMapper.mapToList(
+                        eventService.getAllBetweenDates(calendarId, dateFrom, dateTo.orElse(null)),
                         EventResponseDto.class));
     }
 
     @Override
-    public ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Min(1) @Max(100) @Valid Integer count) {
+    public ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Valid Long calendarId, @NotNull @Min(1) @Max(100) @Valid Integer count) {
         return ResponseEntity.ok(
-                modelMapper.mapList(
-                        eventService.getRecent(count),
+                modelMapper.mapToList(
+                        eventService.getRecent(calendarId, count),
                         EventRecentResponseDto.class));
     }
 

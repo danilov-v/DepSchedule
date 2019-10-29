@@ -26,7 +26,7 @@ public class EventDurationApiImpl implements EventDurationApi {
     @Override
     public ResponseEntity<List<EventDurationResponseDto>> eventDurationGet(@Valid Optional<Long> unitId) {
         return ResponseEntity.ok(
-                modelMapper.mapList(
+                modelMapper.mapToList(
                         eventDurationService.getAll(unitId.orElse(null)),
                         EventDurationResponseDto.class));
     }

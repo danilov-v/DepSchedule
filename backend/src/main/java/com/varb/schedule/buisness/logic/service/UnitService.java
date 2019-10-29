@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -36,8 +37,12 @@ public class UnitService extends AbstractService<Unit, Long> {
         return unit;
     }
 
-    public Set<Unit> getAllExtended(LocalDate dateFrom, @Nullable LocalDate dateTo) {
-        return unitRepository.findAllWithChilds(dateFrom, dateTo);
+    public Set<Unit> getAllExtended(Long calendarId, LocalDate dateFrom, @Nullable LocalDate dateTo) {
+        return unitRepository.findAllWithChilds(calendarId, dateFrom, dateTo);
+    }
+
+    public List<Unit> findAll(Long calendarId) {
+        return unitRepository.findAllByCalendarId(calendarId);
     }
 
     private void checkParent(Unit unit) {
@@ -46,15 +51,22 @@ public class UnitService extends AbstractService<Unit, Long> {
         if (parentId == null)
             return;
 
-        if (parentId==0L) {
+        if (parentId == 0L) {
             unit.setParentId(null);
             return;
         }
 
-        if(parentId.equals(unit.getUnitId()))
-            throw new WebApiException("Невозможно установить parentId равное unitId");
+        if (parentId.equals(unit.getUnitId()))
+            throw new WebApiException("Невозможно установить parentId равный unitId");
 
-        checkExists(parentId);
+        Unit parentUnit = findById(parentId);
+
+        //check that calendars are the same
+        if (!parentUnit.getCalendarId().equals(unit.getCalendarId())) {
+            throw new WebApiException(
+                    "Календарь, в котором создано родительское подразделение отличается от текущего: unit.calendarId = "
+                            + unit.getCalendarId() + ", parentUnit.calendarId = " + parentUnit.getCalendarId());
+        }
 
 //        if (parent.getUnitLevel() >= unit.getUnitLevel())
 //            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");

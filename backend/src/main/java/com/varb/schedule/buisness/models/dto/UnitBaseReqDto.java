@@ -1,16 +1,19 @@
 package com.varb.schedule.buisness.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * UnitBaseReqDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
 
 public class UnitBaseReqDto   {
   @JsonProperty("title")
@@ -21,6 +24,9 @@ public class UnitBaseReqDto   {
 
   @JsonProperty("planned")
   private Boolean planned = false;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -86,6 +92,27 @@ public class UnitBaseReqDto   {
     this.planned = planned;
   }
 
+  public UnitBaseReqDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
+  }
+
   public UnitBaseReqDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
@@ -119,12 +146,13 @@ public class UnitBaseReqDto   {
     return Objects.equals(this.title, unitBaseReq.title) &&
         Objects.equals(this.flag, unitBaseReq.flag) &&
         Objects.equals(this.planned, unitBaseReq.planned) &&
+        Objects.equals(this.calendarId, unitBaseReq.calendarId) &&
         Objects.equals(this.parentId, unitBaseReq.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, planned, parentId);
+    return Objects.hash(title, flag, planned, calendarId, parentId);
   }
 
   @Override
@@ -135,6 +163,7 @@ public class UnitBaseReqDto   {
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
     return sb.toString();

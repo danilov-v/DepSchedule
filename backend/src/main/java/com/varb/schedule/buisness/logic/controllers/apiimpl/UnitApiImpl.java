@@ -30,16 +30,22 @@ public class UnitApiImpl implements UnitApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<UnitResponseDto>> unitGet() {
+    public ResponseEntity<List<UnitResponseDto>> unitGet(@Valid Optional<Long>  calendarId) {
+        List<Unit> resultList;
+        if(calendarId.isPresent()) {
+            resultList = unitService.findAll(calendarId.get());
+        } else {
+            resultList = unitService.findAll();
+        }
         return ResponseEntity.ok(
-                modelMapper.mapList(unitService.findAll(), UnitResponseDto.class));
+                modelMapper.mapToList(resultList, UnitResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
+    public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid Long calendarId, @NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
         return ResponseEntity.ok(
-                unitMapper.convertToThree(unitService.getAllExtended(dateFrom, dateTo.orElse(null))));
+                unitMapper.convertToThree(unitService.getAllExtended(calendarId, dateFrom, dateTo.orElse(null))));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)

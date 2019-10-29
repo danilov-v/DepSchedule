@@ -8,6 +8,7 @@ import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,12 +41,16 @@ public class PeriodService extends AbstractService<Period, Long> {
         return period;
     }
 
+    public List<Period> findAll(Long calendarId) {
+        return periodRepository.findAllByCalendarId(calendarId);
+    }
+
     private void checkBeforeUpdate(Period period) {
         //validate updated period entity
         validationService.checkDates(period.getStartDate(), period.getEndDate());
 
         List<Period> intersections = periodRepository.
-                findIntersections(period.getStartDate(), period.getEndDate());
+                findIntersections(period.getCalendarId(), period.getStartDate(), period.getEndDate());
 
         //When we perform an update operation our period can have intersection with itself.
         //It is correct behaviour
@@ -62,7 +67,7 @@ public class PeriodService extends AbstractService<Period, Long> {
         validationService.checkDates(period.getStartDate(), period.getEndDate());
 
         List<Period> intersections = periodRepository.
-                findIntersections(period.getStartDate(), period.getEndDate());
+                findIntersections(period.getCalendarId(), period.getStartDate(), period.getEndDate());
         if (!intersections.isEmpty()) {
             throw new WebApiException(
                     intersectionsExceptionDevMessage(intersections),

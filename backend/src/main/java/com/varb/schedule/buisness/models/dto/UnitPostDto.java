@@ -1,16 +1,20 @@
 package com.varb.schedule.buisness.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.varb.schedule.buisness.models.dto.UnitBaseReqDto;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 /**
  * UnitPostDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-10T16:43:42.328046+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
 
 public class UnitPostDto   {
   @JsonProperty("title")
@@ -21,6 +25,9 @@ public class UnitPostDto   {
 
   @JsonProperty("planned")
   private Boolean planned = false;
+
+  @JsonProperty("calendarId")
+  private Long calendarId;
 
   @JsonProperty("parentId")
   private Long parentId;
@@ -86,6 +93,27 @@ public class UnitPostDto   {
     this.planned = planned;
   }
 
+  public UnitPostDto calendarId(Long calendarId) {
+    this.calendarId = calendarId;
+    return this;
+  }
+
+  /**
+   * Ссылка на календарь
+   * @return calendarId
+  */
+  @ApiModelProperty(required = true, value = "Ссылка на календарь")
+  @NotNull
+
+
+  public Long getCalendarId() {
+    return calendarId;
+  }
+
+  public void setCalendarId(Long calendarId) {
+    this.calendarId = calendarId;
+  }
+
   public UnitPostDto parentId(Long parentId) {
     this.parentId = parentId;
     return this;
@@ -119,12 +147,13 @@ public class UnitPostDto   {
     return Objects.equals(this.title, unitPost.title) &&
         Objects.equals(this.flag, unitPost.flag) &&
         Objects.equals(this.planned, unitPost.planned) &&
+        Objects.equals(this.calendarId, unitPost.calendarId) &&
         Objects.equals(this.parentId, unitPost.parentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, flag, planned, parentId);
+    return Objects.hash(title, flag, planned, calendarId, parentId);
   }
 
   @Override
@@ -135,6 +164,7 @@ public class UnitPostDto   {
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
     sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
+    sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
     return sb.toString();

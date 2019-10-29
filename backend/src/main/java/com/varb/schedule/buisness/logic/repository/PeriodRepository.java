@@ -15,6 +15,9 @@ public interface PeriodRepository extends JpaRepository<Period, Long> {
 
     //don't use equals (<= or >=) in comparison because
     //the case when a period starts from the date another one finishes is valid
-    @Query("Select p from Period p where :startDate < p.endDate and :endDate > p.startDate")
-    List<Period> findIntersections(LocalDate startDate, LocalDate endDate);
+    @Query("Select p from Period p where p.calendarId = :calendarId and :startDate < p.endDate and :endDate > p.startDate")
+    List<Period> findIntersections(Long calendarId, LocalDate startDate, LocalDate endDate);
+
+    @Query("Select p from Period p where p.calendarId = :calendarId")
+    List<Period> findAllByCalendarId(Long calendarId);
 }

@@ -25,7 +25,7 @@ public class EventTypeApiImpl implements EventTypeApi {
     @Override
     public ResponseEntity<List<EventTypeResponseDto>> eventTypeGet() {
         return ResponseEntity.ok(
-                modelMapper.mapList(eventTypeService.findAll(), EventTypeResponseDto.class));
+                modelMapper.mapToList(eventTypeService.findAll(), EventTypeResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
