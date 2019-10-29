@@ -117,5 +117,5 @@ export const useCalendars = () => {
     fetchCalendars();
   }, [fetchCalendars]);
 
-  return [calendars, setCalendars];
+  return [calendars, fetchCalendars];
 };

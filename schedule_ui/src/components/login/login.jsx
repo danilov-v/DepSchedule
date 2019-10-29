@@ -1,7 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, FormGroup, FormFeedback, Input } from "reactstrap";
 import { useForm } from "helpers/hooks/useForm";
+import { loginRequest } from "redux/actions/auth";
+import { getLoginErrorSelector } from "redux/selectors/ui";
 
 import "./login.scss";
 
@@ -22,16 +24,10 @@ const validateForm = values => {
   return errors;
 };
 
-export const Login = ({ login }) => {
-  const onFormSubmit = async () => {
-    try {
-      await login(values);
-    } catch (e) {
-      console.log(e);
-      setErrors({ auth: "Неверное имя или пароль" });
-    }
-  };
-
+export const Login = () => {
+  const dispatch = useDispatch();
+  const loginDataError = useSelector(getLoginErrorSelector);
+  const onFormSubmit = () => dispatch(loginRequest({ user: values }));
   const {
     onChange,
     onSubmit,
@@ -40,6 +36,12 @@ export const Login = ({ login }) => {
     setErrors,
     values,
   } = useForm(onFormSubmit, defaultFormData, validateForm);
+
+  useEffect(() => {
+    if (loginDataError.isError) {
+      setErrors({ auth: "Неверное имя или пароль" });
+    }
+  }, [setErrors, loginDataError]);
 
   const handleInputChange = ({ target }) =>
     onChange({ [target["name"]]: target.value });
@@ -81,8 +83,4 @@ export const Login = ({ login }) => {
       </Form>
     </div>
   );
-};
-
-Login.propTypes = {
-  login: PropTypes.func,
 };

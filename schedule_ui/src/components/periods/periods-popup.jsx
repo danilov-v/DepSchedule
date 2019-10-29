@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -16,11 +16,6 @@ import DatePicker from "react-datepicker";
 import classnames from "classnames";
 import { isDate } from "date-fns";
 import { useForm } from "helpers/hooks/useForm";
-import { NotificationManager } from "helpers/notification-manager";
-import {
-  SUCCESS_PERIOD_NOTIFICATION_DATA,
-  FAILED_PERIOD_NOTIFICATION_DATA,
-} from "constants/notifications";
 
 export const validatePeriodForm = values => {
   let errors = {};
@@ -43,9 +38,10 @@ export const validatePeriodForm = values => {
 export function PeriodsPopup({
   isOpen,
   toggle,
-  type,
+  isEdit,
   onPeriodSubmit,
   defaultFormData,
+  error,
 }) {
   const {
     onChange,
@@ -56,42 +52,35 @@ export function PeriodsPopup({
     values,
   } = useForm(submitForm, defaultFormData, validatePeriodForm);
 
+  useEffect(() => {
+    if (error) {
+      const { code, userMessage } = error;
+      switch (code) {
+        case "DATES_INTERSECTION":
+          setErrors({ dates: userMessage });
+          break;
+        default:
+          return;
+      }
+    }
+  }, [error, setErrors]);
+
   const onInputChange = ({ target }) =>
     onChange({ [target.name]: target.value });
 
   const handleChangeDate = fieldName => date => onChange({ [fieldName]: date });
 
-  const handleError = ({ code, userMessage, devMessage }) => {
-    NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
-    console.log(devMessage);
-    console.log(code);
-
-    switch (code) {
-      case "DATES_INTERSECTION":
-        setErrors({ dates: userMessage });
-        break;
-      default:
-        return;
-    }
-  };
-
-  async function submitForm() {
-    try {
-      await onPeriodSubmit(values);
-      toggle();
-
-      NotificationManager.fire(SUCCESS_PERIOD_NOTIFICATION_DATA);
-    } catch (e) {
-      handleError(e);
-    }
+  function submitForm() {
+    onPeriodSubmit(values);
   }
+
   const { name, startDate, endDate } = values;
 
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
       <Form className="p-3">
         <ModalHeader toggle={toggle}>
-          {type === "create" ? "Создание" : "Редакитрование"} Периода
+          {!isEdit ? "Создание" : "Редакитрование"} Периода
         </ModalHeader>
         <ModalBody>
           <FormGroup>
@@ -159,7 +148,7 @@ export function PeriodsPopup({
             className="mr-3"
             onClick={onSubmit}
           >
-            {type === "create" ? "Создать" : "Обновить"}
+            {!isEdit ? "Создать" : "Обновить"}
           </Button>
           <Button color="primary" onClick={toggle}>
             Закрыть
@@ -173,8 +162,9 @@ export function PeriodsPopup({
 PeriodsPopup.propTypes = {
   toggle: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
-  type: PropTypes.string,
+  isEdit: PropTypes.bool,
   onPeriodSubmit: PropTypes.func,
+  error: PropTypes.object,
   defaultFormData: PropTypes.shape({
     name: PropTypes.string,
     startDate: PropTypes.instanceOf(Date),

@@ -1,74 +1,72 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Container,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-} from "reactstrap";
+import { Container, Button, Table } from "reactstrap";
+import { CalendarListModal } from "./calendar-list-modal";
 
 import "./calendar-list.scss";
 
-export function CalendarList({
-  calendars,
-  onCalendarSelect,
-  onNewCalendarCreate,
-}) {
-  const [modal, setModal] = useState(false);
-  const [newCalendarValue, setNewCalendarValue] = useState("");
-
-  const toggle = () => {
-    if (!modal) setNewCalendarValue("");
-    setModal(!modal);
-  };
-  const createNewCalendar = () => {
-    onNewCalendarCreate(newCalendarValue);
-
-    toggle();
-  };
-  const handleChange = event => {
-    setNewCalendarValue(event.target.value);
+const CalendarListRow = ({ calendar, onCalendarSelect, onCalendarRemove }) => {
+  const removeHandler = e => {
+    e.stopPropagation();
+    onCalendarRemove(calendar.calendarId);
   };
 
   return (
-    <Container className="calendar-list emblem-background">
-      <div className="select-form">
-        <h2 className="text-center mb-5">Выберите Календарь</h2>
-        <div className="mb-3">
-          {calendars.map(calendar => (
-            <div
-              className="calendar-list-item font-italic"
-              key={calendar.calendarId}
-              onClick={() => onCalendarSelect(calendar.calendarId)}
-            >
-              {calendar.name}
-            </div>
-          ))}
-        </div>
-        <Button color="success" onClick={toggle}>
-          Создать новый календарь
+    <tr
+      className="calendar-list-row"
+      onClick={() => onCalendarSelect(calendar.calendarId)}
+    >
+      <td>{calendar.name}</td>
+      <td>{calendar.isAstronomical ? "Да" : "Нет"}</td>
+      <td>{calendar.shift}</td>
+      <td>
+        <Button color="danger" onClick={removeHandler}>
+          Удалить
         </Button>
-        <Modal isOpen={modal} toggle={toggle}>
-          <ModalHeader toggle={toggle}>Введите название календаря</ModalHeader>
-          <ModalBody>
-            <Input
-              value={newCalendarValue}
-              onChange={handleChange}
-              placeholder="ВА РБ"
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={createNewCalendar}>
-              Создать
-            </Button>{" "}
-            <Button color="secondary" onClick={toggle}>
-              Отменить
-            </Button>
-          </ModalFooter>
-        </Modal>
+      </td>
+    </tr>
+  );
+};
+
+export function CalendarList({ calendars, onNewCalendarCreate, ...handlers }) {
+  const [modal, setModal] = useState(false);
+  const toggle = () => {
+    setModal(!modal);
+  };
+
+  return (
+    <Container className="calendar-list emblem-background py-4">
+      <div className="select-form1">
+        <h2 className="text-center mb-5">Выберите Календарь</h2>
+        <Table hover>
+          <thead>
+            <tr>
+              <th>Название</th>
+              <th>Астрономическое время</th>
+              <th>Сдвиг</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {calendars.map(calendar => (
+              <CalendarListRow
+                key={calendar.calendarId}
+                calendar={calendar}
+                {...handlers}
+              />
+            ))}
+          </tbody>
+        </Table>
+        <div className="text-center1">
+          <Button color="success" onClick={toggle}>
+            Создать календарь
+          </Button>
+        </div>
+        <CalendarListModal
+          onToggle={toggle}
+          modal={modal}
+          onSubmit={onNewCalendarCreate}
+        />
       </div>
     </Container>
   );
@@ -85,6 +83,7 @@ CalendarList.propTypes = {
   ),
   onCalendarSelect: PropTypes.func.isRequired,
   onNewCalendarCreate: PropTypes.func.isRequired,
+  onCalendarRemove: PropTypes.func.isRequired,
 };
 
 CalendarList.defaultProps = {

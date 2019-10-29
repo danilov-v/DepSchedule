@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
-import classnames from "classnames";
+import React, { useState, useEffect } from "react";
 import {
   Collapse,
   Navbar,
@@ -14,34 +11,70 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import { addDays } from "date-fns";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePicker from "react-datepicker";
-import PropTypes from "prop-types";
+import {
+  updateStartDate,
+  updateEndDate,
+  updateOperationalDate,
+  setOperationalDate,
+} from "redux/actions/scheduler";
+import { logoutRequest } from "redux/actions/auth";
+import {
+  getStartDateSelector,
+  getEndDateSelector,
+  getOperationalDateSelector,
+} from "redux/selectors/scheduler";
+import {
+  getActiveCalendarSelector,
+  getCalendarsSelector,
+} from "redux/selectors/calendars";
+import { setActiveCalendar } from "redux/actions/calendars";
 import logo from "logo.png";
-import { useAuth } from "components/auth-service/auth-service";
+import { LastEventsList } from "components/last-events-list/last-events-list";
 
 import "./header.scss";
 
-export function HeaderUI({
-  startDate,
-  endDate,
-  operationalDate,
-  onChangeOperationalDate,
-  onChangeStartDate,
-  onChangeEndDate,
-  onCalendarChange,
-  history,
-}) {
+export function Header() {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const calendars = useSelector(getCalendarsSelector);
+  const activeCalendarId = useSelector(getActiveCalendarSelector);
+  const activeCalendar = calendars.find(
+    calendar => calendar.calendarId === activeCalendarId
+  );
   const [isOpen, toggleNav] = useState(false);
-  const { logout } = useAuth();
+  const startDate = useSelector(getStartDateSelector);
+  const endDate = useSelector(getEndDateSelector);
+  const operationalDate = useSelector(getOperationalDateSelector);
+  const isHomePage = location.pathname === "/";
+
+  // Handlers
+  const changeStartDate = date => dispatch(updateStartDate(date));
+  const changeEndDate = date => dispatch(updateEndDate(date));
+  const changeOperationalDate = date => dispatch(setOperationalDate(date));
+  const changeCalendar = () =>
+    dispatch(setActiveCalendar({ calendarId: null }));
+  const logout = () => dispatch(logoutRequest());
 
   const toggle = () => toggleNav(!isOpen);
   const print = () => window.print();
 
-  const isHomePage = history.location.pathname === "/";
+  useEffect(() => {
+    dispatch(updateOperationalDate(addDays(startDate, activeCalendar.shift)));
+  }, [dispatch, activeCalendar]);
 
   return (
-    <Navbar color="light" light expand="lg" className="header mb-3">
+    <Navbar
+      color="light"
+      light
+      expand="lg"
+      className="header mb-3 bg-transparent"
+    >
       <Link className="nav-link brand" to="/">
         <img src={logo} alt="Logo" className="logo" />
         ГРСУ
@@ -50,6 +83,7 @@ export function HeaderUI({
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
           <div
+            title="Оперативное время"
             className={classnames("d-flex align-items-center mr-5", {
               invisible: !isHomePage,
             })}
@@ -58,7 +92,7 @@ export function HeaderUI({
             <DatePicker
               selected={operationalDate}
               dateFormat="dd/MM/yyyy"
-              onChange={onChangeOperationalDate}
+              onChange={changeOperationalDate}
               locale="ru"
               className="date_picker"
             />
@@ -72,7 +106,7 @@ export function HeaderUI({
             <DatePicker
               selected={startDate}
               dateFormat="dd/MM/yyyy"
-              onChange={onChangeStartDate}
+              onChange={changeStartDate}
               locale="ru"
               className="date_picker"
             />
@@ -81,37 +115,35 @@ export function HeaderUI({
               selected={endDate}
               minDate={startDate}
               dateFormat="dd/MM/yyyy"
-              onChange={onChangeEndDate}
+              onChange={changeEndDate}
               locale="ru"
               className="date_picker"
             />
           </div>
-          <NavItem>
+          <NavItem title="Типы событий">
             <Link className="nav-link" to="event_types">
               Типы событий
             </Link>
           </NavItem>
-          <NavItem>
+          <NavItem title="Периоды">
             <Link className="nav-link" to="periods">
               Периоды
             </Link>
           </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to="finished_events">
-              <FontAwesomeIcon icon="list-ul" />
-            </NavLink>
+          <NavItem title="Последние события">
+            <LastEventsList />
           </NavItem>
-          <NavItem hidden={!isHomePage}>
+          <NavItem hidden={!isHomePage} title="Печать">
             <NavLink href="#" onClick={print}>
               <FontAwesomeIcon icon="file-pdf" />
             </NavLink>
           </NavItem>
-          <UncontrolledDropdown nav inNavbar>
+          <UncontrolledDropdown nav inNavbar title="Управление">
             <DropdownToggle nav>
               <FontAwesomeIcon icon="user-alt" />
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem onClick={onCalendarChange}>
+              <DropdownItem onClick={changeCalendar}>
                 Сменить календарь
               </DropdownItem>
               <DropdownItem divider />
@@ -123,15 +155,3 @@ export function HeaderUI({
     </Navbar>
   );
 }
-
-export const Header = withRouter(HeaderUI);
-
-HeaderUI.propTypes = {
-  startDate: PropTypes.instanceOf(Date),
-  endDate: PropTypes.instanceOf(Date),
-  operationalDate: PropTypes.instanceOf(Date),
-  onChangeStartDate: PropTypes.func,
-  onChangeEndDate: PropTypes.func,
-  history: PropTypes.object,
-  onCalendarChange: PropTypes.func,
-};

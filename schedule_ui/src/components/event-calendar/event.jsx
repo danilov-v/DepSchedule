@@ -44,6 +44,7 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
         className="event"
         style={eventStyle}
         onClick={onClick}
+        tabIndex="-1"
       >
         {title}
       </div>

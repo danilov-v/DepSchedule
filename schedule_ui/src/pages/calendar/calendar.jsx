@@ -1,56 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { useCalendars } from "helpers/hooks/apiEffects";
-import { createCalendar } from "helpers/api";
-import { Home } from "components/home/home";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchCalendars,
+  createCalendar,
+  setActiveCalendar,
+  removeCalendar,
+} from "redux/actions/calendars";
+import { getCalendarsSelector } from "redux/selectors/calendars";
+import { CALENDAR_CONFIRMATION_OPTIONS } from "constants/confirmations";
+import { FAILED_CALENDAR_NOTIFICATION_DATA } from "constants/notifications";
+import { NotificationManager } from "helpers/notification-manager";
+import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { CalendarList } from "components/calendar-list/calendar-list";
 
-export const DEFAULT_CALENDAR_DATA = {
-  activeCalendar:
-    JSON.parse(window.localStorage.getItem("activeCalendar")) || null,
-};
-
 export function Calendar() {
-  const [calendars] = useCalendars();
-  const [activeCalendar, setActiveCalendar] = useState(
-    DEFAULT_CALENDAR_DATA.activeCalendar
-  );
-
-  const selectCalendar = calendarId => {
-    const selectedCalendar = calendars.find(
-      calendar => calendar.calendarId === calendarId
-    );
-
-    setActiveCalendar(selectedCalendar);
-  };
-
-  const deselectCalendar = () => setActiveCalendar(null);
-
-  const createNewCalendar = async calendarName => {
-    const createdCalendar = await createCalendar(calendarName);
-
-    setActiveCalendar(createdCalendar);
-  };
+  const confirm = useConfirmation();
+  const dispatch = useDispatch();
+  const calendars = useSelector(getCalendarsSelector);
 
   useEffect(() => {
-    if (activeCalendar) {
-      window.localStorage.setItem(
-        "activeCalendar",
-        JSON.stringify(activeCalendar)
-      );
-    }
-  }, [activeCalendar]);
+    dispatch(fetchCalendars());
+  }, [dispatch]);
 
-  if (activeCalendar) {
-    return (
-      <Home activeCalendar={activeCalendar} changeCalendar={deselectCalendar} />
-    );
-  }
+  const createNewCalendar = calendar => dispatch(createCalendar({ calendar }));
+
+  const removeCalendarHandler = calendarId => {
+    confirm(CALENDAR_CONFIRMATION_OPTIONS).then(() => {
+      try {
+        dispatch(removeCalendar({ calendarId }));
+      } catch (e) {
+        NotificationManager.fire(FAILED_CALENDAR_NOTIFICATION_DATA);
+      }
+    });
+  };
+
+  const selectCalendar = calendarId =>
+    dispatch(setActiveCalendar({ calendarId }));
 
   return (
     <CalendarList
       calendars={calendars}
       onCalendarSelect={selectCalendar}
       onNewCalendarCreate={createNewCalendar}
+      onCalendarRemove={removeCalendarHandler}
     />
   );
 }

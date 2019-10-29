@@ -75,6 +75,13 @@ export const FAILED_PERIOD_NOTIFICATION_DATA = {
   color: "danger",
 };
 
+export const FAILED_CALENDAR_NOTIFICATION_DATA = {
+  isOpen: true,
+  title: "Календарь",
+  body: "Ошибка при удалении календаря. Попробуйте ещё раз.",
+  color: "danger",
+};
+
 export const FAILED_LOGIN = {
   isOpen: true,
   title: "Авторизация",

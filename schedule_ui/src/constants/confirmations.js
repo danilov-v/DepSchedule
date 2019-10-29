@@ -10,6 +10,12 @@ export const PERIOD_CONFIRMATION_OPTIONS = {
   catchOnCancel: false,
 };
 
+export const CALENDAR_CONFIRMATION_OPTIONS = {
+  title: "Удаление Календаря",
+  body: "Вы уверены что хотите удалить календарь?",
+  catchOnCancel: false,
+};
+
 export const getUnitRemoveConfirmationOptions = ({ title }) => ({
   title: "Удаление поздразделения",
   body: `Вы уверены что хотите удалить ${title} подразделение?`,

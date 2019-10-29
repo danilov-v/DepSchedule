@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import {
   Button,
   Form,
@@ -16,14 +17,10 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { get, isBoolean, set } from "lodash";
-import { createUnit, updateUnit } from "helpers/api";
-import {
-  SUCCESS_UNIT_NOTIFICATION_DATA,
-  SUCCESS_UNIT_NOTIFICATION_DATA_EDIT,
-  FAILED_UNIT_NOTIFICATION_DATA,
-} from "constants/notifications";
+import { FAILED_UNIT_NOTIFICATION_DATA } from "constants/notifications";
 import { FLAGS_MAP, NO_FLAG } from "constants/flags";
 import { NotificationManager } from "helpers/notification-manager";
+import { createUnit, updateUnit } from "redux/actions/scheduler";
 
 import "./unit-popup.scss";
 
@@ -50,7 +47,8 @@ const setCorrectFlagName = formData =>
     )
   );
 
-export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
+export function UnitPopup({ units, unit, isEdit, onClose }) {
+  const dispatch = useDispatch();
   const [isValid, setValidState] = useState(null);
   const [formData, setData] = useState(unit);
   const titleInputEl = useRef(null);
@@ -71,25 +69,14 @@ export function UnitPopup({ units, unit, isEdit, onUnitsUpdate, onClose }) {
 
     if (validate(formData)) {
       setCorrectFlagName(formData);
-      try {
-        if (isEdit) {
-          await updateUnit(formData);
-        } else {
-          await createUnit(formData);
-        }
 
-        onUnitsUpdate();
-        toggleModal();
-
-        NotificationManager.fire(
-          isEdit
-            ? SUCCESS_UNIT_NOTIFICATION_DATA_EDIT
-            : SUCCESS_UNIT_NOTIFICATION_DATA
-        );
-      } catch (e) {
-        setValidState(false);
-        NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
+      if (isEdit) {
+        dispatch(updateUnit({ unit: formData }));
+      } else {
+        dispatch(createUnit({ unit: formData }));
       }
+
+      toggleModal();
     } else {
       setValidState(false);
       NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
