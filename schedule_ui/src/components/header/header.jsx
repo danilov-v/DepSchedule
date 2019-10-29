@@ -65,7 +65,12 @@ export function Header() {
   const print = () => window.print();
 
   useEffect(() => {
-    dispatch(updateOperationalDate(addDays(startDate, activeCalendar.shift)));
+    if (activeCalendar && activeCalendar.dateFrom)
+      changeStartDate(new Date(activeCalendar.dateFrom));
+    if (activeCalendar && activeCalendar.dateTo)
+      changeEndDate(new Date(activeCalendar.dateTo));
+    if (activeCalendar && activeCalendar.shift)
+      dispatch(updateOperationalDate(addDays(startDate, activeCalendar.shift)));
   }, [dispatch, activeCalendar]);
 
   return (
