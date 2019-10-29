@@ -961,6 +961,7 @@ components:
       required:
         - eventId
         - dateFrom
+        - dateTo
         - eventTypeId
         - unitId
         - calendarId
@@ -1210,6 +1211,14 @@ components:
             calendarId:
               type: integer
               format: int64
+            dateFrom:
+              type: string
+              format: date
+              description: "Дата начала первого события в календаре"
+            dateTo:
+              type: string
+              format: date
+              description: "Дата конца последнего события в календаре"
         - $ref: "#/components/schemas/CalendarBaseReq"
     ErrorMessage:
       type: object

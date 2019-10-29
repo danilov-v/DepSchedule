@@ -2,6 +2,7 @@ package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventDurationRepository;
 import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
+import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.EventDurationPK;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -11,6 +12,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,7 @@ import java.util.Optional;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class EventDurationService extends AbstractService<EventDuration, EventDurationPK>{
+public class EventDurationService extends AbstractService<EventDuration, EventDurationPK> {
     private final EventDurationRepository eventDurationRepository;
     private final ModelMapperCustomize modelMapper;
     private final UnitService unitService;
@@ -27,7 +29,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
     /**
      * Изменяем длительность по умолчанию для событий в подразделении {@code unitId} и с типом {@code eventTypeId}
      *
-     * @param unitId Id подразделения
+     * @param unitId      Id подразделения
      * @param eventTypeId Id типа события
      */
     public EventDuration merge(Long unitId, Long eventTypeId, EventDurationPutDto eventDurationPutDto) {
@@ -69,6 +71,14 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
 
     public EventDuration findById(Long unitId, Long eventTypeId) {
         return super.findById(new EventDurationPK(unitId, eventTypeId));
+    }
+
+    /**
+     * Update 'duration' in {@link com.varb.schedule.buisness.models.entity.EventDuration}
+     */
+    void updateEventDuration(Event event) {
+        int duration = (int) ChronoUnit.DAYS.between(event.getDateFrom(), event.getDateTo());
+        merge(event.getUnitId(), event.getEventTypeId(), new EventDurationPutDto().duration(duration));
     }
 
     @Override

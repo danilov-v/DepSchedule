@@ -1,7 +1,6 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventRepository;
-import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
 import com.varb.schedule.buisness.models.dto.EventPostDto;
 import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,14 +39,15 @@ public class EventService extends AbstractService<Event, Long> {
 
     public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
-        prepareBeforeSave(event);
-        return save(event);
+        event = save(event);
+        manipulationAfterSave(event);
+        return event;
     }
 
     public Event update(Long eventId, EventPutDto eventPut) {
         Event event = findById(eventId);
         modelMapper.map(eventPut, event);
-        prepareBeforeSave(event);
+        manipulationAfterSave(event);
         return event;
     }
 
@@ -69,36 +68,32 @@ public class EventService extends AbstractService<Event, Long> {
         return eventRepository.findRecent(calendarId, relativeCurrentDate, PageRequest.of(0, count));
     }
 
+    @Override
+    public void delete(Long eventId) {
+        Event event = findById(eventId);
+        super.delete(eventId);
+        calendarService.updateCalendarTimeFrameAfterDeleteEvent(event.getCalendarId(), event.getDateFrom(), event.getDateTo());
+    }
+
     /**
-     * Подготовительные операции перед сохранением события
+     * Необходимые проверки после сохранения события
      */
-    private void prepareBeforeSave(Event event) {
-        checkConsistencyBeforeSave(event);
-        updateEventDuration(event);
+    private void manipulationAfterSave(Event event) {
+        checkConsistency(event);
+        eventDurationService.updateEventDuration(event);
+        calendarService.updateCalendarTimeFrameAfterSaveEvent(event.getCalendarId(), event.getDateFrom(), event.getDateTo());
     }
 
     /**
      * Проверка согласованности данных
      */
-    private void checkConsistencyBeforeSave(Event event) {
-        Long unitId = event.getUnitId();
-        Long eventTypeId = event.getEventTypeId();
-        eventTypeService.checkExists(eventTypeId);
-        Unit unit = unitService.findById(unitId);
-        checkCalendarId(event, unit);
+    private void checkConsistency(Event event) {
+        eventTypeService.checkExists(event.getEventTypeId());
+        checkCalendarId(event);
         validationService.checkDates(event.getDateFrom(), event.getDateTo());
         checkIntersection(event);
     }
 
-    /**
-     * Update 'duration' in {@link com.varb.schedule.buisness.models.entity.EventDuration}
-     */
-    private void updateEventDuration(Event event) {
-        int duration = (int) ChronoUnit.DAYS.between(event.getDateFrom(), event.getDateTo());
-        eventDurationService.merge(
-                event.getUnitId(), event.getEventTypeId(),
-                new EventDurationPutDto().duration(duration));
-    }
 
     private void checkIntersection(Event event) {
         List<Event> eventList = eventRepository.findIntersection(
@@ -113,7 +108,8 @@ public class EventService extends AbstractService<Event, Long> {
         }
     }
 
-    private void checkCalendarId(Event event, Unit unit) {
+    private void checkCalendarId(Event event) {
+        Unit unit = unitService.findById(event.getUnit().getUnitId());
         if (!unit.getCalendarId().equals(event.getCalendarId())) {
             throw new WebApiException("Невозможно добавить событие в подразделение из другого календаря: "
             +"event.calendarId = " +event.getCalendarId() +", unit.calendarId = " +unit.getCalendarId());

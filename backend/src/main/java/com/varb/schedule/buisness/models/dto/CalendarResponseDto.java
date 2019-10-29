@@ -1,20 +1,17 @@
 package com.varb.schedule.buisness.models.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.openapitools.jackson.nullable.JsonNullable;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * CalendarResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-29T10:47:52.582273+03:00[Europe/Minsk]")
 
 public class CalendarResponseDto   {
   @JsonProperty("name")
@@ -28,6 +25,12 @@ public class CalendarResponseDto   {
 
   @JsonProperty("calendarId")
   private Long calendarId;
+
+  @JsonProperty("dateFrom")
+  private LocalDate dateFrom;
+
+  @JsonProperty("dateTo")
+  private LocalDate dateTo;
 
   public CalendarResponseDto name(String name) {
     this.name = name;
@@ -112,6 +115,48 @@ public class CalendarResponseDto   {
     this.calendarId = calendarId;
   }
 
+  public CalendarResponseDto dateFrom(LocalDate dateFrom) {
+    this.dateFrom = dateFrom;
+    return this;
+  }
+
+  /**
+   * Дата начала первого события в календаре
+   * @return dateFrom
+  */
+  @ApiModelProperty(value = "Дата начала первого события в календаре")
+
+  @Valid
+
+  public LocalDate getDateFrom() {
+    return dateFrom;
+  }
+
+  public void setDateFrom(LocalDate dateFrom) {
+    this.dateFrom = dateFrom;
+  }
+
+  public CalendarResponseDto dateTo(LocalDate dateTo) {
+    this.dateTo = dateTo;
+    return this;
+  }
+
+  /**
+   * Дата конца последнего события в календаре
+   * @return dateTo
+  */
+  @ApiModelProperty(value = "Дата конца последнего события в календаре")
+
+  @Valid
+
+  public LocalDate getDateTo() {
+    return dateTo;
+  }
+
+  public void setDateTo(LocalDate dateTo) {
+    this.dateTo = dateTo;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -125,12 +170,14 @@ public class CalendarResponseDto   {
     return Objects.equals(this.name, calendarResponse.name) &&
         Objects.equals(this.shift, calendarResponse.shift) &&
         Objects.equals(this.isAstronomical, calendarResponse.isAstronomical) &&
-        Objects.equals(this.calendarId, calendarResponse.calendarId);
+        Objects.equals(this.calendarId, calendarResponse.calendarId) &&
+        Objects.equals(this.dateFrom, calendarResponse.dateFrom) &&
+        Objects.equals(this.dateTo, calendarResponse.dateTo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, shift, isAstronomical, calendarId);
+    return Objects.hash(name, shift, isAstronomical, calendarId, dateFrom, dateTo);
   }
 
   @Override
@@ -142,6 +189,8 @@ public class CalendarResponseDto   {
     sb.append("    shift: ").append(toIndentedString(shift)).append("\n");
     sb.append("    isAstronomical: ").append(toIndentedString(isAstronomical)).append("\n");
     sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");
+    sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
+    sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
     sb.append("}");
     return sb.toString();
   }

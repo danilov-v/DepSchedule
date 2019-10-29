@@ -1,20 +1,18 @@
 package com.varb.schedule.buisness.models.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
-import org.openapitools.jackson.nullable.JsonNullable;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * EventRecentResponseDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-29T10:47:52.582273+03:00[Europe/Minsk]")
 
 public class EventRecentResponseDto   {
   @JsonProperty("eventId")
@@ -28,6 +26,12 @@ public class EventRecentResponseDto   {
 
   @JsonProperty("dateTo")
   private LocalDate dateTo;
+
+  @JsonProperty("location")
+  private LocationDto location = null;
+
+  @JsonProperty("planned")
+  private Boolean planned = false;
 
   @JsonProperty("note")
   private String note;
@@ -122,6 +126,49 @@ public class EventRecentResponseDto   {
     this.dateTo = dateTo;
   }
 
+  public EventRecentResponseDto location(LocationDto location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+
+  public LocationDto getLocation() {
+    return location;
+  }
+
+  public void setLocation(LocationDto location) {
+    this.location = location;
+  }
+
+  public EventRecentResponseDto planned(Boolean planned) {
+    this.planned = planned;
+    return this;
+  }
+
+  /**
+   * Запланированность события
+   * @return planned
+  */
+  @ApiModelProperty(required = true, value = "Запланированность события")
+  @NotNull
+
+
+  public Boolean getPlanned() {
+    return planned;
+  }
+
+  public void setPlanned(Boolean planned) {
+    this.planned = planned;
+  }
+
   public EventRecentResponseDto note(String note) {
     this.note = note;
     return this;
@@ -197,6 +244,8 @@ public class EventRecentResponseDto   {
         Objects.equals(this.unitTitle, eventRecentResponse.unitTitle) &&
         Objects.equals(this.dateFrom, eventRecentResponse.dateFrom) &&
         Objects.equals(this.dateTo, eventRecentResponse.dateTo) &&
+        Objects.equals(this.location, eventRecentResponse.location) &&
+        Objects.equals(this.planned, eventRecentResponse.planned) &&
         Objects.equals(this.note, eventRecentResponse.note) &&
         Objects.equals(this.eventTypeDescription, eventRecentResponse.eventTypeDescription) &&
         Objects.equals(this.calendarId, eventRecentResponse.calendarId);
@@ -204,7 +253,7 @@ public class EventRecentResponseDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(eventId, unitTitle, dateFrom, dateTo, note, eventTypeDescription, calendarId);
+    return Objects.hash(eventId, unitTitle, dateFrom, dateTo, location, planned, note, eventTypeDescription, calendarId);
   }
 
   @Override
@@ -216,6 +265,8 @@ public class EventRecentResponseDto   {
     sb.append("    unitTitle: ").append(toIndentedString(unitTitle)).append("\n");
     sb.append("    dateFrom: ").append(toIndentedString(dateFrom)).append("\n");
     sb.append("    dateTo: ").append(toIndentedString(dateTo)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    planned: ").append(toIndentedString(planned)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("    eventTypeDescription: ").append(toIndentedString(eventTypeDescription)).append("\n");
     sb.append("    calendarId: ").append(toIndentedString(calendarId)).append("\n");

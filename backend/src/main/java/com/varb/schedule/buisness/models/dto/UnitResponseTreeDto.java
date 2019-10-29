@@ -1,26 +1,19 @@
 package com.varb.schedule.buisness.models.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.varb.schedule.buisness.models.dto.EventResponseDto;
-import com.varb.schedule.buisness.models.dto.UnitBaseReqDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 /**
  * Узел дерева. Содержит информацию о подразделении
  */
 @ApiModel(description = "Узел дерева. Содержит информацию о подразделении")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-24T12:01:31.603414+03:00[Europe/Minsk]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-10-29T10:47:52.582273+03:00[Europe/Minsk]")
 
 public class UnitResponseTreeDto   {
   @JsonProperty("title")
