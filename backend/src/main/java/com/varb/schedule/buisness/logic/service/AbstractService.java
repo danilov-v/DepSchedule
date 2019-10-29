@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +30,7 @@ public abstract class AbstractService<T, ID> {
     @PersistenceContext
     protected EntityManager entityManager;
 
+    @Transactional
     public void delete(ID id) {
         try {
             repository.deleteById(id);
