@@ -54,8 +54,9 @@ export const init = (state = initialState, action) => {
           ...action.payload,
           isOpen: true,
           error: null,
-          initialFormData:
-            action.payload.initialFormData || DEFAULT_PERIOD_FORM_DATA,
+          initialFormData: action.payload.initialFormData || {
+            ...DEFAULT_PERIOD_FORM_DATA,
+          },
         },
       };
 
@@ -114,8 +115,9 @@ export const init = (state = initialState, action) => {
           ...action.payload,
           isOpen: true,
           error: null,
-          initialFormData:
-            action.payload.initialFormData || DEFAULT_EVENT_TYPE_FORM_DATA,
+          initialFormData: action.payload.initialFormData || {
+            ...DEFAULT_EVENT_TYPE_FORM_DATA,
+          },
         },
       };
     case CLOSE_EVENT_TYPE_FORM:
