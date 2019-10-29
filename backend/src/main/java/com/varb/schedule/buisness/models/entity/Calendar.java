@@ -2,8 +2,10 @@ package com.varb.schedule.buisness.models.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Accessors(chain = true)
@@ -16,7 +18,7 @@ public class Calendar {
     /**
      * Copy constructor
      */
-    public Calendar(Calendar that){
+    public Calendar(Calendar that) {
         name = that.getName();
         shift = that.getShift();
         isAstronomical = that.isAstronomical();
@@ -34,5 +36,18 @@ public class Calendar {
 
     @Column(nullable = false)
     private boolean isAstronomical;
+
+    /**
+     * Дата начала первого события в календаре
+     */
+    @Nullable
+    private LocalDate dateFrom;
+
+    /**
+     * Дата конца последнего события в календаре
+     */
+    @Nullable
+    private LocalDate dateTo;
+
 
 }
