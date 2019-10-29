@@ -37,7 +37,7 @@ public class CalendarService extends AbstractService<Calendar, Long> {
      */
     Calendar updateCalendarTimeFrameAfterDeleteEvent(long calendarId, LocalDate dateFrom, LocalDate dateTo) {
         Calendar calendar = findById(calendarId);
-        if (dateFrom.equals(calendar.getDateFrom()) ||dateTo.equals(calendar.getDateTo())) {
+        if (dateFrom.equals(calendar.getDateFrom()) || dateTo.equals(calendar.getDateTo())) {
             calendarRepository.updateCalendarFrame(calendarId);
             calendar = findById(calendarId);
         }
