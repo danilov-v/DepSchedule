@@ -17,8 +17,8 @@ import {
 import { openEventTypeForm, closeEventTypeForm } from "redux/actions/forms";
 import { getEventTypeFormSelector } from "redux/selectors/ui";
 import { EVENT_TYPE_CONFIRMATION_OPTIONS } from "constants/confirmations";
-import { MANAGE_EVENT_TYPES } from "constants/permishions";
-import { checkPermission } from "utils/permishions";
+import { MANAGE_EVENT_TYPES } from "constants/permissions";
+import { checkPermission } from "utils/permissions";
 
 import "./event-types.scss";
 

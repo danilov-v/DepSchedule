@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "reactstrap";
-import { MANAGE_EVENT_TYPES } from "constants/permishions";
-import { checkPermission } from "utils/permishions";
+import { MANAGE_EVENT_TYPES } from "constants/permissions";
+import { checkPermission } from "utils/permissions";
 
 const ColorCircle = ({ color }) => (
   <span className="color-circle mr-1" style={{ background: color }} />

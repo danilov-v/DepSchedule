@@ -1,4 +1,4 @@
-import { ROLES_PERMISSIONS } from "constants/permishions";
+import { ROLES_PERMISSIONS } from "constants/permissions";
 
 export const checkPermission = (role, permission) => {
   if (!role || !ROLES_PERMISSIONS[role]) {

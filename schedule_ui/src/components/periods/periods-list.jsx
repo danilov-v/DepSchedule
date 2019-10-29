@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "reactstrap";
-import { MANAGE_PERIODS } from "constants/permishions";
-import { checkPermission } from "utils/permishions";
+import { MANAGE_PERIODS } from "constants/permissions";
+import { checkPermission } from "utils/permissions";
 
 export function PeriodsList({
   periods,

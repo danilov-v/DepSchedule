@@ -11,7 +11,7 @@ import {
   LOGIN,
   LOGOUT,
   CALENDAR,
-} from "config/url";
+} from "constants/url";
 import { getToken } from "helpers/localstorage";
 
 const buildToken = token => (token ? `Bearer ${token}` : "");

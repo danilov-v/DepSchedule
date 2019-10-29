@@ -17,8 +17,8 @@ import { PERIOD_CONFIRMATION_OPTIONS } from "constants/confirmations";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 import { PeriodsList } from "./periods-list";
 import { PeriodsPopup } from "./periods-popup";
-import { MANAGE_PERIODS } from "constants/permishions";
-import { checkPermission } from "utils/permishions";
+import { MANAGE_PERIODS } from "constants/permissions";
+import { checkPermission } from "utils/permissions";
 
 export function Periods() {
   const periods = useSelector(getPeriodsSelector);
