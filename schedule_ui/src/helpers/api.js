@@ -59,14 +59,19 @@ export const signOut = async () =>
     method: "PUT",
   });
 
-export const getLastEvents = async () =>
-  await makeApiCall(`${EVENT_URL}/recentList/?count=${50}`);
+export const getLastEvents = async ({ calendarId }) =>
+  await makeApiCall(
+    `${EVENT_URL}/recentList/?calendarId=${calendarId}&count=${50}`
+  );
 
 export const getUnits = async () => await makeApiCall(UNITS_URL);
 
-export const getUnitsTree = async ({ dateFrom }) =>
+export const getUnitsTree = async ({ dateFrom, calendarId }) =>
   await makeApiCall(
-    `${UNITS_URL}/tree?dateFrom=${format(dateFrom, "yyyy-MM-dd")}`,
+    `${UNITS_URL}/tree?calendarId=${calendarId}&dateFrom=${format(
+      dateFrom,
+      "yyyy-MM-dd"
+    )}`,
     {}
   );
 

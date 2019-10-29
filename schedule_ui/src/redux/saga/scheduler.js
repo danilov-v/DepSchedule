@@ -54,9 +54,10 @@ import {
 
 function* fetchUnits() {
   const dateFrom = yield select(getStartDateSelector);
+  const calendarId = yield select(getActiveCalendarSelector);
 
   try {
-    const unitsTree = yield call(getUnitsTree, { dateFrom });
+    const unitsTree = yield call(getUnitsTree, { dateFrom, calendarId });
 
     yield put(updateUnits({ units: unitsTree }));
   } catch (e) {
@@ -67,9 +68,10 @@ function* fetchUnits() {
 
 function* createUnit(action) {
   const { unit } = action.payload;
+  const calendarId = yield select(getActiveCalendarSelector);
 
   try {
-    yield call(createUnitAPI, unit);
+    yield call(createUnitAPI, { ...unit, calendarId });
 
     NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA);
 
@@ -81,9 +83,10 @@ function* createUnit(action) {
 }
 function* updateUnit(action) {
   const { unit } = action.payload;
+  const calendarId = yield select(getActiveCalendarSelector);
 
   try {
-    yield call(updateUnitAPI, unit);
+    yield call(updateUnitAPI, { ...unit, calendarId });
 
     NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA_EDIT);
 
@@ -161,9 +164,10 @@ function* removePeriod(action) {
 
 function* createEvent(action) {
   const { event } = action.payload;
+  const calendarId = yield select(getActiveCalendarSelector);
 
   try {
-    yield call(createEventAPI, event);
+    yield call(createEventAPI, { ...event, calendarId });
     yield call(fetchUnits);
     yield put(closeEventForm());
 
@@ -177,9 +181,10 @@ function* createEvent(action) {
 
 function* updateEvent(action) {
   const { event } = action.payload;
+  const calendarId = yield select(getActiveCalendarSelector);
 
   try {
-    yield call(updateEventAPI, event);
+    yield call(updateEventAPI, { ...event, calendarId });
     yield call(fetchUnits);
     yield put(closeEventForm());
 
@@ -215,6 +220,18 @@ function* setOperationalDate(action) {
   yield put(fetchCalendars());
 }
 
+function* fetchLastEvents() {
+  const calendarId = yield select(getActiveCalendarSelector);
+
+  try {
+    const events = yield call(getLastEvents, { calendarId });
+
+    yield put(updateEvents(events));
+  } catch (e) {
+    // TODO - remove session from store and update url
+  }
+}
+
 function* fetchUnitsSaga() {
   yield takeEvery(FETCH_UNITS, fetchUnits);
 }
@@ -245,16 +262,6 @@ function* removePeriodSaga() {
   yield takeEvery(REMOVE_PERIOD, removePeriod);
 }
 
-function* fetchEvents() {
-  try {
-    const events = yield call(getLastEvents);
-
-    yield put(updateEvents(events));
-  } catch (e) {
-    // TODO - remove session from store and update url
-  }
-}
-
 function* createEventSaga() {
   yield takeEvery(CREATE_EVENT, createEvent);
 }
@@ -264,7 +271,7 @@ function* updateEventSaga() {
 }
 
 function* fetchEventsSaga() {
-  yield takeEvery(FETCH_LAST_EVENTS, fetchEvents);
+  yield takeEvery(FETCH_LAST_EVENTS, fetchLastEvents);
 }
 
 function* removeEventSaga() {
