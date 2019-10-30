@@ -212,7 +212,8 @@ function* removeEvent(action) {
 function* setOperationalDate(action) {
   const { date } = action.payload;
   const activeCalendarId = yield select(getActiveCalendarSelector);
-  const shift = differenceInCalendarDays(date, new Date());
+  const startDate = yield select(getStartDateSelector);
+  const shift = differenceInCalendarDays(date, startDate);
 
   yield put(updateOperationalDate(date));
   yield call(updateCalendar, activeCalendarId, shift);

@@ -1,8 +1,28 @@
 $color-grey-light-1: #f7f7f7;
 $color-grey-light-2: #eee;
+$color-grey-light-3: #606060;
 
 $color-grey-dark: #777;
 $color-grey-dark-2: #999;
 $color-grey-dark-3: #333;
 
 $default-font-size: 1.6rem;
+
+@mixin customScroll {
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #c3c3c3;
+    visibility: hidden;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useSelector, useDispatch } from "react-redux";
+import { isBefore } from "date-fns";
 import {
   ListGroup,
   ListGroupItem,
@@ -10,7 +11,10 @@ import {
   Badge,
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getEventsSelector } from "redux/selectors/scheduler";
+import {
+  getEventsSelector,
+  getStartDateSelector,
+} from "redux/selectors/scheduler";
 import { fetchLastEvents } from "redux/actions/scheduler";
 
 import "./last-events-list.scss";
@@ -21,10 +25,14 @@ export const LastEventsList = () => {
 
   const dispatch = useDispatch();
   const lastEvents = useSelector(getEventsSelector);
+  const startDate = useSelector(getStartDateSelector);
 
   useEffect(() => {
     dispatch(fetchLastEvents());
   }, [dispatch]);
+
+  const isEventOnGraphic = event =>
+    isBefore(new Date(event.dateFrom), new Date(startDate));
 
   return (
     <>
@@ -44,7 +52,10 @@ export const LastEventsList = () => {
         <PopoverBody className="last-events-list">
           <ListGroup>
             {lastEvents.map(event => (
-              <ListGroupItem key={`recent-${event.eventId}`}>
+              <ListGroupItem
+                key={`recent-${event.eventId}`}
+                disabled={isEventOnGraphic(event)}
+              >
                 <HashLink
                   scroll={el => {
                     el.focus();

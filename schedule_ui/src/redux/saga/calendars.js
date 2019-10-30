@@ -1,4 +1,5 @@
-import { call, put, takeEvery, all } from "redux-saga/effects";
+import { call, put, takeEvery, all, select } from "redux-saga/effects";
+import { addDays } from "date-fns";
 import {
   FETCH_CALENDARS,
   CREATE_CALENDAR,
@@ -8,7 +9,13 @@ import {
   updateActiveCalendar,
   setActiveCalendar,
 } from "redux/actions/calendars";
-import { resetScheduler } from "redux/actions/scheduler";
+import {
+  resetScheduler,
+  updateStartDate,
+  updateEndDate,
+  updateOperationalDate,
+} from "redux/actions/scheduler";
+import { getActiveCalendar } from "redux/selectors/calendars";
 import { handleErrorRequest } from "redux/saga/auth";
 import {
   getCalendars,
@@ -45,7 +52,6 @@ function* createCalendars(action) {
 
 function* removeCalendar(action) {
   const { calendarId } = action.payload;
-  console.log(calendarId);
 
   try {
     yield call(removeCalendarAPI, { calendarId });
@@ -60,10 +66,31 @@ function* selectCalendar(action) {
   yield put(updateActiveCalendar({ calendarId: calendarId }));
 
   if (calendarId) {
+    yield call(setDatesAccordingCalendar);
     yield call(history.push, "/");
   } else {
     yield call(history.push, "/calendar");
     yield put(resetScheduler());
+  }
+}
+
+export function* initCalendar(action) {
+  yield call(fetchCalendars);
+  yield call(setDatesAccordingCalendar);
+}
+
+function* setDatesAccordingCalendar() {
+  const activeCalendar = yield select(getActiveCalendar);
+
+  if (activeCalendar) {
+    const startDate = activeCalendar.dateFrom
+      ? new Date(activeCalendar.dateFrom)
+      : new Date();
+    const endDate = activeCalendar.dateTo && new Date(activeCalendar.dateTo);
+
+    if (startDate) yield put(updateStartDate(startDate));
+    if (endDate) yield put(updateEndDate(endDate));
+    yield put(updateOperationalDate(addDays(startDate, activeCalendar.shift)));
   }
 }
 
