@@ -4,8 +4,8 @@ import com.varb.schedule.buisness.logic.controllers.ApiController;
 import com.varb.schedule.buisness.logic.controllers.api.CalendarApi;
 import com.varb.schedule.buisness.logic.service.CalendarService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.CalendarBaseDto;
-import com.varb.schedule.buisness.models.dto.CalendarBaseReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarDto;
+import com.varb.schedule.buisness.models.dto.CalendarReqDto;
 import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -44,16 +44,16 @@ public class CalendarApiImpl implements CalendarApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<CalendarResponseDto> calendarPost(@Valid CalendarBaseReqDto calendarBaseReqDto) {
+    public ResponseEntity<CalendarResponseDto> calendarPost(@Valid CalendarReqDto calendarReqDto) {
         return ResponseEntity.ok(
-                modelMapper.map(calendarService.add(calendarBaseReqDto), CalendarResponseDto.class));
+                modelMapper.map(calendarService.add(calendarReqDto), CalendarResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<CalendarResponseDto> calendarPut(Long calendarId, @Valid CalendarBaseDto calendarBaseDto) {
+    public ResponseEntity<CalendarResponseDto> calendarPut(Long calendarId, @Valid CalendarDto calendarDto) {
         return ResponseEntity.ok(
-                modelMapper.map(calendarService.update(calendarId, calendarBaseDto), CalendarResponseDto.class));
+                modelMapper.map(calendarService.update(calendarId, calendarDto), CalendarResponseDto.class));
     }
 
 }

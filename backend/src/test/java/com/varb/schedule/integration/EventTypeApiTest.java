@@ -2,8 +2,8 @@ package com.varb.schedule.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.varb.schedule.buisness.logic.repository.EventTypeRepository;
-import com.varb.schedule.buisness.models.dto.EventTypePostDto;
-import com.varb.schedule.buisness.models.dto.EventTypePutDto;
+import com.varb.schedule.buisness.models.dto.EventTypeDto;
+import com.varb.schedule.buisness.models.dto.EventTypeReqDto;
 import com.varb.schedule.buisness.models.dto.EventTypeResponseDto;
 import com.varb.schedule.buisness.models.entity.EventType;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
     @Test
     public void testPostEventType() throws Exception {
         String color = "Purple", description = "Type Description";
-        EventTypePostDto postDto = new EventTypePostDto();
+        EventTypeReqDto postDto = new EventTypeReqDto();
         postDto.setColor(color);
         postDto.setDescription(description);
 
@@ -85,7 +85,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
         //set new color - to be updated
         String newColor = "Purple";
 
-        EventTypePutDto putDto = new EventTypePutDto();
+        EventTypeDto putDto = new EventTypeDto();
         putDto.setColor(newColor);
 
         mockMvc.perform(put(baseUrl + "/" + typeId)

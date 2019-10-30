@@ -1,4 +1,4 @@
-openapi: "3.0.0"
+openapi: "3.0.2"
 info:
   version: 0.1.0
   title: DepSchedule
@@ -70,7 +70,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventPost"
+              $ref: "#/components/schemas/EventReq"
       responses:
         200:
           description: successful operation
@@ -133,7 +133,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventPut"
+              $ref: "#/components/schemas/Event"
       responses:
         200:
           description: successful operation
@@ -192,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventTypePost"
+              $ref: "#/components/schemas/EventTypeReq"
       responses:
         200:
           description: successful operation
@@ -220,7 +220,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventTypePut"
+              $ref: "#/components/schemas/EventType"
       responses:
         200:
           description: successful operation
@@ -286,7 +286,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnitPost"
+              $ref: "#/components/schemas/UnitReq"
       responses:
         200:
           description: successful operation
@@ -315,7 +315,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnitPut"
+              $ref: "#/components/schemas/Unit"
       responses:
         200:
           description: successful operation
@@ -432,7 +432,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventDurationPut"
+              $ref: "#/components/schemas/EventDurationReq"
       responses:
         200:
           description: successful operation
@@ -478,7 +478,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserBaseReq'
+              $ref: '#/components/schemas/UserReq'
       responses:
         200:
           description: successful operation
@@ -514,7 +514,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserPost'
+              $ref: '#/components/schemas/UserReqExt'
       responses:
         200:
           description: successful operation
@@ -543,7 +543,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserPut'
+              $ref: '#/components/schemas/UserReqExt'
       responses:
         200:
           description: successful operation
@@ -609,7 +609,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PeriodPost"
+              $ref: "#/components/schemas/PeriodReq"
       responses:
         200:
           description: successful operation
@@ -638,7 +638,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PeriodPut"
+              $ref: "#/components/schemas/Period"
       responses:
         200:
           description: successful operation
@@ -709,7 +709,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarBase'
+              $ref: '#/components/schemas/Calendar'
       responses:
         200:
           description: successful operation
@@ -768,7 +768,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarBaseReq'
+              $ref: '#/components/schemas/CalendarReq'
       responses:
         200:
           description: successful operation
@@ -795,80 +795,51 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorMessage"
   schemas:
-    UnitBaseReq:
+    Unit:
+      properties:
+        title:
+          $ref: "#/components/schemas/UnitTitle"
+        flag:
+          type: string
+          description: "Путь к изображению флага"
+        planned:
+          type: boolean
+          default: false
+          description: "Планируемое подразделение? (true/false)"
+        parentId:
+          type: integer
+          format: int64
+          description: |
+            Ссылка на подразделение верхнего уровня
+            (для подразделения первого уровня не указывается!)
+    UnitReq:
       required:
         - title
         - calendarId
-      properties:
-        title:
-          $ref: "#/components/schemas/UnitTitle"
-        flag:
-          type: string
-          description: "Путь к изображению флага"
-        planned:
-          type: boolean
-          default: false
-          description: "Планируемое подразделение? (true/false)"
-        calendarId:
-          type: integer
-          format: int64
-          description: "Ссылка на календарь"
-        parentId:
-          type: integer
-          format: int64
-          description: |
-            Ссылка на подразделение верхнего уровня
-            (для подразделения первого уровня не указывается!)
-    #        unitLevel:
-    #          $ref: "#/components/schemas/UnitLevel"
-    UnitBase:
-      properties:
-        title:
-          $ref: "#/components/schemas/UnitTitle"
-        flag:
-          type: string
-          description: "Путь к изображению флага"
-        planned:
-          type: boolean
-          default: false
-          description: "Планируемое подразделение? (true/false)"
-        parentId:
-          type: integer
-          format: int64
-          description: |
-            Ссылка на подразделение верхнего уровня
-            (для подразделения первого уровня не указывается!)
-    #        unitLevel:
-    #          $ref: "#/components/schemas/UnitLevel"
-    UnitPost:
       allOf:
-        - $ref: "#/components/schemas/UnitBaseReq"
-    UnitPut:
-      allOf:
-        - $ref: "#/components/schemas/UnitBase"
+        - $ref: "#/components/schemas/Unit"
+        - type: object
+          properties:
+            calendarId:
+              type: integer
+              format: int64
+              description: "Ссылка на календарь"
     UnitResponse:
       required:
         - unitId
-        - title
-      #        - unitLevel
       allOf:
-        - $ref: "#/components/schemas/UnitBaseReq"
-        - properties:
+        - $ref: "#/components/schemas/UnitReq"
+        - type: object
+          properties:
             unitId:
               type: integer
               format: int64
     UnitResponseTree:
       description: "Узел дерева. Содержит информацию о подразделении"
-      required:
-        - unitId
-        - title
-        - calendarId
       allOf:
-        - $ref: "#/components/schemas/UnitBaseReq"
-        - properties:
-            unitId:
-              type: integer
-              format: int64
+        - $ref: "#/components/schemas/UnitResponse"
+        - type: object
+          properties:
             events:
               type: array
               items:
@@ -879,16 +850,7 @@ components:
                 $ref: "#/components/schemas/UnitResponseTree"
             eventDuration:
               $ref: "#/components/schemas/EventDurationMap"
-    #    UnitLevel:
-    #      type: integer
-    #      format: int32
-    #      description: |
-    #        Уровень подразделения
-    #        * `1` - Система управления
-    #        * `2` - Орган управления
-    #        * `3` - Пункт управления
-    #        * `4` - Подразделение
-    EventBase:
+    Event:
       properties:
         unitId:
           type: integer
@@ -914,49 +876,33 @@ components:
           description: "Примечание"
         eventTypeId:
           $ref: "#/components/schemas/EventTypeId"
-    EventBaseReq:
+    EventReq:
       required:
         - dateFrom
+        - dateTo
         - eventTypeId
         - unitId
         - location
         - planned
         - calendarId
-      properties:
-        unitId:
-          type: integer
-          format: int64
-          description: "Id подразделения
-                (может ссылаться только на подразделение 4-го уровня)"
-        dateFrom:
-          type: string
-          format: date
-          description: "Дата начала события"
-        dateTo:
-          type: string
-          format: date
-          description: "Дата конца события"
-        location:
-          $ref: "#/components/schemas/Location"
-        planned:
-          type: boolean
-          default: false
-          description: "Запланированность события"
-        note:
-          type: string
-          description: "Примечание"
-        eventTypeId:
-          $ref: "#/components/schemas/EventTypeId"
-        calendarId:
-          type: integer
-          format: int64
-          description: "Ссылка на календарь"
-    EventPut:
       allOf:
-        - $ref: "#/components/schemas/EventBase"
-    EventPost:
+        - $ref: "#/components/schemas/Event"
+        - type: object
+          properties:
+            calendarId:
+              type: integer
+              format: int64
+              description: "Ссылка на календарь"
+    EventResponse:
+      required:
+        - eventId
       allOf:
-        - $ref: "#/components/schemas/EventBaseReq"
+        - $ref: "#/components/schemas/EventReq"
+        - type: object
+          properties:
+            eventId:
+              type: integer
+              format: int64
     EventRecentResponse:
       required:
         - eventId
@@ -988,16 +934,7 @@ components:
           type: integer
           format: int64
           description: "Ссылка на календарь"
-    EventResponse:
-      required:
-        - eventId
-      allOf:
-        - properties:
-            eventId:
-              type: integer
-              format: int64
-        - $ref: "#/components/schemas/EventBaseReq"
-    EventTypePut:
+    EventType:
       properties:
         description:
           $ref: "#/components/schemas/EventTypeDescription"
@@ -1005,7 +942,7 @@ components:
           type: string
           description: "Отображаемый цвет"
           minLength: 3
-    EventTypePost:
+    EventTypeReq:
       required:
         - description
         - color
@@ -1018,35 +955,27 @@ components:
           minLength: 3
     EventTypeResponse:
       required:
-        - description
-        - color
         - typeId
       allOf:
-        - $ref: "#/components/schemas/EventTypePut"
-        - properties:
+        - $ref: "#/components/schemas/EventTypeReq"
+        - type: object
+          properties:
             typeId:
               $ref: "#/components/schemas/EventTypeId"
-    DurationOptional:
-      properties:
-        duration:
-          $ref: "#/components/schemas/Duration"
-    DurationRequired:
+    EventDurationReq:
       required:
         - duration
       properties:
         duration:
           $ref: "#/components/schemas/Duration"
-    EventDurationPut:
-      allOf:
-        - $ref: "#/components/schemas/DurationRequired"
     EventDurationResponse:
       required:
         - unitId
         - eventTypeId
-        - duration
       allOf:
-        - $ref: "#/components/schemas/EventDurationPut"
-        - properties:
+        - $ref: "#/components/schemas/EventDurationReq"
+        - type: object
+          properties:
             unitId:
               type: integer
               format: int64
@@ -1057,55 +986,44 @@ components:
       type: object
       additionalProperties:
         $ref: "#/components/schemas/Duration"
-    
     Period:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Название периода"
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    PeriodReq:
       type: object
       required:
         - name
         - startDate
         - endDate
         - calendarId
-      properties:
-        name:
-          type: string
-          description: "Название периода"
-        startDate:
-          type: string
-          format: date
-        endDate:
-          type: string
-          format: date
-        calendarId:
-          type: integer
-          format: int64
-          description: "Ссылка на календарь"
+      allOf:
+        - $ref: "#/components/schemas/Period"
+        - type: object
+          properties:
+            calendarId:
+              type: integer
+              format: int64
+              description: "Ссылка на календарь"
     PeriodResponse:
       required:
         - periodId
       allOf:
-        - $ref: "#/components/schemas/Period"
-        - properties:
+        - $ref: "#/components/schemas/PeriodReq"
+        - type: object
+          properties:
             periodId:
               type: integer
               format: int64
-    
-    PeriodPost:
-      allOf:
-        - $ref: "#/components/schemas/Period"
-    
-    PeriodPut:
-      properties:
-        name:
-          type: string
-          description: "Название периода"
-        startDate:
-          type: string
-          format: date
-        endDate:
-          type: string
-          format: date
-    
-    UserBase:
+    User:
       properties:
         login:
           type: string
@@ -1113,7 +1031,7 @@ components:
         password:
           type: string
           minLength: 5
-    UserBaseReq:
+    UserReq:
       required:
         - login
         - password
@@ -1124,18 +1042,13 @@ components:
         password:
           type: string
           minLength: 5
-    UserPost:
+    UserReqExt:
       required:
         - role
       allOf:
-        - $ref: "#/components/schemas/UserBaseReq"
-        - properties:
-            role:
-              $ref: '#/components/schemas/Role'
-    UserPut:
-      allOf:
-        - $ref: "#/components/schemas/UserBase"
-        - properties:
+        - $ref: "#/components/schemas/UserReq"
+        - type: object
+          properties:
             role:
               $ref: '#/components/schemas/Role'
     UserResponse:
@@ -1143,16 +1056,15 @@ components:
         - token
         - login
         - role
-      allOf:
-        - properties:
-            token:
-              type: string
-              format: uuid
-            login:
-              type: string
-              minLength: 3
-            role:
-              $ref: '#/components/schemas/Role'
+      properties:
+        token:
+          type: string
+          format: uuid
+        login:
+          type: string
+          minLength: 3
+        role:
+          $ref: '#/components/schemas/Role'
     Role:
       type: string
       enum:
@@ -1175,7 +1087,7 @@ components:
           enum:
             - statical
             - district
-    CalendarBase:
+    Calendar:
       type: object
       properties:
         name:
@@ -1184,30 +1096,29 @@ components:
           type: integer
           format: int32
           description: "Сдвиг оперативного времени относительно астрономического"
-    CalendarBaseReq:
+    CalendarReq:
       type: object
       required:
         - name
         - shift
         - isAstronomical
-      properties:
-        name:
-          $ref: "#/components/schemas/CalendarName"
-        shift:
-          type: integer
-          format: int32
-          description: "Сдвиг оперативного времени относительно астрономического"
-        isAstronomical:
-          type: boolean
-          description: |
-            Относительно какого времени создаются события?
-            * `true` - Астрономическое
-            * `false` - Оперативное
+      allOf:
+        - $ref: "#/components/schemas/Calendar"
+        - type: object
+          properties:
+            isAstronomical:
+              type: boolean
+              description: |
+                Относительно какого времени создаются события?
+                * `true` - Астрономическое
+                * `false` - Оперативное
     CalendarResponse:
       required:
         - calendarId
       allOf:
-        - properties:
+        - $ref: "#/components/schemas/CalendarReq"
+        - type: object
+          properties:
             calendarId:
               type: integer
               format: int64
@@ -1219,7 +1130,6 @@ components:
               type: string
               format: date
               description: "Дата конца последнего события в календаре"
-        - $ref: "#/components/schemas/CalendarBaseReq"
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."

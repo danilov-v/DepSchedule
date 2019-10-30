@@ -1,7 +1,7 @@
 plugins {
     //Не обновлять версию 'org.openapi.generator' пока проблема с @RequestParam не будет решена
     //https://github.com/OpenAPITools/openapi-generator/issues/3248
-    id "org.openapi.generator" version "4.0.1"
+    id "org.openapi.generator" version "4.1.3"
 }
 
 def rootDirToGenerate = "$projectDir/../".toString()
@@ -47,11 +47,3 @@ task generateCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
         delete "$rootDirToGenerate/README.md"
     }
 }
-
-//tasks.register("cleanOldClasses") {
-//    group = "openapi tools"
-//
-//    description = 'clean generated files'
-//    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/logic/controllers/api"
-//    delete "$rootDirToGenerate/src/main/java/com/varb/schedule/buisness/models/dto"
-//}

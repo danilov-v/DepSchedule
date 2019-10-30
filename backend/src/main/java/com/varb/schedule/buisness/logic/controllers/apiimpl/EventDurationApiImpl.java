@@ -4,7 +4,7 @@ import com.varb.schedule.buisness.logic.controllers.ApiController;
 import com.varb.schedule.buisness.logic.controllers.api.EventDurationApi;
 import com.varb.schedule.buisness.logic.service.EventDurationService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.EventDurationPutDto;
+import com.varb.schedule.buisness.models.dto.EventDurationReqDto;
 import com.varb.schedule.buisness.models.dto.EventDurationResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class EventDurationApiImpl implements EventDurationApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<EventDurationResponseDto> eventDurationPut(Long unitId, Long eventTypeId, @Valid EventDurationPutDto eventDurationPutDto) {
+    public ResponseEntity<EventDurationResponseDto> eventDurationPut(Long unitId, Long eventTypeId, @Valid EventDurationReqDto eventDurationPutDto) {
         return ResponseEntity.ok(
                 modelMapper.map(
                         eventDurationService.merge(unitId, eventTypeId, eventDurationPutDto),

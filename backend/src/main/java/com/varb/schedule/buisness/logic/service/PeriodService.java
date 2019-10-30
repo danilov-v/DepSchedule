@@ -1,14 +1,13 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.PeriodRepository;
-import com.varb.schedule.buisness.models.dto.PeriodPostDto;
-import com.varb.schedule.buisness.models.dto.PeriodPutDto;
+import com.varb.schedule.buisness.models.dto.PeriodDto;
+import com.varb.schedule.buisness.models.dto.PeriodReqDto;
 import com.varb.schedule.buisness.models.entity.Period;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +26,14 @@ public class PeriodService extends AbstractService<Period, Long> {
     public static final String DATES_INTERSECTION = "DATES_INTERSECTION";
     private static final String DATES_INTERSECTION_MESSAGE = "Данный период пересекается с уже существующим. Проверьте даты его начала и окончания.";
 
-    public Period add(PeriodPostDto periodPost) {
+    public Period add(PeriodReqDto periodPost) {
         Period period = modelMapper.map(periodPost, Period.class);
         checkBeforeSave(period);
         //if everything is ok - there's no intersections and dates are correct, process it further
         return save(period);
     }
 
-    public Period update(Long periodId, PeriodPutDto periodPut) {
+    public Period update(Long periodId, PeriodDto periodPut) {
         Period period = findById(periodId);
         modelMapper.map(periodPut, period);
         checkBeforeUpdate(period);

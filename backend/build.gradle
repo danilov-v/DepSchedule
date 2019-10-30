@@ -53,6 +53,9 @@ if (hasProperty('profile')) {
     }
 }
 
+/**
+ * Insert String at the beginning of File
+ */
 ext.insertAtTheBeginningOfFile = { File file, String str->
     def oldFile = file
     def newFile = File.createTempFile("application_yml", UUID.randomUUID().toString())
@@ -69,9 +72,12 @@ ext.insertAtTheBeginningOfFile = { File file, String str->
 }
 
 compileJava {
+    //Generate Controllers and Dto based OpenApi Spec
+    dependsOn(':backend:openapi_codegen:generateCode')
+
     options.compilerArgs << '-parameters'
 }
- 
+
 test {
     useJUnitPlatform()
 }
@@ -81,7 +87,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.h2database:h2'
     implementation 'org.modelmapper:modelmapper:2.3.5'
-    implementation 'org.apache.commons:commons-text:1.7' //?
+    implementation 'org.apache.commons:commons-text:1.7'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.liquibase:liquibase-core:3.8.0'
 

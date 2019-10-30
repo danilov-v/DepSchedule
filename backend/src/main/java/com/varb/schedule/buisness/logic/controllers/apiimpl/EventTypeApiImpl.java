@@ -4,8 +4,8 @@ import com.varb.schedule.buisness.logic.controllers.ApiController;
 import com.varb.schedule.buisness.logic.controllers.api.EventTypeApi;
 import com.varb.schedule.buisness.logic.service.EventTypeService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.EventTypePostDto;
-import com.varb.schedule.buisness.models.dto.EventTypePutDto;
+import com.varb.schedule.buisness.models.dto.EventTypeDto;
+import com.varb.schedule.buisness.models.dto.EventTypeReqDto;
 import com.varb.schedule.buisness.models.dto.EventTypeResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +30,14 @@ public class EventTypeApiImpl implements EventTypeApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<EventTypeResponseDto> eventTypePost(@Valid EventTypePostDto eventTypePostDto) {
+    public ResponseEntity<EventTypeResponseDto> eventTypePost(@Valid EventTypeReqDto eventTypePostDto) {
         return ResponseEntity.ok(
                 modelMapper.map(eventTypeService.add(eventTypePostDto), EventTypeResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<EventTypeResponseDto> eventTypePut(Long typeId, @Valid EventTypePutDto eventTypePutDto) {
+    public ResponseEntity<EventTypeResponseDto> eventTypePut(Long typeId, @Valid EventTypeDto eventTypePutDto) {
         return ResponseEntity.ok(
                 modelMapper.map(eventTypeService.update(typeId, eventTypePutDto), EventTypeResponseDto.class));
     }

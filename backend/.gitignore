@@ -1,3 +1,7 @@
 ### zerocode
 target/
 storage/
+
+### OpenApi codegen
+/src/main/java/com/varb/schedule/buisness/logic/controllers/api/
+/src/main/java/com/varb/schedule/buisness/models/dto/

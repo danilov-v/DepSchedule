@@ -1,7 +1,6 @@
 package com.varb.schedule.buisness.logic.service;
 
-import com.varb.schedule.buisness.models.dto.UserPostDto;
-import com.varb.schedule.buisness.models.dto.UserPutDto;
+import com.varb.schedule.buisness.models.dto.UserReqExtDto;
 import com.varb.schedule.buisness.models.dto.UserResponseDto;
 import com.varb.schedule.buisness.models.entity.User;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -23,7 +22,7 @@ public class UserService extends AbstractService<User, String> {
     private final AuthenticationServiceImpl userAuthenticationService;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public UserResponseDto register(UserPostDto userPost) {
+    public UserResponseDto register(UserReqExtDto userPost) {
         User user = modelMapper.map(userPost, User.class);
 
         String token = userAuthenticationService.register(userDetailsService.mapToUserDetails(user));
@@ -45,7 +44,7 @@ public class UserService extends AbstractService<User, String> {
         userAuthenticationService.logout(login);
     }
 
-    public User update(String login, UserPutDto userPut) {
+    public User update(String login, UserReqExtDto userPut) {
         User user = findById(login);
         modelMapper.map(userPut, user);
         return user;

@@ -3,8 +3,7 @@ package com.varb.schedule.buisness.models.mappers;
 
 import com.varb.schedule.buisness.models.business.RoleEnum;
 import com.varb.schedule.buisness.models.dto.RoleDto;
-import com.varb.schedule.buisness.models.dto.UserPostDto;
-import com.varb.schedule.buisness.models.dto.UserPutDto;
+import com.varb.schedule.buisness.models.dto.UserReqDto;
 import com.varb.schedule.buisness.models.dto.UserResponseDto;
 import com.varb.schedule.buisness.models.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -42,16 +41,16 @@ public class UserMapper {
         };
 
         modelMapper
-                .typeMap(UserPostDto.class, User.class)
+                .typeMap(UserReqDto.class, User.class)
                 .addMappings(mapper -> mapper
                         .using(passEncode)
-                        .map(UserPostDto::getPassword, User::setPassword));
+                        .map(UserReqDto::getPassword, User::setPassword));
 
         modelMapper
-                .typeMap(UserPutDto.class, User.class)
+                .typeMap(UserReqDto.class, User.class)
                 .addMappings(mapper -> mapper
                         .using(passEncode)
-                        .map(UserPutDto::getPassword, User::setPassword));
+                        .map(UserReqDto::getPassword, User::setPassword));
 
         modelMapper
                 .typeMap(User.class, UserResponseDto.class)
