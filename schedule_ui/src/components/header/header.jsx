@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Collapse,
   Navbar,
@@ -20,7 +20,6 @@ import DatePicker from "react-datepicker";
 import {
   updateStartDate,
   updateEndDate,
-  updateOperationalDate,
   setOperationalDate,
 } from "redux/actions/scheduler";
 import { logoutRequest } from "redux/actions/auth";
@@ -29,10 +28,7 @@ import {
   getEndDateSelector,
   getOperationalDateSelector,
 } from "redux/selectors/scheduler";
-import {
-  getActiveCalendarSelector,
-  getCalendarsSelector,
-} from "redux/selectors/calendars";
+import { getActiveCalendar } from "redux/selectors/calendars";
 import { setActiveCalendar } from "redux/actions/calendars";
 import logo from "logo.png";
 import { LastEventsList } from "components/last-events-list/last-events-list";
@@ -42,11 +38,8 @@ import "./header.scss";
 export function Header() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const calendars = useSelector(getCalendarsSelector);
-  const activeCalendarId = useSelector(getActiveCalendarSelector);
-  const activeCalendar = calendars.find(
-    calendar => calendar.calendarId === activeCalendarId
-  );
+  const activeCalendar = useSelector(getActiveCalendar);
+
   const [isOpen, toggleNav] = useState(false);
   const startDate = useSelector(getStartDateSelector);
   const endDate = useSelector(getEndDateSelector);
@@ -54,7 +47,10 @@ export function Header() {
   const isHomePage = location.pathname === "/";
 
   // Handlers
-  const changeStartDate = date => dispatch(updateStartDate(date));
+  const changeStartDate = date => {
+    dispatch(updateStartDate(date));
+    changeOperationalDate(addDays(date, activeCalendar.shift));
+  };
   const changeEndDate = date => dispatch(updateEndDate(date));
   const changeOperationalDate = date => dispatch(setOperationalDate(date));
   const changeCalendar = () =>
@@ -63,15 +59,6 @@ export function Header() {
 
   const toggle = () => toggleNav(!isOpen);
   const print = () => window.print();
-
-  useEffect(() => {
-    if (activeCalendar && activeCalendar.dateFrom)
-      changeStartDate(new Date(activeCalendar.dateFrom));
-    if (activeCalendar && activeCalendar.dateTo)
-      changeEndDate(new Date(activeCalendar.dateTo));
-    if (activeCalendar && activeCalendar.shift)
-      dispatch(updateOperationalDate(addDays(startDate, activeCalendar.shift)));
-  }, [dispatch, activeCalendar]);
 
   return (
     <Navbar

@@ -1,4 +1,5 @@
 import { call, takeEvery, all, select, put } from "redux-saga/effects";
+import { initCalendar } from "redux/saga/calendars";
 import { INIT_ROUTE, routeInitialized } from "redux/actions/init";
 import { history } from "helpers/history";
 import { getAuthData } from "redux/saga/auth";
@@ -19,6 +20,7 @@ function* initRoute() {
     case "/periods":
       if (!authData.token) yield call(history.replace, "/login");
       else if (!activeCalendarId) yield call(history.replace, "/calendar");
+      else yield call(initCalendar);
       break;
     case "/calendar":
       if (!authData.token) yield call(history.replace, "/login");

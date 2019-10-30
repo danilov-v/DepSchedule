@@ -1,4 +1,4 @@
-import { addDays, differenceInMonths } from "date-fns";
+import { addDays, differenceInCalendarMonths } from "date-fns";
 import {
   UPDATE_START_DATE,
   UPDATE_END_DATE,
@@ -29,7 +29,7 @@ export const scheduler = (state = initialState, action) => {
       return { ...state, startDate: getDayWithoutMinutes(action.payload.date) };
     case UPDATE_END_DATE:
       const endDate =
-        differenceInMonths(action.payload.date, state.startDate) > 4
+        differenceInCalendarMonths(action.payload.date, state.startDate) >= 3
           ? action.payload.date
           : addDays(state.startDate, FOUR_MONTH);
 
