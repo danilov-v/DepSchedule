@@ -47,11 +47,8 @@ public class EventApiTest extends AbstractIntegrationTest {
         @DisplayName("Только с обязательными параметрами")
         public void withOnlyDateFromParam() throws Exception {
             Long calendarId = 1L;
-            LocalDate dateFrom = LocalDate.of(2019, 9, 25);
 
             MvcResult mvcResult = mockMvc.perform(get(baseUrl)
-                    //set dateFrom here before any other in init scripts so that retrieve all entities
-                    .param("dateFrom", dateFrom.toString())
                     .param("calendarId", calendarId.toString())
                     .accept(MediaType.APPLICATION_JSON_UTF8))
                     .andExpect(status().isOk())
@@ -59,30 +56,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .andReturn();
 
             var dtoList = asObjectList(mvcResult.getResponse().getContentAsString(), EventResponseDto.class);
-            var entities = eventRepository.findBetweenDates(calendarId, dateFrom, null);
-
-            assertList(entities, dtoList);
-        }
-
-        @Test
-        @DisplayName("Со всеми параметрами")
-        public void withAllParams() throws Exception {
-            Long calendarId = 1L;
-            LocalDate dateFrom = LocalDate.of(2019, 9, 25);
-            LocalDate dateTo = LocalDate.of(2019, 10, 01);
-
-            //request with dateFrom and dateTo params
-            MvcResult mvcResult = mockMvc.perform(get(baseUrl)
-                    .param("calendarId", calendarId.toString())
-                    .param("dateFrom", dateFrom.toString())
-                    .param("dateTo", dateTo.toString())
-                    .accept(MediaType.APPLICATION_JSON_UTF8))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                    .andReturn();
-
-            var dtoList = asObjectList(mvcResult.getResponse().getContentAsString(), EventResponseDto.class);
-            var entities = eventRepository.findBetweenDates(calendarId, dateFrom, dateTo);
+            var entities = eventRepository.findByCalendarId(calendarId);
 
             assertList(entities, dtoList);
         }
@@ -90,7 +64,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @Test
         @DisplayName("Без обязательных параметров - исключение")
         public void withoutMandatoryParam() throws Exception {
-            //request without mandatory dateFrom param
+            //request without mandatory calendarId param
             MvcResult mvcResult = mockMvc.perform(get(baseUrl)
                     .accept(MediaType.APPLICATION_JSON_UTF8))
                     .andExpect(status().isBadRequest())
@@ -108,7 +82,6 @@ public class EventApiTest extends AbstractIntegrationTest {
             int count = 2;
 
             MvcResult mvcResult = mockMvc.perform(get(baseUrl +"/recentList")
-                    //set dateFrom here before any other in init scripts so that retrieve all entities
                     .param("count", String.valueOf(count))
                     .param("calendarId", calendarId.toString())
                     .accept(MediaType.APPLICATION_JSON_UTF8))

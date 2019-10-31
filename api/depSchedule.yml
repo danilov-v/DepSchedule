@@ -36,18 +36,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: dateFrom
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date
-        - name: dateTo
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
       responses:
         200:
           description: Array of event
@@ -359,18 +347,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: dateFrom
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date
-        - name: dateTo
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
       responses:
         200:
           description: Array of unit

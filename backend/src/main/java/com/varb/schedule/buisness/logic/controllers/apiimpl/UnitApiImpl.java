@@ -17,7 +17,6 @@ import org.springframework.security.access.annotation.Secured;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +42,9 @@ public class UnitApiImpl implements UnitApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid Long calendarId, @NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
+    public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid Long calendarId) {
         return ResponseEntity.ok(
-                unitMapper.convertToThree(unitService.getAllExtended(calendarId, dateFrom, dateTo.orElse(null))));
+                unitMapper.convertToThree(unitService.getAllExtended(calendarId)));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)

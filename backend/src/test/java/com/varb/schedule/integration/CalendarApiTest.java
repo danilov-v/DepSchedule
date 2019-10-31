@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -109,7 +110,9 @@ public class CalendarApiTest extends AbstractIntegrationTest {
         var actualDto = new CalendarReqDto()
                 .isAstronomical(false)
                 .name("test calendar")
-                .shift(5);
+                .shift(5)
+                .dateFrom(LocalDate.of(2019,9,1))
+                .dateTo(LocalDate.of(2019,9,6));
 
         mockMvc.perform(post(BASE_URL)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -121,6 +124,8 @@ public class CalendarApiTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.name").value(actualDto.getName()))
                 .andExpect(jsonPath("$.shift").value(actualDto.getShift()))
                 .andExpect(jsonPath("$.isAstronomical").value(actualDto.getIsAstronomical()))
+                .andExpect(jsonPath("$.dateFrom").value(actualDto.getDateFrom().toString()))
+                .andExpect(jsonPath("$.dateTo").value(actualDto.getDateTo().toString()))
         ;
 
         //second level validation

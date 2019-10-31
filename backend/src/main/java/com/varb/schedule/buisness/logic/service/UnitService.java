@@ -8,13 +8,10 @@ import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -37,12 +34,12 @@ public class UnitService extends AbstractService<Unit, Long> {
         return unit;
     }
 
-    public Set<Unit> getAllExtended(Long calendarId, LocalDate dateFrom, @Nullable LocalDate dateTo) {
-        return unitRepository.findAllWithChilds(calendarId, dateFrom, dateTo);
+    public List<Unit> getAllExtended(Long calendarId) {
+        return unitRepository.findAllWithChilds(calendarId);
     }
 
     public List<Unit> findAll(Long calendarId) {
-        return unitRepository.findAllByCalendarId(calendarId);
+        return unitRepository.findByCalendarId(calendarId);
     }
 
     private void checkParent(Unit unit) {
@@ -67,9 +64,6 @@ public class UnitService extends AbstractService<Unit, Long> {
                     "Календарь, в котором создано родительское подразделение отличается от текущего: unit.calendarId = "
                             + unit.getCalendarId() + ", parentUnit.calendarId = " + parentUnit.getCalendarId());
         }
-
-//        if (parent.getUnitLevel() >= unit.getUnitLevel())
-//            throw new ServiceException("unitLevel должен быть больше чем у родительской сущности!");
     }
 
     @Override

@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,14 +87,13 @@ public class UnitApiTest extends AbstractIntegrationTest {
                 "/db/scripts/unit/UnitTestRequiredData.sql"
         })
         public void testGetUnitThree() throws Exception {
-            final String dateFrom = "2019-09-01";
             final String calendarId = "2";
 
             final MvcResult mvcResult = mockMvc.perform(
                     get(UNIT_TREE)
                             .accept(MediaType.APPLICATION_JSON_UTF8)
                             .param("calendarId", calendarId)
-                            .param("dateFrom", dateFrom))
+            )
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                     .andReturn();
@@ -105,7 +103,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
             var dtoList = asObjectList(responseStr, UnitResponseTreeDto.class);
 
             validateUnits(dtoList, calendarId);
-            validateEvents(dtoList, calendarId, dateFrom);
+            validateEvents(dtoList, calendarId);
         }
 
         private void validateUnits(List<UnitResponseTreeDto> dtoList, String calendarId) {
@@ -138,10 +136,9 @@ public class UnitApiTest extends AbstractIntegrationTest {
             }
         }
 
-        private void validateEvents(List<UnitResponseTreeDto> dtoList, String calendarId, String dateFrom) {
+        private void validateEvents(List<UnitResponseTreeDto> dtoList, String calendarId) {
             List<Event> entities = eventRepository.findAll().stream()
-                    .filter(e -> e.getCalendarId().toString().equals(calendarId) &&
-                            e.getDateFrom().compareTo(LocalDate.parse(dateFrom)) > 0)
+                    .filter(e -> e.getCalendarId().toString().equals(calendarId))
                     .collect(Collectors.toList());
 
             //validate data has been initialized correctly

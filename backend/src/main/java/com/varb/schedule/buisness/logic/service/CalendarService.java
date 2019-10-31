@@ -33,26 +33,13 @@ public class CalendarService extends AbstractService<Calendar, Long> {
     }
 
     /**
-     * Update 'dateFrom' and 'dateTo' in {@link Calendar} after delete {@link Event}
-     */
-    @Deprecated
-    Calendar updateCalendarTimeFrameAfterDeleteEvent(long calendarId, LocalDate dateFrom, LocalDate dateTo) {
-        Calendar calendar = findById(calendarId);
-        if (dateFrom.equals(calendar.getDateFrom()) || dateTo.equals(calendar.getDateTo())) {
-            calendarRepository.updateCalendarFrame(calendarId);
-            calendar = findById(calendarId);
-        }
-        return calendar;
-    }
-
-    /**
      * Update 'dateFrom' and 'dateTo' in {@link Calendar} after save {@link Event}
      */
     Calendar updateCalendarTimeFrameAfterSaveEvent(long calendarId, LocalDate dateFrom, LocalDate dateTo) {
         Calendar calendar = findById(calendarId);
-        if (calendar.getDateFrom() == null || dateFrom.compareTo(calendar.getDateFrom()) < 0)
+        if (dateFrom.compareTo(calendar.getDateFrom()) < 0)
             calendar.setDateFrom(dateFrom);
-        if (calendar.getDateTo() == null || dateTo.compareTo(calendar.getDateTo()) > 0)
+        if (dateTo.compareTo(calendar.getDateTo()) > 0)
             calendar.setDateTo(dateTo);
         return calendar;
     }

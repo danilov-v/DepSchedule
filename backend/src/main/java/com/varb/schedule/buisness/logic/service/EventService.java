@@ -11,7 +11,6 @@ import com.varb.schedule.exception.WebApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,12 +50,11 @@ public class EventService extends AbstractService<Event, Long> {
         return event;
     }
 
-    public List<Event> getAllBetweenDates(Long calendarId, LocalDate dateFrom, @Nullable LocalDate dateTo) {
-        validationService.checkDates(dateFrom, dateTo);
-        return eventRepository.findBetweenDates(calendarId, dateFrom, dateTo);
+    public List<Event> findByCalendarId(Long calendarId) {
+        return eventRepository.findByCalendarId(calendarId);
     }
 
-    public List<Event> getRecent(Long calendarId, int count) {
+    public List<Event> findRecent(Long calendarId, int count) {
         Calendar calendar = calendarService.findById(calendarId);
 
         LocalDate relativeCurrentDate;
@@ -66,13 +64,6 @@ public class EventService extends AbstractService<Event, Long> {
             relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
 
         return eventRepository.findRecent(calendarId, relativeCurrentDate, PageRequest.of(0, count));
-    }
-
-    @Override
-    public void delete(Long eventId) {
-        super.delete(eventId);
-        //Event event = findById(eventId);
-        //calendarService.updateCalendarTimeFrameAfterDeleteEvent(event.getCalendarId(), event.getDateFrom(), event.getDateTo());
     }
 
     /**

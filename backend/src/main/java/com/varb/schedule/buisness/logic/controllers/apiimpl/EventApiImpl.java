@@ -17,9 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @ApiController
 @RequiredArgsConstructor
@@ -29,10 +27,10 @@ public class EventApiImpl implements EventApi {
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
-    public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid Long calendarId, @NotNull @Valid LocalDate dateFrom, @Valid Optional<LocalDate> dateTo) {
+    public ResponseEntity<List<EventResponseDto>> eventGet(@NotNull @Valid Long calendarId) {
         return ResponseEntity.ok(
                 modelMapper.mapToList(
-                        eventService.getAllBetweenDates(calendarId, dateFrom, dateTo.orElse(null)),
+                        eventService.findByCalendarId(calendarId),
                         EventResponseDto.class));
     }
 
@@ -40,7 +38,7 @@ public class EventApiImpl implements EventApi {
     public ResponseEntity<List<EventRecentResponseDto>> eventRecentList(@NotNull @Valid Long calendarId, @NotNull @Min(1) @Max(100) @Valid Integer count) {
         return ResponseEntity.ok(
                 modelMapper.mapToList(
-                        eventService.getRecent(calendarId, count),
+                        eventService.findRecent(calendarId, count),
                         EventRecentResponseDto.class));
     }
 
