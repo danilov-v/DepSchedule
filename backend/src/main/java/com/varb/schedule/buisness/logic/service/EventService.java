@@ -70,13 +70,13 @@ public class EventService extends AbstractService<Event, Long> {
 
     @Override
     public void delete(Long eventId) {
-        Event event = findById(eventId);
         super.delete(eventId);
-        calendarService.updateCalendarTimeFrameAfterDeleteEvent(event.getCalendarId(), event.getDateFrom(), event.getDateTo());
+        //Event event = findById(eventId);
+        //calendarService.updateCalendarTimeFrameAfterDeleteEvent(event.getCalendarId(), event.getDateFrom(), event.getDateTo());
     }
 
     /**
-     * Необходимые проверки после сохранения события
+     * Необходимые проверки и обновления после сохранения события
      */
     private void manipulationAfterSave(Event event) {
         checkConsistency(event);

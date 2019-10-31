@@ -1096,12 +1096,22 @@ components:
           type: integer
           format: int32
           description: "Сдвиг оперативного времени относительно астрономического"
+        dateFrom:
+          type: string
+          format: date
+          description: "Дата начала календаря"
+        dateTo:
+          type: string
+          format: date
+          description: "Дата окончания календаря"
     CalendarReq:
       type: object
       required:
         - name
         - shift
         - isAstronomical
+        - dateFrom
+        - dateTo
       allOf:
         - $ref: "#/components/schemas/Calendar"
         - type: object
@@ -1122,14 +1132,6 @@ components:
             calendarId:
               type: integer
               format: int64
-            dateFrom:
-              type: string
-              format: date
-              description: "Дата начала первого события в календаре"
-            dateTo:
-              type: string
-              format: date
-              description: "Дата конца последнего события в календаре"
     ErrorMessage:
       type: object
       description: "Структура для отправки сообщения об ошибке. userMessage содержит сообщение для пользователя."

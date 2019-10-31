@@ -38,15 +38,13 @@ public class Calendar {
     private boolean isAstronomical;
 
     /**
-     * Дата начала первого события в календаре
+     * Дата возможного начала первого события в календаре
      */
-    @Nullable
     private LocalDate dateFrom;
 
     /**
-     * Дата конца последнего события в календаре
+     * Дата возможного окончания последнего события в календаре
      */
-    @Nullable
     private LocalDate dateTo;
 
 

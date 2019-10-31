@@ -35,6 +35,7 @@ public class CalendarService extends AbstractService<Calendar, Long> {
     /**
      * Update 'dateFrom' and 'dateTo' in {@link Calendar} after delete {@link Event}
      */
+    @Deprecated
     Calendar updateCalendarTimeFrameAfterDeleteEvent(long calendarId, LocalDate dateFrom, LocalDate dateTo) {
         Calendar calendar = findById(calendarId);
         if (dateFrom.equals(calendar.getDateFrom()) || dateTo.equals(calendar.getDateTo())) {
