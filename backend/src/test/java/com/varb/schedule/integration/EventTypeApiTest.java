@@ -75,7 +75,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
 
     @Test
     @Sql("/db/scripts/eventType/InsertEventTypeData.sql")
-    public void testPutEventType() throws Exception {
+    public void testpatchEventType() throws Exception {
         //Get event type to update
         List<EventType> initializedData = eventTypeRepository.findAll();
         assertTrue(initializedData.size() > 0);
@@ -85,12 +85,12 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
         //set new color - to be updated
         String newColor = "Purple";
 
-        EventTypeDto putDto = new EventTypeDto();
-        putDto.setColor(newColor);
+        EventTypeDto patchDto = new EventTypeDto();
+        patchDto.setColor(newColor);
 
-        mockMvc.perform(put(baseUrl + "/" + typeId)
+        mockMvc.perform(patch(baseUrl + "/" + typeId)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(asJsonString(putDto)))
+                .content(asJsonString(patchDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.typeId").value(typeId))
                 .andExpect(jsonPath("$.color").value(newColor))
