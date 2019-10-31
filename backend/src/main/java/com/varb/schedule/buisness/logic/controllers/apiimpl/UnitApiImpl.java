@@ -4,8 +4,8 @@ import com.varb.schedule.buisness.logic.controllers.ApiController;
 import com.varb.schedule.buisness.logic.controllers.api.UnitApi;
 import com.varb.schedule.buisness.logic.service.UnitService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.UnitDto;
-import com.varb.schedule.buisness.models.dto.UnitReqDto;
+import com.varb.schedule.buisness.models.dto.UnitPostDto;
+import com.varb.schedule.buisness.models.dto.UnitPutDto;
 import com.varb.schedule.buisness.models.dto.UnitResponseDto;
 import com.varb.schedule.buisness.models.dto.UnitResponseTreeDto;
 import com.varb.schedule.buisness.models.entity.Unit;
@@ -50,7 +50,7 @@ public class UnitApiImpl implements UnitApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<UnitResponseDto> unitPost(@Valid UnitReqDto unitPostDto) {
+    public ResponseEntity<UnitResponseDto> unitPost(@Valid UnitPostDto unitPostDto) {
         return ResponseEntity.ok(
                 modelMapper.map(unitService.add(unitPostDto),
                         UnitResponseDto.class));
@@ -58,7 +58,7 @@ public class UnitApiImpl implements UnitApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<UnitResponseDto> unitPut(Long unitId, @Valid UnitDto unitPutDto) {
+    public ResponseEntity<UnitResponseDto> unitPut(Long unitId, @Valid UnitPutDto unitPutDto) {
         Unit unit = unitService.update(unitId, unitPutDto);
         return ResponseEntity.ok(
                 modelMapper.map(unit, UnitResponseDto.class));

@@ -35,11 +35,11 @@ public class EventMapper {
                 .addMapping(source -> source.getUnit().getTitle(), EventRecentResponseDto::setUnitTitle)
                 .addMapping(source -> source.getEventType().getDescription(), EventRecentResponseDto::setEventTypeDescription);
 
-        modelMapper.typeMap(EventReqDto.class, Event.class)
+        modelMapper.typeMap(EventPostDto.class, Event.class)
                 .addMapping(source -> source.getLocation().getName(), Event::setLocationName)
                 .addMapping(source -> source.getLocation().getType(), Event::setLocationType);
 
-        modelMapper.typeMap(EventDto.class, Event.class)
+        modelMapper.typeMap(EventPutDto.class, Event.class)
                 .addMapping(source -> source.getLocation().getName(), Event::setLocationName)
                 .addMapping(source -> source.getLocation().getType(), Event::setLocationType);
     }

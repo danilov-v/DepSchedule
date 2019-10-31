@@ -1,7 +1,6 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.models.dto.EventTypeDto;
-import com.varb.schedule.buisness.models.dto.EventTypeReqDto;
 import com.varb.schedule.buisness.models.entity.EventType;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class EventTypeService extends AbstractService<EventType, Long> {
         return eventType;
     }
 
-    public EventType add(EventTypeReqDto eventTypePost) {
+    public EventType add(EventTypeDto eventTypePost) {
         EventType eventType = modelMapper.map(eventTypePost, EventType.class);
         return save(eventType);
     }

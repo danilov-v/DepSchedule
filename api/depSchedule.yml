@@ -70,7 +70,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventReq"
+              $ref: "#/components/schemas/EventPost"
       responses:
         200:
           description: successful operation
@@ -133,7 +133,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: "#/components/schemas/EventPut"
       responses:
         200:
           description: successful operation
@@ -192,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventTypeReq"
+              $ref: "#/components/schemas/EventType"
       responses:
         200:
           description: successful operation
@@ -286,7 +286,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnitReq"
+              $ref: "#/components/schemas/UnitPost"
       responses:
         200:
           description: successful operation
@@ -315,7 +315,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Unit"
+              $ref: "#/components/schemas/UnitPut"
       responses:
         200:
           description: successful operation
@@ -432,7 +432,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventDurationReq"
+              $ref: "#/components/schemas/EventDuration"
       responses:
         200:
           description: successful operation
@@ -478,7 +478,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserReq'
+              $ref: '#/components/schemas/User'
       responses:
         200:
           description: successful operation
@@ -514,7 +514,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserReqExt'
+              $ref: '#/components/schemas/UserExt'
       responses:
         200:
           description: successful operation
@@ -543,7 +543,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserReqExt'
+              $ref: '#/components/schemas/UserExt'
       responses:
         200:
           description: successful operation
@@ -609,7 +609,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PeriodReq"
+              $ref: "#/components/schemas/PeriodPost"
       responses:
         200:
           description: successful operation
@@ -638,7 +638,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Period"
+              $ref: "#/components/schemas/PeriodPut"
       responses:
         200:
           description: successful operation
@@ -709,7 +709,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Calendar'
+              $ref: '#/components/schemas/CalendarPut'
       responses:
         200:
           description: successful operation
@@ -768,7 +768,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarReq'
+              $ref: '#/components/schemas/CalendarPost'
       responses:
         200:
           description: successful operation
@@ -795,7 +795,9 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorMessage"
   schemas:
-    Unit:
+    UnitPut:
+      required:
+        - title
       properties:
         title:
           $ref: "#/components/schemas/UnitTitle"
@@ -812,12 +814,11 @@ components:
           description: |
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
-    UnitReq:
+    UnitPost:
       required:
-        - title
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/Unit"
+        - $ref: "#/components/schemas/UnitPut"
         - type: object
           properties:
             calendarId:
@@ -828,7 +829,7 @@ components:
       required:
         - unitId
       allOf:
-        - $ref: "#/components/schemas/UnitReq"
+        - $ref: "#/components/schemas/UnitPost"
         - type: object
           properties:
             unitId:
@@ -850,7 +851,14 @@ components:
                 $ref: "#/components/schemas/UnitResponseTree"
             eventDuration:
               $ref: "#/components/schemas/EventDurationMap"
-    Event:
+    EventPut:
+      required:
+        - dateFrom
+        - dateTo
+        - eventTypeId
+        - unitId
+        - location
+        - planned
       properties:
         unitId:
           type: integer
@@ -876,17 +884,11 @@ components:
           description: "Примечание"
         eventTypeId:
           $ref: "#/components/schemas/EventTypeId"
-    EventReq:
+    EventPost:
       required:
-        - dateFrom
-        - dateTo
-        - eventTypeId
-        - unitId
-        - location
-        - planned
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/Event"
+        - $ref: "#/components/schemas/EventPut"
         - type: object
           properties:
             calendarId:
@@ -897,7 +899,7 @@ components:
       required:
         - eventId
       allOf:
-        - $ref: "#/components/schemas/EventReq"
+        - $ref: "#/components/schemas/EventPost"
         - type: object
           properties:
             eventId:
@@ -935,14 +937,6 @@ components:
           format: int64
           description: "Ссылка на календарь"
     EventType:
-      properties:
-        description:
-          $ref: "#/components/schemas/EventTypeDescription"
-        color:
-          type: string
-          description: "Отображаемый цвет"
-          minLength: 3
-    EventTypeReq:
       required:
         - description
         - color
@@ -957,12 +951,12 @@ components:
       required:
         - typeId
       allOf:
-        - $ref: "#/components/schemas/EventTypeReq"
+        - $ref: "#/components/schemas/EventType"
         - type: object
           properties:
             typeId:
               $ref: "#/components/schemas/EventTypeId"
-    EventDurationReq:
+    EventDuration:
       required:
         - duration
       properties:
@@ -973,7 +967,7 @@ components:
         - unitId
         - eventTypeId
       allOf:
-        - $ref: "#/components/schemas/EventDurationReq"
+        - $ref: "#/components/schemas/EventDuration"
         - type: object
           properties:
             unitId:
@@ -986,8 +980,12 @@ components:
       type: object
       additionalProperties:
         $ref: "#/components/schemas/Duration"
-    Period:
+    PeriodPut:
       type: object
+      required:
+        - name
+        - startDate
+        - endDate
       properties:
         name:
           type: string
@@ -998,15 +996,12 @@ components:
         endDate:
           type: string
           format: date
-    PeriodReq:
+    PeriodPost:
       type: object
       required:
-        - name
-        - startDate
-        - endDate
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/Period"
+        - $ref: "#/components/schemas/PeriodPut"
         - type: object
           properties:
             calendarId:
@@ -1017,21 +1012,13 @@ components:
       required:
         - periodId
       allOf:
-        - $ref: "#/components/schemas/PeriodReq"
+        - $ref: "#/components/schemas/PeriodPost"
         - type: object
           properties:
             periodId:
               type: integer
               format: int64
     User:
-      properties:
-        login:
-          type: string
-          minLength: 3
-        password:
-          type: string
-          minLength: 5
-    UserReq:
       required:
         - login
         - password
@@ -1042,11 +1029,11 @@ components:
         password:
           type: string
           minLength: 5
-    UserReqExt:
+    UserExt:
       required:
         - role
       allOf:
-        - $ref: "#/components/schemas/UserReq"
+        - $ref: "#/components/schemas/User"
         - type: object
           properties:
             role:
@@ -1087,8 +1074,11 @@ components:
           enum:
             - statical
             - district
-    Calendar:
+    CalendarPut:
       type: object
+      required:
+        - name
+        - shift
       properties:
         name:
           $ref: "#/components/schemas/CalendarName"
@@ -1096,14 +1086,12 @@ components:
           type: integer
           format: int32
           description: "Сдвиг оперативного времени относительно астрономического"
-    CalendarReq:
+    CalendarPost:
       type: object
       required:
-        - name
-        - shift
         - isAstronomical
       allOf:
-        - $ref: "#/components/schemas/Calendar"
+        - $ref: "#/components/schemas/CalendarPut"
         - type: object
           properties:
             isAstronomical:
@@ -1116,7 +1104,7 @@ components:
       required:
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/CalendarReq"
+        - $ref: "#/components/schemas/CalendarPost"
         - type: object
           properties:
             calendarId:

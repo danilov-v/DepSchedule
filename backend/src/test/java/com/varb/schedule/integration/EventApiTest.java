@@ -146,7 +146,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         public void postEventSuccess() throws Exception {
 
             //don't set planned param - it's false by default
-            EventReqDto postDto = (EventReqDto) new EventReqDto()
+            EventPostDto postDto = (EventPostDto) new EventPostDto()
                     .calendarId(calendarId)
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
@@ -185,7 +185,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         public void calendarDiffers() throws Exception {
             Long calendarId = 2L;
 
-            EventReqDto postDto = new EventReqDto()
+            EventPostDto postDto = new EventPostDto()
                     .calendarId(calendarId)
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
@@ -209,7 +209,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @DisplayName("Исключение - calendarId не указан")
         public void noCalendarIdParam() throws Exception {
 
-            EventReqDto postDto = new EventReqDto()
+            EventPostDto postDto = new EventPostDto()
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
                     .dateFrom(dateFrom)
@@ -238,7 +238,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             LocalDate dateFrom = LocalDate.of(2019, 9, 20);
             LocalDate dateTo = LocalDate.of(2019, 9, 27);
 
-            EventReqDto postDto = new EventReqDto()
+            EventPostDto postDto = new EventPostDto()
                     .calendarId(calendarId)
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
@@ -285,7 +285,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
 
-            EventDto putDto = new EventDto()
+            EventPutDto putDto = new EventPutDto()
                     .unitId(newUnitId)
                     .dateFrom(newDateFrom)
                     .dateTo(newDateTo)
@@ -328,9 +328,14 @@ public class EventApiTest extends AbstractIntegrationTest {
 
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
-            EventDto putDto = new EventDto()
+            EventPutDto putDto = new EventPutDto()
+                    .unitId(newUnitId)
                     .dateFrom(newDateFrom)
-                    .dateTo(newDateTo);
+                    .dateTo(newDateTo)
+                    .location(newLocationDto)
+                    .planned(newPlanned)
+                    .note(newNote)
+                    .eventTypeId(newEventTypeId);
 
             //perform update
             mockMvc.perform(put(baseUrl + "/" + eventId)
@@ -367,8 +372,15 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
             final Long newUnitId = 400L;
-            EventDto putDto = new EventDto()
-                    .unitId(newUnitId);
+
+            EventPutDto putDto = new EventPutDto()
+                    .unitId(newUnitId)
+                    .dateFrom(newDateFrom)
+                    .dateTo(newDateTo)
+                    .location(newLocationDto)
+                    .planned(newPlanned)
+                    .note(newNote)
+                    .eventTypeId(newEventTypeId);
 
             MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -392,9 +404,15 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
             //set dateTo to have intersection
-            LocalDate dateTo = LocalDate.of(2019, 10, 4);
-            EventDto putDto = new EventDto()
-                    .dateTo(dateTo);
+            LocalDate newDateTo = LocalDate.of(2019, 10, 4);
+            EventPutDto putDto = new EventPutDto()
+                    .unitId(newUnitId)
+                    .dateFrom(newDateFrom)
+                    .dateTo(newDateTo)
+                    .location(newLocationDto)
+                    .planned(newPlanned)
+                    .note(newNote)
+                    .eventTypeId(newEventTypeId);
 
             MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -419,9 +437,16 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
             //set dateTo to have intersection
-            LocalDate dateTo = LocalDate.of(2019, 9, 25);
-            EventDto putDto = new EventDto()
-                    .dateTo(dateTo);
+            LocalDate newDateTo = LocalDate.of(2019, 9, 25);
+
+            EventPutDto putDto = new EventPutDto()
+                    .unitId(newUnitId)
+                    .dateFrom(newDateFrom)
+                    .dateTo(newDateTo)
+                    .location(newLocationDto)
+                    .planned(newPlanned)
+                    .note(newNote)
+                    .eventTypeId(newEventTypeId);
 
             MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)

@@ -4,8 +4,8 @@ import com.varb.schedule.buisness.logic.controllers.apiimpl.CalendarApiImpl;
 import com.varb.schedule.buisness.logic.repository.CalendarRepository;
 import com.varb.schedule.buisness.logic.repository.EventRepository;
 import com.varb.schedule.buisness.logic.repository.UnitRepository;
-import com.varb.schedule.buisness.models.dto.CalendarDto;
-import com.varb.schedule.buisness.models.dto.CalendarReqDto;
+import com.varb.schedule.buisness.models.dto.CalendarPostDto;
+import com.varb.schedule.buisness.models.dto.CalendarPutDto;
 import com.varb.schedule.buisness.models.dto.CalendarResponseDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import org.junit.jupiter.api.DisplayName;
@@ -106,7 +106,7 @@ public class CalendarApiTest extends AbstractIntegrationTest {
     @Test
     @DisplayName("Создание нового календаря")
     public void testPostCalendar() throws Exception {
-        var actualDto = new CalendarReqDto()
+        var actualDto = new CalendarPostDto()
                 .isAstronomical(false)
                 .name("test calendar")
                 .shift(5);
@@ -147,7 +147,7 @@ public class CalendarApiTest extends AbstractIntegrationTest {
         var entityBeforeUpdate = entitiesBeforeUpdate.get(0);
         entityManager.detach(entityBeforeUpdate);
 
-        var actualDto = new CalendarDto()
+        var actualDto = new CalendarPutDto()
                 .name("newName")
                 .shift(12);
 

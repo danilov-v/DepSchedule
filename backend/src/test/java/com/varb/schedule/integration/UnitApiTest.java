@@ -199,7 +199,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
 
             var unitSizeBefore = repository.findAll().size();
 
-            var actualDto = new UnitReqDto()
+            var actualDto = new UnitPostDto()
                     .calendarId(calendarId)
                     .flag("flag")
                     .parentId(parentId)
@@ -253,7 +253,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
 
             var unitSizeBefore = repository.findAll().size();
 
-            var actualDto = new UnitReqDto()
+            var actualDto = new UnitPostDto()
                     .calendarId(calendarId)
                     .flag("flag")
                     .parentId(parentId)
@@ -297,7 +297,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
             entityBeforeUpdate.getEvents().forEach(Event::getEventId);
             entityManager.detach(entityBeforeUpdate);
 
-            var actualDto = new UnitDto()
+            var actualDto = new UnitPutDto()
                     .flag("changed")
                     .planned(true)
                     .parentId(parentId)
@@ -346,8 +346,11 @@ public class UnitApiTest extends AbstractIntegrationTest {
             //validate data has been initialized correctly
             assertTrue(entityBeforeUpdateOpt.isPresent());
 
-            var actualDto = new UnitDto()
-                    .parentId(parentId);
+            var actualDto = new UnitPutDto()
+                    .flag("changed")
+                    .planned(true)
+                    .parentId(parentId)
+                    .title("changed");
 
             MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/" + unitIdToChange)
                     .accept(MediaType.APPLICATION_JSON_UTF8)

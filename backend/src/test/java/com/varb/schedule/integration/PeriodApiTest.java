@@ -3,8 +3,8 @@ package com.varb.schedule.integration;
 import com.varb.schedule.buisness.logic.repository.PeriodRepository;
 import com.varb.schedule.buisness.logic.service.PeriodService;
 import com.varb.schedule.buisness.logic.service.ValidationService;
-import com.varb.schedule.buisness.models.dto.PeriodDto;
-import com.varb.schedule.buisness.models.dto.PeriodReqDto;
+import com.varb.schedule.buisness.models.dto.PeriodPostDto;
+import com.varb.schedule.buisness.models.dto.PeriodPutDto;
 import com.varb.schedule.buisness.models.dto.PeriodResponseDto;
 import com.varb.schedule.exception.WebApiException;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
         final LocalDate endDate = LocalDate.of(2020, 5, 27);
         String name = "Just added period";
         final Long calendarId = 1L;
-        var postDto = new PeriodReqDto();
+        var postDto = new PeriodPostDto();
         postDto.calendarId(calendarId)
                 .name(name)
                 .startDate(startDate)
@@ -108,10 +108,12 @@ public class PeriodApiTest extends AbstractIntegrationTest {
         final Long periodId = baseEntity.getPeriodId();
         final Long calendarId = baseEntity.getCalendarId();
         String newName = "Changed name";
-        final LocalDate startDate = baseEntity.getStartDate();
-        final LocalDate endDate = baseEntity.getEndDate();
-        var putDto = new PeriodDto();
-        putDto.setName(newName);
+        final LocalDate newStartDate = LocalDate.parse("2019-08-25");
+        final LocalDate newEndDate = LocalDate.parse("2020-09-23");
+        var putDto = new PeriodPutDto();
+        putDto.name(newName)
+                .startDate(newStartDate)
+                .endDate(newEndDate);
 
         mockMvc.perform(put(baseUrl + "/" + periodId)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -122,8 +124,8 @@ public class PeriodApiTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.periodId").value(periodId))
                 .andExpect(jsonPath("$.calendarId").value(calendarId))
                 .andExpect(jsonPath("$.name").value(newName))
-                .andExpect(jsonPath("$.startDate").value(startDate.toString()))
-                .andExpect(jsonPath("$.endDate").value(endDate.toString()));
+                .andExpect(jsonPath("$.startDate").value(newStartDate.toString()))
+                .andExpect(jsonPath("$.endDate").value(newEndDate.toString()));
 
         assertTrue(periodRepository.findById(periodId).isPresent());
         var resultEntity = periodRepository.findById(periodId).get();
@@ -132,8 +134,8 @@ public class PeriodApiTest extends AbstractIntegrationTest {
                 () -> assertEquals(periodId, resultEntity.getPeriodId()),
                 () -> assertEquals(calendarId, resultEntity.getCalendarId()),
                 () -> assertEquals(newName, resultEntity.getName()),
-                () -> assertEquals(startDate, resultEntity.getStartDate()),
-                () -> assertEquals(endDate, resultEntity.getEndDate())
+                () -> assertEquals(newStartDate, resultEntity.getStartDate()),
+                () -> assertEquals(newEndDate, resultEntity.getEndDate())
         );
     }
 
@@ -158,7 +160,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
     @Test
     @Sql("/db/scripts/period/InsertPeriodData.sql")
     public void testWrongDatesAndIntersections() throws Exception {
-        var postDto = new PeriodReqDto();
+        var postDto = new PeriodPostDto();
         postDto.calendarId(1L)
                 .name("Intersection")
                 .startDate(LocalDate.of(2019, 9, 29))

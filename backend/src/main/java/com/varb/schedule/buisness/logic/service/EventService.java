@@ -1,8 +1,8 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventRepository;
-import com.varb.schedule.buisness.models.dto.EventDto;
-import com.varb.schedule.buisness.models.dto.EventReqDto;
+import com.varb.schedule.buisness.models.dto.EventPostDto;
+import com.varb.schedule.buisness.models.dto.EventPutDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.buisness.models.entity.Unit;
@@ -37,14 +37,14 @@ public class EventService extends AbstractService<Event, Long> {
             "Проверьте даты его начала и окончания.";
 
 
-    public Event add(EventReqDto eventPostDto) {
+    public Event add(EventPostDto eventPostDto) {
         Event event = modelMapper.map(eventPostDto, Event.class);
         event = save(event);
         manipulationAfterSave(event);
         return event;
     }
 
-    public Event update(Long eventId, EventDto eventPut) {
+    public Event update(Long eventId, EventPutDto eventPut) {
         Event event = findById(eventId);
         modelMapper.map(eventPut, event);
         manipulationAfterSave(event);
