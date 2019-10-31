@@ -70,7 +70,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventPost"
+              $ref: "#/components/schemas/EventReq"
       responses:
         200:
           description: successful operation
@@ -117,8 +117,8 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
   /event/{eventId}:
-    put:
-      operationId: eventPut
+    patch:
+      operationId: eventPatch
       summary: Редактировать существующее событие
       tags:
         - event
@@ -133,7 +133,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventPut"
+              $ref: "#/components/schemas/Event"
       responses:
         200:
           description: successful operation
@@ -192,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventType"
+              $ref: "#/components/schemas/EventTypeReq"
       responses:
         200:
           description: successful operation
@@ -205,8 +205,8 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
   /eventType/{eventTypeId}:
-    put:
-      operationId: eventTypePut
+    patch:
+      operationId: eventTypePatch
       summary: Редактировать существующий тип события
       tags:
         - eventType
@@ -286,7 +286,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnitPost"
+              $ref: "#/components/schemas/UnitReq"
       responses:
         200:
           description: successful operation
@@ -299,8 +299,8 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
   /unit/{unitId}:
-    put:
-      operationId: unitPut
+    patch:
+      operationId: unitPatch
       summary: Редактировать существующее подразделение
       tags:
         - unit
@@ -315,7 +315,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnitPut"
+              $ref: "#/components/schemas/Unit"
       responses:
         200:
           description: successful operation
@@ -411,8 +411,8 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
   /eventDuration/{unitId}/{eventTypeId}:
-    put:
-      operationId: eventDurationPut
+    patch:
+      operationId: eventDurationPatch
       summary: Добавить/Редактировать существующее время выполнения события для подразделения
       tags:
         - eventDuration
@@ -432,7 +432,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventDuration"
+              $ref: "#/components/schemas/EventDurationReq"
       responses:
         200:
           description: successful operation
@@ -469,7 +469,7 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
   /login:
-    put:
+    patch:
       operationId: login
       summary: Вход пользователя в систему
       tags:
@@ -478,7 +478,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserReq'
       responses:
         200:
           description: successful operation
@@ -491,7 +491,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
   /logout:
-    put:
+    patch:
       operationId: logout
       summary: Выход пользователя из системы
       tags:
@@ -514,7 +514,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserExt'
+              $ref: '#/components/schemas/UserReqExt'
       responses:
         200:
           description: successful operation
@@ -527,9 +527,9 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
   /user/{login}:
-    put:
+    patch:
       deprecated: true
-      operationId: userPut
+      operationId: userPatch
       summary: Редактировать существующего пользователя (Пока что не реализовано!)
       tags:
         - user
@@ -543,7 +543,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserExt'
+              $ref: '#/components/schemas/UserReqExt'
       responses:
         200:
           description: successful operation
@@ -609,7 +609,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PeriodPost"
+              $ref: "#/components/schemas/PeriodReq"
       responses:
         200:
           description: successful operation
@@ -622,8 +622,8 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
   /period/{periodId}:
-    put:
-      operationId: periodPut
+    patch:
+      operationId: periodPatch
       summary: Редактировать существующие периоды
       tags:
         - period
@@ -638,7 +638,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PeriodPut"
+              $ref: "#/components/schemas/Period"
       responses:
         200:
           description: successful operation
@@ -693,8 +693,8 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
-    put:
-      operationId: calendarPut
+    patch:
+      operationId: calendarPatch
       summary: Редактировать информацию в конкретном календаре (Календарь автоматически становится активным)
       tags:
         - calendar
@@ -709,7 +709,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarPut'
+              $ref: '#/components/schemas/Calendar'
       responses:
         200:
           description: successful operation
@@ -768,7 +768,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarPost'
+              $ref: '#/components/schemas/CalendarReq'
       responses:
         200:
           description: successful operation
@@ -795,9 +795,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorMessage"
   schemas:
-    UnitPut:
-      required:
-        - title
+    Unit:
       properties:
         title:
           $ref: "#/components/schemas/UnitTitle"
@@ -814,11 +812,12 @@ components:
           description: |
             Ссылка на подразделение верхнего уровня
             (для подразделения первого уровня не указывается!)
-    UnitPost:
+    UnitReq:
       required:
+        - title
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/UnitPut"
+        - $ref: "#/components/schemas/Unit"
         - type: object
           properties:
             calendarId:
@@ -829,7 +828,7 @@ components:
       required:
         - unitId
       allOf:
-        - $ref: "#/components/schemas/UnitPost"
+        - $ref: "#/components/schemas/UnitReq"
         - type: object
           properties:
             unitId:
@@ -851,14 +850,7 @@ components:
                 $ref: "#/components/schemas/UnitResponseTree"
             eventDuration:
               $ref: "#/components/schemas/EventDurationMap"
-    EventPut:
-      required:
-        - dateFrom
-        - dateTo
-        - eventTypeId
-        - unitId
-        - location
-        - planned
+    Event:
       properties:
         unitId:
           type: integer
@@ -884,11 +876,17 @@ components:
           description: "Примечание"
         eventTypeId:
           $ref: "#/components/schemas/EventTypeId"
-    EventPost:
+    EventReq:
       required:
+        - dateFrom
+        - dateTo
+        - eventTypeId
+        - unitId
+        - location
+        - planned
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/EventPut"
+        - $ref: "#/components/schemas/Event"
         - type: object
           properties:
             calendarId:
@@ -899,7 +897,7 @@ components:
       required:
         - eventId
       allOf:
-        - $ref: "#/components/schemas/EventPost"
+        - $ref: "#/components/schemas/EventReq"
         - type: object
           properties:
             eventId:
@@ -937,6 +935,14 @@ components:
           format: int64
           description: "Ссылка на календарь"
     EventType:
+      properties:
+        description:
+          $ref: "#/components/schemas/EventTypeDescription"
+        color:
+          type: string
+          description: "Отображаемый цвет"
+          minLength: 3
+    EventTypeReq:
       required:
         - description
         - color
@@ -951,12 +957,12 @@ components:
       required:
         - typeId
       allOf:
-        - $ref: "#/components/schemas/EventType"
+        - $ref: "#/components/schemas/EventTypeReq"
         - type: object
           properties:
             typeId:
               $ref: "#/components/schemas/EventTypeId"
-    EventDuration:
+    EventDurationReq:
       required:
         - duration
       properties:
@@ -967,7 +973,7 @@ components:
         - unitId
         - eventTypeId
       allOf:
-        - $ref: "#/components/schemas/EventDuration"
+        - $ref: "#/components/schemas/EventDurationReq"
         - type: object
           properties:
             unitId:
@@ -980,12 +986,8 @@ components:
       type: object
       additionalProperties:
         $ref: "#/components/schemas/Duration"
-    PeriodPut:
+    Period:
       type: object
-      required:
-        - name
-        - startDate
-        - endDate
       properties:
         name:
           type: string
@@ -996,12 +998,15 @@ components:
         endDate:
           type: string
           format: date
-    PeriodPost:
+    PeriodReq:
       type: object
       required:
+        - name
+        - startDate
+        - endDate
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/PeriodPut"
+        - $ref: "#/components/schemas/Period"
         - type: object
           properties:
             calendarId:
@@ -1012,13 +1017,21 @@ components:
       required:
         - periodId
       allOf:
-        - $ref: "#/components/schemas/PeriodPost"
+        - $ref: "#/components/schemas/PeriodReq"
         - type: object
           properties:
             periodId:
               type: integer
               format: int64
     User:
+      properties:
+        login:
+          type: string
+          minLength: 3
+        password:
+          type: string
+          minLength: 5
+    UserReq:
       required:
         - login
         - password
@@ -1029,11 +1042,11 @@ components:
         password:
           type: string
           minLength: 5
-    UserExt:
+    UserReqExt:
       required:
         - role
       allOf:
-        - $ref: "#/components/schemas/User"
+        - $ref: "#/components/schemas/UserReq"
         - type: object
           properties:
             role:
@@ -1074,11 +1087,8 @@ components:
           enum:
             - statical
             - district
-    CalendarPut:
+    Calendar:
       type: object
-      required:
-        - name
-        - shift
       properties:
         name:
           $ref: "#/components/schemas/CalendarName"
@@ -1086,12 +1096,14 @@ components:
           type: integer
           format: int32
           description: "Сдвиг оперативного времени относительно астрономического"
-    CalendarPost:
+    CalendarReq:
       type: object
       required:
+        - name
+        - shift
         - isAstronomical
       allOf:
-        - $ref: "#/components/schemas/CalendarPut"
+        - $ref: "#/components/schemas/Calendar"
         - type: object
           properties:
             isAstronomical:
@@ -1104,7 +1116,7 @@ components:
       required:
         - calendarId
       allOf:
-        - $ref: "#/components/schemas/CalendarPost"
+        - $ref: "#/components/schemas/CalendarReq"
         - type: object
           properties:
             calendarId:

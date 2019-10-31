@@ -1,8 +1,8 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.CalendarRepository;
-import com.varb.schedule.buisness.models.dto.CalendarPostDto;
-import com.varb.schedule.buisness.models.dto.CalendarPutDto;
+import com.varb.schedule.buisness.models.dto.CalendarDto;
+import com.varb.schedule.buisness.models.dto.CalendarReqDto;
 import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -21,14 +21,14 @@ public class CalendarService extends AbstractService<Calendar, Long> {
     private final ModelMapperCustomize modelMapper;
     private final CalendarRepository calendarRepository;
 
-    public Calendar add(CalendarPostDto calendarDto) {
+    public Calendar add(CalendarReqDto calendarDto) {
         Calendar calendar = modelMapper.map(calendarDto, Calendar.class);
         return save(calendar);
     }
 
-    public Calendar update(long calendarId, CalendarPutDto calendarPutDto) {
+    public Calendar update(long calendarId, CalendarDto calendarDto) {
         Calendar calendar = findById(calendarId);
-        modelMapper.map(calendarPutDto, calendar);
+        modelMapper.map(calendarDto, calendar);
         return calendar;
     }
 

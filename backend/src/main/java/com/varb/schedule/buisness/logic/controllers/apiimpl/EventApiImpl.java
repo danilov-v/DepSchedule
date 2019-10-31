@@ -4,9 +4,9 @@ import com.varb.schedule.buisness.logic.controllers.ApiController;
 import com.varb.schedule.buisness.logic.controllers.api.EventApi;
 import com.varb.schedule.buisness.logic.service.EventService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.EventPostDto;
-import com.varb.schedule.buisness.models.dto.EventPutDto;
+import com.varb.schedule.buisness.models.dto.EventDto;
 import com.varb.schedule.buisness.models.dto.EventRecentResponseDto;
+import com.varb.schedule.buisness.models.dto.EventReqDto;
 import com.varb.schedule.buisness.models.dto.EventResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
@@ -48,14 +48,14 @@ public class EventApiImpl implements EventApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<EventResponseDto> eventPost(@Valid EventPostDto eventPostDto) {
+    public ResponseEntity<EventResponseDto> eventPost(@Valid EventReqDto eventPostDto) {
         return ResponseEntity.ok(
                 modelMapper.map(eventService.add(eventPostDto), EventResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<EventResponseDto> eventPut(Long eventId, @Valid EventPutDto eventPutDto) {
+    public ResponseEntity<EventResponseDto> eventPatch(Long eventId, @Valid EventDto eventPutDto) {
         return ResponseEntity.ok(
                 modelMapper.map(eventService.update(eventId, eventPutDto), EventResponseDto.class));
     }

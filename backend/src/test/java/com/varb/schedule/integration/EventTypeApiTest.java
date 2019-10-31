@@ -3,6 +3,7 @@ package com.varb.schedule.integration;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.varb.schedule.buisness.logic.repository.EventTypeRepository;
 import com.varb.schedule.buisness.models.dto.EventTypeDto;
+import com.varb.schedule.buisness.models.dto.EventTypeReqDto;
 import com.varb.schedule.buisness.models.dto.EventTypeResponseDto;
 import com.varb.schedule.buisness.models.entity.EventType;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
     @Test
     public void testPostEventType() throws Exception {
         String color = "Purple", description = "Type Description";
-        EventTypeDto postDto = new EventTypeDto();
+        EventTypeReqDto postDto = new EventTypeReqDto();
         postDto.setColor(color);
         postDto.setDescription(description);
 
@@ -80,13 +81,12 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
         assertTrue(initializedData.size() > 0);
         EventType eventType = initializedData.get(0);
         final long typeId = eventType.getTypeId();
+        String description = eventType.getDescription();
         //set new color - to be updated
         String newColor = "Purple";
-        String newDescription = "newDesc";
 
         EventTypeDto putDto = new EventTypeDto();
-        putDto.color(newColor)
-        .description(newDescription);
+        putDto.setColor(newColor);
 
         mockMvc.perform(put(baseUrl + "/" + typeId)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -94,7 +94,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.typeId").value(typeId))
                 .andExpect(jsonPath("$.color").value(newColor))
-                .andExpect(jsonPath("$.description").value(newDescription));
+                .andExpect(jsonPath("$.description").value(description));
 
         //second-level validation
         assertAll("Assertion of just updated event type",
@@ -102,7 +102,7 @@ public class EventTypeApiTest extends AbstractIntegrationTest {
                 () -> assertTrue(eventType == eventTypeRepository.findById(typeId).get()),
                 () -> assertEquals(typeId, eventType.getTypeId().longValue()),
                 () -> assertEquals(newColor, eventType.getColor()),
-                () -> assertEquals(newDescription, eventType.getDescription())
+                () -> assertEquals(description, eventType.getDescription())
         );
     }
 

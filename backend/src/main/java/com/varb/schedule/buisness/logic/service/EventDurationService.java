@@ -1,7 +1,7 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.EventDurationRepository;
-import com.varb.schedule.buisness.models.dto.EventDurationDto;
+import com.varb.schedule.buisness.models.dto.EventDurationReqDto;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.buisness.models.entity.EventDuration;
 import com.varb.schedule.buisness.models.entity.EventDurationPK;
@@ -32,7 +32,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
      * @param unitId      Id подразделения
      * @param eventTypeId Id типа события
      */
-    public EventDuration merge(Long unitId, Long eventTypeId, EventDurationDto eventDurationPutDto) {
+    public EventDuration merge(Long unitId, Long eventTypeId, EventDurationReqDto eventDurationPutDto) {
         checkConsistency(unitId, eventTypeId);
         Optional<EventDuration> optionalEventDuration = findByIdOptional(new EventDurationPK(unitId, eventTypeId));
 
@@ -78,7 +78,7 @@ public class EventDurationService extends AbstractService<EventDuration, EventDu
      */
     void updateEventDuration(Event event) {
         int duration = (int) ChronoUnit.DAYS.between(event.getDateFrom(), event.getDateTo());
-        merge(event.getUnitId(), event.getEventTypeId(), new EventDurationDto().duration(duration));
+        merge(event.getUnitId(), event.getEventTypeId(), new EventDurationReqDto().duration(duration));
     }
 
     @Override

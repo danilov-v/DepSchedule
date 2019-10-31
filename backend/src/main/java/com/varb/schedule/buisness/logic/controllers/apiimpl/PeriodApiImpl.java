@@ -4,8 +4,8 @@ import com.varb.schedule.buisness.logic.controllers.ApiController;
 import com.varb.schedule.buisness.logic.controllers.api.PeriodApi;
 import com.varb.schedule.buisness.logic.service.PeriodService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.PeriodPostDto;
-import com.varb.schedule.buisness.models.dto.PeriodPutDto;
+import com.varb.schedule.buisness.models.dto.PeriodDto;
+import com.varb.schedule.buisness.models.dto.PeriodReqDto;
 import com.varb.schedule.buisness.models.dto.PeriodResponseDto;
 import com.varb.schedule.buisness.models.entity.Period;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
@@ -39,14 +39,14 @@ public class PeriodApiImpl implements PeriodApi {
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<PeriodResponseDto> periodPost(@Valid PeriodPostDto periodPost) {
+    public ResponseEntity<PeriodResponseDto> periodPost(@Valid PeriodReqDto periodPost) {
         return ResponseEntity.ok(
                 modelMapper.map(periodService.add(periodPost), PeriodResponseDto.class));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)
     @Override
-    public ResponseEntity<PeriodResponseDto> periodPut(Long periodId, @Valid PeriodPutDto periodPut) {
+    public ResponseEntity<PeriodResponseDto> periodPatch(Long periodId, @Valid PeriodDto periodPut) {
         Period period = periodService.update(periodId, periodPut);
 
         return ResponseEntity.ok(

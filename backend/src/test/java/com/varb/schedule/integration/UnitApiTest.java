@@ -199,7 +199,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
 
             var unitSizeBefore = repository.findAll().size();
 
-            var actualDto = new UnitPostDto()
+            var actualDto = new UnitReqDto()
                     .calendarId(calendarId)
                     .flag("flag")
                     .parentId(parentId)
@@ -253,7 +253,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
 
             var unitSizeBefore = repository.findAll().size();
 
-            var actualDto = new UnitPostDto()
+            var actualDto = new UnitReqDto()
                     .calendarId(calendarId)
                     .flag("flag")
                     .parentId(parentId)
@@ -277,7 +277,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
 
     @Nested
     @DisplayName("Изменение существующего подразделения")
-    class PutUnit extends AbstractIntegrationTest {
+    class patchUnit extends AbstractIntegrationTest {
 
         @Test
         @DisplayName("корректное изменение")
@@ -285,7 +285,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
                 "/db/scripts/unit/InsertUnitData.sql",
                 "/db/scripts/unit/UnitTestRequiredData.sql"
         })
-        public void testPutUnit() throws Exception {
+        public void testpatchUnit() throws Exception {
             long unitIdToChange = 211;
             long parentId = 200L;
 
@@ -297,13 +297,13 @@ public class UnitApiTest extends AbstractIntegrationTest {
             entityBeforeUpdate.getEvents().forEach(Event::getEventId);
             entityManager.detach(entityBeforeUpdate);
 
-            var actualDto = new UnitPutDto()
+            var actualDto = new UnitDto()
                     .flag("changed")
                     .planned(true)
                     .parentId(parentId)
                     .title("changed");
 
-            mockMvc.perform(put(BASE_URL + "/" + unitIdToChange)
+            mockMvc.perform(patch(BASE_URL + "/" + unitIdToChange)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(actualDto)))
@@ -338,7 +338,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
                 "/db/scripts/unit/InsertUnitData.sql",
                 "/db/scripts/unit/UnitTestRequiredData.sql"
         })
-        public void testPutUnitWithIncorrectParentId() throws Exception {
+        public void testpatchUnitWithIncorrectParentId() throws Exception {
             long unitIdToChange = 211;
             long parentId = 110L;
 
@@ -346,13 +346,10 @@ public class UnitApiTest extends AbstractIntegrationTest {
             //validate data has been initialized correctly
             assertTrue(entityBeforeUpdateOpt.isPresent());
 
-            var actualDto = new UnitPutDto()
-                    .flag("changed")
-                    .planned(true)
-                    .parentId(parentId)
-                    .title("changed");
+            var actualDto = new UnitDto()
+                    .parentId(parentId);
 
-            MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/" + unitIdToChange)
+            MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/" + unitIdToChange)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(actualDto)))

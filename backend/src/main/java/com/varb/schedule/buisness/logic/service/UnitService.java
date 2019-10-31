@@ -1,8 +1,8 @@
 package com.varb.schedule.buisness.logic.service;
 
 import com.varb.schedule.buisness.logic.repository.UnitRepository;
-import com.varb.schedule.buisness.models.dto.UnitPostDto;
-import com.varb.schedule.buisness.models.dto.UnitPutDto;
+import com.varb.schedule.buisness.models.dto.UnitDto;
+import com.varb.schedule.buisness.models.dto.UnitReqDto;
 import com.varb.schedule.buisness.models.entity.Unit;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
@@ -24,13 +24,13 @@ public class UnitService extends AbstractService<Unit, Long> {
     private final UnitRepository unitRepository;
     private final ModelMapperCustomize modelMapper;
 
-    public Unit add(UnitPostDto unitPost) {
+    public Unit add(UnitReqDto unitPost) {
         Unit unit = modelMapper.map(unitPost, Unit.class);
         checkParent(unit);
         return save(unit);
     }
 
-    public Unit update(Long unitId, UnitPutDto unitPut) {
+    public Unit update(Long unitId, UnitDto unitPut) {
         Unit unit = findById(unitId);
         modelMapper.map(unitPut, unit);
         checkParent(unit);

@@ -6,8 +6,8 @@ import com.varb.schedule.buisness.logic.controllers.api.LogoutApi;
 import com.varb.schedule.buisness.logic.controllers.api.UserApi;
 import com.varb.schedule.buisness.logic.service.UserService;
 import com.varb.schedule.buisness.models.business.PrivilegeEnum;
-import com.varb.schedule.buisness.models.dto.UserDto;
-import com.varb.schedule.buisness.models.dto.UserExtDto;
+import com.varb.schedule.buisness.models.dto.UserReqDto;
+import com.varb.schedule.buisness.models.dto.UserReqExtDto;
 import com.varb.schedule.buisness.models.dto.UserResponseDto;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import com.varb.schedule.exception.WebApiException;
@@ -31,7 +31,7 @@ public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
     private final Principal principal;
 
     @Override
-    public ResponseEntity<UserResponseDto> login(@Valid UserDto userBaseReqDto) {
+    public ResponseEntity<UserResponseDto> login(@Valid UserReqDto userBaseReqDto) {
         return ResponseEntity.ok(userService.login(userBaseReqDto.getLogin(), userBaseReqDto.getPassword()));
     }
 
@@ -44,7 +44,7 @@ public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
 
     @Override
     @Secured(PrivilegeEnum.Code.SUPER)
-    public ResponseEntity<UserResponseDto> register(@Valid UserExtDto userPostDto) {
+    public ResponseEntity<UserResponseDto> register(@Valid UserReqExtDto userPostDto) {
         if (1 == 1) //Пока что нет необходимости в функции регистрации
             throw new WebApiException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 
@@ -53,7 +53,7 @@ public class UserApiImpl implements UserApi, LoginApi, LogoutApi {
 
     @Override
     @Secured(PrivilegeEnum.Code.SUPER)
-    public ResponseEntity<UserResponseDto> userPut(String login, @Valid UserExtDto userPutDto) {
+    public ResponseEntity<UserResponseDto> userPatch(String login, @Valid UserReqExtDto userPutDto) {
         if (1 == 1) //Пока что нет необходимости в функции изменения пользователя
             throw new WebApiException("Not supported yet", HttpStatus.NOT_IMPLEMENTED);
 

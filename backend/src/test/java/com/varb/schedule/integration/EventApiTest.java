@@ -146,7 +146,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         public void postEventSuccess() throws Exception {
 
             //don't set planned param - it's false by default
-            EventPostDto postDto = (EventPostDto) new EventPostDto()
+            EventReqDto postDto = (EventReqDto) new EventReqDto()
                     .calendarId(calendarId)
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
@@ -185,7 +185,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         public void calendarDiffers() throws Exception {
             Long calendarId = 2L;
 
-            EventPostDto postDto = new EventPostDto()
+            EventReqDto postDto = new EventReqDto()
                     .calendarId(calendarId)
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
@@ -209,7 +209,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @DisplayName("Исключение - calendarId не указан")
         public void noCalendarIdParam() throws Exception {
 
-            EventPostDto postDto = new EventPostDto()
+            EventReqDto postDto = new EventReqDto()
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
                     .dateFrom(dateFrom)
@@ -238,7 +238,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             LocalDate dateFrom = LocalDate.of(2019, 9, 20);
             LocalDate dateTo = LocalDate.of(2019, 9, 27);
 
-            EventPostDto postDto = new EventPostDto()
+            EventReqDto postDto = new EventReqDto()
                     .calendarId(calendarId)
                     .eventTypeId(eventTypeId)
                     .unitId(unitId)
@@ -264,7 +264,7 @@ public class EventApiTest extends AbstractIntegrationTest {
     @DisplayName("Изменение события")
     @SqlGroup({@Sql("/db/scripts/event/EventTestRequiredData.sql"),
             @Sql("/db/scripts/event/InsertEventData.sql")})
-    class PutEvent extends AbstractIntegrationTest {
+    class patchEvent extends AbstractIntegrationTest {
 
         //новые значения для всех разрешенных для изменения параметров - на основе первой записи в БД
         final Long newUnitId = 300L;
@@ -277,7 +277,7 @@ public class EventApiTest extends AbstractIntegrationTest {
 
         @Test
         @DisplayName("Успешно - изменяем все доступные параметры")
-        public void putEventSuccess() throws Exception {
+        public void patchEventSuccess() throws Exception {
             var initializedData = eventRepository.findAll();
             //validate data has been initialized correctly
             assertTrue(initializedData.size() > 0);
@@ -285,7 +285,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
 
-            EventPutDto putDto = new EventPutDto()
+            EventDto patchDto = new EventDto()
                     .unitId(newUnitId)
                     .dateFrom(newDateFrom)
                     .dateTo(newDateTo)
@@ -294,10 +294,10 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .note(newNote)
                     .eventTypeId(newEventTypeId);
 
-            MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(putDto)))
+                    .content(asJsonString(patchDto)))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                     .andExpect(jsonPath("$.eventId").value(eventId))
@@ -328,20 +328,15 @@ public class EventApiTest extends AbstractIntegrationTest {
 
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
-            EventPutDto putDto = new EventPutDto()
-                    .unitId(newUnitId)
+            EventDto patchDto = new EventDto()
                     .dateFrom(newDateFrom)
-                    .dateTo(newDateTo)
-                    .location(newLocationDto)
-                    .planned(newPlanned)
-                    .note(newNote)
-                    .eventTypeId(newEventTypeId);
+                    .dateTo(newDateTo);
 
             //perform update
-            mockMvc.perform(put(baseUrl + "/" + eventId)
+            mockMvc.perform(patch(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(putDto)))
+                    .content(asJsonString(patchDto)))
                     .andExpect(status().isOk());
 
             MvcResult mvcResult = mockMvc.perform(get(eventDurationUrl)
@@ -372,20 +367,13 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
             final Long newUnitId = 400L;
+            EventDto patchDto = new EventDto()
+                    .unitId(newUnitId);
 
-            EventPutDto putDto = new EventPutDto()
-                    .unitId(newUnitId)
-                    .dateFrom(newDateFrom)
-                    .dateTo(newDateTo)
-                    .location(newLocationDto)
-                    .planned(newPlanned)
-                    .note(newNote)
-                    .eventTypeId(newEventTypeId);
-
-            MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(putDto)))
+                    .content(asJsonString(patchDto)))
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
@@ -404,20 +392,14 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
             //set dateTo to have intersection
-            LocalDate newDateTo = LocalDate.of(2019, 10, 4);
-            EventPutDto putDto = new EventPutDto()
-                    .unitId(newUnitId)
-                    .dateFrom(newDateFrom)
-                    .dateTo(newDateTo)
-                    .location(newLocationDto)
-                    .planned(newPlanned)
-                    .note(newNote)
-                    .eventTypeId(newEventTypeId);
+            LocalDate dateTo = LocalDate.of(2019, 10, 4);
+            EventDto patchDto = new EventDto()
+                    .dateTo(dateTo);
 
-            MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(putDto)))
+                    .content(asJsonString(patchDto)))
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
@@ -437,21 +419,14 @@ public class EventApiTest extends AbstractIntegrationTest {
             var entityBase = initializedData.get(0);
             final Long eventId = entityBase.getEventId();
             //set dateTo to have intersection
-            LocalDate newDateTo = LocalDate.of(2019, 9, 25);
+            LocalDate dateTo = LocalDate.of(2019, 9, 25);
+            EventDto patchDto = new EventDto()
+                    .dateTo(dateTo);
 
-            EventPutDto putDto = new EventPutDto()
-                    .unitId(newUnitId)
-                    .dateFrom(newDateFrom)
-                    .dateTo(newDateTo)
-                    .location(newLocationDto)
-                    .planned(newPlanned)
-                    .note(newNote)
-                    .eventTypeId(newEventTypeId);
-
-            MvcResult mvcResult = mockMvc.perform(put(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(putDto)))
+                    .content(asJsonString(patchDto)))
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
