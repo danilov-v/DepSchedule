@@ -24,7 +24,7 @@ import { getEventFormSelector } from "redux/selectors/ui";
 import { getEventTypesSelector } from "redux/selectors/event-types";
 import { closeEventForm } from "redux/actions/forms";
 import { useForm } from "helpers/hooks/useForm";
-import { createEvent, updateEvent, removeEvent } from "redux/actions/scheduler";
+import { createEvent, updateEvent, removeEvent } from "redux/actions/event";
 
 const validateEventForm = values => {
   let errors = {};
@@ -115,7 +115,7 @@ export function EventPopup() {
   const onRemoveEvent = () =>
     dispatch(removeEvent({ eventId: values.eventId }));
 
-  async function submitForm() {
+  function submitForm() {
     const data = {
       ...values,
       dateTo: format(values.dateTo, "yyyy-MM-dd"),

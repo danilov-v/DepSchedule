@@ -65,7 +65,7 @@ export function CalendarList({ calendars, onNewCalendarCreate, ...handlers }) {
         <CalendarListModal
           onToggle={toggle}
           modal={modal}
-          onSubmit={onNewCalendarCreate}
+          onNewCalendarCreate={onNewCalendarCreate}
         />
       </div>
     </Container>

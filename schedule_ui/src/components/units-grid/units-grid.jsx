@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUnitRemoveConfirmationOptions } from "constants/confirmations";
 import { MANAGE_UNITS } from "constants/permissions";
 import { getAuthData } from "redux/selectors/auth";
-import { removeUnit } from "redux/actions/scheduler";
+import { removeUnit } from "redux/actions/units";
 import { checkPermission } from "utils/permissions";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 

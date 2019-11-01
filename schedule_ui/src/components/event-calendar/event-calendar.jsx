@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { openEventForm } from "redux/actions/forms";
 import { getEventTypesSelector } from "redux/selectors/event-types";
-import { getActiveCalendar } from "redux/selectors/calendars";
 import { fetchEventTypes } from "redux/actions/event-types";
 import { UnitEventRow } from "./unit-event-row";
 import { EventPopup } from "./event-popup";
@@ -14,16 +13,13 @@ import "./event-calendar.scss";
 export function EventCalendar({ range, units }) {
   const dispatch = useDispatch();
   const eventTypes = useSelector(getEventTypesSelector);
-  const { isAstronomical, shift } = useSelector(getActiveCalendar);
 
-  const toggleCreateForm = (unit, dateFromDefault) => {
+  const toggleCreateForm = (unit, dateFrom) => {
     const eventTypeId = eventTypes[0].typeId;
     const duration = unit.eventDuration
       ? unit.eventDuration[eventTypeId] || 1
       : 1;
-    const dateFrom = isAstronomical
-      ? dateFromDefault
-      : addDays(dateFromDefault, shift);
+
     const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
 
     dispatch(

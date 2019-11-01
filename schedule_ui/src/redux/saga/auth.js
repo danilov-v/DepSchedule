@@ -6,7 +6,7 @@ import {
   updateUser,
   clearUser,
 } from "redux/actions/auth";
-import { resetScheduler } from "redux/actions/scheduler";
+import { resetData } from "redux/actions/ui";
 import { history } from "helpers/history";
 import { signIn, signOut } from "helpers/api";
 import { setToken } from "helpers/localstorage";
@@ -40,7 +40,7 @@ function* logout() {
     yield call(history.push, "/login");
 
     yield put(clearUser());
-    yield put(resetScheduler());
+    yield put(resetData());
   } catch (e) {
     console.error("LOGOUT ERROR", e);
   }

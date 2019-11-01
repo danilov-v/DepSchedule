@@ -1,26 +1,26 @@
 import { call, put, takeEvery, all, select } from "redux-saga/effects";
-import { addDays } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 import {
   FETCH_CALENDARS,
   CREATE_CALENDAR,
   REMOVE_CALENDAR,
   ACTIVE_CALENDAR,
+  UPDATE_CALENDAR,
   updateCalendars,
   updateActiveCalendar,
   setActiveCalendar,
 } from "redux/actions/calendars";
+import { resetData } from "redux/actions/ui";
 import {
-  resetScheduler,
-  updateStartDate,
-  updateEndDate,
-  updateOperationalDate,
-} from "redux/actions/scheduler";
-import { getActiveCalendar } from "redux/selectors/calendars";
+  getActiveCalendarSelector,
+  getActiveCalendarInfo,
+} from "redux/selectors/calendars";
 import { handleErrorRequest } from "redux/saga/auth";
 import {
   getCalendars,
   createCalendar,
   removeCalendar as removeCalendarAPI,
+  updateCalendar as updateCalendarAPI,
 } from "helpers/api";
 import { history } from "helpers/history";
 
@@ -66,31 +66,27 @@ function* selectCalendar(action) {
   yield put(updateActiveCalendar({ calendarId: calendarId }));
 
   if (calendarId) {
-    yield call(setDatesAccordingCalendar);
     yield call(history.push, "/");
   } else {
     yield call(history.push, "/calendar");
-    yield put(resetScheduler());
+    yield put(resetData());
   }
 }
 
-export function* initCalendar(action) {
-  yield call(fetchCalendars);
-  yield call(setDatesAccordingCalendar);
-}
+function* updateCalendar(action) {
+  const { calendarId, operationalDate, ...payload } = action.payload;
+  const activeCalendarId = calendarId
+    ? calendarId
+    : yield select(getActiveCalendarSelector);
+  const { startDate } = yield select(getActiveCalendarInfo);
+  const shift = differenceInCalendarDays(operationalDate, startDate);
 
-function* setDatesAccordingCalendar() {
-  const activeCalendar = yield select(getActiveCalendar);
+  try {
+    yield call(updateCalendarAPI, activeCalendarId, { shift, ...payload });
 
-  if (activeCalendar) {
-    const startDate = activeCalendar.dateFrom
-      ? new Date(activeCalendar.dateFrom)
-      : new Date();
-    const endDate = activeCalendar.dateTo && new Date(activeCalendar.dateTo);
-
-    if (startDate) yield put(updateStartDate(startDate));
-    if (endDate) yield put(updateEndDate(endDate));
-    yield put(updateOperationalDate(addDays(startDate, activeCalendar.shift)));
+    yield call(fetchCalendars);
+  } catch (error) {
+    debugger;
   }
 }
 
@@ -110,11 +106,16 @@ function* removeCalendarSaga() {
   yield takeEvery(REMOVE_CALENDAR, removeCalendar);
 }
 
+function* updateCalendarSaga() {
+  yield takeEvery(UPDATE_CALENDAR, updateCalendar);
+}
+
 export default function* watchCalendars() {
   yield all([
     fetchCalendarsSaga(),
     createCalendarSaga(),
     removeCalendarSaga(),
     selectCalendarsSaga(),
+    updateCalendarSaga(),
   ]);
 }

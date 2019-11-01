@@ -4,6 +4,7 @@ export const UPDATE_CALENDARS = "UPDATE_CALENDARS";
 export const ACTIVE_CALENDAR = "ACTIVE_CALENDAR";
 export const UPDATE_ACTIVE_CALENDAR = "UPDATE_ACTIVE_CALENDAR";
 export const REMOVE_CALENDAR = "REMOVE_CALENDAR";
+export const UPDATE_CALENDAR = "UPDATE_CALENDAR";
 
 export const fetchCalendars = payload => ({
   type: FETCH_CALENDARS,
@@ -34,5 +35,10 @@ export const updateActiveCalendar = payload => ({
 
 export const removeCalendar = payload => ({
   type: REMOVE_CALENDAR,
+  payload,
+});
+
+export const updateCalendar = payload => ({
+  type: UPDATE_CALENDAR,
   payload,
 });

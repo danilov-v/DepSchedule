@@ -11,25 +11,17 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { addDays } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePicker from "react-datepicker";
-import {
-  updateStartDate,
-  updateEndDate,
-  setOperationalDate,
-} from "redux/actions/scheduler";
+import { updateCalendar } from "redux/actions/calendars";
 import { logoutRequest } from "redux/actions/auth";
-import {
-  getStartDateSelector,
-  getEndDateSelector,
-  getOperationalDateSelector,
-} from "redux/selectors/scheduler";
-import { getActiveCalendar } from "redux/selectors/calendars";
+import { getActiveCalendarInfo } from "redux/selectors/calendars";
+import { getUserDataSelector } from "redux/selectors/user";
 import { setActiveCalendar } from "redux/actions/calendars";
+import { setStartDate, setEndDate } from "redux/actions/user";
 import logo from "logo.png";
 import { LastEventsList } from "components/last-events-list/last-events-list";
 
@@ -38,21 +30,26 @@ import "./header.scss";
 export function Header() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const activeCalendar = useSelector(getActiveCalendar);
+  const { startDate, endDate, operationalDate } = useSelector(
+    getActiveCalendarInfo
+  );
+  const { startDate: userStartDate, endDate: userEndDate } = useSelector(
+    getUserDataSelector
+  );
 
   const [isOpen, toggleNav] = useState(false);
-  const startDate = useSelector(getStartDateSelector);
-  const endDate = useSelector(getEndDateSelector);
-  const operationalDate = useSelector(getOperationalDateSelector);
   const isHomePage = location.pathname === "/";
 
   // Handlers
   const changeStartDate = date => {
-    dispatch(updateStartDate(date));
-    changeOperationalDate(addDays(date, activeCalendar.shift));
+    dispatch(setStartDate(date));
   };
-  const changeEndDate = date => dispatch(updateEndDate(date));
-  const changeOperationalDate = date => dispatch(setOperationalDate(date));
+  const changeEndDate = date => {
+    dispatch(setEndDate(date));
+  };
+  const changeOperationalDate = date => {
+    dispatch(updateCalendar({ operationalDate: date }));
+  };
   const changeCalendar = () =>
     dispatch(setActiveCalendar({ calendarId: null }));
   const logout = () => dispatch(logoutRequest());
@@ -96,7 +93,9 @@ export function Header() {
           >
             События с &nbsp;
             <DatePicker
-              selected={startDate}
+              minDate={startDate}
+              maxDate={endDate}
+              selected={userStartDate}
               dateFormat="dd/MM/yyyy"
               onChange={changeStartDate}
               locale="ru"
@@ -104,8 +103,9 @@ export function Header() {
             />
             &nbsp; по &nbsp;
             <DatePicker
-              selected={endDate}
+              selected={userEndDate}
               minDate={startDate}
+              maxDate={endDate}
               dateFormat="dd/MM/yyyy"
               onChange={changeEndDate}
               locale="ru"

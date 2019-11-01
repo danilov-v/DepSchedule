@@ -11,11 +11,9 @@ import {
   Badge,
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  getEventsSelector,
-  getStartDateSelector,
-} from "redux/selectors/scheduler";
-import { fetchLastEvents } from "redux/actions/scheduler";
+import { getEventsSelector } from "redux/selectors/event";
+import { getActiveCalendarInfo } from "redux/selectors/calendars";
+import { fetchLastEvents } from "redux/actions/event";
 
 import "./last-events-list.scss";
 
@@ -25,7 +23,7 @@ export const LastEventsList = () => {
 
   const dispatch = useDispatch();
   const lastEvents = useSelector(getEventsSelector);
-  const startDate = useSelector(getStartDateSelector);
+  const { startDate } = useSelector(getActiveCalendarInfo);
 
   useEffect(() => {
     dispatch(fetchLastEvents());

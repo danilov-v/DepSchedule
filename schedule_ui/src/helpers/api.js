@@ -47,7 +47,7 @@ const makeApiCall = async (apiPath, params) => {
 
 export const signIn = async userCred =>
   await makeApiCall(LOGIN, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(userCred),
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const signIn = async userCred =>
 
 export const signOut = async () =>
   await makeApiCall(LOGOUT, {
-    method: "PUT",
+    method: "PATCH",
   });
 
 export const getLastEvents = async ({ calendarId }) =>
@@ -66,14 +66,8 @@ export const getLastEvents = async ({ calendarId }) =>
 
 export const getUnits = async () => await makeApiCall(UNITS_URL);
 
-export const getUnitsTree = async ({ dateFrom, calendarId }) =>
-  await makeApiCall(
-    `${UNITS_URL}/tree?calendarId=${calendarId}&dateFrom=${format(
-      dateFrom,
-      "yyyy-MM-dd"
-    )}`,
-    {}
-  );
+export const getUnitsTree = async ({ calendarId }) =>
+  await makeApiCall(`${UNITS_URL}/tree?calendarId=${calendarId}`, {});
 
 export const createUnit = async unitData =>
   await makeApiCall(UNITS_URL, {
@@ -83,7 +77,7 @@ export const createUnit = async unitData =>
 
 export const updateUnit = async unitData =>
   await makeApiCall(`${UNITS_URL}/${unitData.unitId}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(unitData),
   });
 
@@ -105,7 +99,7 @@ export const getFinishedEvents = async count =>
 
 export const updateEventType = async eventTypeData =>
   await makeApiCall(`${EVENT_TYPE_URL}/${eventTypeData.typeId}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(eventTypeData),
   });
 
@@ -122,7 +116,7 @@ export const createEvent = async eventData =>
 
 export const updateEvent = async eventData =>
   await makeApiCall(`${EVENT_URL}/${eventData.eventId}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(eventData),
   });
 
@@ -148,7 +142,7 @@ export const createPeriod = async periodData =>
 
 export const updatePeriod = async periodData =>
   await makeApiCall(`${PERIODS}/${periodData.periodId}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(periodData),
   });
 
@@ -166,10 +160,10 @@ export const removePeriod = async periodId =>
  */
 export const getCalendars = async () => await makeApiCall(CALENDAR, null);
 
-export const updateCalendar = async (calendarId, shift) =>
+export const updateCalendar = async (calendarId, payload) =>
   await makeApiCall(`${CALENDAR}/${calendarId}`, {
-    method: "PUT",
-    body: JSON.stringify({ shift }),
+    method: "PATCH",
+    body: JSON.stringify(payload),
   });
 
 export const createCalendar = async ({ calendar }) =>

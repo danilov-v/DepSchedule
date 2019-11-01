@@ -1,15 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { addDays, differenceInDays } from "date-fns";
-import {
-  getStartDateSelector,
-  getEndDateSelector,
-  getUnitsSelector,
-  getOperationalDateSelector,
-} from "redux/selectors/scheduler";
-import { fetchUnits } from "redux/actions/scheduler";
+import { getUnitsSelector } from "redux/selectors/units";
+import { getActiveCalendarInfo } from "redux/selectors/calendars";
+import { getUserDataSelector } from "redux/selectors/user";
+import { fetchUnits } from "redux/actions/units";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
 import { EventCalendar } from "../event-calendar/event-calendar";
@@ -23,21 +19,23 @@ import "./timeline.scss";
 export function Timeline() {
   const dispatch = useDispatch();
   const container = useRef();
-  const startDate = useSelector(getStartDateSelector);
-  const endDate = useSelector(getEndDateSelector);
-  const range = getDates(startDate, endDate);
-  const operationalDate = useSelector(getOperationalDateSelector);
+  const { operationalDate, isAstronomical } = useSelector(
+    getActiveCalendarInfo
+  );
+  const { startDate, endDate } = useSelector(getUserDataSelector);
   const unitsTree = useSelector(getUnitsSelector);
   const units = getUnitsFromUnitsTree(unitsTree);
-
-  const operationalRange = [
+  const range = getDates(startDate, endDate);
+  const operationalRange = getDates(
     operationalDate,
-    addDays(operationalDate, differenceInDays(endDate, startDate)),
-  ];
+    addDays(operationalDate, differenceInDays(endDate, startDate))
+  );
 
   useEffect(() => {
     dispatch(fetchUnits());
+  }, [dispatch]);
 
+  useEffect(() => {
     setTimeout(() => {
       if (container.current) {
         container.current.scrollLeft = container.current.scrollWidth;
@@ -52,11 +50,11 @@ export function Timeline() {
         <HighLevelSections range={range} />
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
-            <Calendar
-              operationalRange={getDates(...operationalRange)}
-              range={range}
+            <Calendar operationalRange={operationalRange} range={range} />
+            <EventCalendar
+              range={isAstronomical ? range : operationalRange}
+              units={getLastGenUnits(unitsTree)}
             />
-            <EventCalendar range={range} units={getLastGenUnits(unitsTree)} />
           </Col>
           <Col className="timeline-info">
             <UnitsGrid units={units} unitsTree={unitsTree} />
@@ -66,33 +64,3 @@ export function Timeline() {
     </Container>
   );
 }
-
-Timeline.propTypes = {
-  operationalDate: PropTypes.instanceOf(Date),
-  operationalRange: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-  startDate: PropTypes.instanceOf(Date),
-  endDate: PropTypes.instanceOf(Date),
-  eventTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      description: PropTypes.string,
-      typeId: PropTypes.number,
-    })
-  ),
-  periods: PropTypes.arrayOf(
-    PropTypes.shape({
-      periodId: PropTypes.number,
-      name: PropTypes.string,
-      startDate: PropTypes.string,
-      endDate: PropTypes.string,
-    })
-  ),
-  units: PropTypes.arrayOf(PropTypes.object),
-  unitsTree: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onEventTypeRemove: PropTypes.func,
-};
-
-Timeline.defaultProps = {
-  unitsTree: [],
-  units: [],
-};

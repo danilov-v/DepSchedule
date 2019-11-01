@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import {
   Button,
   Modal,
@@ -9,39 +10,133 @@ import {
   Input,
   FormGroup,
   Label,
+  Row,
+  Col,
+  FormFeedback,
 } from "reactstrap";
+import { isDate, isBefore, format } from "date-fns";
+import DatePicker from "react-datepicker";
+import { useForm } from "helpers/hooks/useForm";
 
-export const CalendarListModal = ({ modal, onToggle, onSubmit }) => {
-  const [newCalendarValue, setNewCalendarValue] = useState("");
-  const [isAstronomical, setIsAstronomical] = useState(true);
+const formData = {
+  calendarName: "",
+  dateFrom: new Date("2019-09-01"),
+  dateTo: new Date("2020-01-01"),
+  isAstronomical: true,
+};
 
-  const handleChange = event => setNewCalendarValue(event.target.value);
+const validate = values => {
+  const errors = {};
 
-  const handleCheckboxChange = event => setIsAstronomical(event.target.checked);
+  if (!isDate(values.dateFrom))
+    errors["dateFrom"] = "Необходимо выбрать дату начала календаря";
 
+  if (!isDate(values.dateTo))
+    errors["dateTo"] = "Необходимо выбрать дату конца календаря";
+
+  if (isBefore(values.dateTo, values.dateFrom))
+    errors["range"] = "Дата начала должна быть переред датой конца";
+
+  if (!values.calendarName || values.calendarName.length < 4)
+    errors["calendarName"] =
+      "Название календаря должно содержать минимум 4 символов";
+
+  return errors;
+};
+
+export const CalendarListModal = ({ modal, onToggle, onNewCalendarCreate }) => {
+  const {
+    onChange,
+    onSubmit,
+    errors,
+    errorsShown,
+    resetForm,
+    values,
+  } = useForm(
+    () => {
+      const { calendarName: name, dateTo, dateFrom, isAstronomical } = values;
+
+      onNewCalendarCreate({
+        name,
+        shift: 0,
+        dateTo: format(dateTo, "yyyy-MM-dd"),
+        dateFrom: format(dateFrom, "yyyy-MM-dd"),
+        isAstronomical,
+      });
+    },
+    formData,
+    validate
+  );
+  const handleChange = event => onChange({ calendarName: event.target.value });
+  const handleCheckboxChange = event =>
+    onChange({ isAstronomical: event.target.checked });
+  const handleStartDate = date => onChange({ dateFrom: date });
+  const handleEndDate = date => onChange({ dateTo: date });
   const toggle = () => {
-    setNewCalendarValue("");
+    resetForm();
     onToggle();
   };
-
-  const submit = () => {
-    if (newCalendarValue) {
-      onSubmit({ name: newCalendarValue, shift: 0, isAstronomical });
-
-      toggle();
-    }
-  };
+  const { dateFrom, dateTo, calendarName, isAstronomical } = values;
 
   return (
     <Modal isOpen={modal} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Введите название календаря</ModalHeader>
+      <ModalHeader toggle={toggle}>Создание календаря</ModalHeader>
       <ModalBody>
-        <Input
-          className="mb-2"
-          value={newCalendarValue}
-          onChange={handleChange}
-          placeholder="ВА РБ"
-        />
+        <FormGroup>
+          <Label for="name">Название календаря</Label>
+          <Input
+            className="mb-2"
+            value={calendarName}
+            onChange={handleChange}
+            placeholder="ВА РБ"
+            invalid={errorsShown && !!errors["calendarName"]}
+          />
+          <FormFeedback>{errors["calendarName"]}</FormFeedback>
+        </FormGroup>
+        <FormGroup>
+          <Row>
+            <Col className="" md="6">
+              <Label for="name">Начало календаря</Label>
+              <DatePicker
+                selected={dateFrom}
+                selectsStart
+                startDate={dateFrom}
+                endDate={dateTo}
+                onChange={handleStartDate}
+                locale="ru"
+                dateFormat="dd/MM/yyyy"
+                className={classnames("form-control", {
+                  "is-invalid":
+                    errors["range"] || (errors["dateFrom"] && errorsShown),
+                })}
+              />
+            </Col>
+            <Col className="" md="6">
+              <Label for="name">Конец календаря</Label>
+              <DatePicker
+                selected={dateTo}
+                selectsEnd
+                endDate={dateTo}
+                onChange={handleEndDate}
+                locale="ru"
+                dateFormat="dd/MM/yyyy"
+                className={classnames("form-control", {
+                  "is-invalid":
+                    errors["range"] || (errors["dateTo"] && errorsShown),
+                })}
+              />
+            </Col>
+          </Row>
+          <FormFeedback
+            className={classnames({
+              "d-block":
+                errorsShown &&
+                (errors["range"] || errors["dateFrom"] || errors["dateTo"]),
+            })}
+          >
+            {errors["range"] || errors["dateFrom"] || errors["dateTo"]}
+          </FormFeedback>
+        </FormGroup>
         <FormGroup check>
           <Label check>
             <Input
@@ -55,11 +150,7 @@ export const CalendarListModal = ({ modal, onToggle, onSubmit }) => {
         </FormGroup>
       </ModalBody>
       <ModalFooter>
-        <Button
-          disabled={!Boolean(newCalendarValue)}
-          color="primary"
-          onClick={submit}
-        >
+        <Button color="primary" onClick={onSubmit}>
           Создать
         </Button>{" "}
         <Button color="secondary" onClick={toggle}>

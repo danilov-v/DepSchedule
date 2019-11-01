@@ -42,5 +42,6 @@ export const useForm = (callback, initialState = {}, validate) => {
     errorsShown,
     setErrors,
     values,
+    resetForm,
   };
 };

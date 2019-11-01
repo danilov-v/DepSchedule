@@ -20,7 +20,7 @@ import { get, isBoolean, set } from "lodash";
 import { FAILED_UNIT_NOTIFICATION_DATA } from "constants/notifications";
 import { FLAGS_MAP, NO_FLAG } from "constants/flags";
 import { NotificationManager } from "helpers/notification-manager";
-import { createUnit, updateUnit } from "redux/actions/scheduler";
+import { createUnit, updateUnit } from "redux/actions/units";
 
 import "./unit-popup.scss";
 

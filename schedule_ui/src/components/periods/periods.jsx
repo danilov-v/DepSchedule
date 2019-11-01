@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getAuthData } from "redux/selectors/auth";
 import { getPeriodFormSelector } from "redux/selectors/ui";
-import { getPeriodsSelector } from "redux/selectors/scheduler";
+import { getPeriodsSelector } from "redux/selectors/periods";
 import {
   createPeriod,
   updatePeriod,
   removePeriod,
   fetchPeriods,
-} from "redux/actions/scheduler";
+} from "redux/actions/periods";
 import { openPeriodForm, closePeriodForm } from "redux/actions/forms";
 import { Button, Container } from "reactstrap";
 import { Title } from "components/title/title";
