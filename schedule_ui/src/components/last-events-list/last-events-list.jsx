@@ -26,8 +26,10 @@ export const LastEventsList = () => {
   const { startDate } = useSelector(getActiveCalendarInfo);
 
   useEffect(() => {
-    dispatch(fetchLastEvents());
-  }, [dispatch]);
+    if (popoverOpen) {
+      dispatch(fetchLastEvents());
+    }
+  }, [dispatch, popoverOpen]);
 
   const isEventOnGraphic = event =>
     isBefore(new Date(event.dateFrom), new Date(startDate));

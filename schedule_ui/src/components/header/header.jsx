@@ -41,19 +41,13 @@ export function Header() {
   const isHomePage = location.pathname === "/";
 
   // Handlers
-  const changeStartDate = date => {
-    dispatch(setStartDate(date));
-  };
-  const changeEndDate = date => {
-    dispatch(setEndDate(date));
-  };
-  const changeOperationalDate = date => {
+  const changeStartDate = date => dispatch(setStartDate(date));
+  const changeEndDate = date => dispatch(setEndDate(date));
+  const changeOperationalDate = date =>
     dispatch(updateCalendar({ operationalDate: date }));
-  };
   const changeCalendar = () =>
     dispatch(setActiveCalendar({ calendarId: null }));
   const logout = () => dispatch(logoutRequest());
-
   const toggle = () => toggleNav(!isOpen);
   const print = () => window.print();
 
