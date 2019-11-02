@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getEventsSelector } from "redux/selectors/event";
-import { getActiveCalendarInfo } from "redux/selectors/calendars";
+import { getUserDataSelector } from "redux/selectors/user";
 import { fetchLastEvents } from "redux/actions/event";
 
 import "./last-events-list.scss";
@@ -23,7 +23,7 @@ export const LastEventsList = () => {
 
   const dispatch = useDispatch();
   const lastEvents = useSelector(getEventsSelector);
-  const { startDate } = useSelector(getActiveCalendarInfo);
+  const { startDate } = useSelector(getUserDataSelector);
 
   useEffect(() => {
     if (popoverOpen) {
@@ -36,14 +36,14 @@ export const LastEventsList = () => {
 
   return (
     <>
-      <div className="nav-link last-events-list-icon ">
-        <FontAwesomeIcon icon="list-ul" id="Popover1" />
+      <div className="nav-link last-events-list-icon" id="last-events-btn">
+        <FontAwesomeIcon icon="list-ul" />
       </div>
 
       <Popover
         placement="bottom-end"
         isOpen={popoverOpen}
-        target="Popover1"
+        target="last-events-btn"
         toggle={toggle}
         fade={false}
         hideArrow
