@@ -19,9 +19,9 @@ import DatePicker from "react-datepicker";
 import { updateCalendar } from "redux/actions/calendars";
 import { logoutRequest } from "redux/actions/auth";
 import { getActiveCalendarInfo } from "redux/selectors/calendars";
-import { getUserDataSelector } from "redux/selectors/user";
+import { getUserDataSelector } from "redux/selectors/ui";
 import { setActiveCalendar } from "redux/actions/calendars";
-import { setStartDate, setEndDate } from "redux/actions/user";
+import { setStartDate, setEndDate } from "redux/actions/ui";
 import logo from "logo.png";
 import { LastEventsList } from "components/last-events-list/last-events-list";
 

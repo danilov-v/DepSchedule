@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, FormGroup, FormFeedback, Input } from "reactstrap";
 import { useForm } from "helpers/hooks/useForm";
 import { loginRequest } from "redux/actions/auth";
-import { getLoginErrorSelector } from "redux/selectors/ui";
+import { getLoginErrorSelector } from "redux/selectors/forms";
 
 import "./login.scss";
 

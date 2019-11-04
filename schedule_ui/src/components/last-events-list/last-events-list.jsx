@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getEventsSelector } from "redux/selectors/event";
-import { getUserDataSelector } from "redux/selectors/user";
+import { getUserDataSelector } from "redux/selectors/ui";
 import { fetchLastEvents } from "redux/actions/event";
 
 import "./last-events-list.scss";

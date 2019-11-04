@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getAuthData } from "redux/selectors/auth";
-import { getPeriodFormSelector } from "redux/selectors/ui";
+import { getPeriodFormSelector } from "redux/selectors/forms";
 import { getPeriodsSelector } from "redux/selectors/periods";
 import {
   createPeriod,
