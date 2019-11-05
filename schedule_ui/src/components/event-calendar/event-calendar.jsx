@@ -95,18 +95,9 @@ EventCalendar.propTypes = {
       unitId: PropTypes.number,
     })
   ),
-  eventTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      description: PropTypes.string,
-      typeId: PropTypes.number,
-    })
-  ),
-  onUnitsUpdate: PropTypes.func,
 };
 
 EventCalendar.defaultProps = {
   range: [],
   units: [],
-  eventTypes: [],
 };

@@ -60,8 +60,8 @@ export default function* watchAuth() {
 
 export function* handleErrorRequest(error) {
   if (error && error.code === "403") {
-    yield put(clearUser());
-    yield call(setToken, null);
     yield call(history.push, "/login");
+    yield call(setToken, null);
+    yield put(clearUser());
   }
 }

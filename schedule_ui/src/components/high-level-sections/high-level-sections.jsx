@@ -96,6 +96,5 @@ HighLevelSections.propTypes = {
 };
 
 HighLevelSections.defaultProps = {
-  sections: [],
   range: [],
 };

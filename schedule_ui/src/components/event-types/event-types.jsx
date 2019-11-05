@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import PropTypes from "prop-types";
 import { Button, Container } from "reactstrap";
 import { getEventTypesSelector } from "redux/selectors/event-types";
 import { getAuthData } from "redux/selectors/auth";
@@ -81,13 +80,3 @@ export function EventTypes() {
     </Container>
   );
 }
-
-EventTypes.propTypes = {
-  eventTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      description: PropTypes.string,
-      typeId: PropTypes.number,
-    })
-  ),
-};
