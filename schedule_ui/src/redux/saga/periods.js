@@ -1,4 +1,4 @@
-import { call, put, takeEvery, all } from "redux-saga/effects";
+import { call, put, takeEvery, all, select } from "redux-saga/effects";
 import {
   FETCH_PERIODS,
   CREATE_PERIOD,
@@ -6,6 +6,7 @@ import {
   REMOVE_PERIOD,
   updatePeriods,
 } from "redux/actions/periods";
+import { getActiveCalendarSelector } from "redux/selectors/calendars";
 import { periodRequestFail, closePeriodForm } from "redux/actions/forms";
 
 import {
@@ -31,9 +32,10 @@ function* fetchPeriods(action) {
 
 function* createPeriods(action) {
   const { period } = action.payload;
+  const calendarId = yield select(getActiveCalendarSelector);
 
   try {
-    yield call(createPeriod, period);
+    yield call(createPeriod, { ...period, calendarId });
     yield call(fetchPeriods);
     yield put(closePeriodForm());
     NotificationManager.fire(SUCCESS_PERIOD_NOTIFICATION_DATA);
