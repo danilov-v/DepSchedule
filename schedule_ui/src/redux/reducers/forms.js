@@ -46,7 +46,6 @@ export const init = (state = initialState, action) => {
     case LOGIN_REQUEST_FAILED:
       return { ...state, loginForm: { isError: true, error: action.error } };
 
-    //PERIODS FORM
     case OPEN_PERIOD_FORM:
       return {
         ...state,
@@ -71,9 +70,7 @@ export const init = (state = initialState, action) => {
         ...state,
         periodForm: { ...state.periodForm, error: action.payload.error },
       };
-    //END PERIODS FORM
 
-    // EVENT FORM
     case OPEN_EVENT_FORM:
       const { isEdit = false, formData } = action.payload;
       return {
@@ -105,9 +102,7 @@ export const init = (state = initialState, action) => {
           error,
         },
       };
-    // END EVENT FORM
 
-    // EVENT TYPE FORM
     case OPEN_EVENT_TYPE_FORM:
       return {
         ...state,
@@ -133,7 +128,6 @@ export const init = (state = initialState, action) => {
           ...action.payload,
         },
       };
-    // END EVENT TYPE FORM
     default:
       return state;
   }
