@@ -72,7 +72,8 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     () -> assertEquals(entity.getParentId(), dto.getParentId()),
                     () -> assertEquals(entity.getTitle(), dto.getTitle()),
                     () -> assertEquals(entity.getFlag(), dto.getFlag()),
-                    () -> assertEquals(entity.getPlanned(), dto.getPlanned())
+                    () -> assertEquals(entity.getPlanned(), dto.getPlanned()),
+                    () -> assertEquals(entity.getLocation(), dto.getLocation())
             );
         }
     }
@@ -131,7 +132,8 @@ public class UnitApiTest extends AbstractIntegrationTest {
                         () -> assertEquals(entity.getParentId(), dto.getParentId()),
                         () -> assertEquals(entity.getTitle(), dto.getTitle()),
                         () -> assertEquals(entity.getFlag(), dto.getFlag()),
-                        () -> assertEquals(entity.getPlanned(), dto.getPlanned())
+                        () -> assertEquals(entity.getPlanned(), dto.getPlanned()),
+                        () -> assertEquals(entity.getLocation(), dto.getLocation())
                 );
             }
         }
@@ -186,6 +188,12 @@ public class UnitApiTest extends AbstractIntegrationTest {
     @DisplayName("Создание нового подразделения")
     class PostUnit extends AbstractIntegrationTest {
 
+        //share post DTO for all tests
+        final UnitReqDto actualDto = new UnitReqDto()
+                .flag("flag")
+                .planned(true)
+                .title("2.1.3")
+                .location("location");
 
         @Test
         @Sql("/db/scripts/unit/InsertUnitData.sql")
@@ -194,14 +202,9 @@ public class UnitApiTest extends AbstractIntegrationTest {
             long calendarId = 2L;
             long parentId = 210L;
 
-            var unitSizeBefore = repository.findAll().size();
-
-            var actualDto = new UnitReqDto()
+            actualDto
                     .calendarId(calendarId)
-                    .flag("flag")
-                    .parentId(parentId)
-                    .planned(true)
-                    .title("2.1.3");
+                    .parentId(parentId);
 
             MvcResult mvcResult = mockMvc.perform(post(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -215,6 +218,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     .andExpect(jsonPath("$.planned").value(actualDto.getPlanned()))
                     .andExpect(jsonPath("$.calendarId").value(actualDto.getCalendarId()))
                     .andExpect(jsonPath("$.parentId").value(actualDto.getParentId()))
+                    .andExpect(jsonPath("$.location").value(actualDto.getLocation()))
                     .andReturn();
 
             //clear hibernate cache
@@ -236,7 +240,8 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     () -> assertEquals(actualDto.getPlanned(), entity.getPlanned()),
                     () -> assertEquals(actualDto.getCalendarId(), entity.getCalendarId()),
                     () -> assertEquals(actualDto.getParentId(), entity.getParentId()),
-                    () -> assertEquals(0, entity.getEvents().size())
+                    () -> assertEquals(0, entity.getEvents().size()),
+                    () -> assertEquals(actualDto.getLocation(), entity.getLocation())
             );
         }
 
@@ -250,12 +255,9 @@ public class UnitApiTest extends AbstractIntegrationTest {
 
             var unitSizeBefore = repository.findAll().size();
 
-            var actualDto = new UnitReqDto()
+            actualDto
                     .calendarId(calendarId)
-                    .flag("flag")
-                    .parentId(parentId)
-                    .planned(true)
-                    .title("2.1.3");
+                    .parentId(parentId);
 
             MvcResult mvcResult = mockMvc.perform(post(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -298,7 +300,8 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     .flag("changed")
                     .planned(true)
                     .parentId(parentId)
-                    .title("changed");
+                    .title("changed")
+                    .location("changed");
 
             mockMvc.perform(patch(BASE_URL + "/" + unitIdToChange)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -311,7 +314,9 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     .andExpect(jsonPath("$.flag").value(actualDto.getFlag()))
                     .andExpect(jsonPath("$.planned").value(actualDto.getPlanned()))
                     .andExpect(jsonPath("$.calendarId").value(entityBeforeUpdate.getCalendarId()))
-                    .andExpect(jsonPath("$.parentId").value(actualDto.getParentId()));
+                    .andExpect(jsonPath("$.parentId").value(actualDto.getParentId()))
+                    .andExpect(jsonPath("$.location").value(actualDto.getLocation()))
+            ;
 
             var entityAfterUpdate = repository.findById(entityBeforeUpdate.getUnitId()).get();
             //second level validation
@@ -322,10 +327,8 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     () -> assertEquals(actualDto.getPlanned(), entityAfterUpdate.getPlanned()),
                     () -> assertEquals(entityBeforeUpdate.getCalendarId(), entityAfterUpdate.getCalendarId()),
                     () -> assertEquals(actualDto.getParentId(), entityAfterUpdate.getParentId()),
-                    () -> assertEquals(
-                            entityBeforeUpdate.getEvents(),
-                            entityAfterUpdate.getEvents()
-                    )
+                    () -> assertEquals(actualDto.getLocation(), entityAfterUpdate.getLocation()),
+                    () -> assertEquals(entityBeforeUpdate.getEvents(), entityAfterUpdate.getEvents())
             );
         }
 

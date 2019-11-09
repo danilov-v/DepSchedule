@@ -15,8 +15,6 @@ apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = '12'
 
-//gradleLint.rules = ['all-dependency']
-
 configurations {
     developmentOnly
     runtimeClasspath {
@@ -44,7 +42,7 @@ if (hasProperty('profile')) {
         doLast {
             FileTree tree =
                     fileTree(dir: "build/resources/main").
-                            include("application.yml")
+                            include("application.yml") as FileTree
             tree.each {
                 File file ->
                     insertAtTheBeginningOfFile(file, 'spring.profiles.active: ' + profile)
@@ -56,7 +54,7 @@ if (hasProperty('profile')) {
 /**
  * Insert String at the beginning of File
  */
-ext.insertAtTheBeginningOfFile = { File file, String str->
+ext.insertAtTheBeginningOfFile = { File file, String str ->
     def oldFile = file
     def newFile = File.createTempFile("application_yml", UUID.randomUUID().toString())
 
@@ -96,7 +94,6 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
-    //testImplementation('org.springframework.security:spring-security-test')
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'junit', module: 'junit'
     }
@@ -105,7 +102,6 @@ dependencies {
     compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.3.1"
-    //testCompile "org.junit.jupiter:junit-jupiter-params:5.3.1"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.1"
 
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.3.1'

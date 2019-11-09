@@ -84,3 +84,10 @@ UPDATE CALENDAR SET DATE_TO = (select max(DATE_TO) from EVENT);
 
 --changeset gonchar:SET_DATE_FROM_COLUMN_IN_CALENDAR
 UPDATE CALENDAR SET DATE_FROM = (select min(DATE_FROM) from EVENT);
+
+--changeset gonchar:SET_DATE__COLUMN_NOT_NULL_IN_CALENDAR
+alter table CALENDAR alter column DATE_TO set not null;
+alter table CALENDAR alter column DATE_FROM set not null;
+
+--changeset gonchar:ADD_LOCATION_COLUMN_IN_UNIT
+ALTER TABLE UNIT ADD LOCATION VARCHAR(255) default 'Минск' NOT NULL;

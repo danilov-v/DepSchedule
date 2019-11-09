@@ -33,8 +33,8 @@ public class Unit {
     @Column(nullable = false)
     private Boolean planned;
 
-//    @Nullable
-//    private Integer unitLevel;
+    @Column(nullable = false)
+    private String location;
 
     @Setter(AccessLevel.PRIVATE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit")
