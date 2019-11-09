@@ -5,7 +5,7 @@ import { Row } from "reactstrap";
 import { cond, isEmpty, constant, stubTrue, get, isBoolean } from "lodash";
 import { isWithinInterval, differenceInDays, isAfter } from "date-fns";
 import { getPeriodsSelector } from "redux/selectors/periods";
-import { getUserDataSelector } from "redux/selectors/user";
+import { getUserDataSelector } from "redux/selectors/ui";
 import { fetchPeriods } from "redux/actions/periods";
 import { getDayWithoutMinutes } from "utils/date";
 import { HighLevelSection } from "./high-level-section";
@@ -96,6 +96,5 @@ HighLevelSections.propTypes = {
 };
 
 HighLevelSections.defaultProps = {
-  sections: [],
   range: [],
 };

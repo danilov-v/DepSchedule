@@ -83,4 +83,5 @@ Calendar.propTypes = {
 
 Calendar.defaultProps = {
   range: [],
+  operationalRange: [],
 };

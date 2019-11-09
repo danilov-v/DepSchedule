@@ -1,18 +1,16 @@
 import React from "react";
-import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { Router } from "react-router-dom";
 import { registerLocale } from "react-datepicker";
-import createStore from "store";
-
-import { Main } from "pages/main/main";
-
-import { history } from "helpers/history";
-
-import ru from "date-fns/locale/ru";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
+import ru from "date-fns/locale/ru";
+
+import createStore from "store";
+import { Main } from "pages/main/main";
+import { history } from "helpers/history";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./app.scss";

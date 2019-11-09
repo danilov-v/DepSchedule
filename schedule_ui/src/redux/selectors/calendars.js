@@ -20,7 +20,7 @@ export const getActiveCalendar = createSelector(
 
 export const getActiveCalendarInfo = createSelector(
   getActiveCalendar,
-  calendar => {
+  (calendar = {}) => {
     const {
       calendarId,
       name,

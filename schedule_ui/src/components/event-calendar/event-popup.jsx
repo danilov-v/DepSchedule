@@ -20,7 +20,7 @@ import {
 import DatePicker from "react-datepicker";
 import classnames from "classnames";
 import { isDate, addDays, format } from "date-fns";
-import { getEventFormSelector } from "redux/selectors/ui";
+import { getEventFormSelector } from "redux/selectors/forms";
 import { getEventTypesSelector } from "redux/selectors/event-types";
 import { closeEventForm } from "redux/actions/forms";
 import { useForm } from "helpers/hooks/useForm";

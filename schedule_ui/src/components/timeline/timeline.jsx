@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addDays, differenceInDays } from "date-fns";
 import { getUnitsSelector } from "redux/selectors/units";
 import { getActiveCalendarInfo } from "redux/selectors/calendars";
-import { getUserDataSelector } from "redux/selectors/user";
+import { getUserDataSelector } from "redux/selectors/ui";
 import { fetchUnits } from "redux/actions/units";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";

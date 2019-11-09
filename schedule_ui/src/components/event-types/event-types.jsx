@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import PropTypes from "prop-types";
 import { Button, Container } from "reactstrap";
 import { getEventTypesSelector } from "redux/selectors/event-types";
 import { getAuthData } from "redux/selectors/auth";
@@ -15,7 +14,7 @@ import {
   removeEventType,
 } from "redux/actions/event-types";
 import { openEventTypeForm, closeEventTypeForm } from "redux/actions/forms";
-import { getEventTypeFormSelector } from "redux/selectors/ui";
+import { getEventTypeFormSelector } from "redux/selectors/forms";
 import { EVENT_TYPE_CONFIRMATION_OPTIONS } from "constants/confirmations";
 import { MANAGE_EVENT_TYPES } from "constants/permissions";
 import { checkPermission } from "utils/permissions";
@@ -81,13 +80,3 @@ export function EventTypes() {
     </Container>
   );
 }
-
-EventTypes.propTypes = {
-  eventTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      description: PropTypes.string,
-      typeId: PropTypes.number,
-    })
-  ),
-};
