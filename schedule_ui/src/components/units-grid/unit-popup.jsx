@@ -29,6 +29,7 @@ const DEFAULT_FORM_DATA = {
   parentId: 0,
   flag: NO_FLAG.url,
   planned: false,
+  location: "",
 };
 
 const validate = formData =>
@@ -61,6 +62,8 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
     setValidState(validate(newFormData));
     setData(newFormData);
   };
+  const onLocationChange = event =>
+    setData({ ...formData, location: get(event, "target.value") });
   const onSelectChange = event =>
     setData({ ...formData, parentId: +get(event, "target.value") });
 
@@ -147,6 +150,16 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
             </Input>
           </FormGroup>
           <FormGroup>
+            <Label for="unitLocation">Локация</Label>
+            <Input
+              name="unitLocation"
+              id="unitLocation"
+              placeholder="Минск"
+              onChange={onLocationChange}
+              value={formData.location}
+            />
+          </FormGroup>
+          <FormGroup>
             <UncontrolledDropdown>
               <DropdownToggle tag="label">
                 Флаг Подразделения
@@ -217,6 +230,7 @@ UnitPopup.propTypes = {
     unitId: PropTypes.number,
     parentId: PropTypes.number,
     title: PropTypes.string,
+    location: PropTypes.string,
   }),
   onClose: PropTypes.func,
 };

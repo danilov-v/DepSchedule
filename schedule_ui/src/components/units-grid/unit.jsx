@@ -35,7 +35,6 @@ export function Unit({
       )}
       data-unit-id={unitId}
     >
-      {flag && <img src={flag} alt="Unit flag preview" className="unit-flag" />}
       <div>{title}</div>
 
       <Row style={manageStyle} className="unit-actions" noGutters>
