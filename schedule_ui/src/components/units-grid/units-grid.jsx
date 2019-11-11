@@ -11,13 +11,14 @@ import { checkPermission } from "utils/permissions";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
 
 import { UnitPopup } from "./unit-popup";
+import { UnitLocation } from "./unit-location";
 import { Unit } from "./unit";
 import { NewUnit } from "./new-unit";
 
 import "./units-grid.scss";
 
 const renderUnit = (
-  { childUnit, title, unitId, flag },
+  { childUnit, title, unitId, flag, location },
   isTopLevel = true,
   isManageAble,
   handlers
@@ -41,16 +42,18 @@ const renderUnit = (
       </div>
     </div>
   ) : (
-    <Unit
-      key={unitId}
-      title={title}
-      unitId={unitId}
-      flag={flag}
-      lastGen
-      lastOfGroup={isTopLevel}
-      isManageAble={isManageAble}
-      {...handlers}
-    />
+    <div className="d-flex" key={unitId}>
+      <UnitLocation flag={flag} location={location} />
+      <Unit
+        title={title}
+        unitId={unitId}
+        flag={flag}
+        lastGen
+        lastOfGroup={isTopLevel}
+        isManageAble={isManageAble}
+        {...handlers}
+      />
+    </div>
   );
 };
 
@@ -88,8 +91,11 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
   return (
     <div className="units-grid">
       <div className="text-center units-grid-title">
-        <div className="units-grid-title-text">
-          ОВУ, соединения и воинские части <br /> (элементы СУ)
+        <div className="d-flex units-grid-title-wrapper">
+          <div className="units-grid-title-text units-grid-title-text-static">
+            Положение ПУ
+          </div>
+          <div className="units-grid-title-text">Подсистемы управления</div>
         </div>
       </div>
       <div className="units-grid-body">

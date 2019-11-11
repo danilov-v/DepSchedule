@@ -25,7 +25,9 @@ export function getUnitsFromUnitsTree(root) {
         stack.push(unit);
       });
     }
-    array.push(pick(node, ["parentId", "title", "unitId", "flag", "planned"]));
+    array.push(
+      pick(node, ["parentId", "title", "unitId", "flag", "planned", "location"])
+    );
   }
 
   return array;
