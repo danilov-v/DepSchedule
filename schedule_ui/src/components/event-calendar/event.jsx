@@ -53,8 +53,9 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
           className="d-flex flex-column event-flag-container"
         >
           <img className="flag" src={flagSvg} alt="Event flag preview" />
+          <span className="location-name">{event.location.name}</span>
           <img
-            className="location"
+            className="location-img"
             src={locationSvg}
             alt="Event flag preview"
           />
