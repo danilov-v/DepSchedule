@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { truncate, get } from "lodash";
 import { UncontrolledTooltip } from "reactstrap";
@@ -38,12 +38,11 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
   };
 
   return (
-    <Fragment>
+    <div onClick={onClick}>
       <div
         id={"event-" + event.eventId}
         className="event"
         style={eventStyle}
-        onClick={onClick}
         tabIndex="-1"
       >
         {title}
@@ -69,7 +68,7 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
           length: 250,
         })}
       </UncontrolledTooltip>
-    </Fragment>
+    </div>
   );
 }
 
