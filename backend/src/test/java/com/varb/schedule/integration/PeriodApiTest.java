@@ -34,7 +34,7 @@ public class PeriodApiTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andReturn();
-        var dtoList = asObjectList(mvcResult.getResponse().getContentAsString(), PeriodResponseDto.class);
+        var dtoList = asListOfObjects(mvcResult, PeriodResponseDto.class);
 
         var entityList = periodRepository.findAll();
         //assertion according to the initialization data of InsertEventTypeData.sql

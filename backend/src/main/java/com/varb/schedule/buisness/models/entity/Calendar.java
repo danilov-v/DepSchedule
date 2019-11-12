@@ -11,18 +11,6 @@ import java.time.LocalDate;
 @Entity
 public class Calendar {
 
-    public Calendar() {
-    }
-
-    /**
-     * Copy constructor
-     */
-    public Calendar(Calendar that) {
-        name = that.getName();
-        shift = that.getShift();
-        isAstronomical = that.isAstronomical();
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long calendarId;
@@ -39,11 +27,13 @@ public class Calendar {
     /**
      * Дата, начиная с которой отображается календарь
      */
+    @Column(nullable = false)
     private LocalDate dateFrom;
 
     /**
      * Дата, до которой отображается календарь
      */
+    @Column(nullable = false)
     private LocalDate dateTo;
 
 

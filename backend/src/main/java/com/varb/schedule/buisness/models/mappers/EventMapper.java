@@ -33,7 +33,9 @@ public class EventMapper {
 
         modelMapper.typeMap(Event.class, EventRecentResponseDto.class)
                 .addMapping(source -> source.getUnit().getTitle(), EventRecentResponseDto::setUnitTitle)
-                .addMapping(source -> source.getEventType().getDescription(), EventRecentResponseDto::setEventTypeDescription);
+                .addMapping(source -> source.getEventType().getDescription(), EventRecentResponseDto::setEventTypeDescription)
+                .addMapping(source -> source.getEventType().getColor(), EventRecentResponseDto::setColor)
+        ;
 
         modelMapper.typeMap(EventReqDto.class, Event.class)
                 .addMapping(source -> source.getLocation().getName(), Event::setLocationName)
