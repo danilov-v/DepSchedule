@@ -7,7 +7,9 @@ import com.varb.schedule.buisness.models.business.PrivilegeEnum;
 import com.varb.schedule.buisness.models.dto.PeriodDto;
 import com.varb.schedule.buisness.models.dto.PeriodReqDto;
 import com.varb.schedule.buisness.models.dto.PeriodResponseDto;
+import com.varb.schedule.buisness.models.dto.PeriodResponseTreeDto;
 import com.varb.schedule.buisness.models.entity.Period;
+import com.varb.schedule.buisness.models.mappers.PeriodMapper;
 import com.varb.schedule.config.modelmapper.ModelMapperCustomize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class PeriodApiImpl implements PeriodApi {
 
     private final PeriodService periodService;
     private final ModelMapperCustomize modelMapper;
+    private final PeriodMapper periodMapper;
 
     @Secured(PrivilegeEnum.Code.READ)
     @Override
@@ -58,5 +61,17 @@ public class PeriodApiImpl implements PeriodApi {
     public ResponseEntity<Void> periodDelete(Long periodId) {
         periodService.delete(periodId);
         return ResponseEntity.ok().build();
+    }
+
+    @Secured(PrivilegeEnum.Code.READ)
+    @Override
+    public ResponseEntity<List<PeriodResponseTreeDto>> periodGetTree(Optional<Long> calendarId) {
+        List<Period> resultList;
+        if (calendarId.isPresent()) {
+            resultList = periodService.findAll(calendarId.get());
+        } else {
+            resultList = periodService.findAll();
+        }
+        return ResponseEntity.ok(periodMapper.convertToTree(resultList));
     }
 }
