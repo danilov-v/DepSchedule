@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row } from "reactstrap";
 import { cond, isEmpty, constant, stubTrue, get, isBoolean } from "lodash";
 import { isWithinInterval, differenceInDays, isAfter } from "date-fns";
-import { getPeriodsSelector } from "redux/selectors/periods";
+import { getFormattedPeriodsSelector } from "redux/selectors/periods";
 import { getUserDataSelector } from "redux/selectors/ui";
 import { fetchPeriods } from "redux/actions/periods";
-import { getDayWithoutMinutes } from "utils/date";
 import { HighLevelSection } from "./high-level-section";
 
 const getDifferenceInDays = ({ day, currentSection, startDate }) =>
@@ -18,16 +17,9 @@ const getDifferenceInDays = ({ day, currentSection, startDate }) =>
       : currentSection.startDate
   );
 
-export const formatPeriods = periods =>
-  periods.map(period => ({
-    ...period,
-    startDate: getDayWithoutMinutes(new Date(period.startDate)),
-    endDate: getDayWithoutMinutes(new Date(period.endDate)),
-  }));
-
 export function HighLevelSections({ range }) {
   const dispatch = useDispatch();
-  const periods = formatPeriods(useSelector(getPeriodsSelector));
+  const periods = useSelector(getFormattedPeriodsSelector);
   const { startDate } = useSelector(getUserDataSelector);
   const renderingSection = {};
 
