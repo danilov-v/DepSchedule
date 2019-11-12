@@ -32,9 +32,6 @@ const validateEventForm = values => {
   if (!isDate(values.dateFrom))
     errors["dateFrom"] = "Необходимо выбрать дату начала события";
 
-  if (!values.note || values.note.length < 5)
-    errors["note"] = "Описание должно содержать минимум 5 символов";
-
   if (!values.location.name || !values.location.name.trim())
     errors["locationName"] = "Введите название локации";
 
