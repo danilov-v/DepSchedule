@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React from "react";
+import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
 import { CalendarCell } from "./calendar-cell";
@@ -7,62 +8,34 @@ import { CalendarMonthCellText } from "./calendar-month-cell-text";
 
 import "./calendar.scss";
 
-export function Calendar({ range, operationalRange }) {
+export function Calendar({ range, className }) {
   return (
-    <Fragment>
-      <Row className="calendar calendar-operational" noGutters>
-        {operationalRange.map(month => (
-          <Col key={month.name}>
-            <Row className="calendar-title" noGutters>
-              <Col>
-                <CalendarCell
-                  text={
-                    <CalendarMonthCellText
-                      text={MONTH_TRANSLATIONS[month.name]}
-                      length={month.days.length}
-                    />
-                  }
-                  fluid={month.days && month.days.length > 1}
-                />
-              </Col>
-            </Row>
-            <Row noGutters>
-              <Col className="d-flex">
-                {month.days.map(day => (
-                  <CalendarCell key={day.getTime()} text={day.getDate()} />
-                ))}
-              </Col>
-            </Row>
-          </Col>
-        ))}
-      </Row>
-      <Row className="calendar" noGutters>
-        {range.map(month => (
-          <Col key={month.name}>
-            <Row className="calendar-title" noGutters>
-              <Col>
-                <CalendarCell
-                  text={
-                    <CalendarMonthCellText
-                      text={MONTH_TRANSLATIONS[month.name]}
-                      length={month.days.length}
-                    />
-                  }
-                  fluid={month.days && month.days.length > 1}
-                />
-              </Col>
-            </Row>
-            <Row noGutters>
-              <Col className="d-flex">
-                {month.days.map(day => (
-                  <CalendarCell key={day.getTime()} text={day.getDate()} />
-                ))}
-              </Col>
-            </Row>
-          </Col>
-        ))}
-      </Row>
-    </Fragment>
+    <Row className={classnames("calendar", className)} noGutters>
+      {range.map(month => (
+        <Col key={month.name}>
+          <Row className="calendar-title" noGutters>
+            <Col>
+              <CalendarCell
+                text={
+                  <CalendarMonthCellText
+                    text={MONTH_TRANSLATIONS[month.name]}
+                    length={month.days.length}
+                  />
+                }
+                fluid={month.days && month.days.length > 1}
+              />
+            </Col>
+          </Row>
+          <Row noGutters>
+            <Col className="d-flex">
+              {month.days.map(day => (
+                <CalendarCell key={day.getTime()} text={day.getDate()} />
+              ))}
+            </Col>
+          </Row>
+        </Col>
+      ))}
+    </Row>
   );
 }
 
@@ -73,15 +46,8 @@ Calendar.propTypes = {
       days: PropTypes.arrayOf(PropTypes.object),
     })
   ),
-  operationalRange: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      days: PropTypes.arrayOf(PropTypes.object),
-    })
-  ),
 };
 
 Calendar.defaultProps = {
   range: [],
-  operationalRange: [],
 };

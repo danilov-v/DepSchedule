@@ -1,6 +1,6 @@
 .calendar {
   position: sticky;
-  top: 130px;
+  top: 165px;
   background: #f2f3f2;
   font-size: 1.1rem;
   font-weight: 550;
@@ -8,14 +8,26 @@
   z-index: 1;
 
   &-operational {
-    top: 60px;
+    top: 95px;
     background: #e3f0ff;
+  }
+
+  &-shift {
+    top: 60px;
   }
 
   &-cell {
     width: 35px;
     height: 35px;
     border: 1px solid #6c757d;
+
+    &-shift {
+      font-size: 16px;
+    }
+
+    &-empty {
+      border: 0;
+    }
 
     &.fluid {
       width: 100%;

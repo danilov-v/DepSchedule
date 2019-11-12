@@ -42,7 +42,12 @@ const renderUnit = (
       </div>
     </div>
   ) : (
-    <div className="d-flex" key={unitId}>
+    <div
+      className={classnames("d-flex", {
+        "unit-last-of-group": isTopLevel,
+      })}
+      key={unitId}
+    >
       <UnitLocation flag={flag} location={location} />
       <Unit
         title={title}

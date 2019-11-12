@@ -8,6 +8,7 @@ import { getUserDataSelector } from "redux/selectors/ui";
 import { fetchUnits } from "redux/actions/units";
 import { Title } from "components/title/title";
 import { Calendar } from "components/calendar/calendar";
+import { CalendarShift } from "components/calendar/calendar-shift";
 import { EventCalendar } from "../event-calendar/event-calendar";
 import { HighLevelSections } from "components/high-level-sections/high-level-sections";
 import { UnitsGrid } from "components/units-grid/units-grid";
@@ -50,7 +51,12 @@ export function Timeline() {
         <HighLevelSections range={range} />
         <Row className="flex-nowrap" noGutters>
           <Col className="timeline-left" xs="auto">
-            <Calendar operationalRange={operationalRange} range={range} />
+            <CalendarShift range={range} />
+            <Calendar
+              range={operationalRange}
+              className="calendar-operational"
+            />
+            <Calendar range={range} />
             <EventCalendar
               range={isAstronomical ? range : operationalRange}
               units={getLastGenUnits(unitsTree)}
