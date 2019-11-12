@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { truncate, get } from "lodash";
-import { UncontrolledTooltip } from "reactstrap";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { CELL_WIDTH } from "constants/calendar";
 import { differenceInDays } from "date-fns";
 import { FLAGS_MAP, FLAG_LOCATIONS } from "constants/flags";
@@ -61,14 +61,19 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
           />
         </div>
       )}
-      <UncontrolledTooltip
-        placement="bottom-start"
-        target={"event-" + event.eventId}
-      >
-        {truncate(event.note, {
-          length: 250,
-        })}
-      </UncontrolledTooltip>
+      {event.note && (
+        <UncontrolledPopover
+          trigger="hover"
+          placement="bottom-start"
+          target={"event-" + event.eventId}
+        >
+          <PopoverBody>
+            {truncate(event.note, {
+              length: 250,
+            })}
+          </PopoverBody>
+        </UncontrolledPopover>
+      )}
     </div>
   );
 }

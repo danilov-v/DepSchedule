@@ -5,7 +5,7 @@
 }
 
 .sub-text {
-  color: #606060;
+  color: $color-grey-light-3;
   font-size: 0.8em;
   float: right;
   font-style: italic;
@@ -19,5 +19,6 @@
 
   .event-title {
     font-size: 0.85em;
+    color: $color-grey-dark;
   }
 }
