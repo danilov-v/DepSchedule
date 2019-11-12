@@ -9,7 +9,7 @@ import rootSaga from "redux/saga/main";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "calendars", "user"],
+  whitelist: ["auth", "calendars", "ui"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

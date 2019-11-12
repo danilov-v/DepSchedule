@@ -8,6 +8,11 @@
     top: 60px;
     z-index: 2;
 
+    &-wrapper {
+      height: 140px;
+      margin-top: -60px;
+    }
+
     &::before {
       content: "";
       display: block;
@@ -15,7 +20,7 @@
       height: 60px;
       position: relative;
       top: -60px;
-      border: 1px solid #333;
+      // border: 1px solid #333;
       margin: -1px;
     }
   }
@@ -24,12 +29,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -60px;
+    // margin-top: -60px;
+    // flex: 1;
     height: 100%;
+
+    &:not(&-static) {
+      flex: 1;
+    }
+
+    &-static {
+      border-right: 1px solid #95999c;
+      width: 120px;
+    }
   }
 
   &-body {
-    border: 1px solid #fff;
+    // border: 1px solid #fff;
   }
 
   .unit {
@@ -39,6 +54,13 @@
     flex-grow: 1;
     padding: 0 15px;
     min-width: 160px;
+
+    &-location {
+      position: relative;
+      width: 121px;
+      border-bottom: 1px solid #95999c;
+      border-left: 1px solid #95999c;
+    }
 
     &-flag {
       position: absolute;
@@ -78,6 +100,7 @@
 
     &-last-generation {
       height: 60px;
+      flex: 1;
     }
 
     &-last-of-group:hover {
