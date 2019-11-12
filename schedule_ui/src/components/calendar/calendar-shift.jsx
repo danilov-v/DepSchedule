@@ -10,7 +10,7 @@ const getPeriod = (day, periods) =>
     isWithinInterval(day, { start: period.startDate, end: period.endDate })
   );
 
-const getShift = (day, period) => differenceInDays(day, period.startDate) + 1;
+const getShift = (day, period) => differenceInDays(day, period.startDate);
 
 export function CalendarShift({ range }) {
   const periods = useSelector(getFormattedPeriodsSelector);
@@ -21,7 +21,7 @@ export function CalendarShift({ range }) {
         <Fragment key={month.name}>
           {month.days.map(day => {
             const period = getPeriod(day, periods);
-            const shift = period && getShift(day, period);
+            const shift = period && getShift(day, period).toString();
 
             return (
               <Col key={day.getTime()}>
