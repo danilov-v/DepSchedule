@@ -54,9 +54,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andReturn();
 
-        final String responseStr = mvcResult.getResponse().getContentAsString();
-
-        var dtoList = asObjectList(responseStr, UnitResponseDto.class);
+        var dtoList = asListOfObjects(mvcResult, UnitResponseDto.class);
         assertEquals(entities.size(), dtoList.size());
 
         for (var entity : entities) {
@@ -99,9 +97,7 @@ public class UnitApiTest extends AbstractIntegrationTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                     .andReturn();
 
-            final String responseStr = mvcResult.getResponse().getContentAsString();
-
-            var dtoList = asObjectList(responseStr, UnitResponseTreeDto.class);
+            var dtoList = asListOfObjects(mvcResult, UnitResponseTreeDto.class);
 
             validateUnits(dtoList, calendarId);
             validateEvents(dtoList, calendarId);

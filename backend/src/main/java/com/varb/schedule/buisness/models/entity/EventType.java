@@ -9,14 +9,6 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Entity
 public class EventType {
-    /**
-     * Код события
-     *
-     * <li> - мобилизация
-     * <li> - марш
-     * <li> - развёртывание
-     *
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long typeId;

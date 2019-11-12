@@ -914,14 +914,14 @@ components:
           type: integer
           format: int64
           description: "Ссылка на календарь"
+        color:
+          $ref: "#/components/schemas/EventTypeColor"
     EventType:
       properties:
         description:
           $ref: "#/components/schemas/EventTypeDescription"
         color:
-          type: string
-          description: "Отображаемый цвет"
-          minLength: 3
+          $ref: "#/components/schemas/EventTypeColor"
     EventTypeReq:
       required:
         - description
@@ -930,9 +930,7 @@ components:
         description:
           $ref: "#/components/schemas/EventTypeDescription"
         color:
-          type: string
-          description: "Отображаемый цвет"
-          minLength: 3
+          $ref: "#/components/schemas/EventTypeColor"
     EventTypeResponse:
       required:
         - typeId
@@ -1152,6 +1150,11 @@ components:
       type: string
       description: "Описание события"
       minLength: 3
+    EventTypeColor:
+      type: string
+      description: "Отображаемый цвет"
+      minLength: 3
+      
   securitySchemes:
     JWT:
       type: http
