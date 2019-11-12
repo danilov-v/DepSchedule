@@ -1,10 +1,11 @@
 package com.varb.schedule.integration;
 
-import com.varb.schedule.buisness.logic.repository.EventDurationRepository;
 import com.varb.schedule.buisness.logic.repository.EventRepository;
+import com.varb.schedule.buisness.logic.service.CalendarService;
 import com.varb.schedule.buisness.logic.service.EventService;
 import com.varb.schedule.buisness.logic.service.ValidationService;
 import com.varb.schedule.buisness.models.dto.*;
+import com.varb.schedule.buisness.models.entity.Calendar;
 import com.varb.schedule.buisness.models.entity.Event;
 import com.varb.schedule.exception.WebApiException;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,14 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class EventApiTest extends AbstractIntegrationTest {
 
-    private final String baseUrl = "/api/event";
+    private final String BASE_URL = "/api/event";
     private final String eventDurationUrl = "/api/eventDuration";
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventRepository repository;
 
     @Autowired
-    private EventDurationRepository durationRepository;
+    private CalendarService calendarService;
 
     @Nested
     @DisplayName("Получение списка событий")
@@ -48,15 +50,15 @@ public class EventApiTest extends AbstractIntegrationTest {
         public void withOnlyDateFromParam() throws Exception {
             Long calendarId = 1L;
 
-            MvcResult mvcResult = mockMvc.perform(get(baseUrl)
+            MvcResult mvcResult = mockMvc.perform(get(BASE_URL)
                     .param("calendarId", calendarId.toString())
                     .accept(MediaType.APPLICATION_JSON_UTF8))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                     .andReturn();
 
-            var dtoList = asObjectList(mvcResult.getResponse().getContentAsString(), EventResponseDto.class);
-            var entities = eventRepository.findByCalendarId(calendarId);
+            var dtoList = asListOfObjects(mvcResult, EventResponseDto.class);
+            var entities = repository.findByCalendarId(calendarId);
 
             assertList(entities, dtoList);
         }
@@ -65,7 +67,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @DisplayName("Без обязательных параметров - исключение")
         public void withoutMandatoryParam() throws Exception {
             //request without mandatory calendarId param
-            MvcResult mvcResult = mockMvc.perform(get(baseUrl)
+            MvcResult mvcResult = mockMvc.perform(get(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -77,24 +79,64 @@ public class EventApiTest extends AbstractIntegrationTest {
 
         @Test
         @DisplayName("Список последних событий")
-        public void getEventRecentList() throws Exception {
+        public void getEventRecentList() throws Throwable {
             Long calendarId = 1L;
-            int count = 2;
+            int count = 10;
 
-            MvcResult mvcResult = mockMvc.perform(get(baseUrl +"/recentList")
-                    .param("count", String.valueOf(count))
-                    .param("calendarId", calendarId.toString())
-                    .accept(MediaType.APPLICATION_JSON_UTF8))
+            var entities = getRecentEvents(repository.findAll(), calendarId);
+
+            //validate data has been initialized correctly
+            assertTrue(entities.size() > 0);
+
+            MvcResult mvcResult = mockMvc.perform(
+                    get(BASE_URL + "/recentList")
+                            .param("count", String.valueOf(count))
+                            .param("calendarId", calendarId.toString())
+                            .accept(MediaType.APPLICATION_JSON_UTF8))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                     .andReturn();
 
-            var dtoList = asObjectList(mvcResult.getResponse().getContentAsString(), EventRecentResponseDto.class);
+            var dtoList = asListOfObjects(mvcResult, EventRecentResponseDto.class);
+            assertEquals(entities.size(), dtoList.size());
 
-            assertEquals(count, dtoList.size());
-            for(var dto : dtoList) {
-                assertEquals(calendarId, dto.getCalendarId());
+            for (var entity : entities) {
+                var dto = dtoList.stream().filter(e -> e.getEventId().equals(entity.getEventId())).findFirst().get();
+
+                //assertion according to the initialization data of sql scripts above
+                assertAll("Has to return initialized before the test data",
+                        //first entity
+                        () -> assertEquals(entity.getEventType().getColor(), dto.getColor()),
+                        () -> assertEquals(entity.getCalendarId(), dto.getCalendarId()),
+                        () -> assertEquals(entity.getDateFrom(), dto.getDateFrom()),
+                        () -> assertEquals(entity.getDateTo(), dto.getDateTo()),
+                        () -> assertEquals(entity.getEventId(), dto.getEventId()),
+                        () -> assertEquals(entity.getEventType().getDescription(), dto.getEventTypeDescription()),
+                        () -> assertEquals(entity.getNote(), dto.getNote()),
+                        () -> assertEquals(entity.getUnit().getTitle(), dto.getUnitTitle())
+                );
             }
+        }
+
+        private List<Event> getRecentEvents(List<Event> eventList, long calendarId) throws Throwable {
+            LocalDate relativeCurrentDate = getRelativeCurrentDate(calendarId);
+
+            return eventList.stream()
+                    .filter(event -> event.getCalendarId().equals(calendarId) && event.getDateTo().compareTo(relativeCurrentDate) <= 0)
+                    .collect(Collectors.toList());
+
+        }
+
+        private LocalDate getRelativeCurrentDate(long calendarId) {
+            Calendar calendar = calendarService.findById(calendarId);
+
+            LocalDate relativeCurrentDate;
+            if (calendar.isAstronomical())
+                relativeCurrentDate = LocalDate.now();
+            else
+                relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
+
+            return relativeCurrentDate;
         }
 
     }
@@ -128,7 +170,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .note(note)
                     .location(location);
 
-            MvcResult mvcResult = mockMvc.perform(post(baseUrl)
+            MvcResult mvcResult = mockMvc.perform(post(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(postDto)))
@@ -148,7 +190,7 @@ public class EventApiTest extends AbstractIntegrationTest {
 
             //second level validation
             var dto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EventResponseDto.class);
-            var entity = eventRepository.findById(dto.getEventId()).orElse(null);
+            var entity = repository.findById(dto.getEventId()).orElse(null);
 
             assertEntityWithDto(entity, dto);
         }
@@ -167,7 +209,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .note(note)
                     .location(location);
 
-            MvcResult mvcResult = mockMvc.perform(post(baseUrl)
+            MvcResult mvcResult = mockMvc.perform(post(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(postDto)))
@@ -190,7 +232,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .note(note)
                     .location(location);
 
-            MvcResult mvcResult = mockMvc.perform(post(baseUrl)
+            MvcResult mvcResult = mockMvc.perform(post(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(postDto)))
@@ -220,7 +262,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .note(note)
                     .location(location);
 
-            MvcResult mvcResult = mockMvc.perform(post(baseUrl)
+            MvcResult mvcResult = mockMvc.perform(post(BASE_URL)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(postDto)))
@@ -251,7 +293,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @Test
         @DisplayName("Успешно - изменяем все доступные параметры")
         public void patchEventSuccess() throws Exception {
-            var initializedData = eventRepository.findAll();
+            var initializedData = repository.findAll();
             //validate data has been initialized correctly
             assertTrue(initializedData.size() > 0);
 
@@ -267,7 +309,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .note(newNote)
                     .eventTypeId(newEventTypeId);
 
-            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(patchDto)))
@@ -286,7 +328,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .andReturn();
 
             var dto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EventResponseDto.class);
-            var entityResult = eventRepository.findById(eventId).orElse(null);
+            var entityResult = repository.findById(eventId).orElse(null);
 
             //second level validation
             assertEntityWithDto(entityResult, dto);
@@ -295,7 +337,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @Test
         @DisplayName("Успешно - проверяем, что eventDuration обновился")
         public void checkEventDurationIsUpdated() throws Exception {
-            var initializedData = eventRepository.findAll();
+            var initializedData = repository.findAll();
             //validate data has been initialized correctly
             assertTrue(initializedData.size() > 0);
 
@@ -306,7 +348,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .dateTo(newDateTo);
 
             //perform update
-            mockMvc.perform(patch(baseUrl + "/" + eventId)
+            mockMvc.perform(patch(BASE_URL + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(patchDto)))
@@ -319,7 +361,7 @@ public class EventApiTest extends AbstractIntegrationTest {
                     .andExpect(status().isOk())
                     .andReturn();
 
-            var dtoList = asObjectList(mvcResult.getResponse().getContentAsString(), EventDurationResponseDto.class);
+            var dtoList = asListOfObjects(mvcResult, EventDurationResponseDto.class);
             //take corresponding eventDuration
             var dto = dtoList.stream()
                     .filter(d -> d.getEventTypeId().equals(entityBase.getEventTypeId()))
@@ -333,7 +375,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @Test
         @DisplayName("Исключение - выбираем UnitId из другого календаря")
         public void changeUnitException() throws Exception {
-            var initializedData = eventRepository.findAll();
+            var initializedData = repository.findAll();
             //validate data has been initialized correctly
             assertTrue(initializedData.size() > 0);
 
@@ -343,7 +385,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             EventDto patchDto = new EventDto()
                     .unitId(newUnitId);
 
-            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(patchDto)))
@@ -358,7 +400,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @Test
         @DisplayName("Исключение - событие пересекается с существующим")
         public void intersections() throws Exception {
-            var initializedData = eventRepository.findAll();
+            var initializedData = repository.findAll();
             //validate data has been initialized correctly
             assertTrue(initializedData.size() > 0);
 
@@ -369,7 +411,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             EventDto patchDto = new EventDto()
                     .dateTo(dateTo);
 
-            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(patchDto)))
@@ -385,7 +427,7 @@ public class EventApiTest extends AbstractIntegrationTest {
         @Test
         @DisplayName("Исключение - дата начала события больше даты его окончания")
         public void dateFromGreaterThanDateTo() throws Exception {
-            var initializedData = eventRepository.findAll();
+            var initializedData = repository.findAll();
             //validate data has been initialized correctly
             assertTrue(initializedData.size() > 0);
 
@@ -396,7 +438,7 @@ public class EventApiTest extends AbstractIntegrationTest {
             EventDto patchDto = new EventDto()
                     .dateTo(dateTo);
 
-            MvcResult mvcResult = mockMvc.perform(patch(baseUrl + "/" + eventId)
+            MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/" + eventId)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(asJsonString(patchDto)))
@@ -413,17 +455,17 @@ public class EventApiTest extends AbstractIntegrationTest {
     @SqlGroup({@Sql("/db/scripts/event/EventTestRequiredData.sql"),
             @Sql("/db/scripts/event/InsertEventData.sql")})
     public void testDeleteEvent() throws Exception {
-        var initializedData = eventRepository.findAll();
+        var initializedData = repository.findAll();
         int rowsNum = initializedData.size();
         assertTrue(rowsNum > 0);
         var entityToDelete = initializedData.get(0);
 
-        mockMvc.perform(delete(baseUrl + "/" + entityToDelete.getEventId())
+        mockMvc.perform(delete(BASE_URL + "/" + entityToDelete.getEventId())
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
         //assert after deleting one event
-        var afterDeleteList = eventRepository.findAll();
+        var afterDeleteList = repository.findAll();
         assertEquals(rowsNum - 1, afterDeleteList.size());
         assertFalse(afterDeleteList.contains(entityToDelete));
     }

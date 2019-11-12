@@ -55,14 +55,7 @@ public class EventService extends AbstractService<Event, Long> {
     }
 
     public List<Event> findRecent(Long calendarId, int count) {
-        Calendar calendar = calendarService.findById(calendarId);
-
-        LocalDate relativeCurrentDate;
-        if (calendar.isAstronomical())
-            relativeCurrentDate = LocalDate.now();
-        else
-            relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
-
+        LocalDate relativeCurrentDate = getRelativeCurrentDate(calendarId);
         return eventRepository.findRecent(calendarId, relativeCurrentDate, PageRequest.of(0, count));
     }
 
@@ -83,6 +76,23 @@ public class EventService extends AbstractService<Event, Long> {
         checkCalendarId(event);
         validationService.checkDates(event.getDateFrom(), event.getDateTo());
         checkIntersection(event);
+    }
+
+    /**
+     * Получение относительного текущего времени.
+     * @return возвращает текущую дату,         если события в календаре создаются относительно Автрономического времени
+     * <br> возвращает текущую дату со сдвигом, если события в календаре создаются относительно Оперативного времени
+     */
+    private LocalDate getRelativeCurrentDate(Long calendarId){
+        Calendar calendar = calendarService.findById(calendarId);
+
+        LocalDate relativeCurrentDate;
+        if (calendar.isAstronomical())
+            relativeCurrentDate = LocalDate.now();
+        else
+            relativeCurrentDate = LocalDate.now().plusDays(calendar.getShift());
+
+        return relativeCurrentDate;
     }
 
 

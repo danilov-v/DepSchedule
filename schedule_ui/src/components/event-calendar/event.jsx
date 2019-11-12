@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { truncate, get } from "lodash";
-import { UncontrolledTooltip } from "reactstrap";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { CELL_WIDTH } from "constants/calendar";
 import { differenceInDays } from "date-fns";
 import { FLAGS_MAP, FLAG_LOCATIONS } from "constants/flags";
@@ -38,12 +38,11 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
   };
 
   return (
-    <Fragment>
+    <div onClick={onClick}>
       <div
         id={"event-" + event.eventId}
         className="event"
         style={eventStyle}
-        onClick={onClick}
         tabIndex="-1"
       >
         {title}
@@ -54,22 +53,28 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
           className="d-flex flex-column event-flag-container"
         >
           <img className="flag" src={flagSvg} alt="Event flag preview" />
+          <span className="location-name">{event.location.name}</span>
           <img
-            className="location"
+            className="location-img"
             src={locationSvg}
             alt="Event flag preview"
           />
         </div>
       )}
-      <UncontrolledTooltip
-        placement="bottom-start"
-        target={"event-" + event.eventId}
-      >
-        {truncate(event.note, {
-          length: 250,
-        })}
-      </UncontrolledTooltip>
-    </Fragment>
+      {event.note && (
+        <UncontrolledPopover
+          trigger="hover"
+          placement="bottom-start"
+          target={"event-" + event.eventId}
+        >
+          <PopoverBody>
+            {truncate(event.note, {
+              length: 250,
+            })}
+          </PopoverBody>
+        </UncontrolledPopover>
+      )}
+    </div>
   );
 }
 

@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -42,7 +43,9 @@ public abstract class AbstractIntegrationTest {
         return objectMapper.readValue(source, destinationType);
     }
 
-    protected <D> List<D> asObjectList(String source, Class<D> destinationType) throws IOException {
+    protected <D> List<D> asListOfObjects(MvcResult mvcResult, Class<D> destinationType) throws IOException {
+        String source = mvcResult.getResponse().getContentAsString();
+
         if (source == null)
             return Collections.emptyList();
 

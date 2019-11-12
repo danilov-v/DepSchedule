@@ -53,9 +53,7 @@ public class CalendarApiTest extends AbstractIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andReturn();
 
-        final String responseStr = mvcResult.getResponse().getContentAsString();
-
-        var dtoList = asObjectList(responseStr, CalendarResponseDto.class);
+        var dtoList = asListOfObjects(mvcResult, CalendarResponseDto.class);
         assertEquals(entities.size(), dtoList.size());
 
         for (var entity : entities) {

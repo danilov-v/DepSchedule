@@ -134,16 +134,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1280"
+     inkscape:window-width="2560"
      inkscape:window-height="981"
      id="namedview30"
      showgrid="false"
      inkscape:zoom="0.65043402"
-     inkscape:cx="299.7998"
-     inkscape:cy="380.95852"
-     inkscape:window-x="1280"
+     inkscape:cx="-10.762061"
+     inkscape:cy="361.93486"
+     inkscape:window-x="0"
      inkscape:window-y="28"
-     inkscape:window-maximized="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="g24" />
   <metadata
      id="metadata2">
@@ -193,13 +193,11 @@
              height="153.53999"
              id="rect14"
              style="stroke-width:1.38878894;stroke-miterlimit:4;stroke-dasharray:none" /></flowRegion><flowPara
-           id="flowPara18" /></flowRoot>      <ellipse
-         style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#646464;stroke-width:8.1466341;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="path1879"
-         ry="37.881649"
-         rx="95.243507"
-         cy="240.90538"
-         cx="89.378571" />
+           id="flowPara18" /></flowRoot>      <path
+         style="opacity:1;fill:#00be00;fill-opacity:1;fill-rule:nonzero;stroke:#040000;stroke-width:13.15042973;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke markers fill"
+         d="m 127.93372,205.39851 a 38.864491,17.012739 0 0 0 -31.91609,7.31435 38.864491,17.012739 0 0 0 -30.928551,-6.73431 38.864491,17.012739 0 0 0 -38.864611,17.01268 38.864491,17.012739 0 0 0 1.011279,3.76066 38.864491,17.012739 0 0 0 -29.9529131,16.53864 38.864491,17.012739 0 0 0 38.8645931,17.01268 38.864491,17.012739 0 0 0 12.531965,-0.93052 38.864491,17.012739 0 0 0 -0.128596,1.12387 38.864491,17.012739 0 0 0 38.864613,17.01279 38.864491,17.012739 0 0 0 38.864621,-17.01279 38.864491,17.012739 0 0 0 -0.51129,-2.69601 38.864491,17.012739 0 0 0 17.87627,1.92275 38.864491,17.012739 0 0 0 38.86434,-17.01283 38.864491,17.012739 0 0 0 -18.18888,-14.38167 38.864491,17.012739 0 0 0 2.47758,-5.9176 38.864491,17.012739 0 0 0 -38.86433,-17.01269 z"
+         id="path929"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>

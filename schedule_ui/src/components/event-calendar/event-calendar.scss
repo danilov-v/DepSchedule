@@ -13,15 +13,29 @@
 
   &-flag-container {
     position: absolute;
+    cursor: pointer;
 
     .flag {
-      width: 35px;
-      height: 35px;
+      align-self: center;
+      width: 25px;
+      height: 25px;
     }
 
-    .location {
+    .location-img {
+      align-self: center;
       width: 35px;
-      height: 20px;
+      height: 18px;
+    }
+
+    .location-name {
+      color: #333;
+      text-transform: capitalize;
+      position: relative;
+      font-size: 0.6em;
+      font-weight: 600;
+      left: 2px;
+      max-width: 35px;
+      line-height: 10px;
     }
   }
 
