@@ -7,7 +7,7 @@ import {
   updatePeriods,
 } from "redux/actions/periods";
 import { getActiveCalendarSelector } from "redux/selectors/calendars";
-import { periodRequestFail, closePeriodForm } from "redux/actions/forms";
+import { setErrorForm, closeForm } from "redux/actions/forms";
 
 import {
   getPeriods,
@@ -18,7 +18,9 @@ import {
 import { NotificationManager } from "helpers/notification-manager";
 import {
   SUCCESS_PERIOD_NOTIFICATION_DATA,
+  SUCCESS_PERIOD_EDIT_NOTIFICATION_DATA,
   FAILED_PERIOD_NOTIFICATION_DATA,
+  FAILED_PERIOD_EDIT_NOTIFICATION_DATA,
 } from "constants/notifications";
 
 function* fetchPeriods(action) {
@@ -37,10 +39,10 @@ function* createPeriods(action) {
   try {
     yield call(createPeriod, { ...period, calendarId });
     yield call(fetchPeriods);
-    yield put(closePeriodForm());
+    yield put(closeForm());
     NotificationManager.fire(SUCCESS_PERIOD_NOTIFICATION_DATA);
   } catch (e) {
-    yield put(periodRequestFail(e));
+    yield put(setErrorForm({ error: e }));
     NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
 
     //NOTIFY USER ABOUT PERIODS INTERSCEPTION
@@ -53,11 +55,11 @@ function* editPeriod(action) {
   try {
     yield call(updatePeriod, period);
     yield call(fetchPeriods);
-    yield put(closePeriodForm());
-    NotificationManager.fire(SUCCESS_PERIOD_NOTIFICATION_DATA);
+    yield put(closeForm());
+    NotificationManager.fire(SUCCESS_PERIOD_EDIT_NOTIFICATION_DATA);
   } catch (e) {
-    yield put(periodRequestFail(e));
-    NotificationManager.fire(FAILED_PERIOD_NOTIFICATION_DATA);
+    yield put(setErrorForm({ error: e }));
+    NotificationManager.fire(FAILED_PERIOD_EDIT_NOTIFICATION_DATA);
 
     //NOTIFY USER ABOUT PERIODS INTERSCEPTION
   }

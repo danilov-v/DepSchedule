@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -16,6 +17,13 @@ import DatePicker from "react-datepicker";
 import classnames from "classnames";
 import { isDate } from "date-fns";
 import { useForm } from "helpers/hooks/useForm";
+import { getPeriodFormSelector } from "redux/selectors/forms";
+
+export const DEFAULT_PERIOD_FORM_DATA = {
+  name: "",
+  startDate: null,
+  endDate: null,
+};
 
 export const validatePeriodForm = values => {
   let errors = {};
@@ -35,14 +43,13 @@ export const validatePeriodForm = values => {
   return errors;
 };
 
-export function PeriodsPopup({
-  isOpen,
-  toggle,
-  isEdit,
-  onPeriodSubmit,
-  defaultFormData,
-  error,
-}) {
+export function PeriodsPopup({ toggle, onPeriodSubmit }) {
+  const {
+    isOpen,
+    isEdit,
+    formData = DEFAULT_PERIOD_FORM_DATA,
+    error,
+  } = useSelector(getPeriodFormSelector);
   const {
     onChange,
     onSubmit,
@@ -50,7 +57,7 @@ export function PeriodsPopup({
     errorsShown,
     setErrors,
     values,
-  } = useForm(submitForm, defaultFormData, validatePeriodForm);
+  } = useForm(submitForm, formData, validatePeriodForm);
 
   useEffect(() => {
     if (error) {
@@ -71,7 +78,7 @@ export function PeriodsPopup({
   const handleChangeDate = fieldName => date => onChange({ [fieldName]: date });
 
   function submitForm() {
-    onPeriodSubmit(values);
+    onPeriodSubmit(values, isEdit);
   }
 
   const { name, startDate, endDate } = values;
@@ -161,17 +168,5 @@ export function PeriodsPopup({
 
 PeriodsPopup.propTypes = {
   toggle: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool,
-  isEdit: PropTypes.bool,
   onPeriodSubmit: PropTypes.func,
-  error: PropTypes.object,
-  defaultFormData: PropTypes.shape({
-    name: PropTypes.string,
-    startDate: PropTypes.instanceOf(Date),
-    endDate: PropTypes.instanceOf(Date),
-  }),
-};
-
-PeriodsPopup.defaultProps = {
-  isOpen: false,
 };

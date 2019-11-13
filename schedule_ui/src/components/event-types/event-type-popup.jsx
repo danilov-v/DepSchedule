@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import {
   Button,
   Form,
@@ -15,6 +16,13 @@ import {
 import { CirclePicker } from "react-color";
 import { useForm } from "helpers/hooks/useForm";
 import { EVENT_TYPE_COLORS } from "constants/calendar";
+import { getEventTypeFormSelector } from "redux/selectors/forms";
+
+export const DEFAULT_EVENT_TYPE_FORM_DATA = {
+  color: "#fff292",
+  description: "",
+  typeId: null,
+};
 
 const validateEvenTypeForm = values => {
   let errors = {};
@@ -25,25 +33,17 @@ const validateEvenTypeForm = values => {
   return errors;
 };
 
-export function EventTypePopup({
-  isEdit,
-  isOpen,
-  toggle,
-  onEventTypeSubmit,
-  defaultFormData,
-  error,
-}) {
+export function EventTypePopup({ toggle, onEventTypeSubmit }) {
+  const {
+    isOpen,
+    isEdit,
+    formData = DEFAULT_EVENT_TYPE_FORM_DATA,
+  } = useSelector(getEventTypeFormSelector);
   const { onChange, onSubmit, errors, errorsShown, values } = useForm(
     submitForm,
-    defaultFormData,
+    formData,
     validateEvenTypeForm
   );
-
-  useEffect(() => {
-    if (error) {
-      //HANDLE FORM ERRORS HERE
-    }
-  }, [error]);
 
   const handleInputChange = event => {
     const { value, name } = event.target;
@@ -53,7 +53,7 @@ export function EventTypePopup({
   const handleColorChange = color => onChange({ color: color.hex });
 
   function submitForm() {
-    onEventTypeSubmit(values);
+    onEventTypeSubmit(values, isEdit);
   }
 
   const { color, description } = values;
@@ -72,6 +72,7 @@ export function EventTypePopup({
               name="description"
               id="note"
               value={description}
+              placeholder="Мобилизация"
               onChange={handleInputChange}
               invalid={!!errors["description"] && errorsShown}
             />
@@ -105,14 +106,6 @@ export function EventTypePopup({
 }
 
 EventTypePopup.propTypes = {
-  isEdit: PropTypes.bool,
-  isOpen: PropTypes.bool,
   toggle: PropTypes.func,
   onEventTypeSubmit: PropTypes.func,
-  error: PropTypes.object,
-  defaultFormData: PropTypes.shape({
-    color: PropTypes.string,
-    description: PropTypes.string,
-    typeId: PropTypes.number,
-  }),
 };

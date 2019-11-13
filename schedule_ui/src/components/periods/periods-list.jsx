@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { format } from "date-fns";
 import { Table, Button } from "reactstrap";
 import { MANAGE_PERIODS } from "constants/permissions";
 import { checkPermission } from "utils/permissions";
@@ -16,8 +17,8 @@ export function PeriodsList({
     <tr key={period.periodId}>
       <th scope="row">{index}</th>
       <td>{period.name}</td>
-      <td>{period.startDate}</td>
-      <td>{period.endDate}</td>
+      <td>{format(period.startDate, "dd/MM/yyyy")}</td>
+      <td>{format(period.endDate, "dd/MM/yyyy")}</td>
       <td hidden={!isManageAble}>
         <Button onClick={onPeriodEdit.bind(null, period)} color="warning">
           Изменить
@@ -49,8 +50,8 @@ PeriodsList.propTypes = {
     PropTypes.shape({
       periodId: PropTypes.number,
       name: PropTypes.string,
-      startDate: PropTypes.string,
-      endDate: PropTypes.string,
+      startDate: PropTypes.date,
+      endDate: PropTypes.date,
     })
   ),
   onPeriodEdit: PropTypes.func.isRequired,
