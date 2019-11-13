@@ -32,15 +32,14 @@ public class PeriodService extends AbstractService<Period, Long> {
 
     public Period add(PeriodReqDto periodPost) {
         Period period = modelMapper.map(periodPost, Period.class);
-        period = save(period);
-        checkConsistencyAfterSave(period);
-        return period;
+        checkConsistencyBeforeSave(period);
+        return save(period);
     }
 
     public Period update(Long periodId, PeriodDto periodPut) {
         Period period = findById(periodId);
         modelMapper.map(periodPut, period);
-        checkConsistencyAfterSave(period);
+        checkConsistencyBeforeSave(period);
         return period;
     }
 
@@ -48,7 +47,7 @@ public class PeriodService extends AbstractService<Period, Long> {
         return periodRepository.findAllByCalendarId(calendarId);
     }
 
-    private void checkConsistencyAfterSave(Period period) {
+    private void checkConsistencyBeforeSave(Period period) {
         //validate updated period entity
         validationService.checkDates(period.getStartDate(), period.getEndDate());
         validateHierarchyDatesRange(period);
@@ -73,26 +72,42 @@ public class PeriodService extends AbstractService<Period, Long> {
     }
 
     /**
-     * Checking: if Period out of hierarchy date range then throw WebApiException
+     * Checking: if Period out of hierarchy date range then throw {@link WebApiException}
      */
     private void validateHierarchyDatesRange(Period period) {
-        //check out of bounds children
-        List<Period> outOfBoundsChilds = periodRepository.findOutOfBoundsChilds(period.getPeriodId(), period.getStartDate(), period.getEndDate());
+
+        //"periodId" may be null if entity has state "Transient".
+        //It has just been instantiated using the new operator.
+        //It has no persistent representation in the database and no identifier value has been assigned
+        Long periodId = period.getPeriodId();
+        if (periodId != null)
+            validateHierarchyDatesRangeOfChildren(period, periodId);
+
+        //"parentId" may be null if this is top level period
+        Long parentId = period.getParentId();
+        if (parentId != null)
+            validateHierarchyDatesRangeOfParent(period, parentId);
+    }
+
+    /**
+     * check out of bounds children
+     */
+    private void validateHierarchyDatesRangeOfChildren(Period period, Long periodId) {
+        List<Period> outOfBoundsChilds = periodRepository.findOutOfBoundsChilds(periodId, period.getStartDate(), period.getEndDate());
         if (!outOfBoundsChilds.isEmpty()) {
             String ids = outOfBoundsChilds.stream().map(per -> per.getPeriodId().toString()).collect(Collectors.joining(","));
             throw new WebApiException(
                     "Dates of the child periods with ids [" + ids
-                            + "] are out of the dates range of its parent with id = " + period.getPeriodId(),
+                            + "] are out of the dates range of its parent with id = " + periodId,
                     CHILD_HIERARCHY_VIOLATION_MESSAGE,
                     CHILD_HIERARCHY_VIOLATION);
         }
+    }
 
-        Long parentId = period.getParentId();
-        if (parentId == null) {
-            return;
-        }
-
-        //check out of bounds parent
+    /**
+     * check out of bounds parent
+     */
+    private void validateHierarchyDatesRangeOfParent(Period period, Long parentId) {
         Period parentPeriod = findById(parentId);
         if (parentPeriod.getStartDate().isAfter(period.getStartDate()) ||
                 parentPeriod.getEndDate().isBefore(period.getEndDate())) {
@@ -109,7 +124,7 @@ public class PeriodService extends AbstractService<Period, Long> {
     }
 
     @Override
-    protected String notFindMessage(Long aLong) {
-        return "Не найден период с periodID = " + aLong;
+    protected String notFindMessage(Long periodId) {
+        return "Не найден период с periodId = " + periodId;
     }
 }
