@@ -50,9 +50,7 @@ export function UnitEventRow({
             title={description}
             flag={unit.flag}
             onClick={
-              isManageAble
-                ? openEditForm.bind(null, unit, event)
-                : constant(null)
+              isManageAble ? () => openEditForm(unit, event) : constant(null)
             }
           />
         );

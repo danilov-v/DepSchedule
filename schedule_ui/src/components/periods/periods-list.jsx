@@ -23,7 +23,7 @@ export function PeriodsList({
         <Button onClick={() => onPeriodEdit(period)} color="warning">
           Изменить
         </Button>
-        <Button close onClick={onPeriodRemove.bind(null, period.periodId)} />
+        <Button close onClick={() => onPeriodRemove(period.periodId)} />
       </td>
     </tr>
   );
