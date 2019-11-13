@@ -7,7 +7,6 @@ import classnames from "classnames";
 export function Unit({
   title,
   unitId,
-  flag,
   lastGen,
   lastOfGroup,
   isManageAble,
@@ -15,9 +14,6 @@ export function Unit({
   onEditUnit,
   onRemoveUnit,
 }) {
-  const addUnit = () => onAddUnit(unitId);
-  const editUnit = () => onEditUnit({ unitId, title });
-  const removeUnit = () => onRemoveUnit(unitId);
   const iconClass =
     "unit-action d-flex align-items-center justify-content-center h-100";
   const manageStyle = isManageAble ? {} : { display: "none" };
@@ -38,13 +34,13 @@ export function Unit({
       <div>{title}</div>
 
       <Row style={manageStyle} className="unit-actions" noGutters>
-        <Col xs={4} className={iconClass} onClick={addUnit}>
+        <Col xs={4} className={iconClass} onClick={onAddUnit}>
           <FontAwesomeIcon icon="plus" />
         </Col>
-        <Col xs={4} className={iconClass} onClick={editUnit}>
+        <Col xs={4} className={iconClass} onClick={onEditUnit}>
           <FontAwesomeIcon icon="edit" />
         </Col>
-        <Col xs={4} className={iconClass} onClick={removeUnit}>
+        <Col xs={4} className={iconClass} onClick={onRemoveUnit}>
           <FontAwesomeIcon icon="trash-alt" />
         </Col>
       </Row>
@@ -55,10 +51,5 @@ export function Unit({
 Unit.propTypes = {
   title: PropTypes.string.isRequired,
   unitId: PropTypes.number.isRequired,
-  flag: PropTypes.string,
   lastGen: PropTypes.bool,
-};
-
-Unit.defaultProps = {
-  flag: null,
 };

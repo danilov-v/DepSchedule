@@ -20,3 +20,5 @@ export const DEFAULT_EVENT_TYPE_FORM_DATA = {
   description: "",
   typeId: null,
 };
+
+export const UNIT_FORM = "UNIT_FORM";

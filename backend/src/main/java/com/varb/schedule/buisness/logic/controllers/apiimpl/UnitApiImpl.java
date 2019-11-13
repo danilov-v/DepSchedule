@@ -44,7 +44,7 @@ public class UnitApiImpl implements UnitApi {
     @Override
     public ResponseEntity<List<UnitResponseTreeDto>> unitGetTree(@NotNull @Valid Long calendarId) {
         return ResponseEntity.ok(
-                unitMapper.convertToThree(unitService.getAllExtended(calendarId)));
+                unitMapper.convertToTree(unitService.getAllExtended(calendarId)));
     }
 
     @Secured(PrivilegeEnum.Code.READ_WRITE)

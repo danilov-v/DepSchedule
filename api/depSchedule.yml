@@ -565,7 +565,7 @@ paths:
             format: int64
       responses:
         200:
-          description: Array of event
+          description: Array of periods
           content:
             application/json:
               schema:
@@ -641,6 +641,32 @@ paths:
       responses:
         200:
           description: successful operation
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /period/tree:
+    get:
+      operationId: periodGetTree
+      summary: Иерархический список периодов
+      tags:
+        - period
+      parameters:
+        - name: calendarId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Hierarchy of periods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PeriodResponseTree"
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -976,6 +1002,10 @@ components:
         endDate:
           type: string
           format: date
+        parentId:
+          type: integer
+          format: int64
+          description: "Ссылка на родителя"
     PeriodReq:
       type: object
       required:
@@ -1001,6 +1031,16 @@ components:
             periodId:
               type: integer
               format: int64
+    PeriodResponseTree:
+      description: "Period tree node"
+      allOf:
+        - $ref: "#/components/schemas/PeriodResponse"
+        - type: object
+          properties:
+            childPeriods:
+              type: array
+              items:
+                $ref: "#/components/schemas/PeriodResponseTree"
     User:
       properties:
         login:

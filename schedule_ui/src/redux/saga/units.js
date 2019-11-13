@@ -8,6 +8,7 @@ import {
 } from "redux/actions/units";
 import { handleErrorRequest } from "redux/saga/auth";
 import { getActiveCalendarSelector } from "redux/selectors/calendars";
+import { closeForm } from "redux/actions/forms";
 import {
   getUnitsTree,
   createUnit as createUnitAPI,
@@ -46,6 +47,8 @@ function* createUnit(action) {
 
     NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA);
 
+    yield put(closeForm());
+
     yield call(fetchUnits);
   } catch (error) {
     console.error("Create unit failed.", error);
@@ -60,6 +63,8 @@ function* updateUnit(action) {
     yield call(updateUnitAPI, { ...unit, calendarId });
 
     NotificationManager.fire(SUCCESS_UNIT_NOTIFICATION_DATA_EDIT);
+
+    yield put(closeForm());
 
     yield call(fetchUnits);
   } catch (error) {
