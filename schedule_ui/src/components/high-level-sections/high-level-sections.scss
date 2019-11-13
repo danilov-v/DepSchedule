@@ -1,14 +1,16 @@
+@import "variables.scss";
+
 .high-level-sections {
   .section {
     border: 1px solid black;
     max-width: unset;
-    height: 60px;
+    height: 40px;
     background: #fff;
     // color: #000;
     font-size: 1.3rem;
 
     &.empty {
-      background: #f2f3f2;
+      background: $color-grey-light-1;
       border: 0;
       border-top: 1px solid #000;
     }
