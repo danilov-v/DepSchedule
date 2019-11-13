@@ -63,7 +63,7 @@ public class EventService extends AbstractService<Event, Long> {
      * Необходимые проверки и обновления после сохранения события
      */
     private void manipulationAfterSave(Event event) {
-        checkConsistency(event);
+        checkConsistencyAfterSave(event);
         eventDurationService.updateEventDuration(event);
         calendarService.updateCalendarTimeFrameAfterSaveEvent(event.getCalendarId(), event.getDateFrom(), event.getDateTo());
     }
@@ -71,7 +71,7 @@ public class EventService extends AbstractService<Event, Long> {
     /**
      * Проверка согласованности данных
      */
-    private void checkConsistency(Event event) {
+    private void checkConsistencyAfterSave(Event event) {
         eventTypeService.checkExists(event.getEventTypeId());
         checkCalendarId(event);
         validationService.checkDates(event.getDateFrom(), event.getDateTo());
