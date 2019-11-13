@@ -1,18 +1,26 @@
 .event {
-  position: absolute;
   clip-path: polygon(4% 1%, 100% 1%, 100% 100%, 4% 100%, 1% 50%);
   height: 25px;
   top: 16px;
   text-align: center;
   font-weight: bold;
-  cursor: pointer;
+  width: calc(100% - 35px);
 
-  &:focus {
-    border-bottom: 2px solid #007bff;
+  &-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 60px;
+    cursor: pointer;
+    &:focus {
+      // box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.7);
+      filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.5));
+      transform: translateY(-0.3em);
+    }
   }
 
   &-flag-container {
-    position: absolute;
+    // position: absolute;
     cursor: pointer;
 
     .flag {

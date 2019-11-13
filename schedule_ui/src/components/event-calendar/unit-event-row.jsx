@@ -1,26 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { Row } from "reactstrap";
-import { differenceInDays, isWithinInterval, isSameDay } from "date-fns";
+import { differenceInDays, isSameDay } from "date-fns";
 import { constant } from "lodash";
-import { MANAGE_EVENTS } from "constants/permissions";
-import { checkPermission } from "utils/permissions";
-import { getAuthData } from "redux/selectors/auth";
 import { getAllDatesFromRange } from "utils/date";
 import { CELL_WIDTH } from "constants/calendar";
 import { EventCell } from "./event-cell";
 import { Event } from "./event";
-
-const isEventInDate = (date, events) =>
-  events
-    ? events.some(({ dateFrom, dateTo }) =>
-        isWithinInterval(date, {
-          start: new Date(dateFrom).setHours(0, 0, 0, 0),
-          end: new Date(dateTo).setHours(0, 0, 0, 0),
-        })
-      )
-    : false;
 
 const getOffset = (startDateCord, dateFrom) => {
   const diff = differenceInDays(
@@ -34,11 +20,9 @@ export function UnitEventRow({
   range,
   unit,
   eventTypes,
-  openCreateForm,
   openEditForm,
+  isManageAble,
 }) {
-  const { role } = useSelector(getAuthData);
-  const isManageAble = checkPermission(role, MANAGE_EVENTS);
   const allDates = getAllDatesFromRange(range);
   const startDateCord = allDates[allDates.length - 1];
 
@@ -47,12 +31,8 @@ export function UnitEventRow({
       {allDates.map(date => (
         <EventCell
           key={date.getTime()}
-          onClick={
-            isManageAble
-              ? openCreateForm.bind(null, unit, date)
-              : constant(null)
-          }
-          hasEvent={isEventInDate(date, unit.events)}
+          unitId={unit.unitId}
+          date={date}
           marked={isSameDay(date, new Date())}
         />
       ))}
@@ -103,8 +83,8 @@ UnitEventRow.propTypes = {
     parentId: PropTypes.number,
     unitId: PropTypes.number,
   }),
-  openCreateForm: PropTypes.func,
   openEditForm: PropTypes.func,
+  isManageAble: PropTypes.bool,
 };
 
 UnitEventRow.defaultProps = {

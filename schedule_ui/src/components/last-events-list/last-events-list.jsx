@@ -37,7 +37,11 @@ export const LastEventsList = () => {
 
   return (
     <>
-      <div className="nav-link last-events-list-icon" id="last-events-btn">
+      <div
+        className="nav-link last-events-list-icon"
+        id="last-events-btn"
+        style={{ pointerEvents: popoverOpen ? "none" : "all" }}
+      >
         <FontAwesomeIcon icon="list-ul" />
       </div>
 

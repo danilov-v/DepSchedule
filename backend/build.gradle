@@ -5,13 +5,12 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
     id 'idea'
     //id 'nebula.lint' version '9.3.2' //контроль неиспользуемых зпависимостей
 }
-
-apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = '12'
 
@@ -95,16 +94,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         exclude group: 'junit', module: 'junit'
     }
     //support openApi codegen annotation
     compileOnly 'io.swagger:swagger-annotations:1.5.22'
     compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
-
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.1"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.1"
-
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.3.1'
 
     /*
     For boot Project with FrontEnd use command
