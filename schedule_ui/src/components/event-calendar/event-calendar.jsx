@@ -1,11 +1,14 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { openEventForm } from "redux/actions/forms";
+import { getAuthData } from "redux/selectors/auth";
 import { getEventTypesSelector } from "redux/selectors/event-types";
 import { fetchEventTypes } from "redux/actions/event-types";
 import { UnitEventRow } from "./unit-event-row";
 import { EventPopup } from "./event-popup";
+import { MANAGE_EVENTS } from "constants/permissions";
+import { checkPermission } from "utils/permissions";
 import { isDate, addDays, differenceInDays } from "date-fns";
 
 import "./event-calendar.scss";
@@ -13,6 +16,9 @@ import "./event-calendar.scss";
 export function EventCalendar({ range, units }) {
   const dispatch = useDispatch();
   const eventTypes = useSelector(getEventTypesSelector);
+  const { role } = useSelector(getAuthData);
+
+  const isManageAble = checkPermission(role, MANAGE_EVENTS);
 
   const toggleCreateForm = (unit, dateFrom) => {
     const eventTypeId = eventTypes[0].typeId;
@@ -57,12 +63,21 @@ export function EventCalendar({ range, units }) {
     );
   };
 
+  const onCellClick = e => {
+    const { unitId, date } = e.target.dataset;
+    if (isManageAble && unitId && date) {
+      const unit = units.find(unit => unit.unitId === +unitId);
+
+      toggleCreateForm(unit, new Date(date));
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchEventTypes());
   }, [dispatch]);
 
   return (
-    <Fragment>
+    <div onClick={onCellClick}>
       {units.map((unit, i) => (
         <UnitEventRow
           key={i}
@@ -71,10 +86,11 @@ export function EventCalendar({ range, units }) {
           openCreateForm={toggleCreateForm}
           openEditForm={toggleEditForm}
           eventTypes={eventTypes}
+          isManageAble={isManageAble}
         />
       ))}
       <EventPopup />
-    </Fragment>
+    </div>
   );
 }
 

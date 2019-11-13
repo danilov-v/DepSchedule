@@ -7,7 +7,7 @@ import { differenceInDays } from "date-fns";
 import { FLAGS_MAP, FLAG_LOCATIONS } from "constants/flags";
 
 const getEventLength = ({ dateFrom, dateTo }) =>
-  differenceInDays(new Date(dateTo), new Date(dateFrom)) * CELL_WIDTH;
+  (differenceInDays(new Date(dateTo), new Date(dateFrom)) + 1) * CELL_WIDTH; // +1 FOR FLAG
 
 const getCorrectSvg = (flag, location, planned) => ({
   flagSvg: get(
@@ -33,20 +33,20 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
 
   const eventStyle = {
     background: color,
+  };
+  const containerStyle = {
     width: eventLength + "px",
     right: rightOffset + "px",
   };
 
   return (
-    <div onClick={onClick}>
-      <div
-        id={"event-" + event.eventId}
-        className="event"
-        style={eventStyle}
-        tabIndex="-1"
-      >
-        {title}
-      </div>
+    <div
+      className="event-container"
+      id={"event-" + event.eventId}
+      style={containerStyle}
+      tabIndex="-1"
+      onClick={onClick}
+    >
       {flag && (
         <div
           style={{ right: flagXCord }}
@@ -61,6 +61,10 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
           />
         </div>
       )}
+      <div className="event" style={eventStyle}>
+        {title}
+      </div>
+
       {event.note && (
         <UncontrolledPopover
           trigger="hover"

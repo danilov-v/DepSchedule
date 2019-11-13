@@ -2,22 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-export function EventCell({ onClick, hasEvent, marked }) {
+export function EventCell({ marked, unitId, date }) {
   return (
     <div
-      className={classnames(
-        "event-cell",
-        { "event-cell-disabled": hasEvent },
-        { "event-cell-marked": marked }
-      )}
-      onClick={onClick}
+      data-unit-id={unitId}
+      data-date={date}
+      className={classnames("event-cell", { "event-cell-marked": marked })}
     />
   );
 }
 
 EventCell.propTypes = {
-  onClick: PropTypes.func,
-  hasEvent: PropTypes.bool,
+  unitId: PropTypes.number,
+  date: PropTypes.instanceOf(Date),
   marked: PropTypes.bool,
 };
 

@@ -1,18 +1,25 @@
 .event {
-  position: absolute;
   clip-path: polygon(4% 1%, 100% 1%, 100% 100%, 4% 100%, 1% 50%);
   height: 25px;
   top: 16px;
   text-align: center;
   font-weight: bold;
-  cursor: pointer;
+  width: calc(100% - 35px);
+
+  &-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 60px;
+    cursor: pointer;
+  }
 
   &:focus {
     border-bottom: 2px solid #007bff;
   }
 
   &-flag-container {
-    position: absolute;
+    // position: absolute;
     cursor: pointer;
 
     .flag {
