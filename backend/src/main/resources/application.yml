@@ -1,6 +1,5 @@
 spring:
   application.name: DepSchedule
-  #  jackson.default-property-inclusion: non_null
   datasource:
 #    jdbc-url: jdbc:h2:file:${projectDir}/backend/src/main/resources/db/storage/ScheduleDB
     filePathInJarDir: ${jarDir}/storage/ScheduleDB
