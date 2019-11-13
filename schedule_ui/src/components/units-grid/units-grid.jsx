@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { isNull, get } from "lodash";
 import classnames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import { getUnitRemoveConfirmationOptions } from "constants/confirmations";
@@ -9,6 +8,8 @@ import { getAuthData } from "redux/selectors/auth";
 import { removeUnit } from "redux/actions/units";
 import { checkPermission } from "utils/permissions";
 import { useConfirmation } from "components/confirmation-service/confirmation-service";
+import { openForm } from "redux/actions/forms";
+import { UNIT_FORM } from "constants/forms";
 
 import { UnitPopup } from "./unit-popup";
 import { UnitLocation } from "./unit-location";
@@ -23,6 +24,11 @@ const renderUnit = (
   isManageAble,
   handlers
 ) => {
+  const { onAddUnit, onEditUnit, onRemoveUnit } = handlers;
+  const addUnit = () => onAddUnit(unitId);
+  const editUnit = () => onEditUnit(unitId);
+  const removeUnit = () => onRemoveUnit(unitId);
+
   return childUnit && childUnit.length ? (
     <div
       key={unitId}
@@ -34,7 +40,9 @@ const renderUnit = (
         key={unitId}
         title={title}
         unitId={unitId}
-        {...handlers}
+        onAddUnit={addUnit}
+        onEditUnit={editUnit}
+        onRemoveUnit={removeUnit}
         isManageAble={isManageAble}
       />
       <div>
@@ -48,7 +56,12 @@ const renderUnit = (
       })}
       key={unitId}
     >
-      <UnitLocation flag={flag} location={location} />
+      <UnitLocation
+        flag={flag}
+        location={location}
+        unitId={unitId}
+        onEditUnit={editUnit}
+      />
       <Unit
         title={title}
         unitId={unitId}
@@ -56,34 +69,41 @@ const renderUnit = (
         lastGen
         lastOfGroup={isTopLevel}
         isManageAble={isManageAble}
-        {...handlers}
+        onAddUnit={addUnit}
+        onEditUnit={editUnit}
+        onRemoveUnit={removeUnit}
       />
     </div>
   );
 };
 
-export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
+export function UnitsGrid({ units, unitsTree }) {
   const dispatch = useDispatch();
   const confirm = useConfirmation();
-  const [unitData, setUnitData] = useState(null);
   const { role } = useSelector(getAuthData);
 
-  const onCloseEditPopup = () => {
-    setUnitData(null);
-  };
-
   const onAddUnit = unitParentId => {
-    if (unitParentId) {
-      setUnitData({ parentId: unitParentId, title: "" });
-    } else {
-      setUnitData(undefined);
-    }
+    dispatch(
+      openForm({
+        formName: UNIT_FORM,
+        formData: unitParentId
+          ? { parentId: unitParentId, title: "" }
+          : undefined,
+      })
+    );
   };
-  const onEditUnit = editingUnit => {
-    const unit = units.find(unit => unit.unitId === editingUnit.unitId);
+  const onEditUnit = unitId => {
+    const unit = units.find(unit => unit.unitId === unitId);
 
-    setUnitData(unit);
+    dispatch(
+      openForm({
+        formName: UNIT_FORM,
+        formData: unit,
+        isEdit: true,
+      })
+    );
   };
+
   const onRemoveUnit = unitId => {
     const unit = units.find(unit => unit.unitId === unitId);
     confirm(getUnitRemoveConfirmationOptions(unit)).then(() =>
@@ -113,15 +133,7 @@ export function UnitsGrid({ units, unitsTree, onUnitsUpdate }) {
         )}
         <NewUnit hidden={!isManageAble} onAddUnit={onAddUnit} />
       </div>
-      {!isNull(unitData) && (
-        <UnitPopup
-          units={units}
-          unit={unitData}
-          onClose={onCloseEditPopup}
-          onUnitsUpdate={onUnitsUpdate}
-          isEdit={Boolean(get(unitData, "title"))}
-        />
-      )}
+      <UnitPopup units={units} />
     </div>
   );
 }

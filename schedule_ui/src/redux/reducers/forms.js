@@ -9,6 +9,8 @@ import {
   OPEN_EVENT_TYPE_FORM,
   CLOSE_EVENT_TYPE_FORM,
   EVENT_TYPE_REQUEST_FAILED,
+  OPEN_FORM,
+  CLOSE_FORM,
 } from "redux/actions/forms";
 import {
   DEFAULT_PERIOD_FORM_DATA,
@@ -39,10 +41,27 @@ const initialState = {
     initialFormData: DEFAULT_EVENT_TYPE_FORM_DATA,
     error: null,
   },
+  activeForm: {
+    formName: "",
+    isOpen: false,
+    isEdit: false,
+    formData: {},
+    error: null,
+  },
 };
 
 export const init = (state = initialState, action) => {
   switch (action.type) {
+    case OPEN_FORM: {
+      const { formName, formData, isEdit = false } = action.payload;
+      return {
+        ...state,
+        activeForm: { formName, formData, isEdit, isOpen: true, error: null },
+      };
+    }
+    case CLOSE_FORM:
+      return { ...state, activeForm: initialState.activeForm };
+
     case LOGIN_REQUEST_FAILED:
       return { ...state, loginForm: { isError: true, error: action.error } };
 

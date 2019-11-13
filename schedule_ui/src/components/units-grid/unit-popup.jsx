@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Form,
@@ -15,12 +15,14 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
+  FormFeedback,
 } from "reactstrap";
-import { get, isBoolean, set } from "lodash";
-import { FAILED_UNIT_NOTIFICATION_DATA } from "constants/notifications";
+import { get, set } from "lodash";
 import { FLAGS_MAP, NO_FLAG } from "constants/flags";
-import { NotificationManager } from "helpers/notification-manager";
+import { useForm } from "helpers/hooks/useForm";
 import { createUnit, updateUnit } from "redux/actions/units";
+import { closeForm } from "redux/actions/forms";
+import { getUnitFormSelector } from "redux/selectors/forms";
 
 import "./unit-popup.scss";
 
@@ -32,12 +34,20 @@ const DEFAULT_FORM_DATA = {
   location: "",
 };
 
-const validate = formData =>
-  Boolean(formData.title && formData.title.length >= 2);
+const validateEventForm = values => {
+  let errors = {};
 
-const setCorrectFlagName = formData =>
+  if (!values.title) errors["unitTitle"] = "Введите название подразделения";
+
+  if (!values.location) errors["unitLocation"] = "Введите название локации";
+
+  return errors;
+};
+
+const getFininalFormData = formData => {
+  const data = { ...formData };
   set(
-    formData,
+    data,
     "flag",
     get(
       FLAGS_MAP.find(
@@ -48,45 +58,31 @@ const setCorrectFlagName = formData =>
     )
   );
 
-export function UnitPopup({ units, unit, isEdit, onClose }) {
+  return data;
+};
+
+export function UnitPopup({ units }) {
   const dispatch = useDispatch();
-  const [isValid, setValidState] = useState(null);
-  const [formData, setData] = useState(unit);
   const titleInputEl = useRef(null);
-  const toggleModal = () => {
-    onClose();
-  };
-  const onInputChange = event => {
-    const newFormData = { ...formData, title: get(event, "target.value") };
-
-    setValidState(validate(newFormData));
-    setData(newFormData);
-  };
+  const { formData = DEFAULT_FORM_DATA, isEdit, isOpen } = useSelector(
+    getUnitFormSelector
+  );
+  const { onChange, onSubmit, errors, errorsShown, values } = useForm(
+    submitForm,
+    formData,
+    validateEventForm
+  );
+  const toggleModal = () => dispatch(closeForm());
+  const onInputChange = event =>
+    onChange({ title: get(event, "target.value") });
   const onLocationChange = event =>
-    setData({ ...formData, location: get(event, "target.value") });
+    onChange({ location: get(event, "target.value") });
   const onSelectChange = event =>
-    setData({ ...formData, parentId: +get(event, "target.value") });
+    onChange({ parentId: +get(event, "target.value") });
 
-  const onSubmit = async event => {
-    event.preventDefault();
+  const onFlagChange = flag => onChange({ flag: flag.url });
 
-    if (validate(formData)) {
-      setCorrectFlagName(formData);
-
-      if (isEdit) {
-        dispatch(updateUnit({ unit: formData }));
-      } else {
-        dispatch(createUnit({ unit: formData }));
-      }
-
-      toggleModal();
-    } else {
-      setValidState(false);
-      NotificationManager.fire(FAILED_UNIT_NOTIFICATION_DATA);
-    }
-
-    return false;
-  };
+  const onPlannedChange = event => onChange({ planned: event.target.checked });
 
   const onEnter = () => {
     setTimeout(() => {
@@ -94,23 +90,20 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
     });
   };
 
-  const onFlagChange = flag => {
-    const { url } = flag;
-    const newFormData = { ...formData, flag: url };
+  function submitForm() {
+    const unit = getFininalFormData(values);
 
-    setData(newFormData);
-  };
-
-  const onPlannedChange = event => {
-    const { checked } = event.target;
-
-    setData({ ...formData, planned: checked });
-  };
+    if (isEdit) {
+      dispatch(updateUnit({ unit }));
+    } else {
+      dispatch(createUnit({ unit }));
+    }
+  }
 
   return (
     <Modal
       className="unit-popup"
-      isOpen={true}
+      isOpen={isOpen}
       toggle={toggleModal}
       onEnter={onEnter}
     >
@@ -125,12 +118,12 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
               name="unitTitle"
               id="unitTitle"
               placeholder="СУ"
-              valid={isValid}
-              invalid={isBoolean(isValid) && !isValid}
+              invalid={errorsShown && !!errors["unitTitle"]}
               onChange={onInputChange}
-              value={formData.title}
+              value={values.title}
               innerRef={titleInputEl}
             />
+            <FormFeedback>{errors["unitTitle"]}</FormFeedback>
           </FormGroup>
           <FormGroup>
             <Label for="unitParent">Родительское Подразделение</Label>
@@ -139,7 +132,7 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
               name="unitParent"
               id="unitParent"
               onChange={onSelectChange}
-              defaultValue={formData.parentId}
+              defaultValue={values.parentId}
             >
               <option value={0}>Новое Подразделение</option>
               {units.map((unit, i) => (
@@ -155,18 +148,20 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
               name="unitLocation"
               id="unitLocation"
               placeholder="Минск"
+              invalid={errorsShown && !!errors["unitLocation"]}
               onChange={onLocationChange}
-              value={formData.location}
+              value={values.location}
             />
+            <FormFeedback>{errors["unitLocation"]}</FormFeedback>
           </FormGroup>
           <FormGroup>
             <UncontrolledDropdown>
               <DropdownToggle tag="label">
                 Флаг Подразделения
                 <div>
-                  {formData.flag ? (
+                  {values.flag ? (
                     <img
-                      src={formData.flag}
+                      src={values.flag}
                       className="unit-popup-flag-item"
                       alt="flag preview"
                     />
@@ -206,7 +201,7 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
                 name="unitPlanned"
                 id="unitPlanned"
                 onChange={onPlannedChange}
-                checked={formData.planned}
+                checked={values.planned}
               />
               Запланировано
             </Label>
@@ -226,16 +221,9 @@ export function UnitPopup({ units, unit, isEdit, onClose }) {
 }
 
 UnitPopup.propTypes = {
-  unit: PropTypes.shape({
-    unitId: PropTypes.number,
-    parentId: PropTypes.number,
-    title: PropTypes.string,
-    location: PropTypes.string,
-  }),
-  onClose: PropTypes.func,
+  units: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 UnitPopup.defaultProps = {
-  unit: DEFAULT_FORM_DATA,
-  onClose: () => {},
+  units: [],
 };

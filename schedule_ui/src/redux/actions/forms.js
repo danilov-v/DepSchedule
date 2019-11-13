@@ -11,6 +11,20 @@ export const OPEN_EVENT_TYPE_FORM = "OPEN_EVENT_TYPE_FORM";
 export const CLOSE_EVENT_TYPE_FORM = "CLOSE_EVENT_TYPE_FORM";
 export const EVENT_TYPE_REQUEST_FAILED = "EVENT_TYPE_REQUEST_FAILED";
 
+export const OPEN_FORM = "OPEN_FORM";
+export const CLOSE_FORM = "CLOSE_FORM";
+
+export const openForm = ({ formName, formData, isEdit }) => ({
+  type: OPEN_FORM,
+  payload: {
+    formName,
+    formData,
+    isEdit,
+  },
+});
+
+export const closeForm = () => ({ type: CLOSE_FORM });
+
 export const openPeriodForm = (isEdit, initialFormData) => ({
   type: OPEN_PERIOD_FORM,
   payload: {
