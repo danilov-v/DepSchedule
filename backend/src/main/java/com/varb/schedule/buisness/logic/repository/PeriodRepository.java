@@ -21,4 +21,7 @@ public interface PeriodRepository extends JpaRepository<Period, Long> {
 
     @Query("Select p from Period p where p.calendarId = :calendarId")
     List<Period> findAllByCalendarId(Long calendarId);
+
+    @Query("Select p from Period p where p.parentId = :periodId and (p.startDate < :startDate or p.endDate > :endDate)")
+    List<Period> childPeriodsViolations(Long periodId, LocalDate startDate, LocalDate endDate);
 }
