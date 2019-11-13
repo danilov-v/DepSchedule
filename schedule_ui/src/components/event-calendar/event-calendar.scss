@@ -12,10 +12,11 @@
     position: absolute;
     height: 60px;
     cursor: pointer;
-  }
-
-  &:focus {
-    border-bottom: 2px solid #007bff;
+    &:focus {
+      // box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.7);
+      filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.5));
+      transform: translateY(-0.3em);
+    }
   }
 
   &-flag-container {
