@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getAuthData } from "redux/selectors/auth";
+import { format } from "date-fns";
 import { getFormattedPeriodsSelector } from "redux/selectors/periods";
 import {
   createPeriod,
@@ -30,10 +31,15 @@ export function Periods() {
     dispatch(fetchPeriods());
   }, [dispatch]);
 
-  const onPeriodSubmit = (periodData, isEdit) =>
-    isEdit
-      ? dispatch(updatePeriod(periodData))
-      : dispatch(createPeriod(periodData));
+  const onPeriodSubmit = (periodData, isEdit) => {
+    const data = {
+      ...periodData,
+      startDate: format(periodData.startDate, "yyyy-MM-dd"),
+      endDate: format(periodData.endDate, "yyyy-MM-dd"),
+    };
+
+    isEdit ? dispatch(updatePeriod(data)) : dispatch(createPeriod(data));
+  };
 
   const tryToRemove = periodId => {
     confirm(PERIOD_CONFIRMATION_OPTIONS).then(() => {
@@ -41,10 +47,10 @@ export function Periods() {
     });
   };
 
-  const onOpenForm = (isEdit = false, formData = {}) => {
-    console.log(formData);
-    dispatch(openForm({ formName: PERIOD_FORM, isEdit, formData }));
-  };
+  const openNewForm = () => dispatch(openForm({ formName: PERIOD_FORM }));
+
+  const openEditForm = formData =>
+    dispatch(openForm({ formName: PERIOD_FORM, isEdit: true, formData }));
 
   const onCloseForm = () => dispatch(closeForm());
 
@@ -52,7 +58,7 @@ export function Periods() {
     <Container>
       <Title text="Периоды" />
       <PeriodsList
-        onPeriodEdit={onOpenForm.bind(null, true)}
+        onPeriodEdit={openEditForm}
         onPeriodRemove={tryToRemove}
         periods={periods}
         userRole={role}
@@ -62,7 +68,7 @@ export function Periods() {
         color="primary"
         size="lg"
         className="font-weight-bold float-right"
-        onClick={onOpenForm.bind(null, false, undefined)}
+        onClick={openNewForm}
         hidden={!checkPermission(role, MANAGE_PERIODS)}
       >
         +

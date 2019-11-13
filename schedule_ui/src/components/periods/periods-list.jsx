@@ -20,7 +20,7 @@ export function PeriodsList({
       <td>{format(period.startDate, "dd/MM/yyyy")}</td>
       <td>{format(period.endDate, "dd/MM/yyyy")}</td>
       <td hidden={!isManageAble}>
-        <Button onClick={onPeriodEdit.bind(null, period)} color="warning">
+        <Button onClick={() => onPeriodEdit(period)} color="warning">
           Изменить
         </Button>
         <Button close onClick={onPeriodRemove.bind(null, period.periodId)} />
