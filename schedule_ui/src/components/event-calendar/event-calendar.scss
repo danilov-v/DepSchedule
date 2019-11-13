@@ -4,10 +4,10 @@
   top: 16px;
   text-align: center;
   font-weight: bold;
-  width: calc(100% - 35px);
 
   &-container {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     position: absolute;
     height: 60px;
