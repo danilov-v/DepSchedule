@@ -25,6 +25,8 @@ public class PeriodService extends AbstractService<Period, Long> {
     private final ValidationService validationService;
     public static final String DATES_INTERSECTION = "DATES_INTERSECTION";
     private static final String DATES_INTERSECTION_MESSAGE = "Данный период пересекается с уже существующим. Проверьте даты его начала и окончания.";
+    private static final String HIERARCHY_DATES_RANGE_VIOLATION_MESSAGE = "Даты периода выходят за пределы диапазона дат его родительского периода.";
+    private static final String HIERARCHY_DATES_RANGE_VIOLATION = "HIERARCHY_DATES_RANGE_VIOLATION";
 
     public Period add(PeriodReqDto periodPost) {
         Period period = modelMapper.map(periodPost, Period.class);
@@ -47,9 +49,10 @@ public class PeriodService extends AbstractService<Period, Long> {
     private void checkBeforeUpdate(Period period) {
         //validate updated period entity
         validationService.checkDates(period.getStartDate(), period.getEndDate());
+        validateHierarchyDatesRange(period);
 
         List<Period> intersections = periodRepository.
-                findIntersections(period.getCalendarId(), period.getStartDate(), period.getEndDate());
+                findIntersections(period.getCalendarId(), period.getParentId(), period.getStartDate(), period.getEndDate());
 
         //When we perform an update operation our period can have intersection with itself.
         //It is correct behaviour
@@ -64,14 +67,36 @@ public class PeriodService extends AbstractService<Period, Long> {
 
     private void checkBeforeSave(Period period) {
         validationService.checkDates(period.getStartDate(), period.getEndDate());
+        validateHierarchyDatesRange(period);
 
         List<Period> intersections = periodRepository.
-                findIntersections(period.getCalendarId(), period.getStartDate(), period.getEndDate());
+                findIntersections(period.getCalendarId(), period.getParentId(), period.getStartDate(), period.getEndDate());
         if (!intersections.isEmpty()) {
             throw new WebApiException(
                     intersectionsExceptionDevMessage(intersections),
                     DATES_INTERSECTION_MESSAGE,
                     DATES_INTERSECTION);
+        }
+    }
+
+    private void validateHierarchyDatesRange(Period period) {
+        Long parentId = period.getParentId();
+        if (parentId == null) {
+            return;
+        }
+
+        Period parentPeriod = findById(parentId);
+        if (parentPeriod.getStartDate().isAfter(period.getStartDate()) ||
+        parentPeriod.getEndDate().isBefore(period.getEndDate())) {
+            throw new WebApiException(
+                    "Dates of the period (child periodId = " +period.getPeriodId() +
+                            ", startDate = " +period.getStartDate()
+                            +", endDate = " +period.getEndDate()
+                            +") are out of the range of its parent "
+                            +"(parent periodId = " +parentId +", startDate = " +parentPeriod.getStartDate()
+                            +", endDate = " +parentPeriod.getEndDate() +").",
+                    HIERARCHY_DATES_RANGE_VIOLATION_MESSAGE,
+                    HIERARCHY_DATES_RANGE_VIOLATION);
         }
     }
 

@@ -2,6 +2,7 @@ package com.varb.schedule.buisness.models.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +15,12 @@ public class Period {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long periodId;
+
+    /**
+     * Ссылка на период верхнего уровня (для верхнего уровня не указывается!)
+     */
+    @Nullable
+    private Long parentId;
 
     @Column(nullable = false)
     private String name;

@@ -43,7 +43,7 @@ public class UnitMapper {
 
     }
 
-    public List<UnitResponseTreeDto> convertToThree(Collection<Unit> source) {
+    public List<UnitResponseTreeDto> convertToTree(Collection<Unit> source) {
         List<UnitResponseTreeDto> units = source.stream()
                 .map(unit -> modelMapper.map(unit, UnitResponseTreeDto.class))
                 .collect(Collectors.toList());
