@@ -6,7 +6,7 @@ import {
   REMOVE_EVENT_TYPE,
   updateEventTypes,
 } from "redux/actions/event-types";
-import { closeEventTypeForm, eventTypeRequestFail } from "redux/actions/forms";
+import { closeForm, setErrorForm } from "redux/actions/forms";
 import {
   getEventTypes,
   createEventType,
@@ -35,11 +35,11 @@ function* createEventTypes(action) {
 
   try {
     yield call(createEventType, eventType);
-    yield put(closeEventTypeForm());
+    yield put(closeForm());
     yield call(fetchEventTypes);
     NotificationManager.fire(SUCCESS_EVENT_TYPE_NOTIFICATION_DATA);
   } catch (error) {
-    yield put(eventTypeRequestFail({ error }));
+    yield put(setErrorForm({ error }));
     NotificationManager.fire(FAILED_EVENT_TYPE_NOTIFICATION_DATA);
   }
 }
@@ -49,12 +49,12 @@ function* editEventType(action) {
 
   try {
     yield call(updateEventType, eventType);
-    yield put(closeEventTypeForm());
+    yield put(closeForm());
     NotificationManager.fire(SUCCESS_EVENT_TYPE_NOTIFICATION_DATA);
 
     yield call(fetchEventTypes);
   } catch (error) {
-    yield put(eventTypeRequestFail({ error }));
+    yield put(setErrorForm({ error }));
     NotificationManager.fire(FAILED_EVENT_TYPE_NOTIFICATION_DATA);
   }
 }
@@ -66,7 +66,7 @@ function* removeEventType(action) {
     yield call(removeEventTypeAPI, eventTypeId);
     yield call(fetchEventTypes);
   } catch (error) {
-    yield put(eventTypeRequestFail({ error }));
+    yield put(setErrorForm({ error }));
     NotificationManager.fire(FAILED_EVENT_TYPE_NOTIFICATION_DATA);
   }
 }

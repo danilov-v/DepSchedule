@@ -1,7 +1,7 @@
 spring:
   application.name: DepSchedule
   datasource:
-#    jdbc-url: jdbc:h2:file:${projectDir}/backend/src/main/resources/db/storage/ScheduleDB
+    #    jdbc-url: jdbc:h2:file:${projectDir}/backend/src/main/resources/db/storage/ScheduleDB
     filePathInJarDir: ${jarDir}/storage/ScheduleDB
     filePathInProjectDir: ${projectDir}/backend/storage/ScheduleDB.mv.db
     driverClassName: org.h2.Driver
@@ -30,7 +30,6 @@ spring:
 spring:
   profiles: dev
   profiles.include: h2Server
-
 ---
 spring:
   profiles: h2Server
@@ -40,8 +39,6 @@ spring:
     tcp:
       enabled: true
       port: 9092
-      
-      
 ---
 spring:
   profiles: test
@@ -54,7 +51,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/migrations/test_changelog.xml
-    
-server.port: 8080
 
+server.port: 8080
 #  profiles.include: h2Server

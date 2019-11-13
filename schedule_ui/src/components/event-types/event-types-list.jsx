@@ -10,7 +10,7 @@ const ColorCircle = ({ color }) => (
 
 export function EventTypesList({
   eventTypes,
-  onEventTypeClick,
+  onEventTypeEdit,
   onEventTypeRemove,
   role,
 }) {
@@ -24,16 +24,10 @@ export function EventTypesList({
       </td>
       <td>{eventType.description}</td>
       <td hidden={!isManageAble}>
-        <Button
-          onClick={onEventTypeClick.bind(null, eventType)}
-          color="warning"
-        >
+        <Button onClick={() => onEventTypeEdit(eventType)} color="warning">
           Изменить
         </Button>
-        <Button
-          close
-          onClick={onEventTypeRemove.bind(null, eventType.typeId)}
-        />
+        <Button close onClick={() => onEventTypeRemove(eventType.typeId)} />
       </td>
     </tr>
   );
@@ -62,7 +56,7 @@ EventTypesList.propTypes = {
       typeId: PropTypes.number,
     })
   ),
-  onEventTypeClick: PropTypes.func,
+  onEventTypeEdit: PropTypes.func,
   onEventTypeRemove: PropTypes.func,
   role: PropTypes.string,
 };

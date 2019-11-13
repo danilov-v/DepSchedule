@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { openEventForm } from "redux/actions/forms";
+import { openForm } from "redux/actions/forms";
+import { EVENT_FORM } from "constants/forms";
 import { getAuthData } from "redux/selectors/auth";
 import { getEventTypesSelector } from "redux/selectors/event-types";
 import { fetchEventTypes } from "redux/actions/event-types";
 import { UnitEventRow } from "./unit-event-row";
-import { EventPopup } from "./event-popup";
+import { EventPopup, DEFAULT_EVENT_FORM_DATA } from "./event-popup";
 import { MANAGE_EVENTS } from "constants/permissions";
 import { checkPermission } from "utils/permissions";
 import { isDate, addDays, differenceInDays } from "date-fns";
@@ -29,8 +30,10 @@ export function EventCalendar({ range, units }) {
     const dateTo = isDate(dateFrom) ? addDays(dateFrom, duration) : null;
 
     dispatch(
-      openEventForm({
+      openForm({
+        formName: EVENT_FORM,
         formData: {
+          ...DEFAULT_EVENT_FORM_DATA,
           unitId: unit.unitId,
           unitTitle: unit.title,
           unitEventTypeDuration: unit.eventDuration,
@@ -50,7 +53,8 @@ export function EventCalendar({ range, units }) {
     const duration = differenceInDays(dateTo, dateFrom);
 
     dispatch(
-      openEventForm({
+      openForm({
+        formName: EVENT_FORM,
         formData: {
           ...event,
           unitTitle: unit.title,
