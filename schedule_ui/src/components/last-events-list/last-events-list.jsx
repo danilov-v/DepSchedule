@@ -54,39 +54,43 @@ export const LastEventsList = () => {
         fade={false}
       >
         <OutsideListener callback={toggle}>
-          <PopoverHeader>Последние события</PopoverHeader>
-          <PopoverBody className="last-events-list">
-            <ListGroup>
-              {lastEvents.map(event => (
-                <ListGroupItem
-                  key={`recent-${event.eventId}`}
-                  disabled={isEventOnGraphic(event)}
-                >
-                  <HashLink
-                    scroll={el => {
-                      el.focus();
-                      el.scrollIntoView({
-                        behavior: "instant",
-                        block: "end",
-                      });
-                    }}
-                    to={`/#event-${event.eventId}`}
-                    className="text-dark"
+          <>
+            <PopoverHeader>Последние события</PopoverHeader>
+            <PopoverBody className="last-events-list">
+              <ListGroup>
+                {lastEvents.map(event => (
+                  <ListGroupItem
+                    key={`recent-${event.eventId}`}
+                    disabled={isEventOnGraphic(event)}
                   >
-                    <div className="text-muted">{event.unitTitle}</div>
-                    <Badge
-                      color="info"
-                      className="event-title"
-                      style={{ background: event.color }}
+                    <HashLink
+                      scroll={el => {
+                        el.focus();
+                        el.scrollIntoView({
+                          behavior: "instant",
+                          block: "end",
+                        });
+                      }}
+                      to={`/#event-${event.eventId}`}
+                      className="text-dark"
                     >
-                      {event.eventTypeDescription}
-                    </Badge>
-                    <span className="sub-text">закончилось {event.dateTo}</span>
-                  </HashLink>
-                </ListGroupItem>
-              ))}
-            </ListGroup>
-          </PopoverBody>
+                      <div className="text-muted">{event.unitTitle}</div>
+                      <Badge
+                        color="info"
+                        className="event-title"
+                        style={{ background: event.color }}
+                      >
+                        {event.eventTypeDescription}
+                      </Badge>
+                      <span className="sub-text">
+                        закончилось {event.dateTo}
+                      </span>
+                    </HashLink>
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+            </PopoverBody>
+          </>
         </OutsideListener>
       </Popover>
     </>
