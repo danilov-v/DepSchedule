@@ -22,9 +22,20 @@ import classnames from "classnames";
 import { isDate, addDays, format } from "date-fns";
 import { getEventFormSelector } from "redux/selectors/forms";
 import { getEventTypesSelector } from "redux/selectors/event-types";
-import { closeEventForm } from "redux/actions/forms";
+import { closeForm } from "redux/actions/forms";
 import { useForm } from "helpers/hooks/useForm";
 import { createEvent, updateEvent, removeEvent } from "redux/actions/event";
+
+export const DEFAULT_EVENT_FORM_DATA = {
+  unitId: null,
+  dateFrom: null,
+  duration: 0,
+  eventId: null,
+  eventTypeId: "",
+  note: "",
+  location: { name: "", type: "statical" },
+  planned: false,
+};
 
 const validateEventForm = values => {
   let errors = {};
@@ -41,8 +52,13 @@ const validateEventForm = values => {
 export function EventPopup() {
   const dispatch = useDispatch();
   const eventTypes = useSelector(getEventTypesSelector);
-  const { isOpen, isEdit, error, formData } = useSelector(getEventFormSelector);
-  const close = () => dispatch(closeEventForm());
+  const {
+    isOpen,
+    isEdit,
+    error,
+    formData = DEFAULT_EVENT_FORM_DATA,
+  } = useSelector(getEventFormSelector);
+  const close = () => dispatch(closeForm());
   const {
     onChange,
     onSubmit,

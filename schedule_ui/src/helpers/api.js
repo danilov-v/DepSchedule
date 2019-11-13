@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import {
   LOCALHOST_URL,
   DEFAULT_BE_PORT,
@@ -133,11 +132,7 @@ export const getPeriods = async () => await makeApiCall(PERIODS, {});
 export const createPeriod = async periodData =>
   await makeApiCall(PERIODS, {
     method: "POST",
-    body: JSON.stringify({
-      ...periodData,
-      startDate: format(periodData.startDate, "yyyy-MM-dd"),
-      endDate: format(periodData.endDate, "yyyy-MM-dd"),
-    }),
+    body: JSON.stringify(periodData),
   });
 
 export const updatePeriod = async periodData =>

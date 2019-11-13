@@ -2,15 +2,16 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getAuthData } from "redux/selectors/auth";
-import { getPeriodFormSelector } from "redux/selectors/forms";
-import { getPeriodsSelector } from "redux/selectors/periods";
+import { format } from "date-fns";
+import { getFormattedPeriodsSelector } from "redux/selectors/periods";
 import {
   createPeriod,
   updatePeriod,
   removePeriod,
   fetchPeriods,
 } from "redux/actions/periods";
-import { openPeriodForm, closePeriodForm } from "redux/actions/forms";
+import { PERIOD_FORM } from "constants/forms";
+import { openForm, closeForm } from "redux/actions/forms";
 import { Button, Container } from "reactstrap";
 import { Title } from "components/title/title";
 import { PERIOD_CONFIRMATION_OPTIONS } from "constants/confirmations";
@@ -21,22 +22,24 @@ import { MANAGE_PERIODS } from "constants/permissions";
 import { checkPermission } from "utils/permissions";
 
 export function Periods() {
-  const periods = useSelector(getPeriodsSelector);
-  const { isOpen, isEdit, initialFormData, error } = useSelector(
-    getPeriodFormSelector
-  );
-  const { role } = useSelector(getAuthData);
   const dispatch = useDispatch();
   const confirm = useConfirmation();
+  const periods = useSelector(getFormattedPeriodsSelector);
+  const { role } = useSelector(getAuthData);
 
   useEffect(() => {
     dispatch(fetchPeriods());
   }, [dispatch]);
 
-  const onPeriodSubmit = periodData =>
-    isEdit
-      ? dispatch(updatePeriod(periodData))
-      : dispatch(createPeriod(periodData));
+  const onPeriodSubmit = (periodData, isEdit) => {
+    const data = {
+      ...periodData,
+      startDate: format(periodData.startDate, "yyyy-MM-dd"),
+      endDate: format(periodData.endDate, "yyyy-MM-dd"),
+    };
+
+    isEdit ? dispatch(updatePeriod(data)) : dispatch(createPeriod(data));
+  };
 
   const tryToRemove = periodId => {
     confirm(PERIOD_CONFIRMATION_OPTIONS).then(() => {
@@ -44,24 +47,18 @@ export function Periods() {
     });
   };
 
-  const openForm = (isEdit, formData = null) => {
-    if (!isOpen && isEdit)
-      formData = {
-        ...formData,
-        startDate: new Date(formData.startDate),
-        endDate: new Date(formData.endDate),
-      };
+  const openNewForm = () => dispatch(openForm({ formName: PERIOD_FORM }));
 
-    dispatch(openPeriodForm(isEdit, formData));
-  };
+  const openEditForm = formData =>
+    dispatch(openForm({ formName: PERIOD_FORM, isEdit: true, formData }));
 
-  const closeForm = () => dispatch(closePeriodForm());
+  const onCloseForm = () => dispatch(closeForm());
 
   return (
     <Container>
       <Title text="Периоды" />
       <PeriodsList
-        onPeriodEdit={openForm.bind(null, true)}
+        onPeriodEdit={openEditForm}
         onPeriodRemove={tryToRemove}
         periods={periods}
         userRole={role}
@@ -71,19 +68,12 @@ export function Periods() {
         color="primary"
         size="lg"
         className="font-weight-bold float-right"
-        onClick={openForm.bind(null, false, undefined)}
+        onClick={openNewForm}
         hidden={!checkPermission(role, MANAGE_PERIODS)}
       >
         +
       </Button>
-      <PeriodsPopup
-        isEdit={isEdit}
-        isOpen={isOpen}
-        toggle={closeForm}
-        onPeriodSubmit={onPeriodSubmit}
-        defaultFormData={initialFormData}
-        error={error}
-      />
+      <PeriodsPopup toggle={onCloseForm} onPeriodSubmit={onPeriodSubmit} />
     </Container>
   );
 }

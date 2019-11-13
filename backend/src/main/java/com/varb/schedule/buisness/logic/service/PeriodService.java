@@ -25,20 +25,22 @@ public class PeriodService extends AbstractService<Period, Long> {
     private final ValidationService validationService;
     public static final String DATES_INTERSECTION = "DATES_INTERSECTION";
     private static final String DATES_INTERSECTION_MESSAGE = "Данный период пересекается с уже существующим. Проверьте даты его начала и окончания.";
-    private static final String HIERARCHY_DATES_RANGE_VIOLATION_MESSAGE = "Даты периода выходят за пределы диапазона дат его родительского периода.";
-    private static final String HIERARCHY_DATES_RANGE_VIOLATION = "HIERARCHY_DATES_RANGE_VIOLATION";
+    private static final String PARENT_HIERARCHY_VIOLATION_MESSAGE = "Даты периода выходят за пределы диапазона дат его родительского периода.";
+    private static final String PARENT_HIERARCHY_VIOLATION = "PARENT_HIERARCHY_VIOLATION";
+    private static final String CHILD_HIERARCHY_VIOLATION_MESSAGE = "Даты периода выходят за пределы диапазона дат его дочерних периодов.";
+    private static final String CHILD_HIERARCHY_VIOLATION = "CHILD_HIERARCHY_VIOLATION";
 
     public Period add(PeriodReqDto periodPost) {
         Period period = modelMapper.map(periodPost, Period.class);
-        checkBeforeSave(period);
-        //if everything is ok - there's no intersections and dates are correct, process it further
-        return save(period);
+        period = save(period);
+        checkConsistencyAfterSave(period);
+        return period;
     }
 
     public Period update(Long periodId, PeriodDto periodPut) {
         Period period = findById(periodId);
         modelMapper.map(periodPut, period);
-        checkBeforeUpdate(period);
+        checkConsistencyAfterSave(period);
         return period;
     }
 
@@ -46,11 +48,14 @@ public class PeriodService extends AbstractService<Period, Long> {
         return periodRepository.findAllByCalendarId(calendarId);
     }
 
-    private void checkBeforeUpdate(Period period) {
+    private void checkConsistencyAfterSave(Period period) {
         //validate updated period entity
         validationService.checkDates(period.getStartDate(), period.getEndDate());
         validateHierarchyDatesRange(period);
+        checkIntersection(period);
+    }
 
+    private void checkIntersection(Period period) {
         List<Period> intersections = periodRepository.
                 findIntersections(period.getCalendarId(), period.getParentId(), period.getStartDate(), period.getEndDate());
 
@@ -58,52 +63,49 @@ public class PeriodService extends AbstractService<Period, Long> {
         //It is correct behaviour
         intersections.removeIf(p -> p.getPeriodId().equals(period.getPeriodId()));
         if (!intersections.isEmpty()) {
+            //gather ids for exception message
+            String ids = intersections.stream().map(per -> per.getPeriodId().toString()).collect(Collectors.joining(","));
             throw new WebApiException(
-                    intersectionsExceptionDevMessage(intersections),
+                    "Period you want to add has intersections with other periods with ids: [" + ids + "])",
                     DATES_INTERSECTION_MESSAGE,
                     DATES_INTERSECTION);
         }
     }
 
-    private void checkBeforeSave(Period period) {
-        validationService.checkDates(period.getStartDate(), period.getEndDate());
-        validateHierarchyDatesRange(period);
-
-        List<Period> intersections = periodRepository.
-                findIntersections(period.getCalendarId(), period.getParentId(), period.getStartDate(), period.getEndDate());
-        if (!intersections.isEmpty()) {
-            throw new WebApiException(
-                    intersectionsExceptionDevMessage(intersections),
-                    DATES_INTERSECTION_MESSAGE,
-                    DATES_INTERSECTION);
-        }
-    }
-
+    /**
+     * Checking: if Period out of hierarchy date range then throw WebApiException
+     */
     private void validateHierarchyDatesRange(Period period) {
+        //check out of bounds children
+        List<Period> outOfBoundsChilds = periodRepository.findOutOfBoundsChilds(period.getPeriodId(), period.getStartDate(), period.getEndDate());
+        if (!outOfBoundsChilds.isEmpty()) {
+            String ids = outOfBoundsChilds.stream().map(per -> per.getPeriodId().toString()).collect(Collectors.joining(","));
+            throw new WebApiException(
+                    "Dates of the child periods with ids [" + ids
+                            + "] are out of the dates range of its parent with id = " + period.getPeriodId(),
+                    CHILD_HIERARCHY_VIOLATION_MESSAGE,
+                    CHILD_HIERARCHY_VIOLATION);
+        }
+
         Long parentId = period.getParentId();
         if (parentId == null) {
             return;
         }
 
+        //check out of bounds parent
         Period parentPeriod = findById(parentId);
         if (parentPeriod.getStartDate().isAfter(period.getStartDate()) ||
-        parentPeriod.getEndDate().isBefore(period.getEndDate())) {
+                parentPeriod.getEndDate().isBefore(period.getEndDate())) {
             throw new WebApiException(
-                    "Dates of the period (child periodId = " +period.getPeriodId() +
-                            ", startDate = " +period.getStartDate()
-                            +", endDate = " +period.getEndDate()
-                            +") are out of the range of its parent "
-                            +"(parent periodId = " +parentId +", startDate = " +parentPeriod.getStartDate()
-                            +", endDate = " +parentPeriod.getEndDate() +").",
-                    HIERARCHY_DATES_RANGE_VIOLATION_MESSAGE,
-                    HIERARCHY_DATES_RANGE_VIOLATION);
+                    "Dates of the period (child periodId = " + period.getPeriodId() +
+                            ", startDate = " + period.getStartDate()
+                            + ", endDate = " + period.getEndDate()
+                            + ") are out of the range of its parent "
+                            + "(parent periodId = " + parentId + ", startDate = " + parentPeriod.getStartDate()
+                            + ", endDate = " + parentPeriod.getEndDate() + ").",
+                    PARENT_HIERARCHY_VIOLATION_MESSAGE,
+                    PARENT_HIERARCHY_VIOLATION);
         }
-    }
-
-    private String intersectionsExceptionDevMessage(List<Period> intersections) {
-        //gather ids for exception message
-        String ids = intersections.stream().map(per -> per.getPeriodId().toString()).collect(Collectors.joining(","));
-        return "Period you want to add has intersections with other periods with ids: [" + ids + "])";
     }
 
     @Override

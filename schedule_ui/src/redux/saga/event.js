@@ -8,7 +8,7 @@ import {
 } from "redux/actions/event";
 
 import { getActiveCalendarSelector } from "redux/selectors/calendars";
-import { closeEventForm, getFailedEventAction } from "redux/actions/forms";
+import { closeForm, setErrorForm } from "redux/actions/forms";
 import { fetchUnits } from "redux/saga/units";
 import {
   createEvent as createEventAPI,
@@ -29,11 +29,11 @@ function* createEvent(action) {
   try {
     yield call(createEventAPI, { ...event, calendarId });
     yield call(fetchUnits);
-    yield put(closeEventForm());
+    yield put(closeForm());
 
     NotificationManager.fire(SUCCESS_EVENT_NOTIFICATION_DATA);
   } catch (e) {
-    yield put(getFailedEventAction({ error: e }));
+    yield put(setErrorForm({ error: e }));
 
     NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
   }
@@ -46,11 +46,11 @@ function* updateEvent(action) {
   try {
     yield call(updateEventAPI, { ...event, calendarId });
     yield call(fetchUnits);
-    yield put(closeEventForm());
+    yield put(closeForm());
 
     NotificationManager.fire(SUCCESS_EVENT_NOTIFICATION_DATA);
   } catch (e) {
-    yield put(getFailedEventAction({ error: e }));
+    yield put(setErrorForm({ error: e }));
 
     NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
   }
@@ -63,7 +63,7 @@ function* removeEvent(action) {
     yield call(removeEventAPI, eventId);
 
     yield call(fetchUnits);
-    yield put(closeEventForm());
+    yield put(closeForm());
   } catch (e) {
     NotificationManager.fire(FAILED_EVENT_NOTIFICATION_DATA);
   }

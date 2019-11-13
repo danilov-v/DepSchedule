@@ -13,9 +13,9 @@ import {
   editEventType,
   removeEventType,
 } from "redux/actions/event-types";
-import { openEventTypeForm, closeEventTypeForm } from "redux/actions/forms";
-import { getEventTypeFormSelector } from "redux/selectors/forms";
+import { openForm, closeForm } from "redux/actions/forms";
 import { EVENT_TYPE_CONFIRMATION_OPTIONS } from "constants/confirmations";
+import { EVENT_TYPE_FORM } from "constants/forms";
 import { MANAGE_EVENT_TYPES } from "constants/permissions";
 import { checkPermission } from "utils/permissions";
 
@@ -26,22 +26,23 @@ export function EventTypes() {
   const dispatch = useDispatch();
   const confirm = useConfirmation();
   const { role } = useSelector(getAuthData);
-  const { isOpen, isEdit, initialFormData, error } = useSelector(
-    getEventTypeFormSelector
-  );
 
   useEffect(() => {
     dispatch(fetchEventTypes());
   }, [dispatch]);
 
-  const openForm = (isEdit, initialFormData = null) =>
-    dispatch(openEventTypeForm({ isEdit, initialFormData }));
+  const openNewForm = () => dispatch(openForm({ formName: EVENT_TYPE_FORM }));
+  const openEditForm = formData =>
+    dispatch(openForm({ formName: EVENT_TYPE_FORM, isEdit: true, formData }));
 
-  const closeForm = () => dispatch(closeEventTypeForm());
+  const onCloseForm = () => dispatch(closeForm());
 
   const onEventTypeCreate = values => dispatch(createEventType(values));
 
   const onEventTypeUpdate = values => dispatch(editEventType(values));
+
+  const onEventTypeSubmit = (values, isEdit = false) =>
+    isEdit ? onEventTypeUpdate(values) : onEventTypeCreate(values);
 
   const onEventTypeRemove = typeId =>
     confirm(EVENT_TYPE_CONFIRMATION_OPTIONS).then(() =>
@@ -53,7 +54,7 @@ export function EventTypes() {
       <Title text="Типы событий" />
       <EventTypesList
         eventTypes={eventTypes}
-        onEventTypeClick={openForm.bind(null, true)}
+        onEventTypeEdit={openEditForm}
         onEventTypeRemove={onEventTypeRemove}
         role={role}
       />
@@ -62,20 +63,15 @@ export function EventTypes() {
         color="primary"
         size="lg"
         className="font-weight-bold float-right"
-        onClick={openForm.bind(null, false, null)}
+        onClick={openNewForm}
         hidden={!checkPermission(role, MANAGE_EVENT_TYPES)}
       >
         +
       </Button>
       <EventTypePopup
-        isEdit={isEdit}
-        isOpen={isOpen}
-        toggle={closeForm}
-        onEventTypeSubmit={isEdit ? onEventTypeUpdate : onEventTypeCreate}
-        defaultFormData={initialFormData}
+        toggle={onCloseForm}
         eventTypes={eventTypes}
-        onEventRemove={onEventTypeRemove}
-        error={error}
+        onEventTypeSubmit={onEventTypeSubmit}
       />
     </Container>
   );
