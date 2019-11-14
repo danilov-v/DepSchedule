@@ -42,7 +42,9 @@ public class DataSourceConfiguration {
                 .ifEmptyThen(new JdbcUrlFileDataSourceReader(checkDbFileExists))
                 .ifEmptyThen(new FilePathDatasourceReader(checkDbFileExists, bootSourceResolver.isBootFromJar()))
                 .getResult(environment);
+
         log.info("JDBC URL = "+jdbcUrl);
+
         return jdbcUrl;
     }
 }
