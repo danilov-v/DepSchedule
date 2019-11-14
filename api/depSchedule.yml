@@ -821,7 +821,6 @@ components:
       required:
         - title
         - calendarId
-        - location
       allOf:
         - $ref: "#/components/schemas/Unit"
         - type: object
