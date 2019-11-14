@@ -33,6 +33,7 @@ export function Event({ event, rightOffset, color, title, flag, onClick }) {
 
   const eventStyle = {
     background: color,
+    width: flag ? eventLength - CELL_WIDTH : eventLength,
   };
   const containerStyle = {
     width: eventLength + "px",

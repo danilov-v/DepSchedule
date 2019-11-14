@@ -1,11 +1,13 @@
+@import "variables.scss";
+
 .units-grid {
   &-title {
-    height: 175px;
-    background: #f2f3f2;
+    height: 125px;
+    background: $color-grey-light-1;
     border: 1px solid #95999c;
     font-size: 22px;
     position: sticky;
-    top: 60px;
+    top: 40px;
     z-index: 2;
 
     &-wrapper {

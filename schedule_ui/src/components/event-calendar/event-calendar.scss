@@ -4,25 +4,21 @@
   top: 16px;
   text-align: center;
   font-weight: bold;
-  width: calc(100% - 35px);
 
   &-container {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     position: absolute;
     height: 60px;
     cursor: pointer;
     &:focus {
-      // box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.7);
       filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.5));
       transform: translateY(-0.3em);
     }
   }
 
   &-flag-container {
-    // position: absolute;
-    cursor: pointer;
-
     .flag {
       align-self: center;
       width: 25px;

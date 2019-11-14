@@ -21,3 +21,9 @@ export const getUnitRemoveConfirmationOptions = ({ title }) => ({
   body: `Вы уверены что хотите удалить ${title} подразделение?`,
   catchOnCancel: false,
 });
+
+export const EVENT_CONFIRMATION_OPTIONS = {
+  title: "Удаление События",
+  body: "Вы уверены что хотите удалить событие?",
+  catchOnCancel: false,
+};

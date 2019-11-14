@@ -1,24 +1,26 @@
+@import "variables.scss";
+
 .calendar {
   position: sticky;
-  top: 165px;
-  background: #f2f3f2;
+  top: 115px;
+  background: $color-grey-light-1;
   font-size: 1.1rem;
   font-weight: 550;
   word-break: break-all;
   z-index: 1;
 
   &-operational {
-    top: 95px;
+    top: 65px;
     background: #e3f0ff;
   }
 
   &-shift {
-    top: 60px;
+    top: 40px;
   }
 
   &-cell {
     width: 35px;
-    height: 35px;
+    height: 25px;
     border: 1px solid #6c757d;
 
     &-shift {
