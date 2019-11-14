@@ -61,6 +61,10 @@
       border-bottom: 1px solid #95999c;
       border-left: 1px solid #95999c;
       cursor: pointer;
+
+      &:hover {
+        opacity: 0.6;
+      }
     }
 
     &-flag {
@@ -105,8 +109,8 @@
     }
 
     &-last-of-group:hover {
-      box-shadow: 0 0 2px 1px var(--primary);
-      border-color: #ececec;
+      // box-shadow: 0 0 2px 1px var(--primary);
+      // border-color: #ececec;
     }
 
     &-new {
