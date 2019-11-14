@@ -25,6 +25,8 @@ import { getEventTypesSelector } from "redux/selectors/event-types";
 import { closeForm } from "redux/actions/forms";
 import { useForm } from "helpers/hooks/useForm";
 import { createEvent, updateEvent, removeEvent } from "redux/actions/event";
+import { EVENT_CONFIRMATION_OPTIONS } from "constants/confirmations";
+import { useConfirmation } from "components/confirmation-service/confirmation-service";
 
 export const DEFAULT_EVENT_FORM_DATA = {
   unitId: null,
@@ -51,6 +53,7 @@ const validateEventForm = values => {
 
 export function EventPopup() {
   const dispatch = useDispatch();
+  const confirm = useConfirmation();
   const eventTypes = useSelector(getEventTypesSelector);
   const {
     isOpen,
@@ -126,7 +129,9 @@ export function EventPopup() {
   };
 
   const onRemoveEvent = () =>
-    dispatch(removeEvent({ eventId: values.eventId }));
+    confirm(EVENT_CONFIRMATION_OPTIONS).then(() =>
+      dispatch(removeEvent({ eventId: values.eventId }))
+    );
 
   function submitForm() {
     const data = {
