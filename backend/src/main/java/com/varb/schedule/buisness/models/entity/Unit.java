@@ -33,7 +33,7 @@ public class Unit {
     @Column(nullable = false)
     private Boolean planned;
 
-    @Column(nullable = false)
+    @Nullable
     private String location;
 
     @Setter(AccessLevel.PRIVATE)
